@@ -216,7 +216,7 @@ public class ToDitaSerializer implements Visitor {
     @Override
     public void visit(final ExpLinkNode node) {
         final AttributesBuilder atts = getLinkAttributes(node.url);
-        atts.add("title", node.title);
+        //atts.add("title", node.title);
 
         startElement(TOPIC_XREF, atts.build());
         visitChildren(node);
