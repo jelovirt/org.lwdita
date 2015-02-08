@@ -206,7 +206,7 @@ public class ToDitaSerializer implements Visitor {
 
     @Override
     public void visit(final ExpImageNode node) {
-        final Attributes atts = new AttributesBuilder(XREF_ATTS)
+        final Attributes atts = new AttributesBuilder(IMAGE_ATTS)
                 .add(ATTRIBUTE_NAME_HREF, node.url)
                 .build();
 
@@ -350,17 +350,19 @@ public class ToDitaSerializer implements Visitor {
         final String key = node.referenceKey != null ? toString(node.referenceKey) : text;
         final ReferenceNode refNode = references.get(normalize(key));
         if (refNode == null) { // "fake" reference image link
-            final AttributesBuilder atts = new AttributesBuilder(IMAGE_ATTS)
-                    .add(ATTRIBUTE_NAME_KEYREF, key);
-            startElement(TOPIC_IMAGE, atts.build());
+            final Attributes atts = new AttributesBuilder(IMAGE_ATTS)
+                    .add(ATTRIBUTE_NAME_KEYREF, key)
+                    .build();
+            startElement(TOPIC_IMAGE, atts);
             if (node.referenceKey != null) {
                 visitChildren(node);
             }
             endElement();
         } else {
-            final AttributesBuilder atts = new AttributesBuilder(IMAGE_ATTS)
-                    .add(ATTRIBUTE_NAME_HREF, refNode.getUrl());
-            startElement(TOPIC_IMAGE, atts.build());
+            final Attributes atts = new AttributesBuilder(IMAGE_ATTS)
+                    .add(ATTRIBUTE_NAME_HREF, refNode.getUrl())
+                    .build();
+            startElement(TOPIC_IMAGE, atts);
             startElement(TOPIC_ALT, ALT_ATTS);
             //characters(refNode.getTitle());
             visitChildren(refNode);
