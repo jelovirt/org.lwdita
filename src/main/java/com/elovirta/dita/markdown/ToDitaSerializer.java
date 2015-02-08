@@ -99,6 +99,7 @@ public class ToDitaSerializer implements Visitor {
     private static final Attributes ALT_ATTS = new AttributesBuilder().add(ATTRIBUTE_NAME_CLASS, TOPIC_ALT.toString()).build();
     private static final Attributes PH_ATTS = new AttributesBuilder().add(ATTRIBUTE_NAME_CLASS, TOPIC_PH.toString()).build();
     private static final Attributes ENTRY_ATTS = new AttributesBuilder().add(ATTRIBUTE_NAME_CLASS, TOPIC_ENTRY.toString()).build();
+    private static final Attributes FIG_ATTS = new AttributesBuilder().add(ATTRIBUTE_NAME_CLASS, TOPIC_FIG.toString()).build();
 
     public void toHtml(final RootNode astRoot) throws SAXException {
         checkArgNotNull(astRoot, "astRoot");
@@ -205,12 +206,32 @@ public class ToDitaSerializer implements Visitor {
 
     @Override
     public void visit(final ExpImageNode node) {
-        final AttributesBuilder atts = getLinkAttributes(node.url);
-        atts.add("title", node.title);
+        final Attributes atts = new AttributesBuilder(XREF_ATTS)
+                .add(ATTRIBUTE_NAME_HREF, node.url)
+                .build();
 
-        startElement(TOPIC_IMAGE, atts.build());
-        visitChildren(node);
-        endElement();
+        if (!node.title.isEmpty()) {
+            startElement(TOPIC_FIG, FIG_ATTS);
+            startElement(TOPIC_TITLE, TITLE_ATTS);
+            characters(node.title);
+            endElement();
+            startElement(TOPIC_IMAGE, atts);
+            if (hasChildren(node)) {
+                startElement(TOPIC_ALT, ALT_ATTS);
+                visitChildren(node);
+                endElement();
+            }
+            endElement();
+            endElement();
+        } else {
+            startElement(TOPIC_IMAGE, atts);
+            if (hasChildren(node)) {
+                startElement(TOPIC_ALT, ALT_ATTS);
+                visitChildren(node);
+                endElement();
+            }
+            endElement();
+        }
     }
 
     @Override
@@ -276,7 +297,25 @@ public class ToDitaSerializer implements Visitor {
 
     @Override
     public void visit(final ParaNode node) {
-        printTag(node, TOPIC_P, P_ATTS);
+        if (containsImage(node)) {
+            visitChildren(node);
+        } else {
+            printTag(node, TOPIC_P, P_ATTS);
+        }
+    }
+
+    private boolean containsImage(final SuperNode node) {
+        if (node.getChildren().size() != 1) {
+            return false;
+        } else {
+            final Node first = node.getChildren().get(0);
+            if (first instanceof ExpImageNode || first instanceof RefImageNode) {
+                return true;
+            } else if (first instanceof SuperNode) {
+                return containsImage((SuperNode) first);
+            }
+        }
+        return false;
     }
 
     @Override
@@ -311,21 +350,16 @@ public class ToDitaSerializer implements Visitor {
         final String key = node.referenceKey != null ? toString(node.referenceKey) : text;
         final ReferenceNode refNode = references.get(normalize(key));
         if (refNode == null) { // "fake" reference image link
-            // TODO
-//            throw new UnsupportedOperationException();
-//            printer.print("![").print(text).print(']');
-//            if (node.separatorSpace != null) {
-//                printer.print(node.separatorSpace).print('[');
-//                if (node.referenceKey != null) printer.print(key);
-//                printer.print(']');
-//            }
+            final AttributesBuilder atts = new AttributesBuilder(IMAGE_ATTS)
+                    .add(ATTRIBUTE_NAME_KEYREF, key);
+            startElement(TOPIC_IMAGE, atts.build());
+            if (node.referenceKey != null) {
+                visitChildren(node);
+            }
+            endElement();
         } else {
-//            LinkRenderer.Rendering rendering = linkRenderer.render(node, refNode.getUrl(), refNode.getTitle(), text);
             final AttributesBuilder atts = new AttributesBuilder(IMAGE_ATTS)
                     .add(ATTRIBUTE_NAME_HREF, refNode.getUrl());
-//            for (LinkRenderer.Attribute attr : rendering.attributes) {
-//                atts.add(attr.name, attr.value);
-//            }
             startElement(TOPIC_IMAGE, atts.build());
             startElement(TOPIC_ALT, ALT_ATTS);
             //characters(refNode.getTitle());
@@ -351,7 +385,11 @@ public class ToDitaSerializer implements Visitor {
         } else {
             final AttributesBuilder atts = getLinkAttributes(refNode.getUrl());
             startElement(TOPIC_XREF, atts.build());
-            visitChildren(node);
+            if (refNode.getTitle() != null) {
+                characters(refNode.getTitle());
+            } else {
+                visitChildren(node);
+            }
             endElement();
         }
     }
@@ -576,25 +614,35 @@ public class ToDitaSerializer implements Visitor {
 
     // helpers
 
-    protected void visitChildren(final SuperNode node) {
+    private boolean hasChildren(final Node node) {
+        if (node instanceof SuperNode) {
+            return !((SuperNode) node).getChildren().isEmpty();
+        } else if (node instanceof TextNode) {
+            return !((TextNode) node).getChildren().isEmpty();
+        } else {
+            throw new UnsupportedOperationException();
+        }
+    }
+
+    private void visitChildren(final SuperNode node) {
         for (final Node child : node.getChildren()) {
             child.accept(this);
         }
     }
 
-    protected void visitChildren(final TextNode node) {
+    private void visitChildren(final TextNode node) {
         for (final Node child : node.getChildren()) {
             child.accept(this);
         }
     }
 
-    protected void printTag(TextNode node, final DitaClass tag, final Attributes atts) {
+    private void printTag(TextNode node, final DitaClass tag, final Attributes atts) {
         startElement(tag, atts);
         characters(node.getText());
         endElement();
     }
 
-    protected void printTag(SuperNode node, final DitaClass tag, final Attributes atts) {
+    private void printTag(SuperNode node, final DitaClass tag, final Attributes atts) {
         startElement(tag, atts);
         visitChildren(node);
         endElement();
@@ -630,7 +678,7 @@ public class ToDitaSerializer implements Visitor {
 //        printer.print(' ').print(name).print('=').print('"').print(value).print('"');
 //    }
 
-    protected String printChildrenToString(final SuperNode node) {
+    private String printChildrenToString(final SuperNode node) {
         Printer priorPrinter = printer;
         printer = new Printer();
         visitChildren(node);
@@ -639,7 +687,7 @@ public class ToDitaSerializer implements Visitor {
         return result;
     }
 
-    protected String normalize(final String string) {
+    private String normalize(final String string) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < string.length(); i++) {
             char c = string.charAt(i);
@@ -654,7 +702,7 @@ public class ToDitaSerializer implements Visitor {
         return sb.toString();
     }
 
-    protected void printWithAbbreviations(String string) {
+    private void printWithAbbreviations(String string) {
         Map<Integer, Map.Entry<String, String>> expansions = null;
 
         for (Map.Entry<String, String> entry : abbreviations.entrySet()) {
