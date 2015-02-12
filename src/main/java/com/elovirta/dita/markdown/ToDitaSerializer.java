@@ -103,20 +103,43 @@ public class ToDitaSerializer implements Visitor {
 
     public void toHtml(final RootNode astRoot) throws SAXException {
         checkArgNotNull(astRoot, "astRoot");
+        clean(astRoot);
         contentHandler.startDocument();
         contentHandler.startPrefixMapping(ATTRIBUTE_PREFIX_DITAARCHVERSION, DITA_NAMESPACE);
-        startElement(TOPIC_TOPIC, new AttributesBuilder(TOPIC_ATTS).add("id", "x").build());
         try {
             astRoot.accept(this);
             while (!tagStack.isEmpty()) {
                 endElement();
             }
         } catch (final ParseException e) {
+            e.printStackTrace();
             throw new SAXException("Failed to parse Markdown: " + e.getMessage(), e);
         }
         contentHandler.endPrefixMapping(ATTRIBUTE_PREFIX_DITAARCHVERSION);
         contentHandler.endDocument();
 //        return printer.getString();
+    }
+
+    /**
+     * Replace metadata para with actual metadata element. Modifies AST <b>in-place</b>.
+     */
+    public void clean(final RootNode node) {
+        final Node first = node.getChildren().get(0);
+        if (first instanceof ParaNode && toString(first).startsWith("%")) {
+            final Map<String, String> metadata = new HashMap<>();
+            final String[] fields = toString(node).split("\n");
+            if (fields.length >= 1) {
+                metadata.put("title", fields[0].substring(1));
+            }
+//            if (fields.length >= 2) {
+//                metadata.put("authors", fields[0].substring(1));
+//            }
+//            if (fields.length >= 3) {
+//                metadata.put("date", fields[0].substring(1));
+//            }
+            final MetadataNode m = new MetadataNode(metadata.get("title"));
+            node.getChildren().set(0, m);
+        }
     }
 
     // Visitor methods
@@ -246,9 +269,12 @@ public class ToDitaSerializer implements Visitor {
 
     private boolean inSection = false;
 
+    // TODO, support {.main .shine #the-site}
     @Override
     public void visit(final HeaderNode node) {
         if (node.getLevel() == 1) {
+            final String id = getId(node);
+            startElement(TOPIC_TOPIC, new AttributesBuilder(TOPIC_ATTS).add("id", id).build());
             printTag(node, TOPIC_TITLE, TITLE_ATTS);
             startElement(TOPIC_BODY, BODY_ATTS);
         } else {
@@ -260,6 +286,14 @@ public class ToDitaSerializer implements Visitor {
             inSection = true;
             printTag(node, TOPIC_TITLE, TITLE_ATTS);
         }
+    }
+
+    private String getId(final HeaderNode node) {
+        return getId(toString(node));
+    }
+
+    private String getId(final String contents) {
+        return contents.toLowerCase().replace("[^\\w]", " ").trim().replace("\\s+", "_");
     }
 
     @Override
@@ -605,13 +639,21 @@ public class ToDitaSerializer implements Visitor {
 
     @Override
     public void visit(final Node node) {
+        if (node instanceof  MetadataNode) {
+            final MetadataNode n = (MetadataNode) node;
+            final String id = getId(n.title);
+            startElement(TOPIC_TOPIC, new AttributesBuilder(TOPIC_ATTS).add("id", id).build());
+            startElement(TOPIC_TITLE, TITLE_ATTS);
+            characters(n.title);
+            endElement();
+        } else {
+            visitChildren(node);
+        }
 //        for (final ToDitaSerializerPlugin plugin : plugins) {
 //            if (plugin.visit(node, this, printer)) {
 //                return;
 //            }
 //        }
-        // override this method for processing custom Node implementations
-        throw new ParseException("Unsupported node type " + node);
     }
 
     // helpers
@@ -626,13 +668,13 @@ public class ToDitaSerializer implements Visitor {
         }
     }
 
-    private void visitChildren(final SuperNode node) {
-        for (final Node child : node.getChildren()) {
-            child.accept(this);
-        }
-    }
+//    private void visitChildren(final SuperNode node) {
+//        for (final Node child : node.getChildren()) {
+//            child.accept(this);
+//        }
+//    }
 
-    private void visitChildren(final TextNode node) {
+    private void visitChildren(final Node node) {
         for (final Node child : node.getChildren()) {
             child.accept(this);
         }
@@ -758,9 +800,9 @@ public class ToDitaSerializer implements Visitor {
     // ContentHandler methods
 
     private void startElement(final DitaClass tag, final Attributes atts) {
-        if (++elementCounter == 2 && !tag.equals(TOPIC_TITLE)) {
-            throw new ParseException("Document must start with a title: " + tag.localName);
-        }
+//        if (++elementCounter == 2 && !tag.equals(TOPIC_TITLE)) {
+//            throw new ParseException("Document must start with a title: " + tag.localName);
+//        }
         try {
             contentHandler.startElement(NULL_NS_URI, tag.localName, tag.localName, atts);
         } catch (final SAXException e) {
@@ -801,4 +843,20 @@ public class ToDitaSerializer implements Visitor {
         }
     }
 
+    private class MetadataNode extends AbstractNode {
+        final String title;
+        public MetadataNode(final String title) {
+            this.title = title;
+        }
+
+        @Override
+        public void accept(final Visitor visitor) {
+            visitor.visit(this);
+        }
+
+        @Override
+        public List<Node> getChildren() {
+            return Collections.emptyList();
+        }
+    }
 }
