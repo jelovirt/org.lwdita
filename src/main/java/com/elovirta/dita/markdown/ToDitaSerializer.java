@@ -127,7 +127,7 @@ public class ToDitaSerializer implements Visitor {
         final Node first = node.getChildren().get(0);
         if (first instanceof ParaNode && toString(first).startsWith("%")) {
             final Map<String, String> metadata = new HashMap<>();
-            final String[] fields = toString(node).split("\n");
+            final String[] fields = toString(first).split("\n");
             if (fields.length >= 1) {
                 metadata.put("title", fields[0].substring(1));
             }
