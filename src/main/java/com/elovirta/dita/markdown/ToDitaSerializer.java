@@ -28,6 +28,8 @@ import static org.parboiled.common.Preconditions.checkArgNotNull;
 
 public class ToDitaSerializer implements Visitor {
 
+    private static final String COLUMN_NAME_COL = "col";
+
     protected final ContentHandler contentHandler;
     protected Printer printer = new Printer();
     protected final Map<String, ReferenceNode> references = new HashMap<String, ReferenceNode>();
@@ -91,6 +93,8 @@ public class ToDitaSerializer implements Visitor {
     private static final Attributes DL_ATTS = new AttributesBuilder().add(ATTRIBUTE_NAME_CLASS, TOPIC_DL.toString()).build();
     private static final Attributes OL_ATTS = new AttributesBuilder().add(ATTRIBUTE_NAME_CLASS, TOPIC_OL.toString()).build();
     private static final Attributes TABLE_ATTS = new AttributesBuilder().add(ATTRIBUTE_NAME_CLASS, TOPIC_TABLE.toString()).build();
+    private static final Attributes TGROUP_ATTS = new AttributesBuilder().add(ATTRIBUTE_NAME_CLASS, TOPIC_TGROUP.toString()).build();
+    private static final Attributes COLSPEC_ATTS = new AttributesBuilder().add(ATTRIBUTE_NAME_CLASS, TOPIC_COLSPEC.toString()).build();
     private static final Attributes TBODY_ATTS = new AttributesBuilder().add(ATTRIBUTE_NAME_CLASS, TOPIC_TBODY.toString()).build();
     private static final Attributes THEAD_ATTS = new AttributesBuilder().add(ATTRIBUTE_NAME_CLASS, TOPIC_THEAD.toString()).build();
     private static final Attributes TR_ATTS = new AttributesBuilder().add(ATTRIBUTE_NAME_CLASS, TOPIC_ROW.toString()).build();
@@ -274,7 +278,7 @@ public class ToDitaSerializer implements Visitor {
     public void visit(final HeaderNode node) {
         if (node.getLevel() == 1) {
             final String id = getId(node);
-            startElement(TOPIC_TOPIC, new AttributesBuilder(TOPIC_ATTS).add("id", id).build());
+            startElement(TOPIC_TOPIC, new AttributesBuilder(TOPIC_ATTS).add(ATTRIBUTE_NAME_ID, id).build());
             printTag(node, TOPIC_TITLE, TITLE_ATTS);
             startElement(TOPIC_BODY, BODY_ATTS);
         } else {
@@ -524,11 +528,12 @@ public class ToDitaSerializer implements Visitor {
         final AttributesBuilder atts = new AttributesBuilder(ENTRY_ATTS);
         column.accept(this);
         if (tableColumnAlignment != null) {
-            atts.add("align", tableColumnAlignment);
+            atts.add(ATTRIBUTE_NAME_ALIGN, tableColumnAlignment);
             tableColumnAlignment = null;
         }
         if (node.getColSpan() > 1) {
-            atts.add("colspan", Integer.toString(node.getColSpan()));
+            atts.add(ATTRIBUTE_NAME_NAMEST, COLUMN_NAME_COL + Integer.toString(currentTableColumn + 1));
+            atts.add(ATTRIBUTE_NAME_NAMEEND, COLUMN_NAME_COL + Integer.toString(currentTableColumn + node.getColSpan()));
         }
         startElement(TOPIC_ENTRY, atts.build());
         visitChildren(node);
@@ -571,7 +576,43 @@ public class ToDitaSerializer implements Visitor {
     @Override
     public void visit(final TableNode node) {
         currentTableNode = node;
-        printTag(node, TOPIC_TABLE, TABLE_ATTS);
+        startElement(TOPIC_TABLE, TABLE_ATTS);
+        for (final Node child : node.getChildren()) {
+            if (child instanceof TableCaptionNode) {
+                child.accept(this);
+            }
+        }
+        final Attributes atts = new AttributesBuilder(TGROUP_ATTS)
+                .add(ATTRIBUTE_NAME_COLS, Integer.toString(node.getColumns().size()))
+                .build();
+        startElement(TOPIC_TGROUP, atts);
+
+        int counter = 1;
+        for (final TableColumnNode col: node.getColumns()) {
+            final AttributesBuilder catts = new AttributesBuilder(COLSPEC_ATTS)
+                    .add(ATTRIBUTE_NAME_COLNAME, COLUMN_NAME_COL + counter);
+            switch (col.getAlignment()) {
+                case Center:
+                    catts.add(ATTRIBUTE_NAME_ALIGN, "center");
+                    break;
+                case Right:
+                    catts.add(ATTRIBUTE_NAME_ALIGN, "right");
+                    break;
+                case Left:
+                    catts.add(ATTRIBUTE_NAME_ALIGN, "left");
+                    break;
+            }
+            startElement(TOPIC_COLSPEC, catts.build());
+            endElement(); // colspec
+            counter++;
+        }
+        for (final Node child : node.getChildren()) {
+            if (!(child instanceof TableCaptionNode)) {
+                child.accept(this);
+            }
+        }
+        endElement(); // tgroup
+        endElement(); // table
         currentTableNode = null;
     }
 
@@ -642,7 +683,7 @@ public class ToDitaSerializer implements Visitor {
         if (node instanceof  MetadataNode) {
             final MetadataNode n = (MetadataNode) node;
             final String id = getId(n.title);
-            startElement(TOPIC_TOPIC, new AttributesBuilder(TOPIC_ATTS).add("id", id).build());
+            startElement(TOPIC_TOPIC, new AttributesBuilder(TOPIC_ATTS).add(ATTRIBUTE_NAME_ID, id).build());
             startElement(TOPIC_TITLE, TITLE_ATTS);
             characters(n.title);
             endElement();
