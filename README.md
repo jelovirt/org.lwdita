@@ -26,4 +26,4 @@ Markdown DITA topics can only be used by linking to them in map files.
 </map>
 ```
 
-The `format` attribute value must be set to `markdown` in order to recognize files as Markdown DITA; file extension is not used to recognize format.
+The `format` attribute value must be set to `markdown` in order to recognize files as Markdown DITA; file extension is not used to recognize format. For a more extensive example, see [announcement blog entry](http://jelovirt.github.io/2015/02/06/dita-markdown.html).
