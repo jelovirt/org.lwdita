@@ -11,7 +11,7 @@ DITA-OT 2.1 is required. Earlier versions of DITA-OT do not have the required ex
 1.  Run plug-in installation command
     
 ```
-dita -install https://github.com/jelovirt/dita-ot-markdown/releases/download/0.2.2/com.elovirta.dita.markdown_0.2.2.zip
+dita -install https://github.com/jelovirt/dita-ot-markdown/releases/download/0.2.3/com.elovirta.dita.markdown_0.2.3.zip
 ```    
 
 The `dita` command line tool requires not additional configuration; running DITA-OT using Ant requires adding plug-in contributed JAR files to `CLASSPATH` with e.g. `-lib plugins/com.elovirta.dita.markdown`.
