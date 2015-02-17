@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-model href="../../resources/plugin.rnc" type="application/relax-ng-compact-syntax"?>
 <plugin id="com.elovirta.dita.markdown">
-  <feature extension="dita.conductor.lib.import" file="markdown-1.0.jar"/>
+  <feature extension="dita.conductor.lib.import" file="markdown-0.2.3.jar"/>
   <feature extension="dita.conductor.lib.import" file="pegdown-1.4.2.jar"/>
   <feature extension="dita.conductor.lib.import" file="asm-analysis-4.1.jar"/>
   <feature extension="dita.conductor.lib.import" file="asm-tree-4.1.jar"/>
