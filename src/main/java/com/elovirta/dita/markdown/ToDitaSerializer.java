@@ -278,25 +278,42 @@ public class ToDitaSerializer implements Visitor {
         endElement();
     }
 
-    private boolean inSection = false;
+//    private boolean inSection = false;
+    /** Current header level. */
+    private int headerLevel = 0;
 
     // TODO, support {.main .shine #the-site}
     @Override
     public void visit(final HeaderNode node) {
-        if (node.getLevel() == 1) {
+        if (node.getLevel() > headerLevel + 1) {
+            throw new ParseException("Header level raised from " + headerLevel + " to " + node.getLevel() + " without intermediate header level");
+        }
+        if (headerLevel > 0) {
+            endElement(); // body
+        }
+        for (; node.getLevel() <= headerLevel; headerLevel--) {
+            endElement(); // topic
+        }
+        for (; node.getLevel() > headerLevel; headerLevel++) {
             final String id = getId(node);
             startElement(TOPIC_TOPIC, new AttributesBuilder(TOPIC_ATTS).add(ATTRIBUTE_NAME_ID, id).build());
             printTag(node, TOPIC_TITLE, TITLE_ATTS);
             startElement(TOPIC_BODY, BODY_ATTS);
-        } else {
-            if (inSection) {
-                endElement();
-                inSection = false;
-            }
-            startElement(TOPIC_SECTION, SECTION_ATTS);
-            inSection = true;
-            printTag(node, TOPIC_TITLE, TITLE_ATTS);
         }
+//        if (node.getLevel() == 1) {
+//            final String id = getId(node);
+//            startElement(TOPIC_TOPIC, new AttributesBuilder(TOPIC_ATTS).add(ATTRIBUTE_NAME_ID, id).build());
+//            printTag(node, TOPIC_TITLE, TITLE_ATTS);
+//            startElement(TOPIC_BODY, BODY_ATTS);
+//        } else {
+//            if (inSection) {
+//                endElement();
+//                inSection = false;
+//            }
+//            startElement(TOPIC_SECTION, SECTION_ATTS);
+//            inSection = true;
+//            printTag(node, TOPIC_TITLE, TITLE_ATTS);
+//        }
     }
 
     private String getId(final HeaderNode node) {
