@@ -4,7 +4,7 @@
 package com.elovirta.dita.markdown;
 
 import org.apache.commons.io.FilenameUtils;
-import org.dita.dost.util.DitaClass;
+import org.dita.dost.util.*;
 import org.parboiled.common.StringUtils;
 import org.pegdown.DefaultVerbatimSerializer;
 import org.pegdown.LinkRenderer;
@@ -72,38 +72,45 @@ public class ToDitaSerializer implements Visitor {
     }
     */
 
+    private static Attributes buildAtts(final DitaClass cls) {
+        return new AttributesBuilder()
+                .add(ATTRIBUTE_NAME_CLASS, cls.toString())
+                .build();
+    }
+
     private static final Attributes TOPIC_ATTS = new AttributesBuilder().add(ATTRIBUTE_NAME_CLASS, TOPIC_TOPIC.toString())
             .add(DITA_NAMESPACE, ATTRIBUTE_NAME_DITAARCHVERSION, ATTRIBUTE_PREFIX_DITAARCHVERSION + ":" + ATTRIBUTE_NAME_DITAARCHVERSION, "CDATA", "1.2")
             .add(ATTRIBUTE_NAME_DOMAINS, "(topic hi-d) (topic ut-d) (topic indexing-d) (topic hazard-d) (topic abbrev-d) (topic pr-d) (topic sw-d) (topic ui-d)")
             .build();
-    private static final Attributes BODY_ATTS = new AttributesBuilder().add(ATTRIBUTE_NAME_CLASS, TOPIC_BODY.toString()).build();
-    private static final Attributes SECTION_ATTS = new AttributesBuilder().add(ATTRIBUTE_NAME_CLASS, TOPIC_SECTION.toString()).build();
-    private static final Attributes LI_ATTS = new AttributesBuilder().add(ATTRIBUTE_NAME_CLASS, TOPIC_LI.toString()).build();
-    private static final Attributes P_ATTS = new AttributesBuilder().add(ATTRIBUTE_NAME_CLASS, TOPIC_P.toString()).build();
-    private static final Attributes I_ATTS = new AttributesBuilder().add(ATTRIBUTE_NAME_CLASS, HI_D_I.toString()).build();
-    private static final Attributes B_ATTS = new AttributesBuilder().add(ATTRIBUTE_NAME_CLASS, HI_D_B.toString()).build();
-    private static final Attributes DD_ATTS = new AttributesBuilder().add(ATTRIBUTE_NAME_CLASS, TOPIC_DD.toString()).build();
-    private static final Attributes CODEPH_ATTS = new AttributesBuilder().add(ATTRIBUTE_NAME_CLASS, PR_D_CODEPH.toString()).build();
-    private static final Attributes CODEBLOCK_ATTS = new AttributesBuilder().add(ATTRIBUTE_NAME_CLASS, PR_D_CODEBLOCK.toString()).build();
-    private static final Attributes DT_ATTS = new AttributesBuilder().add(ATTRIBUTE_NAME_CLASS, TOPIC_DT.toString()).build();
+
+    private static final Attributes BODY_ATTS = buildAtts(TOPIC_BODY);
+    private static final Attributes SECTION_ATTS = buildAtts(TOPIC_SECTION);
+    private static final Attributes LI_ATTS = buildAtts(TOPIC_LI);
+    private static final Attributes P_ATTS = buildAtts(TOPIC_P);
+    private static final Attributes I_ATTS = buildAtts(HI_D_I);
+    private static final Attributes B_ATTS = buildAtts(HI_D_B);
+    private static final Attributes DD_ATTS = buildAtts(TOPIC_DD);
+    private static final Attributes CODEPH_ATTS = buildAtts(PR_D_CODEPH);
+    private static final Attributes CODEBLOCK_ATTS = buildAtts(PR_D_CODEBLOCK);
+    private static final Attributes DT_ATTS = buildAtts(TOPIC_DT);
     private static final Attributes DEL_ATTS = new AttributesBuilder().add(ATTRIBUTE_NAME_CLASS, TOPIC_PH.toString()).add("importance", "deleted").build();
-    private static final Attributes TITLE_ATTS = new AttributesBuilder().add(ATTRIBUTE_NAME_CLASS, TOPIC_TITLE.toString()).build();
-    private static final Attributes BLOCKQUOTE_ATTS = new AttributesBuilder().add(ATTRIBUTE_NAME_CLASS, TOPIC_PRE.toString()).build();
-    private static final Attributes UL_ATTS = new AttributesBuilder().add(ATTRIBUTE_NAME_CLASS, TOPIC_UL.toString()).build();
-    private static final Attributes DL_ATTS = new AttributesBuilder().add(ATTRIBUTE_NAME_CLASS, TOPIC_DL.toString()).build();
-    private static final Attributes OL_ATTS = new AttributesBuilder().add(ATTRIBUTE_NAME_CLASS, TOPIC_OL.toString()).build();
-    private static final Attributes TABLE_ATTS = new AttributesBuilder().add(ATTRIBUTE_NAME_CLASS, TOPIC_TABLE.toString()).build();
-    private static final Attributes TGROUP_ATTS = new AttributesBuilder().add(ATTRIBUTE_NAME_CLASS, TOPIC_TGROUP.toString()).build();
-    private static final Attributes COLSPEC_ATTS = new AttributesBuilder().add(ATTRIBUTE_NAME_CLASS, TOPIC_COLSPEC.toString()).build();
-    private static final Attributes TBODY_ATTS = new AttributesBuilder().add(ATTRIBUTE_NAME_CLASS, TOPIC_TBODY.toString()).build();
-    private static final Attributes THEAD_ATTS = new AttributesBuilder().add(ATTRIBUTE_NAME_CLASS, TOPIC_THEAD.toString()).build();
-    private static final Attributes TR_ATTS = new AttributesBuilder().add(ATTRIBUTE_NAME_CLASS, TOPIC_ROW.toString()).build();
-    private static final Attributes IMAGE_ATTS = new AttributesBuilder().add(ATTRIBUTE_NAME_CLASS, TOPIC_IMAGE.toString()).build();
-    private static final Attributes XREF_ATTS = new AttributesBuilder().add(ATTRIBUTE_NAME_CLASS, TOPIC_XREF.toString()).build();
-    private static final Attributes ALT_ATTS = new AttributesBuilder().add(ATTRIBUTE_NAME_CLASS, TOPIC_ALT.toString()).build();
-    private static final Attributes PH_ATTS = new AttributesBuilder().add(ATTRIBUTE_NAME_CLASS, TOPIC_PH.toString()).build();
-    private static final Attributes ENTRY_ATTS = new AttributesBuilder().add(ATTRIBUTE_NAME_CLASS, TOPIC_ENTRY.toString()).build();
-    private static final Attributes FIG_ATTS = new AttributesBuilder().add(ATTRIBUTE_NAME_CLASS, TOPIC_FIG.toString()).build();
+    private static final Attributes TITLE_ATTS = buildAtts(TOPIC_TITLE);
+    private static final Attributes BLOCKQUOTE_ATTS = buildAtts(TOPIC_PRE);
+    private static final Attributes UL_ATTS = buildAtts(TOPIC_UL);
+    private static final Attributes DL_ATTS = buildAtts(TOPIC_DL);
+    private static final Attributes OL_ATTS = buildAtts(TOPIC_OL);
+    private static final Attributes TABLE_ATTS = buildAtts(TOPIC_TABLE);
+    private static final Attributes TGROUP_ATTS = buildAtts(TOPIC_TGROUP);
+    private static final Attributes COLSPEC_ATTS = buildAtts(TOPIC_COLSPEC);
+    private static final Attributes TBODY_ATTS = buildAtts(TOPIC_TBODY);
+    private static final Attributes THEAD_ATTS = buildAtts(TOPIC_THEAD);
+    private static final Attributes TR_ATTS = buildAtts(TOPIC_ROW);
+    private static final Attributes IMAGE_ATTS = buildAtts(TOPIC_IMAGE);
+    private static final Attributes XREF_ATTS = buildAtts(TOPIC_XREF);
+    private static final Attributes ALT_ATTS = buildAtts(TOPIC_ALT);
+    private static final Attributes PH_ATTS = buildAtts(TOPIC_PH);
+    private static final Attributes ENTRY_ATTS = buildAtts(TOPIC_ENTRY);
+    private static final Attributes FIG_ATTS = buildAtts(TOPIC_FIG);
 
     public void toHtml(final RootNode astRoot) throws SAXException {
         checkArgNotNull(astRoot, "astRoot");

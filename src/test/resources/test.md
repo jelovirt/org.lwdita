@@ -22,6 +22,12 @@ Code example on `for` loop:
     for i in items:
         println(i)
 
+Fenced block:
+
+```scala
+items.each(println)
+```
+
 Links
 -----
 
