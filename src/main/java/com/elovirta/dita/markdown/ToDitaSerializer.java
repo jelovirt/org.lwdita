@@ -321,7 +321,7 @@ public class ToDitaSerializer implements Visitor {
     }
 
     private String getId(final String contents) {
-        return contents.toLowerCase().replace("[^\\w]", " ").trim().replace("\\s+", "_");
+        return contents.toLowerCase().replaceAll("[^\\w]", " ").trim().replaceAll("\\s+", "_");
     }
 
     @Override
