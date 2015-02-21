@@ -4,6 +4,7 @@ import org.junit.Test;
 import org.xml.sax.InputSource;
 import org.xml.sax.helpers.DefaultHandler;
 
+import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.sax.SAXResult;
@@ -65,6 +66,19 @@ public class MarkdownReaderTest {
         }
     }
 
+
+    @Test
+    public void testHeaderAttributes() throws Exception {
+        final Transformer t = TransformerFactory.newInstance().newTransformer();
+        final MarkdownReader r = new MarkdownReader();
+        final InputStream ri = getClass().getResourceAsStream("/header_attributes.md");
+        try {
+            final InputSource i = new InputSource(ri);
+            t.transform(new SAXSource(r, i), new SAXResult(new DefaultHandler()));
+        } finally {
+            ri.close();
+        }
+    }
 
 //    @Test
 //    public void testParseInputSource() throws Exception {

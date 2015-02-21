@@ -19,6 +19,8 @@ import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static javax.xml.XMLConstants.*;
 import static org.dita.dost.util.Constants.*;
@@ -155,7 +157,7 @@ public class ToDitaSerializer implements Visitor {
 
     // Visitor methods
 
-    private void toString(final Node node, final StringBuilder buf) {
+    private static void toString(final Node node, final StringBuilder buf) {
         if (node instanceof SuperNode) {
             for (final Node n: node.getChildren()) {
                 toString(n, buf);
@@ -172,7 +174,7 @@ public class ToDitaSerializer implements Visitor {
         }
     }
 
-    private String toString(final Node node) {
+    private static String toString(final Node node) {
         final StringBuilder buf = new StringBuilder();
         toString(node, buf);
         return buf.toString();
@@ -295,9 +297,16 @@ public class ToDitaSerializer implements Visitor {
             endElement(); // topic
         }
         for (; node.getLevel() > headerLevel; headerLevel++) {
-            final String id = getId(node);
-            startElement(TOPIC_TOPIC, new AttributesBuilder(TOPIC_ATTS).add(ATTRIBUTE_NAME_ID, id).build());
-            printTag(node, TOPIC_TITLE, TITLE_ATTS);
+            final Title contents = new Title(node);
+            final AttributesBuilder atts = new AttributesBuilder(TOPIC_ATTS)
+                    .add(ATTRIBUTE_NAME_ID, contents.id);
+            if (!contents.classes.isEmpty()) {
+                atts.add("outputclass", StringUtils.join(contents.classes, " "));
+            }
+            startElement(TOPIC_TOPIC, atts.build());
+            startElement(TOPIC_TITLE, TITLE_ATTS);
+            characters(contents.title);
+            endElement();
             startElement(TOPIC_BODY, BODY_ATTS);
         }
 //        if (node.getLevel() == 1) {
@@ -316,11 +325,42 @@ public class ToDitaSerializer implements Visitor {
 //        }
     }
 
+    private static class Title {
+        final String title;
+        final String id;
+        final List<String> classes;
+        Title(final HeaderNode node) {
+            final String contents = ToDitaSerializer.toString(node);
+            classes = new ArrayList<>();
+            final Pattern p = Pattern.compile("^(.+?)(?:\\s*#{" + node.getLevel() + "}?\\s*)?(?:\\{(.+?)\\})?$");
+            final Matcher m = p.matcher(contents);
+            if (m.matches()) {
+                title = m.group(1);
+                if (m.group(2) != null) {
+                    String fragment = null;
+                    for (final String t: m.group(2).trim().split("\\s+")) {
+                        if (t.startsWith("#")) {
+                            fragment = t.substring(1);
+                        } else if (t.startsWith(".")) {
+                            classes.add(t.substring(1));
+                        }
+                    }
+                    id = fragment != null ? fragment : getId(title);
+                } else {
+                    id = getId(title);
+                }
+            } else {
+                title = contents;
+                id = getId(contents);
+            }
+        }
+    }
+
     private String getId(final HeaderNode node) {
         return getId(toString(node));
     }
 
-    private String getId(final String contents) {
+    private static String getId(final String contents) {
         return contents.toLowerCase().replaceAll("[^\\w]", " ").trim().replaceAll("\\s+", "_");
     }
 
@@ -491,7 +531,7 @@ public class ToDitaSerializer implements Visitor {
         }
     }
 
-    private String toString(final SimpleNode node) {
+    private static String toString(final SimpleNode node) {
         switch (node.getType()) {
             case Apostrophe:
                 return "\u2019";//"&rsquo;"
