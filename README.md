@@ -26,4 +26,55 @@ Markdown DITA topics can only be used by linking to them in map files.
 </map>
 ```
 
-The `format` attribute value must be set to `markdown` in order to recognize files as Markdown DITA; file extension is not used to recognize format. For a more extensive example, see [announcement blog entry](http://jelovirt.github.io/2015/02/06/dita-markdown.html).
+The `format` attribute value must be set to `markdown` in order to recognize files as Markdown DITA; file extension is not used to recognize format.
+
+## Syntax reference
+
+Each header level will generate a topic title:
+
+```markdown
+# Topic title
+
+## Nested topic title
+```
+
+```xml
+<topic id="topic_title">
+  <title>Topic title</title>
+  <topic id="nested_topic_title">
+    <title>Nested topic title</title>
+  </topic>
+</topic>
+```
+Pandoc [header_attributes](http://johnmacfarlane.net/pandoc/demo/example9/pandocs-markdown.html#extension-header_attributes) can be used to define `id` or `outputclass` attributes:
+```markdown
+# Topic title {#carrot .juice}
+```
+
+```xml
+<topic id="carrot" outputclass="juice">
+```
+The outputclass values `section` and `example` have a special meaning. They are used to generate `section` and `example` element, respectively:
+```markdown
+# Topic title
+
+## Section title {.section}
+
+## Example title {.example}
+```
+
+```xml
+<topic id="topic_title">
+  <title>Topic title</title>
+  <body>
+    <section>
+      <title>Section title</title>
+    </section>
+    <example>
+      <title>Example title</title>
+    </example>
+  </body>
+</topic>
+```
+
+For a more extensive example, see [announcement blog entry](http://jelovirt.github.io/2015/02/06/dita-markdown.html).
