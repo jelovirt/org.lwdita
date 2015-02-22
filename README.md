@@ -37,7 +37,6 @@ Each header level will generate a topic title:
 
 ## Nested topic title
 ```
-
 ```xml
 <topic id="topic_title">
   <title>Topic title</title>
@@ -50,7 +49,6 @@ Pandoc [header_attributes](http://johnmacfarlane.net/pandoc/demo/example9/pandoc
 ```markdown
 # Topic title {#carrot .juice}
 ```
-
 ```xml
 <topic id="carrot" outputclass="juice">
 ```
@@ -62,7 +60,6 @@ The outputclass values `section` and `example` have a special meaning. They are 
 
 ## Example title {.example}
 ```
-
 ```xml
 <topic id="topic_title">
   <title>Topic title</title>
@@ -85,7 +82,6 @@ Pandoc [pandoc_title_block](http://johnmacfarlane.net/pandoc/demo/example9/pando
 
 # Second title
 ```
-
 ```xml
 <topic id="common_title">
   <title>Common title</title>
@@ -96,6 +92,26 @@ Pandoc [pandoc_title_block](http://johnmacfarlane.net/pandoc/demo/example9/pando
     <title>Second title</title>
   </topic>
 </topic>
+```
+All local link targets to `.dita`, `.xml`, `.md`, or `.markdown` are treated as links to DITA files; all other links use `format` from file extension. Absolute links targets are treated as extenal scope links:
+```markdown
+[Markdown](test.md)
+[DITA](test.dita)
+[HTML](test.html)
+[External](http://www.example.com/test.html)
+```
+```xml
+<xref href="test.md">Markdown</xref>
+<xref href="test.dita">DITA</xref>
+<xref href="test.html" format="html">HTML</xref>
+<xref href="http://www.example.com/test.html" format="html" scope="external">External</xref>
+```
+Key reference can be used with [shortcut reference links](http://spec.commonmark.org/0.17/#shortcut-reference-link):
+```markdown
+[key]
+```
+```xml
+<xref keyref="key"/>
 ```
 
 For a more extensive example, see [announcement blog entry](http://jelovirt.github.io/2015/02/06/dita-markdown.html).
