@@ -9,6 +9,7 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.sax.SAXResult;
 import javax.xml.transform.sax.SAXSource;
+import javax.xml.transform.stream.StreamResult;
 import java.io.InputStream;
 
 public class MarkdownReaderTest {
@@ -66,6 +67,18 @@ public class MarkdownReaderTest {
         }
     }
 
+    @Test(expected=ParseException.class)
+    public void testInvalidSectionHeader() throws Exception {
+        final Transformer t = TransformerFactory.newInstance().newTransformer();
+        final MarkdownReader r = new MarkdownReader();
+        final InputStream ri = getClass().getResourceAsStream("/invalid_section_header.md");
+        try {
+            final InputSource i = new InputSource(ri);
+            t.transform(new SAXSource(r, i), new SAXResult(new DefaultHandler()));
+        } finally {
+            ri.close();
+        }
+    }
 
     @Test
     public void testHeaderAttributes() throws Exception {

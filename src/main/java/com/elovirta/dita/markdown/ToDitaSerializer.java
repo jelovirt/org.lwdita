@@ -87,6 +87,7 @@ public class ToDitaSerializer implements Visitor {
 
     private static final Attributes BODY_ATTS = buildAtts(TOPIC_BODY);
     private static final Attributes SECTION_ATTS = buildAtts(TOPIC_SECTION);
+    private static final Attributes EXAMPLE_ATTS = buildAtts(TOPIC_EXAMPLE);
     private static final Attributes LI_ATTS = buildAtts(TOPIC_LI);
     private static final Attributes P_ATTS = buildAtts(TOPIC_P);
     private static final Attributes I_ATTS = buildAtts(HI_D_I);
@@ -280,55 +281,81 @@ public class ToDitaSerializer implements Visitor {
         endElement();
     }
 
-//    private boolean inSection = false;
+    private boolean inSection = false;
     /** Current header level. */
     private int headerLevel = 0;
 
-    // TODO, support {.main .shine #the-site}
+    private static final Map<String, DitaClass> sections = new HashMap<>();
+    static {
+        sections.put(TOPIC_SECTION.localName, TOPIC_SECTION);
+        sections.put(TOPIC_EXAMPLE.localName, TOPIC_EXAMPLE);
+    }
+
+    private static <E> E containsSome(final Collection<E> col, final Collection<E> find) {
+        for (final E c: col) {
+            if (find.contains(c)) {
+                return c;
+            }
+        }
+        return null;
+     }
+
     @Override
     public void visit(final HeaderNode node) {
         if (node.getLevel() > headerLevel + 1) {
             throw new ParseException("Header level raised from " + headerLevel + " to " + node.getLevel() + " without intermediate header level");
         }
-        if (headerLevel > 0) {
-            endElement(); // body
+        final Title header = new Title(node);
+
+        if (inSection) {
+            endElement(); // section or example
+            inSection = false;
         }
-        for (; node.getLevel() <= headerLevel; headerLevel--) {
-            endElement(); // topic
-        }
-        for (; node.getLevel() > headerLevel; headerLevel++) {
-            final Title contents = new Title(node);
+        final String section = containsSome(header.classes, sections.keySet());
+        if (section != null) {
+            if (node.getLevel() <= headerLevel) {
+                throw new ParseException("Level " + node.getLevel() + " section title must be higher level than parent topic title " + headerLevel);
+            }
+            final DitaClass cls = sections.get(section);
+            final AttributesBuilder atts = new AttributesBuilder()
+                    .add(ATTRIBUTE_NAME_CLASS, cls.toString())
+                    .add(ATTRIBUTE_NAME_ID, header.id);
+            final Collection<String> classes = new ArrayList<>(header.classes);
+            classes.removeAll(sections.keySet());
+            if (!classes.isEmpty()) {
+                atts.add("outputclass", StringUtils.join(classes, " "));
+            }
+            startElement(cls, atts.build());
+            inSection = true;
+            startElement(TOPIC_TITLE, TITLE_ATTS);
+            characters(header.title);
+            endElement(); // title
+        } else {
+            if (headerLevel > 0) {
+                endElement(); // body
+            }
+            for (; node.getLevel() <= headerLevel; headerLevel--) {
+                endElement(); // topic
+            }
+            headerLevel = node.getLevel();
+
             final AttributesBuilder atts = new AttributesBuilder(TOPIC_ATTS)
-                    .add(ATTRIBUTE_NAME_ID, contents.id);
-            if (!contents.classes.isEmpty()) {
-                atts.add("outputclass", StringUtils.join(contents.classes, " "));
+                    .add(ATTRIBUTE_NAME_ID, header.id);
+            if (!header.classes.isEmpty()) {
+                atts.add("outputclass", StringUtils.join(header.classes, " "));
             }
             startElement(TOPIC_TOPIC, atts.build());
             startElement(TOPIC_TITLE, TITLE_ATTS);
-            characters(contents.title);
-            endElement();
+            characters(header.title);
+            endElement(); // title
             startElement(TOPIC_BODY, BODY_ATTS);
         }
-//        if (node.getLevel() == 1) {
-//            final String id = getId(node);
-//            startElement(TOPIC_TOPIC, new AttributesBuilder(TOPIC_ATTS).add(ATTRIBUTE_NAME_ID, id).build());
-//            printTag(node, TOPIC_TITLE, TITLE_ATTS);
-//            startElement(TOPIC_BODY, BODY_ATTS);
-//        } else {
-//            if (inSection) {
-//                endElement();
-//                inSection = false;
-//            }
-//            startElement(TOPIC_SECTION, SECTION_ATTS);
-//            inSection = true;
-//            printTag(node, TOPIC_TITLE, TITLE_ATTS);
-//        }
     }
 
     private static class Title {
         final String title;
         final String id;
-        final List<String> classes;
+        final Collection<String> classes;
         Title(final HeaderNode node) {
             final String contents = ToDitaSerializer.toString(node);
             classes = new ArrayList<>();
