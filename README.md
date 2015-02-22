@@ -76,5 +76,26 @@ The outputclass values `section` and `example` have a special meaning. They are 
   </body>
 </topic>
 ```
+Pandoc [pandoc_title_block](http://johnmacfarlane.net/pandoc/demo/example9/pandocs-markdown.html#extension-pandoc_title_block) extension can be used to group multiple level 1 headers under a common title:
+
+```markdown
+% Common title
+
+# Topic title
+
+# Second title
+```
+
+```xml
+<topic id="common_title">
+  <title>Common title</title>
+  <topic id="topic_title">
+    <title>Topic title</title>
+  </topic>
+  <topic id="second_title">
+    <title>Second title</title>
+  </topic>
+</topic>
+```
 
 For a more extensive example, see [announcement blog entry](http://jelovirt.github.io/2015/02/06/dita-markdown.html).
