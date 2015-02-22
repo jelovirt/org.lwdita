@@ -51,6 +51,7 @@ Pandoc [header_attributes](http://johnmacfarlane.net/pandoc/demo/example9/pandoc
 ```
 ```xml
 <topic id="carrot" outputclass="juice">
+  <title>Topic title</title>
 ```
 The outputclass values `section` and `example` have a special meaning. They are used to generate `section` and `example` element, respectively:
 ```markdown
