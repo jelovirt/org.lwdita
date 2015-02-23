@@ -14,90 +14,46 @@ import java.io.InputStream;
 
 public class MarkdownReaderTest {
 
-    @Test
-    public void testComplex() throws Exception {
+    private void run(final String input) throws Exception {
         final Transformer t = TransformerFactory.newInstance().newTransformer();
         final MarkdownReader r = new MarkdownReader();
-        final InputStream ri = getClass().getResourceAsStream("/test.md");
+        final InputStream ri = getClass().getResourceAsStream("/" + input);
         try {
             final InputSource i = new InputSource(ri);
             t.transform(new SAXSource(r, i), new SAXResult(new DefaultHandler()));
         } finally {
             ri.close();
         }
+    }
+
+    @Test
+    public void testComplex() throws Exception {
+        run("test.md");
     }
 
     @Test
     public void testHeader() throws Exception {
-        final Transformer t = TransformerFactory.newInstance().newTransformer();
-        final MarkdownReader r = new MarkdownReader();
-        final InputStream ri = getClass().getResourceAsStream("/header.md");
-        try {
-            final InputSource i = new InputSource(ri);
-            t.transform(new SAXSource(r, i), new SAXResult(new DefaultHandler()));
-        } finally {
-            ri.close();
-        }
+        run("header.md");
     }
 
     @Test
     public void testPandocHeader() throws Exception {
-        final Transformer t = TransformerFactory.newInstance().newTransformer();
-        final MarkdownReader r = new MarkdownReader();
-        final InputStream ri = getClass().getResourceAsStream("/pandoc_header.md");
-        try {
-            final InputSource i = new InputSource(ri);
-            t.transform(new SAXSource(r, i), new SAXResult(new DefaultHandler()));
-        } finally {
-            ri.close();
-        }
+        run("pandoc_header.md");
     }
-
 
     @Test(expected=ParseException.class)
     public void testInvalidHeader() throws Exception {
-        final Transformer t = TransformerFactory.newInstance().newTransformer();
-        final MarkdownReader r = new MarkdownReader();
-        final InputStream ri = getClass().getResourceAsStream("/invalid_header.md");
-        try {
-            final InputSource i = new InputSource(ri);
-            t.transform(new SAXSource(r, i), new SAXResult(new DefaultHandler()));
-        } finally {
-            ri.close();
-        }
+        run("invalid_header.md");
     }
 
     @Test(expected=ParseException.class)
     public void testInvalidSectionHeader() throws Exception {
-        final Transformer t = TransformerFactory.newInstance().newTransformer();
-        final MarkdownReader r = new MarkdownReader();
-        final InputStream ri = getClass().getResourceAsStream("/invalid_section_header.md");
-        try {
-            final InputSource i = new InputSource(ri);
-            t.transform(new SAXSource(r, i), new SAXResult(new DefaultHandler()));
-        } finally {
-            ri.close();
-        }
+        run("invalid_section_header.md");
     }
 
     @Test
     public void testHeaderAttributes() throws Exception {
-        final Transformer t = TransformerFactory.newInstance().newTransformer();
-        final MarkdownReader r = new MarkdownReader();
-        final InputStream ri = getClass().getResourceAsStream("/header_attributes.md");
-        try {
-            final InputSource i = new InputSource(ri);
-            t.transform(new SAXSource(r, i), new SAXResult(new DefaultHandler()));
-        } finally {
-            ri.close();
-        }
+        run("header_attributes.md");
     }
-
-//    @Test
-//    public void testParseInputSource() throws Exception {
-//        final MarkdownReader r = new MarkdownReader();
-//        r.setContentHandler(new DefaultHandler());
-//        r.parse(new File(srcDir, "test.md").toURI().toString());
-//    }
 
 }

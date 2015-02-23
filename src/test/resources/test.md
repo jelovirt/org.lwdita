@@ -18,6 +18,8 @@ Paragraph *test* and **list**:
     1.  nested
     1.  list
 
+## Codeblock {.section}
+
 Code example on `for` loop:
 
     for i in items:
