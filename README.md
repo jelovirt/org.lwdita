@@ -94,6 +94,7 @@ Pandoc [pandoc_title_block](http://johnmacfarlane.net/pandoc/demo/example9/pando
   </topic>
 </topic>
 ```
+### Links
 All local link targets to `.dita`, `.xml`, `.md`, or `.markdown` are treated as links to DITA files; all other links use `format` from file extension. Absolute links targets are treated as extenal scope links:
 ```markdown
 [Markdown](test.md)
