@@ -29,7 +29,7 @@ Markdown DITA topics can only be used by linking to them in map files.
 The `format` attribute value must be set to `markdown` in order to recognize files as Markdown DITA; file extension is not used to recognize format.
 
 ## Syntax reference
-
+### Titles
 Each header level will generate a topic title:
 
 ```markdown
@@ -107,12 +107,25 @@ All local link targets to `.dita`, `.xml`, `.md`, or `.markdown` are treated as 
 <xref href="test.html" format="html">HTML</xref>
 <xref href="http://www.example.com/test.html" format="html" scope="external">External</xref>
 ```
+### Key references
 Key reference can be used with [shortcut reference links](http://spec.commonmark.org/0.17/#shortcut-reference-link):
 ```markdown
 [key]
 ```
 ```xml
 <xref keyref="key"/>
+```
+### Inline
+The following inline elements are supported:
+```markdown
+**bold**
+*italic*
+`code`
+````
+```xml
+<b>bold</b>
+<i>italic</i>
+<codeph>code</codeph>
 ```
 
 For a more extensive example, see [announcement blog entry](http://jelovirt.github.io/2015/02/06/dita-markdown.html).
