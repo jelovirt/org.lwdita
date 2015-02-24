@@ -27,8 +27,8 @@ Code example on `for` loop:
 
 Fenced block:
 
-```scala
-items.each(println)
+```{.scala #foreach-example}
+items.foreach(println)
 ```
 
 Tables

@@ -352,6 +352,29 @@ public class ToDitaSerializer implements Visitor {
         }
     }
 
+    private static class Metadata {
+        final String id;
+        final Collection<String> classes;
+        Metadata(final String contents) {
+            final String c = contents.trim();
+            if (c.startsWith("{") && c.endsWith("}")) {
+                classes = new ArrayList<>();
+                String fragment = null;
+                for (final String t: c.substring(1, c.length() - 1).split("\\s+")) {
+                    if (t.startsWith("#")) {
+                        fragment = t.substring(1);
+                    } else if (t.startsWith(".")) {
+                        classes.add(t.substring(1));
+                    }
+                }
+                id = fragment != null ? fragment : null;
+            } else {
+                id = null;
+                classes = Arrays.asList(c);
+            }
+        }
+    }
+
     private static class Title {
         final String title;
         final String id;
@@ -364,15 +387,9 @@ public class ToDitaSerializer implements Visitor {
             if (m.matches()) {
                 title = m.group(1);
                 if (m.group(2) != null) {
-                    String fragment = null;
-                    for (final String t: m.group(2).trim().split("\\s+")) {
-                        if (t.startsWith("#")) {
-                            fragment = t.substring(1);
-                        } else if (t.startsWith(".")) {
-                            classes.add(t.substring(1));
-                        }
-                    }
-                    id = fragment != null ? fragment : getId(title);
+                    final Metadata metadata = new Metadata(m.group(2));
+                    classes.addAll(metadata.classes);
+                    id = metadata.id != null ? metadata.id : getId(title);
                 } else {
                     id = getId(title);
                 }
@@ -719,7 +736,13 @@ public class ToDitaSerializer implements Visitor {
 //        serializer.serialize(node, printer);
         final AttributesBuilder atts = new AttributesBuilder(CODEBLOCK_ATTS);
         if (!StringUtils.isEmpty(node.getType())) {
-            atts.add("outputclass", node.getType());
+            final Metadata metadata = new Metadata(node.getType());
+            if (metadata.id != null) {
+                atts.add(ATTRIBUTE_NAME_ID, metadata.id);
+            }
+            if (!metadata.classes.isEmpty()) {
+                atts.add("outputclass", StringUtils.join(metadata.classes, " "));
+            }
         }
         startElement(PR_D_CODEBLOCK, atts.build());
         characters(node.getText());
