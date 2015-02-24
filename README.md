@@ -128,5 +128,43 @@ The following inline elements are supported:
 <i>italic</i>
 <codeph>code</codeph>
 ```
+### Lists
+Unordered can be marked up with either hyphen or ampersand:
+```markdown
+*   one
+*   two
+    -   three
+    -   four
+````
+```xml
+<ul>
+  <li>one</li>
+  <li>two
+    <ul>
+      <li>three</li>
+      <li>four</li>
+    </ul>
+  </li>
+</ul>
+```
+Ordered can be marked up with either number or number sign, followed by a period:
+```markdown
+1.  one
+2.  two
+    #.  three
+    #.  four
+````
+```xml
+<ol>
+  <li>one</li>
+  <li>two
+    <ol>
+      <li>three</li>
+      <li>four</li>
+    </ul>
+  </li>
+</ul>
+```
+
 
 For a more extensive example, see [announcement blog entry](http://jelovirt.github.io/2015/02/06/dita-markdown.html).
