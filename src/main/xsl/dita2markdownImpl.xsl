@@ -14,14 +14,7 @@
   <xsl:import href="plugin:org.dita.base:xsl/common/dita-textonly.xsl"/>
   <xsl:include href="get-meta.xsl"/>
   <xsl:include href="rel-links.xsl"/>
-  
-  <!-- =========== OUTPUT METHOD =========== -->
-  
-  <!-- XHTML output with XML syntax -->
-  <xsl:output method="xml"
-              encoding="utf-8"/>
-  
-  
+    
   <!-- =========== DEFAULT VALUES FOR EXTERNALLY MODIFIABLE PARAMETERS =========== -->
   
   <!-- Preserve DITA class ancestry in XHTML output; values are 'yes' or 'no' -->
@@ -3103,15 +3096,19 @@
         <xsl:with-param name="headLevel" select="$headLevel"/>
       </xsl:apply-templates>
       <xsl:if test="@spectitle and not(*[contains(@class, ' topic/title ')])">
-        <xsl:element name="{$headLevel}">
-          <xsl:attribute name="class">sectiontitle</xsl:attribute>
+        <header level="{$headLevel}">
+          <xsl:for-each select="..">
+            <xsl:call-template name="commonattributes"/>
+          </xsl:for-each>
           <xsl:value-of select="@spectitle"/>
-        </xsl:element>
+        </header>
       </xsl:if>
     </xsl:when>
     <xsl:when test="$defaulttitle">
       <header level="{$headLevel}">
-        <xsl:attribute name="class">sectiontitle</xsl:attribute>
+        <xsl:for-each select="..">
+          <xsl:call-template name="commonattributes"/>
+        </xsl:for-each>
         <xsl:value-of select="$defaulttitle"/>
       </header>
     </xsl:when>
@@ -3441,7 +3438,7 @@
 
   <xsl:template name="chapter-setup">
     <pandoc>
-      <xsl:call-template name="chapterHead"/>
+      <!--xsl:call-template name="chapterHead"/-->
       <xsl:call-template name="chapterBody"/> 
     </pandoc>
   </xsl:template>
