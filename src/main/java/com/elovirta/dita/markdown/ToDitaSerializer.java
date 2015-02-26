@@ -32,20 +32,20 @@ public class ToDitaSerializer implements Visitor {
 
     private static final String COLUMN_NAME_COL = "col";
 
-    protected final ContentHandler contentHandler;
-    protected Printer printer = new Printer();
-    protected final Map<String, ReferenceNode> references = new HashMap<String, ReferenceNode>();
-    protected final Map<String, String> abbreviations = new HashMap<String, String>();
+    private final ContentHandler contentHandler;
+    private Printer printer = new Printer();
+    private final Map<String, ReferenceNode> references = new HashMap<>();
+    private final Map<String, String> abbreviations = new HashMap<>();
 //    protected final LinkRenderer linkRenderer;
-    protected final List<ToDitaSerializerPlugin> plugins;
+    private final List<ToDitaSerializerPlugin> plugins;
 
-    protected TableNode currentTableNode;
-    protected int currentTableColumn;
-    protected boolean inTableHeader;
+    private TableNode currentTableNode;
+    private int currentTableColumn;
+    private boolean inTableHeader;
 
-    protected final Map<String, VerbatimSerializer> verbatimSerializers;
+    private final Map<String, VerbatimSerializer> verbatimSerializers;
 
-    private final Deque<DitaClass> tagStack = new ArrayDeque<DitaClass>();
+    private final Deque<DitaClass> tagStack = new ArrayDeque<>();
     private int elementCounter = 0;
 
     public ToDitaSerializer(final ContentHandler contentHandler, LinkRenderer linkRenderer) {
@@ -137,7 +137,7 @@ public class ToDitaSerializer implements Visitor {
     /**
      * Replace metadata para with actual metadata element. Modifies AST <b>in-place</b>.
      */
-    public void clean(final RootNode node) {
+    void clean(final RootNode node) {
         final Node first = node.getChildren().get(0);
         if (first instanceof ParaNode && toString(first).startsWith("%")) {
             final Map<String, String> metadata = new HashMap<>();
@@ -815,9 +815,9 @@ public class ToDitaSerializer implements Visitor {
 
     private boolean hasChildren(final Node node) {
         if (node instanceof SuperNode) {
-            return !((SuperNode) node).getChildren().isEmpty();
+            return !node.getChildren().isEmpty();
         } else if (node instanceof TextNode) {
-            return !((TextNode) node).getChildren().isEmpty();
+            return !node.getChildren().isEmpty();
         } else {
             throw new UnsupportedOperationException();
         }
@@ -853,13 +853,17 @@ public class ToDitaSerializer implements Visitor {
 
         final String ext = FilenameUtils.getExtension(href).toLowerCase();
         String format;
-        if (ext.equals(ATTR_FORMAT_VALUE_DITA) || ext.equals("xml")) {
-            format = null;
-        } else if (ext.equals("md") || ext.equals("markdown")) {
+        switch (ext) {
+            case ATTR_FORMAT_VALUE_DITA:
+            case "xml":
             // Markdown is converted to DITA
-            format = null;
-        } else {
-            format = ext;
+            case "md":
+            case "markdown":
+                format = null;
+                break;
+            default:
+                format = ext;
+                break;
         }
         if (format != null) {
             atts.add(ATTRIBUTE_NAME_FORMAT, ext);
@@ -923,7 +927,7 @@ public class ToDitaSerializer implements Visitor {
 
                 // ok, legal match so save an expansions "task" for all matches
                 if (expansions == null) {
-                    expansions = new TreeMap<Integer, Map.Entry<String, String>>();
+                    expansions = new TreeMap<>();
                 }
                 expansions.put(sx, entry);
             }
