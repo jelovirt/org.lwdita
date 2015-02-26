@@ -30,6 +30,11 @@ task dist(type: Zip) {
         include "plugin.xml"
         expand(id: "${project.group}.${project.name}", version: project.version)
     }
+    from("src/main") {
+        include "build_template.xml"
+        include "conductor.xml"
+        include "xsl/*.xsl"
+    }
     from(".") {
         include "LICENSE"
         exclude "*.iml"
