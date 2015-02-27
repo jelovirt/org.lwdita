@@ -44,11 +44,16 @@
 
   <xsl:template match="bulletlist | orderedlist" mode="ast">
     <xsl:param name="indent" tunnel="yes" as="xs:string" select="''"/>
-    <xsl:if test="ancestor::bulletlist or ancestor::orderedlist">
+    <xsl:variable name="nested" select="ancestor::bulletlist or ancestor::orderedlist"/>
+    <xsl:if test="$nested">
       <xsl:value-of select="$linefeed"/>
     </xsl:if>
-    <xsl:apply-templates mode="ast"/>
-    <xsl:value-of select="$linefeed"/>  
+    <xsl:variable name="lis" select="li"/>
+    <xsl:apply-templates select="$lis" mode="ast"/>
+    <xsl:if test="not($nested)">
+      <xsl:value-of select="$linefeed"/><!-- because last li will not write one -->
+      <xsl:value-of select="$linefeed"/>
+    </xsl:if>  
   </xsl:template>
 
   <xsl:template match="li" mode="ast">
@@ -56,22 +61,20 @@
     <xsl:value-of select="$indent"/>
     <xsl:choose>
       <xsl:when test="parent::bulletlist">
-        <xsl:text>-</xsl:text>
-        <xsl:for-each select="1 to 3">
-          <xsl:text> </xsl:text>
-        </xsl:for-each>
+        <xsl:text>-   </xsl:text>
       </xsl:when>
       <xsl:otherwise>
-        <xsl:text>1.</xsl:text>
-        <xsl:for-each select="1 to 2">
-          <xsl:text> </xsl:text>
-        </xsl:for-each>
+        <xsl:variable name="label" select="concat(position(), '.')" as="xs:string"/>
+        <xsl:value-of select="$label"/>
+        <xsl:value-of select="substring('    ', string-length($label) + 1)"/>
       </xsl:otherwise>
     </xsl:choose>
     <xsl:apply-templates mode="ast">
       <xsl:with-param name="indent" tunnel="yes" select="concat($indent, '    ')"/>
     </xsl:apply-templates>
-    <xsl:value-of select="$linefeed"/>
+    <xsl:if test="following-sibling::li">
+      <xsl:value-of select="$linefeed"/>
+    </xsl:if>
   </xsl:template>
 
   <xsl:template match="codeblock" mode="ast">
@@ -88,6 +91,7 @@
     <xsl:apply-templates mode="ast"/>
     <xsl:value-of select="$linefeed"/>
     <xsl:text>```</xsl:text>
+    <xsl:value-of select="$linefeed"/>
     <xsl:value-of select="$linefeed"/>
   </xsl:template>
 
@@ -116,6 +120,25 @@
     <xsl:text>(</xsl:text>
     <xsl:value-of select="@href"/>
     <xsl:text>)</xsl:text>
+  </xsl:template>
+  
+  <xsl:template match="image" mode="ast">
+    <xsl:text>![</xsl:text>
+    <xsl:value-of select="@alt"/>
+    <xsl:apply-templates mode="ast"/>
+    <xsl:text>]</xsl:text>
+    <xsl:text>(</xsl:text>
+    <xsl:value-of select="@href"/>
+    <xsl:if test="@title">
+      <xsl:text> "</xsl:text>
+      <xsl:value-of select="@title"/>
+      <xsl:text>"</xsl:text>
+    </xsl:if>
+    <xsl:text>)</xsl:text>
+    <xsl:if test="@placement = 'break'">
+      <xsl:value-of select="$linefeed"/>
+      <xsl:value-of select="$linefeed"/>
+    </xsl:if>
   </xsl:template>
 
   <xsl:template match="span" mode="ast">

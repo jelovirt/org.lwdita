@@ -1334,15 +1334,13 @@
   <!-- =========== FIGURE =========== -->
   <xsl:template match="*[contains(@class, ' topic/fig ')]" name="topic.fig">
     <xsl:apply-templates select="*[contains(@class, ' ditaot-d/ditaval-startprop ')]" mode="out-of-line"/>
-    <div>
-      <xsl:call-template name="commonattributes">
-        <xsl:with-param name="default-output-class">fig</xsl:with-param>
-      </xsl:call-template>
+    <para>
+      <!--xsl:call-template name="commonattributes"/>
       <xsl:call-template name="setscale"/>
       <xsl:call-template name="setidaname"/>
-      <xsl:call-template name="place-fig-lbl"/>
+      <xsl:call-template name="place-fig-lbl"/-->
       <xsl:apply-templates select="node() except *[contains(@class, ' topic/title ') or contains(@class, ' topic/desc ')]"/>
-    </div>
+    </para>
     <xsl:apply-templates select="*[contains(@class, ' ditaot-d/ditaval-endprop ')]" mode="out-of-line"/>
   </xsl:template>
   
@@ -1360,62 +1358,31 @@
   <!-- =========== IMAGE/OBJECT =========== -->
   
   <xsl:template match="*[contains(@class, ' topic/image ')]" name="topic.image">
-    <!-- build any pre break indicated by style -->
-    <xsl:choose>
-      <xsl:when test="parent::*[contains(@class, ' topic/fig ')][contains(@frame, 'top ')]">
-        <!-- NOP if there is already a break implied by a parent property -->
-      </xsl:when>
-      <xsl:when test="@placement = 'break'">
-        <linebreak/>
-      </xsl:when>
-    </xsl:choose>
-    <xsl:call-template name="setaname"/>
     <xsl:choose>
       <xsl:when test="@placement = 'break'"><!--Align only works for break-->
-        <xsl:choose>
-          <xsl:when test="@align = 'left'">
-            <div class="imageleft">
-              <xsl:call-template name="topic-image"/>
-            </div>
-          </xsl:when>
-          <xsl:when test="@align = 'right'">
-            <div class="imageright">
-              <xsl:call-template name="topic-image"/>
-            </div>
-          </xsl:when>
-          <xsl:when test="@align = 'center'">
-            <div class="imagecenter">
-              <xsl:call-template name="topic-image"/>
-            </div>
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:call-template name="topic-image"/>
-          </xsl:otherwise>
-        </xsl:choose>
+        <para>
+          <xsl:call-template name="topic-image"/>
+        </para>
       </xsl:when>
       <xsl:otherwise>
         <xsl:call-template name="topic-image"/>
       </xsl:otherwise>
     </xsl:choose>
-    <!-- build any post break indicated by style -->
-    <xsl:if test="not(@placement = 'inline')"><linebreak/></xsl:if>
-    <!-- image name for review -->
-    <xsl:if test="$ARTLBL = 'yes'"> [<xsl:value-of select="@href"/>] </xsl:if>
   </xsl:template>
 
   <xsl:template name="topic-image">
     <xsl:apply-templates select="*[contains(@class, ' ditaot-d/ditaval-startprop ')]" mode="out-of-line"/>
     <image>
       <xsl:call-template name="commonattributes">
-        <xsl:with-param name="default-output-class">
-          <xsl:if test="@placement = 'break'"><!--Align only works for break-->
+        <!--xsl:with-param name="default-output-class">
+          <xsl:if test="@placement = 'break'">
             <xsl:choose>
               <xsl:when test="@align = 'left'">imageleft</xsl:when>
               <xsl:when test="@align = 'right'">imageright</xsl:when>
               <xsl:when test="@align = 'center'">imagecenter</xsl:when>
             </xsl:choose>
           </xsl:if>
-        </xsl:with-param>
+        </xsl:with-param-->
       </xsl:call-template>
       <xsl:call-template name="setid"/>
       <xsl:choose>
@@ -1437,6 +1404,11 @@
           <xsl:attribute name="alt" select="@alt"/>
         </xsl:when>
       </xsl:choose>
+      <xsl:for-each select="parent::*[contains(@class,  ' topic/fig ')]/*[contains(@class,  ' topic/title ')]">
+        <xsl:attribute name="title">
+          <xsl:apply-templates select="." mode="text-only"/>
+        </xsl:attribute>
+      </xsl:for-each>
     </image>
     <xsl:apply-templates select="*[contains(@class, ' ditaot-d/ditaval-endprop ')]" mode="out-of-line"/>
   </xsl:template>
@@ -1446,7 +1418,7 @@
   </xsl:template>
 
   <xsl:template match="*[contains(@class, ' topic/image ')]/@href">
-    <xsl:attribute name="src" select="."/>
+    <xsl:attribute name="href" select="."/>
   </xsl:template>
 
   <xsl:template match="*[contains(@class, ' topic/image ')]/@scale">
