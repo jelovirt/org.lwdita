@@ -14,6 +14,7 @@ import org.pegdown.ast.*;
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
+import org.xml.sax.helpers.AttributesImpl;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
@@ -243,16 +244,15 @@ public class ToDitaSerializer implements Visitor {
 
     @Override
     public void visit(final ExpImageNode node) {
-        final Attributes atts = new AttributesBuilder(IMAGE_ATTS)
-                .add(ATTRIBUTE_NAME_HREF, node.url)
-                .build();
+        final AttributesBuilder atts = new AttributesBuilder(IMAGE_ATTS)
+                .add(ATTRIBUTE_NAME_HREF, node.url);
 
         if (!node.title.isEmpty()) {
             startElement(TOPIC_FIG, FIG_ATTS);
             startElement(TOPIC_TITLE, TITLE_ATTS);
             characters(node.title);
             endElement();
-            startElement(TOPIC_IMAGE, atts);
+            startElement(TOPIC_IMAGE, atts.build());
             if (hasChildren(node)) {
                 startElement(TOPIC_ALT, ALT_ATTS);
                 visitChildren(node);
@@ -260,8 +260,17 @@ public class ToDitaSerializer implements Visitor {
             }
             endElement();
             endElement();
+        } else if (onlyImageChild) {
+            atts.add("placement", "break");
+            startElement(TOPIC_IMAGE, atts.build());
+            if (hasChildren(node)) {
+                startElement(TOPIC_ALT, ALT_ATTS);
+                visitChildren(node);
+                endElement();
+            }
+            endElement();
         } else {
-            startElement(TOPIC_IMAGE, atts);
+            startElement(TOPIC_IMAGE, atts.build());
             if (hasChildren(node)) {
                 startElement(TOPIC_ALT, ALT_ATTS);
                 visitChildren(node);
@@ -441,15 +450,20 @@ public class ToDitaSerializer implements Visitor {
         printTag(node, TOPIC_OL, OL_ATTS);
     }
 
+    private boolean onlyImageChild = false;
+
     @Override
     public void visit(final ParaNode node) {
         if (containsImage(node)) {
+            onlyImageChild = true;
             visitChildren(node);
+            onlyImageChild = false;
         } else {
             printTag(node, TOPIC_P, P_ATTS);
         }
     }
 
+    /** Contains only single image */
     private boolean containsImage(final SuperNode node) {
         if (node.getChildren().size() != 1) {
             return false;
