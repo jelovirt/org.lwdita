@@ -741,7 +741,7 @@ Each child is indented, the linktext is bold, and the shortdesc appears in norma
      already exists for an ancestor. -->
   <xsl:template match="*" mode="add-linking-attributes">
     <xsl:apply-templates select="." mode="add-href-attribute"/>
-    <xsl:apply-templates select="." mode="add-link-target-attribute"/>
+    <!--xsl:apply-templates select="." mode="add-link-target-attribute"/-->
     <xsl:apply-templates select="." mode="add-custom-link-attributes"/>
   </xsl:template>
 

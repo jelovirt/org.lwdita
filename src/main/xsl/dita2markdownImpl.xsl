@@ -18,7 +18,7 @@
   <!-- =========== DEFAULT VALUES FOR EXTERNALLY MODIFIABLE PARAMETERS =========== -->
   
   <!-- Preserve DITA class ancestry in XHTML output; values are 'yes' or 'no' -->
-  <xsl:param name="PRESERVE-DITA-CLASS" select="'yes'"/>
+  <xsl:param name="PRESERVE-DITA-CLASS" select="'no'"/>
   
   <!-- default "output artwork filenames" processing parameter ('no')-->
   <xsl:param name="ARTLBL" select="'no'"/><!-- "no" and "yes" are valid values; non-'yes' is ignored -->
@@ -36,7 +36,7 @@
   <xsl:param name="YEAR" select="format-date(current-date(), '[Y]')"/>
   
   <!-- default "output extension" processing parameter ('.html')-->
-  <xsl:param name="OUTEXT" select="'.html'"/><!-- "htm" and "html" are valid values -->
+  <xsl:param name="OUTEXT" select="'.md'"/><!-- "htm" and "html" are valid values -->
   
   <!-- the working directory that contains the document being transformed.
      Needed as a directory prefix for the @conref "document()" function calls.
@@ -197,7 +197,7 @@
       </xsl:when>
       <xsl:otherwise>
         <xsl:call-template name="commonattributes">
-          <xsl:with-param name="default-output-class" select="concat('nested', $nestlevel)"/>
+          <!--xsl:with-param name="default-output-class" select="concat('nested', $nestlevel)"/-->
         </xsl:call-template>
       </xsl:otherwise>
     </xsl:choose>
@@ -586,12 +586,12 @@
              <xsl:attribute name="href">
                <xsl:call-template name="href"/>
              </xsl:attribute>
-             <xsl:choose>
+             <!--xsl:choose>
                <xsl:when test="@type = 'external'">
                  <xsl:attribute name="target">_blank</xsl:attribute>
                </xsl:when>
-               <xsl:otherwise><!--nop - no target needed for internal or biblio types (OR-should internal force DITA xref-like processing? What is intent? @type is only internal/external/bibliographic) --></xsl:otherwise>
-             </xsl:choose>
+               <xsl:otherwise>
+             </xsl:choose-->
              <cite>
                <xsl:choose>
                <xsl:when test="@reftitle"><xsl:value-of select="@reftitle"/></xsl:when>
