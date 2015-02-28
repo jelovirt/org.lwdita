@@ -14,9 +14,9 @@
   <xsl:import href="pr-d.xsl"/>
   <xsl:import href="ui-d.xsl"/>
   <xsl:import href="hi-d.xsl"/>
-  <!--xsl:import href="abbrev-d.xsl"/>
+  <!--xsl:import href="abbrev-d.xsl"/-->
   <xsl:import href="markup-d.xsl"/>
-  <xsl:import href="xml-d.xsl"/-->
+  <xsl:import href="xml-d.xsl"/>
   <dita:extension id="dita.xsl.markdown" behavior="org.dita.dost.platform.ImportXSLAction" xmlns:dita="http://dita-ot.sourceforge.net"/>
   <!--xsl:include href="markdownflag.xsl"/-->  
   
@@ -27,7 +27,10 @@
     <xsl:variable name="ast" as="node()">
       <xsl:apply-templates/>
     </xsl:variable>
-    <xsl:apply-templates select="$ast" mode="ast"/>
+    <xsl:variable name="ast-clean" as="node()">
+      <xsl:apply-templates select="$ast" mode="ast-clean"/>
+    </xsl:variable>
+    <xsl:apply-templates select="$ast-clean" mode="ast"/>
   </xsl:template>
   
 </xsl:stylesheet>

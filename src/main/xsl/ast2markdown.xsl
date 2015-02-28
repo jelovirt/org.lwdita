@@ -113,13 +113,19 @@
     <xsl:text>`</xsl:text>
   </xsl:template>
 
-  <xsl:template match="link" mode="ast">
+  <xsl:template match="link[@href]" mode="ast">
     <xsl:text>[</xsl:text>
     <xsl:apply-templates mode="ast"/>
     <xsl:text>]</xsl:text>
     <xsl:text>(</xsl:text>
     <xsl:value-of select="@href"/>
     <xsl:text>)</xsl:text>
+  </xsl:template>
+  
+  <xsl:template match="link[empty(@href) and @keyref]" mode="ast">
+    <xsl:text>[</xsl:text>
+    <xsl:value-of select="@keyref"/>
+    <xsl:text>]</xsl:text>
   </xsl:template>
   
   <xsl:template match="image" mode="ast">
@@ -152,6 +158,32 @@
   <xsl:template match="node()" mode="ast" priority="-10">
     <xsl:message>ERROR: Unsupported AST node <xsl:value-of select="name()"/></xsl:message>
     <xsl:apply-templates mode="ast"/>
+  </xsl:template>
+  
+  <!-- Whitespace cleanup -->
+  
+  <xsl:template match="text()" mode="ast-clean">
+    <xsl:if test="starts-with(., ' ')">
+      <xsl:text> </xsl:text>
+    </xsl:if>
+    <xsl:value-of select="normalize-space(.)"/>
+    <xsl:if test="ends-with(., ' ')">
+      <xsl:text> </xsl:text>
+    </xsl:if>
+  </xsl:template>
+  
+  <xsl:template match="pandoc/text() |
+                       div/text() |
+                       bulletlist/text() |
+                       orderedlist/text()"
+                mode="ast-clean" priority="10">
+    <!--xsl:value-of select="normalize-space(.)"/-->
+  </xsl:template>
+  
+  <xsl:template match="@* | node()" mode="ast-clean" priority="-10">
+    <xsl:copy>
+      <xsl:apply-templates select="@* | node()" mode="ast-clean"/>
+    </xsl:copy>
   </xsl:template>
   
 </xsl:stylesheet>

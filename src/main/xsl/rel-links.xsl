@@ -751,6 +751,7 @@ Each child is indented, the linktext is bold, and the shortdesc appears in norma
         <xsl:apply-templates select="." mode="determine-final-href"/>
       </xsl:attribute>
     </xsl:if>
+    <xsl:copy-of select="@keyref"/>
   </xsl:template>
 
   <xsl:template match="*" mode="add-link-target-attribute">
