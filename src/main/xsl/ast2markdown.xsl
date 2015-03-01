@@ -94,7 +94,57 @@
     <xsl:value-of select="$linefeed"/>
     <xsl:value-of select="$linefeed"/>
   </xsl:template>
-
+  
+  <xsl:template match="table" mode="ast">
+    <xsl:for-each select="thead">
+      <xsl:for-each select="tr">
+        <xsl:text>|</xsl:text>
+        <xsl:for-each select="tablecell">
+          <xsl:apply-templates mode="ast"/>
+          <xsl:text>|</xsl:text>
+        </xsl:for-each>
+        <xsl:value-of select="$linefeed"/>
+      </xsl:for-each>
+      <xsl:for-each select="tr">
+        <xsl:text>|</xsl:text>
+        <xsl:for-each select="tablecell">
+          <xsl:variable name="content">
+            <xsl:apply-templates mode="ast"/>
+          </xsl:variable>
+          <xsl:variable name="width" as="xs:integer">
+            <xsl:choose>
+              <xsl:when test="@align = ('center')">
+                <xsl:sequence select="string-length($content) - 2"/>
+              </xsl:when>
+              <xsl:when test="@align = ('left', 'right')">
+                <xsl:sequence select="string-length($content) - 1"/>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:sequence select="string-length($content)"/>
+              </xsl:otherwise>
+            </xsl:choose>
+          </xsl:variable>
+          <xsl:value-of select="if (@align = ('left', 'center')) then ':' else '-'"/>
+          <xsl:for-each select="2 to $width">-</xsl:for-each>
+          <xsl:value-of select="if (@align = ('right', 'center')) then ':' else '-'"/>
+          <xsl:text>|</xsl:text>
+        </xsl:for-each>
+        <xsl:value-of select="$linefeed"/>
+      </xsl:for-each>
+    </xsl:for-each>
+    <xsl:for-each select="tbody">
+      <xsl:for-each select="tr">
+        <xsl:text>|</xsl:text>
+        <xsl:for-each select="tablecell">
+          <xsl:apply-templates mode="ast"/>
+          <xsl:text>|</xsl:text>
+        </xsl:for-each>
+        <xsl:value-of select="$linefeed"/>
+      </xsl:for-each>
+    </xsl:for-each>
+    <xsl:value-of select="$linefeed"/>
+  </xsl:template>
+  
   <xsl:template match="strong" mode="ast">
     <xsl:text>**</xsl:text>
     <xsl:apply-templates mode="ast"/>
@@ -175,7 +225,8 @@
   <xsl:template match="pandoc/text() |
                        div/text() |
                        bulletlist/text() |
-                       orderedlist/text()"
+                       orderedlist/text() |
+                       table/text()"
                 mode="ast-clean" priority="10">
     <!--xsl:value-of select="normalize-space(.)"/-->
   </xsl:template>

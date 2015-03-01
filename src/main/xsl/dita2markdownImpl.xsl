@@ -1291,9 +1291,7 @@
     <xsl:apply-templates select="*[contains(@class, ' ditaot-d/ditaval-startprop ')]" mode="out-of-line"/>
     <xsl:call-template name="spec-title-nospace"/>
     <codeblock>
-      <xsl:call-template name="commonattributes">
-        <xsl:with-param name="default-output-class" select="name()"/>
-      </xsl:call-template>
+      <xsl:call-template name="commonattributes"/>
       <xsl:call-template name="setscale"/>
       <xsl:call-template name="setidaname"/>
       <xsl:apply-templates/>
