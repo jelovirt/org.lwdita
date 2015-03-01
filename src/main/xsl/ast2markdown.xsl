@@ -108,24 +108,11 @@
       <xsl:for-each select="tr">
         <xsl:text>|</xsl:text>
         <xsl:for-each select="tablecell">
-          <xsl:variable name="content">
+          <xsl:variable name="content" as="xs:string*">
             <xsl:apply-templates mode="ast"/>
           </xsl:variable>
-          <xsl:variable name="width" as="xs:integer">
-            <xsl:choose>
-              <xsl:when test="@align = ('center')">
-                <xsl:sequence select="string-length($content) - 2"/>
-              </xsl:when>
-              <xsl:when test="@align = ('left', 'right')">
-                <xsl:sequence select="string-length($content) - 1"/>
-              </xsl:when>
-              <xsl:otherwise>
-                <xsl:sequence select="string-length($content)"/>
-              </xsl:otherwise>
-            </xsl:choose>
-          </xsl:variable>
           <xsl:value-of select="if (@align = ('left', 'center')) then ':' else '-'"/>
-          <xsl:for-each select="2 to $width">-</xsl:for-each>
+          <xsl:for-each select="3 to string-length($content)">-</xsl:for-each>
           <xsl:value-of select="if (@align = ('right', 'center')) then ':' else '-'"/>
           <xsl:text>|</xsl:text>
         </xsl:for-each>
@@ -212,12 +199,13 @@
   
   <!-- Whitespace cleanup -->
   
-  <xsl:template match="text()" mode="ast-clean">
-    <xsl:if test="starts-with(., ' ')">
+  <xsl:template match="text()"
+                mode="ast-clean">
+    <xsl:if test="preceding-sibling::node() and starts-with(., ' ')">
       <xsl:text> </xsl:text>
     </xsl:if>
     <xsl:value-of select="normalize-space(.)"/>
-    <xsl:if test="ends-with(., ' ')">
+    <xsl:if test="following-sibling::node() and ends-with(., ' ')">
       <xsl:text> </xsl:text>
     </xsl:if>
   </xsl:template>
@@ -226,12 +214,21 @@
                        div/text() |
                        bulletlist/text() |
                        orderedlist/text() |
-                       table/text()"
+                       table/text() |
+                       thead/text() |
+                       tbody/text() |
+                       tr/text()"
                 mode="ast-clean" priority="10">
     <!--xsl:value-of select="normalize-space(.)"/-->
   </xsl:template>
   
-  <xsl:template match="@* | node()" mode="ast-clean" priority="-10">
+  <xsl:template match="codeblock//text()"
+                mode="ast-clean" priority="20">
+    <xsl:value-of select="."/>
+  </xsl:template>
+  
+  <xsl:template match="@* | node()"
+                mode="ast-clean" priority="-10">
     <xsl:copy>
       <xsl:apply-templates select="@* | node()" mode="ast-clean"/>
     </xsl:copy>

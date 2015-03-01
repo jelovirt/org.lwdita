@@ -1,17 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- This file is part of the DITA Open Toolkit project hosted on 
- Sourceforge.net. See the accompanying license.txt file for 
- applicable licenses.-->
-<!-- (c) Copyright IBM Corp. 2012 -->
-<!-- PURPOSE: 
-     Match DITAVAL information added by preprocessing and output pre-calculated flags.
-     If a start or end flag is present, it is known to be active and should be generated.
-
-     If processing the flag directly will cause out-of-context XHTML, the processing
-     must be explicitly requested by the HTML code by processing with the "process-exception" mode.
-              -->
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
-  version="2.0">
+                version="2.0">
 
   <xsl:template match="*[contains(@class,' ditaot-d/ditaval-startprop ')]/@outputclass" mode="add-ditaval-style">
     <!-- Add the pre-calculated CSS style for this element -->
