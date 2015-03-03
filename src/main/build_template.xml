@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:dita="http://dita-ot.sourceforge.net">
+
+  <target name="markdown.init">
+    <condition property="out.ext" value=".md">
+      <not>
+        <isset property="out.ext" />
+      </not>
+    </condition>
+    <condition property="args.xsl" value="${dita.plugin.com.elovirta.dita.markdown.dir}/xsl/dita2markdown.xsl">
+      <not>
+        <isset property="args.xsl" />
+      </not>
+    </condition>
+    <makeurl file="${dita.input.valfile}" property="dita.input.valfile.url" validate="no"/>
+    <!-- Set to "true" if you get out-of-memory errors during preprocess
+    while processing very large (thousands of files) document sets. -->
+    <condition property="dita.markdown.reloadstylesheet" value="false">
+      <not><isset property="dita.markdown.reloadstylesheet"/></not>
+    </condition>
+  </target>
+  
+  <target name="dita2markdown"
+          depends="build-init,
+                   preprocess, 
+                   markdown.init,
+                   dita.topics.markdown.common,
+                   dita.inner.topics.markdown.common,
+                   dita.map.markdown.init,
+                   dita.map.markdown.toc,
+                   dita.out.map.markdown.toc"/>
+  
+  <target name="dita.map.markdown.init" unless="noMap">
+    <condition property="args.markdown.toc.xsl" value="${dita.plugin.com.elovirta.dita.markdown.dir}/xsl/map2markdown-cover.xsl">
+      <not>
+        <isset property="args.markdown.toc.xsl" />
+      </not>
+    </condition>
+    <condition property="args.markdown.toc" value="index">
+      <not>
+        <isset property="args.markdown.toc" />
+      </not>
+    </condition>
+  </target>
+  
+  <target name="dita.map.markdown.toc"
+          unless="noMap" if="old.transform"
+          description="Build Markdown TOC file">
+    <xslt basedir="${dita.temp.dir}"
+          destdir="${output.dir}"
+          includesfile="${dita.temp.dir}${file.separator}${user.input.file.listfile}"
+          classpathref="dost.class.path"
+          style="${args.markdown.toc.xsl}">
+      <excludesfile name="${dita.temp.dir}${file.separator}${resourceonlyfile}" if="resourceonlyfile"/>
+      <param name="OUTEXT" expression="${out.ext}" if="out.ext" />
+      <dita:extension id="dita.conductor.markdown.toc.param" behavior="org.dita.dost.platform.InsertAction"/>
+      <mapper type="glob"
+              from="*${dita.input.filename}"
+              to="*${args.markdown.toc}${out.ext}" />
+      <xmlcatalog refid="dita.catalog"/>
+    </xslt>
+  </target>
+  
+  <target name="dita.out.map.markdown.toc"
+          unless="noMap" if="inner.transform"
+          description="Build Markdown TOC file,which will adjust the directory">
+    <xslt basedir="${dita.temp.dir}"
+          destdir="${output.dir}"
+          includesfile="${dita.temp.dir}${file.separator}${user.input.file.listfile}"
+          classpathref="dost.class.path"
+          style="${args.markdown.toc.xsl}">
+      <excludesfile name="${dita.temp.dir}${file.separator}${resourceonlyfile}" if="resourceonlyfile"/>
+      <param name="OUTEXT" expression="${out.ext}" if="out.ext" />
+      <dita:extension id="dita.conductor.markdown.toc.param" behavior="org.dita.dost.platform.InsertAction"/>
+      <mapper type="glob"
+              from="${user.input.file}"
+              to="${args.markdown.toc}${out.ext}" />
+      <xmlcatalog refid="dita.catalog"/>
+    </xslt>
+  </target>
+  
+  <!--requirement 3, old solution-->
+  
+  <target name="dita.topics.markdown.common" unless="noTopic" if="old.transform">
+    <xslt basedir="${dita.temp.dir}"
+          destdir="${output.dir}" includesfile="${dita.temp.dir}${file.separator}${fullditatopicfile}"
+          reloadstylesheet="${dita.markdown.reloadstylesheet}"
+          classpathref="dost.class.path"
+          extension="${out.ext}" style="${args.xsl}"
+          filenameparameter="FILENAME"
+          filedirparameter="FILEDIR">
+      <excludesfile name="${dita.temp.dir}${file.separator}${resourceonlyfile}" if="resourceonlyfile"/>
+      <param name="TRANSTYPE" expression="${transtype}" />
+      <param name="FILTERFILE" expression="${dita.input.valfile.url}" if="dita.input.valfile" />
+      <param name="DRAFT" expression="${args.draft}" if="args.draft" />
+      <param name="ARTLBL" expression="${args.artlbl}" if="args.artlbl" />
+      <param name="GENERATE-TASK-LABELS" expression="${args.gen.task.lbl}" if="args.gen.task.lbl" />
+      <param name="PRESERVE-DITA-CLASS" expression="${args.markdown.classattr}" if="args.markdown.classattr"/>
+      <param name="NOPARENTLINK" expression="${args.hide.parent.link}" if="args.hide.parent.link"/>
+  	  <param name="include.rellinks" expression="${include.rellinks}"/>
+      <param name="BREADCRUMBS" expression="${args.breadcrumbs}" if="args.breadcrumbs"/>
+      <param name="INDEXSHOW" expression="${args.indexshow}" if="args.indexshow" />
+      <param name="genDefMeta" expression="${args.gen.default.meta}" if="args.gen.default.meta" />
+      <param name="OUTEXT" expression="${out.ext}" if="out.ext" />
+      <param name="BASEDIR" expression="${basedir}"/>
+      <param name="OUTPUTDIR" expression="${output.dir}"/>
+      <param name="DBG" expression="${args.debug}" if="args.debug"/>
+      <!--dita:extension id="dita.conductor.markdown.param" behavior="org.dita.dost.platform.InsertAction"/-->
+  	  <xmlcatalog refid="dita.catalog"/>
+    </xslt>
+  </target>
+  
+  <!--To generate&copy inner files-->
+  <!--requirement 1,2-->
+  
+  <target name="dita.inner.topics.markdown.common" unless="noTopic" if="inner.transform">
+    <xslt basedir="${dita.temp.dir}"
+          destdir="${output.dir}" includesfile="${dita.temp.dir}${file.separator}${fullditatopicfile}"
+          reloadstylesheet="${dita.markdown.reloadstylesheet}"
+          classpathref="dost.class.path"
+          extension="${out.ext}" style="${args.xsl}"
+          filenameparameter="FILENAME"
+          filedirparameter="FILEDIR">
+    	<excludesfile name="${dita.temp.dir}${file.separator}${resourceonlyfile}" if="resourceonlyfile"/>
+      <param name="TRANSTYPE" expression="${transtype}" />
+      <param name="FILTERFILE" expression="${dita.input.valfile.url}" if="dita.input.valfile" />
+      <param name="DRAFT" expression="${args.draft}" if="args.draft" />
+      <param name="ARTLBL" expression="${args.artlbl}" if="args.artlbl" />
+      <param name="GENERATE-TASK-LABELS" expression="${args.gen.task.lbl}" if="args.gen.task.lbl" />
+      <param name="PRESERVE-DITA-CLASS" expression="${args.markdown.classattr}" if="args.markdown.classattr"/>
+      <param name="NOPARENTLINK" expression="${args.hide.parent.link}" if="args.hide.parent.link"/>
+      <param name="include.rellinks" expression="${include.rellinks}"/>
+      <param name="BREADCRUMBS" expression="${args.breadcrumbs}" if="args.breadcrumbs"/>
+      <param name="INDEXSHOW" expression="${args.indexshow}" if="args.indexshow" />
+      <param name="genDefMeta" expression="${args.gen.default.meta}" if="args.gen.default.meta" />
+      <param name="OUTEXT" expression="${out.ext}" if="out.ext" />
+      <param name="BASEDIR" expression="${basedir}"/>
+      <param name="OUTPUTDIR" expression="${output.dir}"/>
+      <param name="DBG" expression="${args.debug}" if="args.debug"/>
+      <!--dita:extension id="dita.conductor.markdown.param" behavior="org.dita.dost.platform.InsertAction"/-->
+      <!--New,To generate&copy all dita files in the inputmap.dir, not all files in dita.temp.dir -->
+      <mapper type="regexp"
+              from="^(${tempdirToinputmapdir.relative.value})(.*?)(\.(\w+))$$" 
+              to="\2${out.ext}"/>
+      <xmlcatalog refid="dita.catalog"/>
+    </xslt>
+  </target>
+  
+</project>

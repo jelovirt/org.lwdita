@@ -14,6 +14,7 @@ import org.pegdown.ast.*;
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
+import org.xml.sax.helpers.AttributesImpl;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
