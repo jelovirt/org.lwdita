@@ -27,8 +27,11 @@
     <xsl:variable name="ast" as="node()">
       <xsl:apply-templates/>
     </xsl:variable>
+    <xsl:variable name="ast-flat" as="node()">
+      <xsl:apply-templates select="$ast" mode="flatten"/>
+    </xsl:variable>
     <xsl:variable name="ast-clean" as="node()">
-      <xsl:apply-templates select="$ast" mode="ast-clean"/>
+      <xsl:apply-templates select="$ast-flat" mode="ast-clean"/>
     </xsl:variable>
     <xsl:apply-templates select="$ast-clean" mode="ast"/>
   </xsl:template>

@@ -125,7 +125,7 @@
     <xsl:for-each select="tokenize($contents, '\n')">
       <xsl:value-of select="$indent"/>
       <xsl:value-of select="."/>
-      <xsl:if test="position() ne last()>
+      <xsl:if test="position() ne last()">
         <xsl:value-of select="$linefeed"/>
       </xsl:if>
     </xsl:for-each>
