@@ -93,6 +93,27 @@
       <xsl:value-of select="$linefeed"/>
     </xsl:if-->
   </xsl:template>
+  
+  <xsl:template match="definitionlist" mode="ast">
+    <xsl:param name="indent" tunnel="yes" as="xs:string" select="''"/>
+    <xsl:apply-templates select="dt | dd" mode="ast"/>
+  </xsl:template>
+
+  <xsl:template match="dt" mode="ast">
+    <xsl:param name="indent" tunnel="yes" as="xs:string" select="''"/>
+    <xsl:value-of select="$indent"/>
+    <xsl:call-template name="process-inline-contents"/>
+    <xsl:value-of select="$linefeed"/>
+  </xsl:template>
+
+  <xsl:template match="dd" mode="ast">
+    <xsl:param name="indent" tunnel="yes" as="xs:string" select="''"/>
+    <xsl:value-of select="$indent"/>
+    <xsl:text>:   </xsl:text>
+    <xsl:call-template name="process-inline-contents"/>
+    <xsl:value-of select="$linefeed"/>
+    <xsl:value-of select="$linefeed"/>
+  </xsl:template>
 
   <xsl:template match="codeblock" mode="ast">
     <xsl:param name="indent" tunnel="yes" as="xs:string" select="''"/>
@@ -275,6 +296,7 @@
                        div/text() |
                        bulletlist/text() |
                        orderedlist/text() |
+                       definitionlist/text() |
                        table/text() |
                        thead/text() |
                        tbody/text() |
@@ -304,7 +326,7 @@
       (:$node/self::orderedlist or
       $node/self::bulletlist or:)
       $node/self::li or
-      (:$node/self::definitionlist or:) $node/self::dt or $node/self::dd or
+      (:$node/self::definitionlist or $node/self::dt or $node/self::dd or:)
       (:$node/self::table or $node/self::thead or $node/self::tbody or $node/self::tr or $node/self::tablecell or:)
       $node/self::div or
       $node/self::null"/>
@@ -319,7 +341,7 @@
       $node/self::blockquote or
       $node/self::orderedlist or
       $node/self::bulletlist or
-      $node/self::definitionlist or
+      $node/self::definitionlist or $node/self::dt or $node/self::dd or
       $node/self::header or
       $node/self::horizontalrule or
       $node/self::table or $node/self::thead or $node/self::tbody or $node/self::tr or $node/self::tablecell or
