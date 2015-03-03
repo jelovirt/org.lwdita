@@ -5,8 +5,8 @@
   <feature extension="dita.conductor.target.relative" file="conductor.xml"/>
   <template file="build_template.xml"/>
   <template file="xsl/dita2markdown_template.xsl"/>
-  <template file="xsl/map2markdown-toc_template.xsl"/>
-  <template file="xsl/map2markdown-coverImpl_template.xsl"/>  
+  <!--template file="xsl/map2markdown-toc_template.xsl"/-->
+  <template file="xsl/map2markdown-cover_template.xsl"/>  
   <!-- Markdown to DITA -->
   <feature extension="dita.conductor.lib.import" file="markdown-${version}.jar"/>
   <feature extension="dita.conductor.lib.import" file="pegdown-1.4.2.jar"/>

@@ -24,14 +24,11 @@
           depends="build-init,
                    preprocess, 
                    markdown.init,
-                   markdown.image-metadata,
                    dita.topics.markdown.common,
-                   dita.inner.topics.markdown.common"/>
-  <!-- ,
+                   dita.inner.topics.markdown.common,
                    dita.map.markdown.init,
                    dita.map.markdown.toc,
-                   dita.out.map.markdown.toc
-  -->
+                   dita.out.map.markdown.toc"/>
   
   <target name="dita.map.markdown.init" unless="noMap">
     <condition property="args.markdown.toc.xsl" value="${dita.plugin.com.elovirta.dita.markdown.dir}/xsl/map2markdown-cover.xsl">
@@ -50,17 +47,16 @@
           unless="noMap" if="old.transform"
           description="Build Markdown TOC file">
     <xslt basedir="${dita.temp.dir}"
-      destdir="${output.dir}"
-      includesfile="${dita.temp.dir}${file.separator}${user.input.file.listfile}"
-      classpathref="dost.class.path"
-      style="${args.markdown.toc.xsl}">
+          destdir="${output.dir}"
+          includesfile="${dita.temp.dir}${file.separator}${user.input.file.listfile}"
+          classpathref="dost.class.path"
+          style="${args.markdown.toc.xsl}">
       <excludesfile name="${dita.temp.dir}${file.separator}${resourceonlyfile}" if="resourceonlyfile"/>
       <param name="OUTEXT" expression="${out.ext}" if="out.ext" />
-      <param name="contenttarget" expression="${args.markdown.contenttarget}" if="args.markdown.contenttarget"/>
       <dita:extension id="dita.conductor.markdown.toc.param" behavior="org.dita.dost.platform.InsertAction"/>
       <mapper type="glob"
-        from="*${dita.input.filename}"
-        to="*${args.markdown.toc}${out.ext}" />
+              from="*${dita.input.filename}"
+              to="*${args.markdown.toc}${out.ext}" />
       <xmlcatalog refid="dita.catalog"/>
     </xslt>
   </target>
@@ -69,42 +65,20 @@
           unless="noMap" if="inner.transform"
           description="Build Markdown TOC file,which will adjust the directory">
     <xslt basedir="${dita.temp.dir}"
-      destdir="${output.dir}"
-      includesfile="${dita.temp.dir}${file.separator}${user.input.file.listfile}"
-      classpathref="dost.class.path"
-      style="${args.markdown.toc.xsl}">
+          destdir="${output.dir}"
+          includesfile="${dita.temp.dir}${file.separator}${user.input.file.listfile}"
+          classpathref="dost.class.path"
+          style="${args.markdown.toc.xsl}">
       <excludesfile name="${dita.temp.dir}${file.separator}${resourceonlyfile}" if="resourceonlyfile"/>
       <param name="OUTEXT" expression="${out.ext}" if="out.ext" />
-      <param name="contenttarget" expression="${args.markdown.contenttarget}" if="args.markdown.contenttarget"/>
       <dita:extension id="dita.conductor.markdown.toc.param" behavior="org.dita.dost.platform.InsertAction"/>
       <mapper type="glob"
-        from="${user.input.file}"
-        to="${args.markdown.toc}${out.ext}" />
+              from="${user.input.file}"
+              to="${args.markdown.toc}${out.ext}" />
       <xmlcatalog refid="dita.catalog"/>
     </xslt>
   </target>
   
-  <!--target name="copy-revflag" if="dita.input.valfile">
-    <dita-ot-echo id="DOTA069W">
-      <param name="1" value="copy-revflag"/>
-    </dita-ot-echo>
-  </target-->
-  
-  <target name="markdown.image-metadata" depends="markdown.image-metadata-check"
-          unless="markdown.image-metadata.skip"
-          description="Read image metadata">
-    <pipeline message="Read image metadata." taskname="image-metadata" tempdir="${dita.temp.dir}">
-      <module class="org.dita.dost.module.ImageMetadataModule">
-        <param name="outputdir" location="${output.dir}"/>
-      </module>
-    </pipeline>
-  </target>
-  <target name="markdown.image-metadata-check">
-    <condition property="markdown.image-metadata.skip">
-      <isset property="noImagelist"/>
-    </condition>
-  </target>
-
   <!--requirement 3, old solution-->
   
   <target name="dita.topics.markdown.common" unless="noTopic" if="old.transform">
