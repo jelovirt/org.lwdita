@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:xs="http://www.w3.org/2001/XMLSchema"
-                exclude-result-prefixes="xs"
+                xmlns:ast="com.elovirta.dita.markdown"
+                exclude-result-prefixes="xs ast"
                 version="2.0">
 
   <xsl:variable name="linefeed" as="xs:string" select="'&#xA;'"/>
+
+  <!-- Block -->
+
+  <xsl:template match="pandoc" mode="ast">
+    <xsl:apply-templates mode="ast"/>
+  </xsl:template>
 
   <xsl:template match="div" mode="ast">
     <xsl:apply-templates mode="ast"/>
@@ -13,11 +20,18 @@
   <xsl:template match="para" mode="ast">
     <xsl:param name="indent" tunnel="yes" as="xs:string" select="''"/>
     <xsl:value-of select="$indent"/>
-    <xsl:apply-templates mode="ast"/>
+    <xsl:call-template name="process-inline-contents"/>
     <xsl:value-of select="$linefeed"/>
     <xsl:value-of select="$linefeed"/>
   </xsl:template>
-  
+
+  <xsl:template match="plain" mode="ast">
+    <xsl:param name="indent" tunnel="yes" as="xs:string" select="''"/>
+    <xsl:value-of select="$indent"/>
+    <xsl:call-template name="process-inline-contents"/>
+    <xsl:value-of select="$linefeed"/>
+  </xsl:template>
+
   <xsl:template match="header" mode="ast">
     <xsl:for-each select="1 to xs:integer(@level)">#</xsl:for-each>
     <xsl:text> </xsl:text>
@@ -45,14 +59,14 @@
   <xsl:template match="bulletlist | orderedlist" mode="ast">
     <xsl:param name="indent" tunnel="yes" as="xs:string" select="''"/>
     <xsl:variable name="nested" select="ancestor::bulletlist or ancestor::orderedlist"/>
-    <xsl:if test="$nested">
+    <!--xsl:if test="$nested">
       <xsl:value-of select="$linefeed"/>
-    </xsl:if>
+    </xsl:if-->
     <xsl:variable name="lis" select="li"/>
     <xsl:apply-templates select="$lis" mode="ast"/>
     <xsl:if test="not($nested)">
       <xsl:value-of select="$linefeed"/><!-- because last li will not write one -->
-      <xsl:value-of select="$linefeed"/>
+      <!--xsl:value-of select="$linefeed"/-->
     </xsl:if>  
   </xsl:template>
 
@@ -69,15 +83,20 @@
         <xsl:value-of select="substring('    ', string-length($label) + 1)"/>
       </xsl:otherwise>
     </xsl:choose>
-    <xsl:apply-templates mode="ast">
+    <xsl:apply-templates select="*[1]" mode="ast">
+      <xsl:with-param name="indent" tunnel="yes" select="''"/>
+    </xsl:apply-templates>
+    <xsl:apply-templates select="*[position() ne 1]" mode="ast">
       <xsl:with-param name="indent" tunnel="yes" select="concat($indent, '    ')"/>
     </xsl:apply-templates>
-    <xsl:if test="following-sibling::li">
+    <!--xsl:if test="following-sibling::li">
       <xsl:value-of select="$linefeed"/>
-    </xsl:if>
+    </xsl:if-->
   </xsl:template>
 
   <xsl:template match="codeblock" mode="ast">
+    <xsl:param name="indent" tunnel="yes" as="xs:string" select="''"/>
+    <xsl:value-of select="$indent"/>
     <xsl:text>```</xsl:text>
     <xsl:choose>
       <xsl:when test="empty(@id) and @class and not(contains(@class, ' '))">
@@ -88,11 +107,28 @@
       </xsl:otherwise>
     </xsl:choose>
     <xsl:value-of select="$linefeed"/>
-    <xsl:apply-templates mode="ast"/>
+    <xsl:call-template name="process-inline-contents"/>
     <xsl:value-of select="$linefeed"/>
+    <xsl:value-of select="$indent"/>
     <xsl:text>```</xsl:text>
     <xsl:value-of select="$linefeed"/>
     <xsl:value-of select="$linefeed"/>
+  </xsl:template>
+  
+  <xsl:template name="process-inline-contents">
+    <xsl:param name="indent" tunnel="yes" as="xs:string" select="''"/>
+    <xsl:variable name="contents" as="xs:string">
+      <xsl:value-of>
+        <xsl:apply-templates mode="ast"/>
+      </xsl:value-of>
+    </xsl:variable>
+    <xsl:for-each select="tokenize($contents, '\n')">
+      <xsl:value-of select="$indent"/>
+      <xsl:value-of select="."/>
+      <xsl:if test="position() ne last()>
+        <xsl:value-of select="$linefeed"/>
+      </xsl:if>
+    </xsl:for-each>
   </xsl:template>
   
   <xsl:template match="table" mode="ast">
@@ -108,7 +144,7 @@
       <xsl:for-each select="tr">
         <xsl:text>|</xsl:text>
         <xsl:for-each select="tablecell">
-          <xsl:variable name="content" as="xs:string*">
+          <xsl:variable name="content">
             <xsl:apply-templates mode="ast"/>
           </xsl:variable>
           <xsl:value-of select="if (@align = ('left', 'center')) then ':' else '-'"/>
@@ -131,6 +167,8 @@
     </xsl:for-each>
     <xsl:value-of select="$linefeed"/>
   </xsl:template>
+  
+  <!-- Inline -->
   
   <xsl:template match="strong" mode="ast">
     <xsl:text>**</xsl:text>
@@ -188,7 +226,30 @@
     <xsl:apply-templates mode="ast"/>
   </xsl:template>
   
-  <xsl:template match="text()" mode="ast">
+  <xsl:template match="linebreak" mode="ast">
+    <xsl:text>  </xsl:text>
+    <xsl:value-of select="$linefeed"/>
+  </xsl:template>
+  
+  <xsl:template match="text()" mode="ast"
+                name="text">
+    <xsl:param name="text" select="." as="xs:string"/>
+    <xsl:variable name="head" select="substring($text, 1, 1)" as="xs:string"/>
+    <xsl:if test="contains('\`*_{}[]()>#', $head)"><!--{}+-.!-->
+      <xsl:text>\</xsl:text>
+    </xsl:if>
+    <xsl:value-of select="$head"/>
+    <xsl:variable name="tail" select="substring($text, 2)" as="xs:string"/>
+    <xsl:if test="string-length($tail) gt 0">
+      <xsl:call-template name="text">
+        <xsl:with-param name="text" select="substring($text, 2)" as="xs:string"/>
+      </xsl:call-template>
+    </xsl:if>
+  </xsl:template>
+  
+  <xsl:template match="code/text() |
+                       codeblock/text()"
+                mode="ast" priority="10">
     <xsl:value-of select="."/>
   </xsl:template>
   
@@ -231,6 +292,116 @@
                 mode="ast-clean" priority="-10">
     <xsl:copy>
       <xsl:apply-templates select="@* | node()" mode="ast-clean"/>
+    </xsl:copy>
+  </xsl:template>
+  
+  <!-- Flatten -->
+  
+  <xsl:function name="ast:block-content" as="xs:boolean">
+    <xsl:param name="node" as="node()"/>
+    <xsl:sequence select="$node/self::rawblock or
+      $node/self::blockquote or
+      (:$node/self::orderedlist or
+      $node/self::bulletlist or:)
+      $node/self::li or
+      (:$node/self::definitionlist or:) $node/self::dt or $node/self::dd or
+      (:$node/self::table or $node/self::thead or $node/self::tbody or $node/self::tr or $node/self::tablecell or:)
+      $node/self::div or
+      $node/self::null"/>
+  </xsl:function>
+  
+  <xsl:function name="ast:is-block" as="xs:boolean">
+    <xsl:param name="node" as="node()"/>
+    <xsl:sequence select="$node/self::plain or
+      $node/self::para or
+      $node/self::codeblock or
+      $node/self::rawblock or
+      $node/self::blockquote or
+      $node/self::orderedlist or
+      $node/self::bulletlist or
+      $node/self::definitionlist or
+      $node/self::header or
+      $node/self::horizontalrule or
+      $node/self::table or $node/self::thead or $node/self::tbody or $node/self::tr or $node/self::tablecell or
+      $node/self::div or
+      $node/self::null"/>
+  </xsl:function>
+  
+  <xsl:template match="@* | node()" mode="flatten" priority="-1000">
+    <xsl:copy>
+      <xsl:apply-templates select="@* | node()" mode="flatten"/>
+    </xsl:copy>
+  </xsl:template>
+  
+  
+  <!--xsl:template match="*[contains(@class, ' task/step ') or
+                         contains(@class, ' task/substep ')]" mode="flatten" priority="100">
+    <xsl:copy>
+      <xsl:apply-templates select="@* | *" mode="flatten"/>
+    </xsl:copy>
+  </xsl:template-->
+  
+  <xsl:template match="para" mode="flatten" priority="100">
+    <xsl:choose>
+      <xsl:when test="empty(node())"/>
+      <xsl:when test="count(*) eq 1 and
+                      (*[ast:block-content(.)]) and 
+                      empty(text()[normalize-space(.)])">
+        <xsl:apply-templates mode="flatten"/>
+      </xsl:when>
+      <xsl:when test="descendant::*[ast:is-block(.)]">
+        <xsl:variable name="current" select="." as="element()"/>
+        <xsl:variable name="first" select="node()[1]" as="node()?"/>
+        <xsl:for-each-group select="node()" group-adjacent="ast:is-block(.)">
+          <xsl:choose>
+            <xsl:when test="current-grouping-key()">
+              <xsl:apply-templates select="current-group()" mode="flatten"/>
+            </xsl:when>
+            <xsl:when test="count(current-group()) eq 1 and current-group()/self::text() and not(normalize-space(current-group()))"/>
+            <xsl:when test="parent::li and $first is current-group()[1]">
+              <plain>
+                <xsl:apply-templates select="current-group()" mode="flatten"/>
+              </plain>
+            </xsl:when>
+            <xsl:otherwise>
+              <para gen="1">
+                <xsl:apply-templates select="$current/@* except $current/@id | current-group()" mode="flatten"/>
+              </para>
+            </xsl:otherwise>  
+          </xsl:choose>
+        </xsl:for-each-group>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:copy>
+          <xsl:apply-templates select="@* | node()" mode="flatten"/>
+        </xsl:copy>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+  
+  <!-- wrapper elements -->
+  <xsl:template match="*[ast:block-content(.)]" mode="flatten" priority="10">
+    <xsl:copy>
+      <xsl:apply-templates select="@*" mode="flatten"/>
+      <xsl:variable name="first" select="node()[1]" as="node()?"/>
+      <xsl:for-each-group select="node()" group-adjacent="ast:is-block(.)">
+        <xsl:choose>
+          <xsl:when test="current-grouping-key()">
+            <xsl:apply-templates select="current-group()" mode="flatten"/>
+          </xsl:when>
+          <xsl:when test="count(current-group()) eq 1 and current-group()/self::text() and not(normalize-space(current-group()))"/>
+          <xsl:when test="parent::li and $first is current-group()[1]">
+            <plain>
+              <xsl:apply-templates select="current-group()" mode="flatten"/>
+            </plain>
+          </xsl:when>
+          <xsl:otherwise>
+            <para gen="2">
+              <xsl:apply-templates select="current-group()" mode="flatten"/>
+            </para>
+          </xsl:otherwise>  
+        </xsl:choose>
+      </xsl:for-each-group>
     </xsl:copy>
   </xsl:template>
   

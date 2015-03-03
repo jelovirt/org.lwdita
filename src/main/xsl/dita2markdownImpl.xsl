@@ -451,12 +451,12 @@
       <xsl:call-template name="setidaname"/>
       <!-- Normal flags go before the generated title; revision flags only go on the content. -->
       <xsl:apply-templates select="*[contains(@class, ' ditaot-d/ditaval-startprop ')]/prop" mode="ditaval-outputflag"/>
-      <b>
+      <strong>
         <xsl:value-of select="$title"/>
         <xsl:call-template name="getString">
           <xsl:with-param name="stringName" select="'ColonSymbol'"/>
         </xsl:call-template>
-      </b>
+      </strong>
       <xsl:text> </xsl:text>
       <xsl:apply-templates select="*[contains(@class, ' ditaot-d/ditaval-startprop ')]/revprop" mode="ditaval-outputflag"/>
       <xsl:apply-templates/>
