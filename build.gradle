@@ -37,8 +37,7 @@ task dist(type: Zip) {
         // Template generated files
         exclude "build.xml"
         exclude "xsl/dita2markdown.xsl"
-        exclude "xsl/map2markdown-coverImpl.xsl"
-        exclude "xsl/map2markdown-toc.xsl"
+        exclude "xsl/map2markdown-cover.xsl"
     }
     from(".") {
         include "LICENSE"
