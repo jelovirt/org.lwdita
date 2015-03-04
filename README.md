@@ -1,4 +1,4 @@
-Markdown DITA for DITA-OT
+Markdown DITA for DITA-OT 
 =========================
 
 DITA-OT Markdown plug-in contains
@@ -45,6 +45,18 @@ recognize files as Markdown DITA; file extension is not used to
 recognize format.
 
 To publish Markdown DITA files, use `markdown` transtype.
+
+Donating
+--------
+
+Support this project and others by [@jelovirt](https://github.com/jelovirt) via Gratipay.
+
+[![Support via Gratipay](https://cdn.rawgit.com/gratipay/gratipay-badge/2.3.0/dist/gratipay.png)](https://gratipay.com/jelovirt/)
+
+License
+-------
+
+The DITA Open Toolkit is licensed for use under the [Apache License 2.0](http://www.apache.org/licenses/LICENSE-2.0).
 
 Syntax reference
 ----------------
