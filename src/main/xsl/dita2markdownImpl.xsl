@@ -581,7 +581,7 @@
       <xsl:apply-templates/>
       <xsl:choose>
         <xsl:when test="@href">
-          <div style="text-align:right">
+          <div>
             <link>
              <xsl:attribute name="href">
                <xsl:call-template name="href"/>
@@ -594,15 +594,19 @@
              </xsl:choose-->
              <cite>
                <xsl:choose>
-               <xsl:when test="@reftitle"><xsl:value-of select="@reftitle"/></xsl:when>
-               <xsl:otherwise><xsl:value-of select="@href"/></xsl:otherwise>
-             </xsl:choose>
+                 <xsl:when test="@reftitle">
+                   <xsl:value-of select="@reftitle"/>
+                 </xsl:when>
+                 <xsl:otherwise>
+                   <xsl:value-of select="@href"/>
+                 </xsl:otherwise>
+               </xsl:choose>
              </cite>
             </link>
           </div>
         </xsl:when>
         <xsl:when test="@reftitle"> <!-- Insert citation text -->
-          <div style="text-align:right">
+          <div>
             <cite>
               <xsl:value-of select="@reftitle"/>
             </cite>
@@ -1291,6 +1295,7 @@
     <xsl:apply-templates select="*[contains(@class, ' ditaot-d/ditaval-startprop ')]" mode="out-of-line"/>
     <xsl:call-template name="spec-title-nospace"/>
     <codeblock>
+      <xsl:attribute name="xml:space">preserve</xsl:attribute>
       <xsl:call-template name="commonattributes"/>
       <xsl:call-template name="setscale"/>
       <xsl:call-template name="setidaname"/>
@@ -2287,14 +2292,14 @@
       <!--xsl:apply-templates select="." mode="generate-table-summary-attribute"/-->
       <!--xsl:call-template name="setscale"/-->
       <thead>
-      <xsl:apply-templates select="." mode="dita2html:simpletable-heading">
-        <xsl:with-param name="width-multiplier" select="$width-multiplier"/>
-      </xsl:apply-templates>
+        <xsl:apply-templates select="." mode="dita2html:simpletable-heading">
+          <xsl:with-param name="width-multiplier" select="$width-multiplier"/>
+        </xsl:apply-templates>
       </thead>
       <tbody>
-      <xsl:apply-templates select="*[contains(@class, ' topic/strow ')]|processing-instruction()">     <!-- width-multiplier will be used in the first row to set widths. -->
-        <xsl:with-param name="width-multiplier" select="$width-multiplier"/>
-      </xsl:apply-templates>
+        <xsl:apply-templates select="*[contains(@class, ' topic/strow ')]|processing-instruction()">     <!-- width-multiplier will be used in the first row to set widths. -->
+          <xsl:with-param name="width-multiplier" select="$width-multiplier"/>
+        </xsl:apply-templates>
       </tbody>
     </table>
     <xsl:apply-templates select="*[contains(@class, ' ditaot-d/ditaval-endprop ')]" mode="out-of-line"/>

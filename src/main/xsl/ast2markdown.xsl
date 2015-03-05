@@ -19,7 +19,7 @@
 
   <xsl:template match="para" mode="ast">
     <xsl:param name="indent" tunnel="yes" as="xs:string" select="''"/>
-    <xsl:value-of select="$indent"/>
+    <!--xsl:value-of select="$indent"/-->
     <xsl:call-template name="process-inline-contents"/>
     <xsl:value-of select="$linefeed"/>
     <xsl:value-of select="$linefeed"/>
@@ -59,16 +59,14 @@
   <xsl:template match="bulletlist | orderedlist" mode="ast">
     <xsl:param name="indent" tunnel="yes" as="xs:string" select="''"/>
     <xsl:variable name="nested" select="ancestor::bulletlist or ancestor::orderedlist"/>
-    <!--xsl:if test="$nested">
-      <xsl:value-of select="$linefeed"/>
-    </xsl:if-->
     <xsl:variable name="lis" select="li"/>
     <xsl:apply-templates select="$lis" mode="ast"/>
     <xsl:if test="not($nested)">
       <xsl:value-of select="$linefeed"/><!-- because last li will not write one -->
-      <!--xsl:value-of select="$linefeed"/-->
     </xsl:if>  
   </xsl:template>
+
+  <xsl:variable name="default-indent" select="'    '" as="xs:string"/>
 
   <xsl:template match="li" mode="ast">
     <xsl:param name="indent" tunnel="yes" as="xs:string" select="''"/>
@@ -80,14 +78,14 @@
       <xsl:otherwise>
         <xsl:variable name="label" select="concat(position(), '.')" as="xs:string"/>
         <xsl:value-of select="$label"/>
-        <xsl:value-of select="substring('    ', string-length($label) + 1)"/>
+        <xsl:value-of select="substring($default-indent, string-length($label) + 1)"/>
       </xsl:otherwise>
     </xsl:choose>
     <xsl:apply-templates select="*[1]" mode="ast">
       <xsl:with-param name="indent" tunnel="yes" select="''"/>
     </xsl:apply-templates>
     <xsl:apply-templates select="*[position() ne 1]" mode="ast">
-      <xsl:with-param name="indent" tunnel="yes" select="concat($indent, '    ')"/>
+      <xsl:with-param name="indent" tunnel="yes" select="concat($indent, $default-indent)"/>
     </xsl:apply-templates>
     <!--xsl:if test="following-sibling::li">
       <xsl:value-of select="$linefeed"/>
@@ -136,8 +134,18 @@
     <xsl:value-of select="$linefeed"/>
   </xsl:template>
   
+  <xsl:template match="blockquote" mode="ast">
+    <xsl:param name="prefix" tunnel="yes" as="xs:string?" select="()"/>
+    <xsl:apply-templates mode="ast">
+      <xsl:with-param name="prefix" tunnel="yes" select="concat($prefix, '> ')"/>
+    </xsl:apply-templates>
+    <!--xsl:value-of select="$linefeed"/>
+    <xsl:value-of select="$linefeed"/-->
+  </xsl:template>
+  
   <xsl:template name="process-inline-contents">
     <xsl:param name="indent" tunnel="yes" as="xs:string" select="''"/>
+    <xsl:param name="prefix" tunnel="yes" as="xs:string?" select="()"/>
     <xsl:variable name="contents" as="xs:string">
       <xsl:value-of>
         <xsl:apply-templates mode="ast"/>
@@ -145,6 +153,7 @@
     </xsl:variable>
     <xsl:for-each select="tokenize($contents, '\n')">
       <xsl:value-of select="$indent"/>
+      <xsl:value-of select="$prefix"/>
       <xsl:value-of select="."/>
       <xsl:if test="position() ne last()">
         <xsl:value-of select="$linefeed"/>
