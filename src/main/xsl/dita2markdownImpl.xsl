@@ -1636,8 +1636,8 @@
     </xsl:variable>
     <xsl:call-template name="setid"/>
     <xsl:call-template name="commonattributes"/>
-    <xsl:apply-templates select="." mode="generate-table-summary-attribute"/>
-    <xsl:call-template name="setscale"/>
+    <!--xsl:apply-templates select="." mode="generate-table-summary-attribute"/-->
+    <!--xsl:call-template name="setscale"/-->
     <!-- When a table's width is set to page or column, force it's width to 100%. If it's in a list, use 90%.
          Otherwise, the table flows to the content -->
     <xsl:choose>
@@ -2273,7 +2273,7 @@
     <xsl:call-template name="setaname"/>
     <table>
      <xsl:call-template name="setid"/>
-      <xsl:choose>
+      <!--xsl:choose>
        <xsl:when test="@frame = 'none'">
         <xsl:attribute name="border">0</xsl:attribute>
         <xsl:attribute name="class">simpletablenoborder</xsl:attribute>
@@ -2282,16 +2282,20 @@
         <xsl:attribute name="border">1</xsl:attribute>
         <xsl:attribute name="class">simpletableborder</xsl:attribute>
        </xsl:otherwise>
-      </xsl:choose>
+      </xsl:choose-->
       <xsl:call-template name="commonattributes"/>
-      <xsl:apply-templates select="." mode="generate-table-summary-attribute"/>
-      <xsl:call-template name="setscale"/>
+      <!--xsl:apply-templates select="." mode="generate-table-summary-attribute"/-->
+      <!--xsl:call-template name="setscale"/-->
+      <thead>
       <xsl:apply-templates select="." mode="dita2html:simpletable-heading">
         <xsl:with-param name="width-multiplier" select="$width-multiplier"/>
       </xsl:apply-templates>
+      </thead>
+      <tbody>
       <xsl:apply-templates select="*[contains(@class, ' topic/strow ')]|processing-instruction()">     <!-- width-multiplier will be used in the first row to set widths. -->
         <xsl:with-param name="width-multiplier" select="$width-multiplier"/>
       </xsl:apply-templates>
+      </tbody>
     </table>
     <xsl:apply-templates select="*[contains(@class, ' ditaot-d/ditaval-endprop ')]" mode="out-of-line"/>
     
