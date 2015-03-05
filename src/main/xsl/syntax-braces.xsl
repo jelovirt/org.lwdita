@@ -4,7 +4,7 @@
   
   <xsl:template match="*[contains(@class,' pr-d/syntaxdiagram ')]">
     <div>
-    <xsl:apply-templates mode="process-syntaxdiagram"/>
+      <xsl:apply-templates mode="process-syntaxdiagram"/>
     </div>
   </xsl:template>
   
@@ -46,15 +46,19 @@
   <!-- This should test to see if there's a fragment with matching title 
   and if so, produce an associative link. -->
   <xsl:template match="*[contains(@class,' pr-d/fragref ')]" mode="process-syntaxdiagram">
-    <kbd>
-        <link><xsl:attribute name="href">#<xsl:value-of select="."/></xsl:attribute>
-    &lt;<xsl:value-of select="."/>&gt;</link>
-    </kbd>
+    <code>
+      <link>
+        <xsl:attribute name="href">#<xsl:value-of select="."/></xsl:attribute>
+        <xsl:text>&lt;</xsl:text>
+        <xsl:value-of select="."/>
+        <xsl:text>&gt;</xsl:text>
+      </link>
+    </code>
   </xsl:template>
   
   
   <xsl:template match="*[contains(@class,' pr-d/var ')]" mode="process-syntaxdiagram">
-   <var>
+   <emph>
     <xsl:if test="parent::*[contains(@class,' pr-d/groupchoice ')]"><xsl:if test="count(preceding-sibling::*)!=0"> | </xsl:if></xsl:if>
     <xsl:if test="@importance='optional'"> [</xsl:if>
     <xsl:choose>
@@ -62,7 +66,7 @@
       <xsl:otherwise><xsl:value-of select="."/></xsl:otherwise>
     </xsl:choose>
     <xsl:if test="@importance='optional'">] </xsl:if>
-   </var>
+   </emph>
   </xsl:template>
   
   
@@ -148,7 +152,7 @@
   
   
   <xsl:template match="*[contains(@class,' pr-d/syntaxdiagram ')]//*[contains(@class,' pr-d/kwd ')] | *[contains(@class,' pr-d/synph ')]//*[contains(@class,' pr-d/kwd ')]"  mode="process-syntaxdiagram">
-    <kbd>
+    <code>
       <strong>
        <xsl:if test="parent::*[contains(@class,' pr-d/groupchoice ')]">
          <xsl:if test="count(preceding-sibling::*)!=0"> | </xsl:if>
@@ -168,38 +172,38 @@
      </strong>
       <!-- force a space to follow the bold endtag, which has a concat behavior otherwise -->
       <xsl:text>&#32;</xsl:text>
-    </kbd> 
+    </code> 
   </xsl:template>
   
   <xsl:template match="*[contains(@class,' pr-d/oper ')]"  mode="process-syntaxdiagram">
     <xsl:if test="parent::*[contains(@class,' pr-d/groupchoice ')]">
       <xsl:if test="count(preceding-sibling::*)!=0"> | </xsl:if>
     </xsl:if>
-    <kbd>
+    <code>
       <xsl:call-template name="commonattributes"/>
       <xsl:apply-templates select="@id"/>
       <xsl:call-template name="apply-for-phrases"/>
-    </kbd>
+    </code>
   </xsl:template>
   
   <xsl:template match="*[contains(@class,' pr-d/delim ')]" mode="process-syntaxdiagram">
     <xsl:if test="parent::*[contains(@class,' pr-d/groupchoice ')]">
       <xsl:if test="count(preceding-sibling::*)!=0"> | </xsl:if>
     </xsl:if>
-    <kbd>
+    <code>
       <xsl:call-template name="commonattributes"/>
       <xsl:apply-templates select="@id"/>
       <xsl:call-template name="apply-for-phrases"/>
-    </kbd>
+    </code>
   </xsl:template>
   
   <xsl:template match="*[contains(@class,' pr-d/sep ')]" mode="process-syntaxdiagram">
     <xsl:if test="parent::*[contains(@class,' pr-d/groupchoice ')]"><xsl:if test="count(preceding-sibling::*)!=0"> | </xsl:if></xsl:if>
-    <kbd>
+    <code>
       <xsl:call-template name="commonattributes"/>
       <xsl:apply-templates select="@id"/>
       <xsl:call-template name="apply-for-phrases"/>
-    </kbd>
+    </code>
   </xsl:template>
   
   <!-- annotation related to syntaxdiagram -->
@@ -223,11 +227,11 @@
     </xsl:choose>
    </xsl:variable>
    <link name="{@id}">{<xsl:value-of select="$callout"/>}</link>
-   <table border="1" cellpadding="6">
+   <table>
      <tr>
-       <td bgcolor="LightGrey">
+       <tablecell>
         <xsl:apply-templates mode="process-syntaxdiagram"/>
-       </td>
+       </tablecell>
      </tr>
    </table>
   </xsl:template>
