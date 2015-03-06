@@ -14,7 +14,6 @@ import org.pegdown.ast.*;
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
-import org.xml.sax.helpers.AttributesImpl;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
@@ -102,6 +101,7 @@ public class ToDitaSerializer implements Visitor {
     private static final Attributes BLOCKQUOTE_ATTS = buildAtts(TOPIC_LQ);
     private static final Attributes UL_ATTS = buildAtts(TOPIC_UL);
     private static final Attributes DL_ATTS = buildAtts(TOPIC_DL);
+    private static final Attributes DLENTRY_ATTS = buildAtts(TOPIC_DLENTRY);
     private static final Attributes OL_ATTS = buildAtts(TOPIC_OL);
     private static final Attributes TABLE_ATTS = buildAtts(TOPIC_TABLE);
     private static final Attributes TGROUP_ATTS = buildAtts(TOPIC_TGROUP);
@@ -229,7 +229,23 @@ public class ToDitaSerializer implements Visitor {
 
     @Override
     public void visit(final DefinitionListNode node) {
-        printTag(node, TOPIC_DL, DL_ATTS);
+        startElement(TOPIC_DL, DL_ATTS);
+        DitaClass previous = null;
+        for (final Node child : node.getChildren()) {
+            if (previous == null) {
+                startElement(TOPIC_DLENTRY, DLENTRY_ATTS);
+            }
+            if (child instanceof DefinitionTermNode) {
+                if (TOPIC_DD.equals(previous)) {
+                    endElement(); // dlentry
+                    startElement(TOPIC_DLENTRY, DLENTRY_ATTS);
+                }
+            }
+            child.accept(this);
+            previous = (child instanceof DefinitionTermNode) ? TOPIC_DT : TOPIC_DD;
+        }
+        endElement(); // dlentry
+        endElement(); // dl
     }
 
     @Override
@@ -239,6 +255,9 @@ public class ToDitaSerializer implements Visitor {
 
     @Override
     public void visit(final DefinitionTermNode node) {
+        if (tagStack.peek().equals(TOPIC_DL)) {
+            startElement(TOPIC_DLENTRY, DLENTRY_ATTS);
+        }
         printTag(node, TOPIC_DT, DT_ATTS);
     }
 
