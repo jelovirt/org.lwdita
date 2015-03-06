@@ -1,7 +1,12 @@
 pandoc = element pandoc { block* }
 plain = element plain { inline* }
 para = element para { inline* }
-codeblock = element codeblock { text }
+codeblock =
+  element codeblock {
+    attr,
+    attribute xml:space { "preserve" },
+    text
+  }
 rawblock = element rawblock { text }
 blockquote = element blockquote { block* }
 orderedlist =
@@ -55,7 +60,14 @@ link =
     attribute keyref { text }?,
     inline*
   }
-image = element image { inline* }
+image =
+  element image {
+    attribute href { text }?,
+    attribute keyref { text }?,
+    attribute alt { text }?,
+    attribute title { text }?,
+    inline*
+  }
 span = element span { inline* }
 attr =
   attribute id { text }?,
