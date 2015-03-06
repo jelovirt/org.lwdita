@@ -1,0 +1,66 @@
+pandoc = element pandoc { block* }
+plain = element plain { inline* }
+para = element para { inline* }
+codeblock = element codeblock { text }
+rawblock = element rawblock { text }
+blockquote = element blockquote { block* }
+orderedlist =
+  element orderedlist {
+    element li { block* }+
+  }
+bulletlist =
+  element bulletlist {
+    element li { block* }+
+  }
+definitionlist =
+  element definitionlist {
+    element dlentry {
+      element dt { inline* },
+      element dd { block* }+
+    }+
+  }
+header =
+  element header {
+    attribute level { xsd:integer },
+    attr,
+    inline*
+  }
+table =
+  element table {
+    element thead {
+      element tr {
+        element tablecell { block* }+
+      }+
+    }?,
+    element tbody {
+      element tr {
+        element tablecell { block* }+
+      }+
+    }
+  }
+\div = element div { attr, block* }
+strong = element strong { inline* }
+str = element str { text }
+emph = element emph { inline* }
+strikeout = element strikeout { inline* }
+superscript = element superscript { inline* }
+subscript = element subscript { inline* }
+smallcaps = element smallcaps { inline* }
+quoted = element quoted { inline* }
+cite = element cite { inline* }
+code = element code { attr, inline* }
+link =
+  element link {
+    attribute href { text }?,
+    attribute keyref { text }?,
+    inline*
+  }
+image = element image { inline* }
+span = element span { inline* }
+attr =
+  attribute id { text }?,
+  attribute class { text }?,
+  attribute key-value { text }?
+block = para | plain | codeblock | rawblock | blockquote | orderedlist | bulletlist | definitionlist | header | table | \div
+inline = text | emph | strong | strikeout | superscript | subscript | smallcaps | quoted | cite | code | link | image | span
+start = pandoc

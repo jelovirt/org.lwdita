@@ -759,20 +759,21 @@
 
  <!-- DL entry -->
  <xsl:template match="*[contains(@class, ' topic/dlentry ')]" name="topic.dlentry">
-   <xsl:apply-templates/>
+   <dlentry>
+     <xsl:apply-templates/>
+   </dlentry>
  </xsl:template>
 
   <!-- SF Patch 2185423: condensed code so that dt processing is not repeated for keyref or when $dtcount!=1
        Code could be reduced further by compressing the flagging templates. -->
   <xsl:template match="*[contains(@class, ' topic/dt ')]" mode="output-dt">
     <xsl:variable name="is-first-dt" select="empty(preceding-sibling::*[contains(@class, ' topic/dt ')])"/>
-    <xsl:variable name="dt-class">
+    <!--xsl:variable name="dt-class">
       <xsl:choose>
-        <!-- handle non-compact list items -->
         <xsl:when test="$is-first-dt and ../../@compact = 'no'">dltermexpand</xsl:when>
         <xsl:otherwise>dlterm</xsl:otherwise>
       </xsl:choose>
-    </xsl:variable>
+    </xsl:variable-->
     <dt>
       <!-- Get xml:lang and ditaval styling from DLENTRY, then override with local --> 
       <xsl:apply-templates select="../*[contains(@class, ' ditaot-d/ditaval-startprop ')]/@outputclass" mode="add-ditaval-style"/>
@@ -780,7 +781,7 @@
         <xsl:call-template name="commonattributes"/>
       </xsl:for-each>
       <xsl:call-template name="commonattributes">
-        <xsl:with-param name="default-output-class" select="$dt-class"/>
+        <!--xsl:with-param name="default-output-class" select="$dt-class"/-->
       </xsl:call-template>
       <!-- handle ID on a DLENTRY -->
       <xsl:choose>
@@ -827,11 +828,11 @@
         <xsl:call-template name="commonattributes"/>
       </xsl:for-each>
       <xsl:call-template name="commonattributes">
-        <xsl:with-param name="default-output-class">
-          <xsl:if test="not($is-first-dd)">  <!-- para space before 2 thru N -->
+        <!--xsl:with-param name="default-output-class">
+          <xsl:if test="not($is-first-dd)">
             <xsl:text>ddexpand</xsl:text>
           </xsl:if>    
-        </xsl:with-param>
+        </xsl:with-param-->
       </xsl:call-template>
       <xsl:call-template name="setidaname"/>
       <xsl:apply-templates select="../*[contains(@class, ' ditaot-d/ditaval-startprop ')]" mode="out-of-line"/>

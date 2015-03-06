@@ -93,13 +93,14 @@
   </xsl:template>
   
   <xsl:template match="definitionlist" mode="ast">
-    <xsl:param name="indent" tunnel="yes" as="xs:string" select="''"/>
-    <xsl:apply-templates select="dt | dd" mode="ast"/>
+    <xsl:apply-templates mode="ast"/>
+  </xsl:template>
+
+  <xsl:template match="dlentry" mode="ast">
+    <xsl:apply-templates mode="ast"/>
   </xsl:template>
 
   <xsl:template match="dt" mode="ast">
-    <xsl:param name="indent" tunnel="yes" as="xs:string" select="''"/>
-    <xsl:value-of select="$indent"/>
     <xsl:call-template name="process-inline-contents"/>
     <xsl:value-of select="$linefeed"/>
   </xsl:template>
@@ -108,9 +109,12 @@
     <xsl:param name="indent" tunnel="yes" as="xs:string" select="''"/>
     <xsl:value-of select="$indent"/>
     <xsl:text>:   </xsl:text>
-    <xsl:call-template name="process-inline-contents"/>
-    <xsl:value-of select="$linefeed"/>
-    <xsl:value-of select="$linefeed"/>
+    <xsl:apply-templates select="*[1]" mode="ast">
+      <xsl:with-param name="indent" tunnel="yes" select="''"/>
+    </xsl:apply-templates>
+    <xsl:apply-templates select="*[position() ne 1]" mode="ast">
+      <xsl:with-param name="indent" tunnel="yes" select="concat($indent, $default-indent)"/>
+    </xsl:apply-templates>
   </xsl:template>
 
   <xsl:template match="codeblock" mode="ast">
@@ -335,7 +339,7 @@
       (:$node/self::orderedlist or
       $node/self::bulletlist or:)
       $node/self::li or
-      (:$node/self::definitionlist or $node/self::dt or $node/self::dd or:)
+      (:$node/self::definitionlist or $node/self::dt or:) $node/self::dd or
       (:$node/self::table or $node/self::thead or $node/self::tbody or $node/self::tr or $node/self::tablecell or:)
       $node/self::div or
       $node/self::null"/>
@@ -350,7 +354,7 @@
       $node/self::blockquote or
       $node/self::orderedlist or
       $node/self::bulletlist or
-      $node/self::definitionlist or $node/self::dt or $node/self::dd or
+      $node/self::definitionlist or $node/self::dlentry or $node/self::dt or $node/self::dd or
       $node/self::header or
       $node/self::horizontalrule or
       $node/self::table or $node/self::thead or $node/self::tbody or $node/self::tr or $node/self::tablecell or
@@ -427,7 +431,7 @@
             </plain>
           </xsl:when>
           <xsl:otherwise>
-            <para gen="2">
+            <para>
               <xsl:apply-templates select="current-group()" mode="flatten"/>
             </para>
           </xsl:otherwise>  
