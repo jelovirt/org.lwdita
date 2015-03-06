@@ -296,11 +296,12 @@
   
   <xsl:template match="text()"
                 mode="ast-clean">
-    <xsl:if test="preceding-sibling::node() and starts-with(., ' ')">
+    <xsl:variable name="normalized" select="normalize-space(.)" as="xs:string"></xsl:variable>
+    <xsl:if test="preceding-sibling::node() and matches(., '^\s') and $normalized">
       <xsl:text> </xsl:text>
     </xsl:if>
-    <xsl:value-of select="normalize-space(.)"/>
-    <xsl:if test="following-sibling::node() and ends-with(., ' ')">
+    <xsl:value-of select="$normalized"/>
+    <xsl:if test="following-sibling::node() and matches(., '\s$') and $normalized">
       <xsl:text> </xsl:text>
     </xsl:if>
   </xsl:template>
