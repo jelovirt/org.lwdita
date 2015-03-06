@@ -16,6 +16,17 @@ Requirements
 DITA-OT 2.1 is required. Earlier versions of DITA-OT do not have the
 required extension points.
 
+Build
+-----
+
+1.  Run Gradle distribution task
+
+    ~~~~ {.sh}
+    ./gradlew dist
+    ~~~~
+
+Distribution ZIP file is generated under `build/distributions`.
+
 Install
 -------
 
