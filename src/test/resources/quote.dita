@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="quote">
+  <title>Quote</title>
+  <body>
+    <pre><p>This is email
+And so it this</p><p>Again.</p></pre>
+    <ul>
+      <li>
+        <p>List</p>
+        <pre><p>Quote in list</p></pre>
+      </li>
+      <li>
+        <p>Second list</p>
+      </li>
+    </ul>
+  </body>
+</topic>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="tables">
+  <title>Tables</title>
+  <body>
+    <table>
+      <tgroup cols="4">
+        <colspec colname="col1" align="right" colwidth="1*"/>
+        <colspec colname="col2" align="left" colwidth="1*"/>
+        <colspec colname="col3" colwidth="1*"/>
+        <colspec colname="col4" align="center" colwidth="1*"/>
+        <thead>
+          <row>
+            <entry align="right" colname="col1">Right </entry>
+            <entry align="left" colname="col2">Left </entry>
+            <entry colname="col3">Default </entry>
+            <entry align="center" colname="col4">Center </entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry align="right" colname="col1">12 </entry>
+            <entry align="left" colname="col2">12 </entry>
+            <entry colname="col3">12 </entry>
+            <entry align="center" colname="col4">12 </entry>
+          </row>
+          <row>
+            <entry align="right" colname="col1">123 </entry>
+            <entry align="left" colname="col2">123 </entry>
+            <entry colname="col3">123 </entry>
+            <entry align="center" colname="col4">123 </entry>
+          </row>
+          <row>
+            <entry align="right" colname="col1">1 </entry>
+            <entry align="left" colname="col2">1 </entry>
+            <entry colname="col3">1 </entry>
+            <entry align="center" colname="col4">1 </entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+    <p>PHP Table:</p>
+    <table>
+      <tgroup cols="3">
+        <colspec colname="col1" align="left" colwidth="1*"/>
+        <colspec colname="col2" align="center" colwidth="1*"/>
+        <colspec colname="col3" align="right" colwidth="1*"/>
+        <thead>
+          <row>
+            <entry align="left" colname="col1">First Header </entry>
+            <entry align="center" colname="col2">Second Header Very long data entry Very long data entry Very long data entry Very long data entry Very long data entry Very long data entry Very long
+              data entry Very long data entry Very long data entry </entry>
+            <entry align="right" colname="col3">Third Header </entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry align="left" colname="col1">First row </entry>
+            <entry align="center" colname="col2">Data </entry>
+            <entry align="right" colname="col3">Very long data entry Very long data entry Very long data entry Very long data entry Very long data entry Very long data entry Very long data entry Very
+              long data entry Very long data entry Very long data entry </entry>
+          </row>
+          <row>
+            <entry align="left" colname="col1">Second row </entry>
+            <entry align="center" colname="col2">
+              <b>Cell</b>
+            </entry>
+            <entry align="right" colname="col3">
+              <i>Cell</i>
+            </entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+  </body>
+</topic>

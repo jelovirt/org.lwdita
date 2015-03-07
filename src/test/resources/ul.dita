@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="bullet_list">
+  <title>Bullet list</title>
+  <body>
+    <p>Hyphen:</p>
+    <ul>
+      <li>hyphen list list list list list list list list list list list list list list list list list list list list list list list</li>
+      <li>list<ul><li>item<ul><li>four</li></ul></li><li>fifth<ul><li>sixth</li></ul></li></ul></li>
+    </ul>
+    <p>Asterix:</p>
+    <ul>
+      <li>inline <i>bold</i> normal<ul><li>inline</li></ul></li>
+      <li>
+        <p>para</p>
+        <ul>
+          <li>inline</li>
+        </ul>
+      </li>
+      <li>
+        <p>para</p>
+        <p>para</p>
+      </li>
+      <li>
+        <p>para</p>
+        <p>para - below this will not work</p>
+      </li>
+      <li>
+        <p>para</p>
+        <ul>
+          <li>para</li>
+        </ul>
+      </li>
+    </ul>
+  </body>
+</topic>

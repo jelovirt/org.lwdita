@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="numbered_list">
+  <title>Numbered list</title>
+  <body>
+    <p>Ordered:</p>
+    <ol>
+      <li>ordered</li>
+      <li>list</li>
+      <li>item<ol><li>nested</li><li>list</li></ol></li>
+      <li>foo</li>
+      <li>foo</li>
+      <li>foo</li>
+      <li>foo</li>
+      <li>foo</li>
+      <li>foo</li>
+      <li>foo</li>
+      <li>foo</li>
+      <li>foo</li>
+      <li>foo</li>
+      <li>foo</li>
+      <li>foo</li>
+    </ol>
+  </body>
+</topic>

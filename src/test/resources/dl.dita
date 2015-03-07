@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="definition_list">
+  <title>Definition list</title>
+  <body>
+    <dl>
+      <dlentry>
+        <dt>Apple</dt>
+        <dd>Pomaceous fruit of plants of the genus Malus in the family Rosaceae.</dd>
+      </dlentry>
+      <dlentry>
+        <dt>Orange Nested</dt>
+        <dd>
+          <p>The fruit of an evergreen tree of the genus Citrus.</p>
+          <p>para</p>
+        </dd>
+      </dlentry>
+    </dl>
+  </body>
+</topic>

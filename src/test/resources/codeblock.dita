@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="codeblock">
+  <title>Codeblock</title>
+  <body>
+    <p>Code example on <codeph>for</codeph> loop:</p>
+    <codeblock>for i in items:
+    println(i)
+</codeblock>
+    <p>Fenced block:</p>
+    <codeblock id="foreach-example" outputclass="scala">items.foreach(println)
+</codeblock>
+  </body>
+</topic>

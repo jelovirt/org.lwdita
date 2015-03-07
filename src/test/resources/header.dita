@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="a">
+  <title>A</title>
+  <body/>
+  <topic id="a_1">
+    <title>A.1</title>
+    <body/>
+    <topic id="a_1_a">
+      <title>A.1.a</title>
+      <body>
+        <section id="a_1_a_i">
+          <title>A.1.a.I </title>
+        </section>
+        <example id="example">
+          <title>A.1.a.II </title>
+        </example>
+      </body>
+      <topic id="a_1_a_iii">
+        <title>A.1.a.III</title>
+        <body/>
+      </topic>
+    </topic>
+  </topic>
+  <topic id="a_2">
+    <title>A.2</title>
+    <body/>
+  </topic>
+</topic>

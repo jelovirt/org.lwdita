@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="test">
+  <title>Test</title>
+  <body>
+    <p>Paragraph <i>emph</i> and <b>strong</b> or <codeph>code</codeph>.</p>
+    <p>This is a very long line. This is a very long line. This is a very long line. This is a very long line. This is a very long line. This is a very long line. This is a very long line. This is a
+      very long line. This is a very long line. This is a very long line. This is a very long line.</p>
+  </body>
+</topic>

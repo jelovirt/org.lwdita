@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="links">
+  <title>Links</title>
+  <body>
+    <p>
+      <xref href="test.md">Markdown</xref>
+    </p>
+    <p>
+      <xref href="topic.dita">DITA</xref>
+    </p>
+    <p>
+      <xref href="test.html" format="html">HTML</xref>
+    </p>
+    <p>
+      <xref href="http://www.example.com/test.html" format="html" scope="external">External</xref>
+    </p>
+    <p>
+      <xref keyref="key"/>
+    </p>
+  </body>
+</topic>
