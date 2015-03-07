@@ -1,10 +1,10 @@
-Markdown DITA for DITA-OT 
+Markdown DITA for DITA-OT
 =========================
 
 DITA-OT Markdown plug-in contains
 
 -   a custom parser for Markdown to allow using
-    Markdown as a source document format,
+    Markdown DITA as a source document format,
 -   and a transtype to generate Markdown from DITA source.
 
 The DITA Markdown files need to use a subset of Markdown constructs for
@@ -36,7 +36,7 @@ Install
     dita -install https://github.com/jelovirt/dita-ot-markdown/releases/download/0.5.2/com.elovirta.dita.markdown_0.5.2.zip
     ~~~~
 
-The `dita` command line tool requires not additional configuration;
+The `dita` command line tool requires no additional configuration;
 running DITA-OT using Ant requires adding plug-in contributed JAR files
 to `CLASSPATH` with e.g. `-lib plugins/com.elovirta.dita.markdown`.
 
