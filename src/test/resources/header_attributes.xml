@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-model href="../../main/resources/ast.rnc" type="application/relax-ng-compact-syntax"?>
+<pandoc>
+  <div>
+    <header level="1" id="foo">My header</header>
+    <div/>
+    <div id="foo">
+      <header level="2" id="foo">My header</header>
+      <div/>
+    </div>
+    <div class="main shine" id="the-site">
+      <header level="2" id="the-site">My other header</header>
+      <div/>
+    </div>
+  </div>
+</pandoc>

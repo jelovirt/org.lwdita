@@ -3,12 +3,12 @@
 <topic id="quote">
   <title>Quote</title>
   <body>
-    <pre><p>This is email
-And so it this</p><p>Again.</p></pre>
+    <lq><p>This is email
+And so it this</p><p>Again.</p></lq>
     <ul>
       <li>
         <p>List</p>
-        <pre><p>Quote in list</p></pre>
+        <lq><p>Quote in list</p></lq>
       </li>
       <li>
         <p>Second list</p>

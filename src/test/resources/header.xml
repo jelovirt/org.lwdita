@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-model href="../../main/resources/ast.rnc" type="application/relax-ng-compact-syntax"?>
+<pandoc>
+  <div>
+    <header level="1" id="a">A</header>
+    <div/>
+    <div id="a_1">
+      <header level="2" id="a_1">A.1</header>
+      <div/>
+      <div id="a_1_a">
+        <header level="3" id="a_1_a">A.1.a</header>
+        <div>
+          <div class="section" id="a_1_a__a_1_a_i">
+            <header level="4" class="section">A.1.a.I</header>
+          </div>
+          <div class="example" id="a_1_a__example">
+            <header level="4" class="section">A.1.a.II</header>
+          </div>
+        </div>
+        <div id="a_1_a_iii">
+          <header level="4" id="a_1_a_iii">A.1.a.III</header>
+          <div/>
+        </div>
+      </div>
+    </div>
+    <div id="a_2">
+      <header level="2" id="a_2">A.2</header>
+      <div/>
+    </div>
+  </div>
+</pandoc>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-model href="../../main/resources/ast.rnc" type="application/relax-ng-compact-syntax"?>
+<pandoc>
+  <div>
+    <header level="1" id="images">Images</header>
+    <div>
+      <para>An inline <image href="test.jpg" alt="Alt"/>.</para>
+      <para>
+        <image href="test.jpg" alt="Alt"/>
+      </para>
+      <para>
+        <image href="test.jpg" alt="Alt" title="Title"/>
+      </para>
+      <para>
+        <image/>
+      </para>
+    </div>
+  </div>
+</pandoc>

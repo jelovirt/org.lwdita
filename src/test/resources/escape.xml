@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-model href="../../main/resources/ast.rnc" type="application/relax-ng-compact-syntax"?>
+<pandoc>
+  <div>
+    <header level="1" id="escape">Escape</header>
+    <div>
+      <para>Asterisk * bracket [foo].</para>
+      <para>\`*_{}[]()&gt;#+-.!</para>
+    </div>
+  </div>
+</pandoc>

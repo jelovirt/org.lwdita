@@ -32,14 +32,20 @@ header =
   }
 table =
   element table {
+    element col {
+      attribute align { "left" | "right" | "center" }?,
+      attribute width { xsd:double }?
+    }+,
     element thead {
       element tr {
-        element tablecell { block* }+
+        # Pandoc uses block content, but Markdown flavours usually don't support block content in cells
+        element tablecell { inline* }+
       }+
     }?,
     element tbody {
       element tr {
-        element tablecell { block* }+
+        # Pandoc uses block content, but Markdown flavours usually don't support block content in cells
+        element tablecell { inline* }+
       }+
     }
   }

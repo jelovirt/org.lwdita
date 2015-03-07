@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-model href="../../main/resources/ast.rnc" type="application/relax-ng-compact-syntax"?>
+<pandoc>
+  <div>
+    <header level="1" id="bullet_list">Bullet list</header>
+    <div>
+      <para>Hyphen:</para>
+      <bulletlist>
+        <li>
+          <plain>hyphen list list list list list list list list list list list list list list list list list list list list list list list</plain>
+        </li>
+        <li>
+          <plain>list</plain>
+          <bulletlist>
+            <li>
+              <plain>item</plain>
+              <bulletlist>
+                <li>
+                  <plain>four</plain>
+                </li>
+              </bulletlist>
+            </li>
+            <li>
+              <plain>fifth</plain>
+              <bulletlist>
+                <li>
+                  <plain>sixth</plain>
+                </li>
+              </bulletlist>
+            </li>
+          </bulletlist>
+        </li>
+      </bulletlist>
+      <para>Asterix:</para>
+      <bulletlist>
+        <li>
+          <plain>inline <emph>bold</emph> normal</plain>
+          <bulletlist>
+            <li>
+              <plain>inline</plain>
+            </li>
+          </bulletlist>
+        </li>
+        <li>
+          <para>para</para>
+          <bulletlist>
+            <li>
+              <plain>inline</plain>
+            </li>
+          </bulletlist>
+        </li>
+        <li>
+          <para>para</para>
+          <para>para</para>
+        </li>
+        <li>
+          <para>para</para>
+          <para>para - below this will not work</para>
+        </li>
+        <li>
+          <para>para</para>
+          <bulletlist>
+            <li>
+              <plain>para</plain>
+            </li>
+          </bulletlist>
+        </li>
+      </bulletlist>
+    </div>
+  </div>
+</pandoc>

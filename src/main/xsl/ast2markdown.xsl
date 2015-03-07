@@ -19,7 +19,6 @@
 
   <xsl:template match="para" mode="ast">
     <xsl:param name="indent" tunnel="yes" as="xs:string" select="''"/>
-    <!--xsl:value-of select="$indent"/-->
     <xsl:call-template name="process-inline-contents"/>
     <xsl:value-of select="$linefeed"/>
     <xsl:value-of select="$linefeed"/>
@@ -27,6 +26,7 @@
 
   <xsl:template match="plain" mode="ast">
     <xsl:param name="indent" tunnel="yes" as="xs:string" select="''"/>
+    <!-- XXX; why is indent here? -->
     <xsl:value-of select="$indent"/>
     <xsl:call-template name="process-inline-contents"/>
     <xsl:value-of select="$linefeed"/>
@@ -35,7 +35,8 @@
   <xsl:template match="header" mode="ast">
     <xsl:for-each select="1 to xs:integer(@level)">#</xsl:for-each>
     <xsl:text> </xsl:text>
-    <xsl:apply-templates mode="ast"/>
+    <!--xsl:apply-templates mode="ast"/-->
+    <xsl:call-template name="process-inline-contents"/>
     <xsl:call-template name="ast-attibutes"/>
     <xsl:value-of select="$linefeed"/>
     <xsl:value-of select="$linefeed"/>
@@ -143,8 +144,6 @@
     <xsl:apply-templates mode="ast">
       <xsl:with-param name="prefix" tunnel="yes" select="concat($prefix, '> ')"/>
     </xsl:apply-templates>
-    <!--xsl:value-of select="$linefeed"/>
-    <xsl:value-of select="$linefeed"/-->
   </xsl:template>
   
   <xsl:template name="process-inline-contents">
@@ -193,7 +192,8 @@
       <xsl:for-each select="tr">
         <xsl:text>|</xsl:text>
         <xsl:for-each select="tablecell">
-          <xsl:apply-templates mode="ast"/>
+          <!--xsl:apply-templates mode="ast"/-->
+          <xsl:call-template name="process-inline-contents"/>
           <xsl:text>|</xsl:text>
         </xsl:for-each>
         <xsl:value-of select="$linefeed"/>
@@ -333,7 +333,7 @@
   
   <!-- Flatten -->
   
-  <xsl:function name="ast:block-content" as="xs:boolean">
+  <xsl:function name="ast:is-container-block" as="xs:boolean">
     <xsl:param name="node" as="node()"/>
     <xsl:sequence select="$node/self::rawblock or
       $node/self::blockquote or
@@ -381,7 +381,7 @@
     <xsl:choose>
       <xsl:when test="empty(node())"/>
       <xsl:when test="count(*) eq 1 and
-                      (*[ast:block-content(.)]) and 
+                      (*[ast:is-container-block(.)]) and 
                       empty(text()[normalize-space(.)])">
         <xsl:apply-templates mode="flatten"/>
       </xsl:when>
@@ -416,7 +416,7 @@
   </xsl:template>
   
   <!-- wrapper elements -->
-  <xsl:template match="*[ast:block-content(.)]" mode="flatten" priority="10">
+  <xsl:template match="*[ast:is-container-block(.)]" mode="flatten" priority="10">
     <xsl:copy>
       <xsl:apply-templates select="@*" mode="flatten"/>
       <xsl:variable name="first" select="node()[1]" as="node()?"/>

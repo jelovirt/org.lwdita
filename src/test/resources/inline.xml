@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-model href="../../main/resources/ast.rnc" type="application/relax-ng-compact-syntax"?>
+<pandoc>
+  <div>
+    <header level="1" id="test">Test</header>
+    <div>
+      <para>Paragraph <emph>emph</emph> and <strong>strong</strong> or <code>code</code>.</para>
+      <para>This is a very long line. This is a very long line. This is a very long line. This is a very long line. This is a very long line. This is a very long line. This is a very long line. This
+        is a very long line. This is a very long line. This is a very long line. This is a very long line.</para>
+    </div>
+  </div>
+</pandoc>

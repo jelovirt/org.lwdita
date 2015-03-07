@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-model href="../../main/resources/ast.rnc" type="application/relax-ng-compact-syntax"?>
+<pandoc>
+  <div>
+    <header level="1" id="numbered_list">Numbered list</header>
+    <div>
+      <para>Ordered:</para>
+      <orderedlist>
+        <li>
+          <plain>ordered</plain>
+        </li>
+        <li>
+          <plain>list</plain>
+        </li>
+        <li>
+          <plain>item</plain>
+          <orderedlist type="a">
+            <li>
+              <plain>nested</plain>
+            </li>
+            <li>
+              <plain>list</plain>
+            </li>
+          </orderedlist>
+        </li>
+        <li>
+          <plain>foo</plain>
+        </li>
+        <li>
+          <plain>foo</plain>
+        </li>
+        <li>
+          <plain>foo</plain>
+        </li>
+        <li>
+          <plain>foo</plain>
+        </li>
+        <li>
+          <plain>foo</plain>
+        </li>
+        <li>
+          <plain>foo</plain>
+        </li>
+        <li>
+          <plain>foo</plain>
+        </li>
+        <li>
+          <plain>foo</plain>
+        </li>
+        <li>
+          <plain>foo</plain>
+        </li>
+        <li>
+          <plain>foo</plain>
+        </li>
+        <li>
+          <plain>foo</plain>
+        </li>
+        <li>
+          <plain>foo</plain>
+        </li>
+      </orderedlist>
+    </div>
+  </div>
+</pandoc>

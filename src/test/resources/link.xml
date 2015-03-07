@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-model href="../../main/resources/ast.rnc" type="application/relax-ng-compact-syntax"?>
+<pandoc>
+  <div>
+    <header level="1" id="links">Links</header>
+    <div>
+      <para>
+        <link href="test.xml">Markdown</link>
+      </para>
+      <para>
+        <link href="topic.xml">DITA</link>
+      </para>
+      <para>
+        <link href="test.html">HTML</link>
+      </para>
+      <para>
+        <link href="http://www.example.com/test.html">External</link>
+      </para>
+      <para>
+        <span/>
+      </para>
+    </div>
+  </div>
+</pandoc>

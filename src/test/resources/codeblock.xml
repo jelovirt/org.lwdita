@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-model href="../../main/resources/ast.rnc" type="application/relax-ng-compact-syntax"?>
+<pandoc>
+  <div>
+    <header level="1" id="codeblock">Codeblock</header>
+    <div>
+      <para>Code example on <code>for</code> loop:</para>
+      <codeblock xml:space="preserve">for i in items:
+    println(i)
+</codeblock>
+      <para>Fenced block:</para>
+      <codeblock xml:space="preserve" class="scala" id="codeblock__foreach-example">items.foreach(println)
+</codeblock>
+    </div>
+  </div>
+</pandoc>

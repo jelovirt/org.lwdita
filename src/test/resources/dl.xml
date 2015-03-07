@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-model href="../../main/resources/ast.rnc" type="application/relax-ng-compact-syntax"?>
+<pandoc>
+  <div>
+    <header level="1" id="definition_list">Definition list</header>
+    <div>
+      <definitionlist>
+        <dlentry>
+          <dt>Apple</dt>
+          <dd>
+            <para>Pomaceous fruit of plants of the genus Malus in the family Rosaceae.</para>
+          </dd>
+        </dlentry>
+        <dlentry>
+          <dt>Orange Nested</dt>
+          <dd>
+            <para>The fruit of an evergreen tree of the genus Citrus.</para>
+            <para>para</para>
+          </dd>
+        </dlentry>
+      </definitionlist>
+    </div>
+  </div>
+</pandoc>
