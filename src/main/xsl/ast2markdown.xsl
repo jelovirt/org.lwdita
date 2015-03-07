@@ -169,7 +169,7 @@
       <xsl:for-each select="tr">
         <xsl:text>|</xsl:text>
         <xsl:for-each select="tablecell">
-          <xsl:apply-templates mode="ast"/>
+          <xsl:call-template name="process-inline-contents"/>
           <xsl:text>|</xsl:text>
         </xsl:for-each>
         <xsl:value-of select="$linefeed"/>
@@ -177,12 +177,14 @@
       <xsl:for-each select="tr">
         <xsl:text>|</xsl:text>
         <xsl:for-each select="tablecell">
+          <xsl:variable name="colnum" as="xs:integer" select="position()"/>
+          <xsl:variable name="align" select="ancestor::table[1]/col[$colnum]/@align"/>
           <xsl:variable name="content">
-            <xsl:apply-templates mode="ast"/>
+            <xsl:call-template name="process-inline-contents"/>
           </xsl:variable>
-          <xsl:value-of select="if (@align = ('left', 'center')) then ':' else '-'"/>
+          <xsl:value-of select="if ($align = ('left', 'center')) then ':' else '-'"/>
           <xsl:for-each select="3 to string-length($content)">-</xsl:for-each>
-          <xsl:value-of select="if (@align = ('right', 'center')) then ':' else '-'"/>
+          <xsl:value-of select="if ($align = ('right', 'center')) then ':' else '-'"/>
           <xsl:text>|</xsl:text>
         </xsl:for-each>
         <xsl:value-of select="$linefeed"/>
