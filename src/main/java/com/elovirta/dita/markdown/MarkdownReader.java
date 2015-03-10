@@ -8,6 +8,13 @@ import org.pegdown.PegDownProcessor;
 import org.pegdown.ast.RootNode;
 import org.xml.sax.*;
 
+import javax.xml.transform.Templates;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.sax.SAXResult;
+import javax.xml.transform.sax.SAXTransformerFactory;
+import javax.xml.transform.sax.TransformerHandler;
+import javax.xml.transform.stream.StreamSource;
 import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -18,9 +25,26 @@ import java.net.URL;
  */
 public class MarkdownReader implements XMLReader {
 
+    private final PegDownProcessor p;
+    private final SAXTransformerFactory tf;
+    private final Templates t;
+
     private EntityResolver resolver;
     private ContentHandler contentHandler;
     private ErrorHandler errorHandler;
+
+    public MarkdownReader() {
+        p = new PegDownProcessor(Extensions.ALL);
+        try {
+            final URI style = getClass().getResource("/specialize.xsl").toURI();
+            tf = (SAXTransformerFactory) TransformerFactory.newInstance();
+            t = tf.newTemplates(new StreamSource(style.toString()));
+        } catch (final URISyntaxException e) {
+            throw new RuntimeException(e);
+        } catch (TransformerConfigurationException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     @Override
     public boolean getFeature(String name) throws SAXNotRecognizedException, SAXNotSupportedException {
@@ -85,7 +109,6 @@ public class MarkdownReader implements XMLReader {
     @Override
     public void parse(final InputSource input) throws IOException, SAXException {
         final char[] markdownContent = getMarkdownContent(input);
-        final PegDownProcessor p = new PegDownProcessor(Extensions.ALL);
         final RootNode root = p.parseMarkdown(markdownContent);
         parseAST(root);
     }
@@ -134,7 +157,14 @@ public class MarkdownReader implements XMLReader {
     }
 
     private void parseAST(final RootNode root) throws SAXException {
-        final ToDitaSerializer s = new ToDitaSerializer(contentHandler, new LinkRenderer());//verbatimSerializerMap
+        final TransformerHandler h;
+        try {
+            h = tf.newTransformerHandler(t);
+        } catch (final TransformerConfigurationException e) {
+            throw new SAXException(e);
+        }
+        h.setResult(new SAXResult(contentHandler));
+        final ToDitaSerializer s = new ToDitaSerializer(h, new LinkRenderer());//verbatimSerializerMap
         s.toHtml(root);
     }
 

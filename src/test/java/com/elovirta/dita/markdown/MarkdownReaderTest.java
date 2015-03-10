@@ -56,4 +56,19 @@ public class MarkdownReaderTest {
         run("header_attributes.md");
     }
 
+    @Test
+    public void testConcept() throws Exception {
+        run("concept.md");
+    }
+
+    @Test
+    public void testTask() throws Exception {
+        run("task.md");
+    }
+
+    @Test
+    public void testReference() throws Exception {
+        run("reference.md");
+    }
+
 }

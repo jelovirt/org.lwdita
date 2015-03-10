@@ -317,6 +317,10 @@ public class ToDitaSerializer implements Visitor {
     static {
         sections.put(TOPIC_SECTION.localName, TOPIC_SECTION);
         sections.put(TOPIC_EXAMPLE.localName, TOPIC_EXAMPLE);
+        sections.put(TASK_PREREQ.localName, TASK_PREREQ);
+        sections.put(TASK_CONTEXT.localName, TASK_CONTEXT);
+        sections.put(TASK_RESULT.localName, TASK_RESULT);
+        sections.put(TASK_POSTREQ.localName, TASK_POSTREQ);
     }
 
     private static <E> E containsSome(final Collection<E> col, final Collection<E> find) {
