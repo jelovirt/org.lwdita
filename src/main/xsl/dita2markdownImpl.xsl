@@ -219,7 +219,13 @@
       </xsl:choose>
     </xsl:param>
     <header level="{$headinglevel}">
-      <xsl:call-template name="commonattributes"/>
+      <xsl:call-template name="commonattributes">
+        <xsl:with-param name="default-output-class">
+          <xsl:if test="$headinglevel eq 1 and name(..) ne 'topic'">
+            <xsl:value-of select="name(..)"/>
+          </xsl:if>
+        </xsl:with-param>
+      </xsl:call-template>
       <xsl:attribute name="id" select="dita-ot:generate-id(parent::*/@id, @id)"/>
       <xsl:apply-templates/>
     </header>
