@@ -23,6 +23,7 @@ Asterix:
 
     -   inline
 -   para
+
     para
 
 -   para

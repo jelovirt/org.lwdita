@@ -4,7 +4,7 @@
                 exclude-result-prefixes="xs"
                 version="2.0">
   
-  <xsl:import href="../main/xsl/ast2markdown.xsl"/>
+  <xsl:import href="../main/ast2markdown.xsl"/>
   
   <xsl:strip-space elements="*"/>
   <xsl:preserve-space elements="codeblock"/>

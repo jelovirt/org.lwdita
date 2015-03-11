@@ -33,11 +33,16 @@ task dist(type: Zip) {
     from("src/main") {
         include "build_template.xml"
         include "conductor.xml"
-        include "xsl/*.xsl"
         // Template generated files
         exclude "build.xml"
-        exclude "xsl/dita2markdown.xsl"
-        exclude "xsl/map2markdown-cover.xsl"
+    }
+    from("src/main/resources") {
+        include "*.xsl"
+        exclude "specialize.xsl"
+        // Template generated files
+        exclude "dita2markdown.xsl"
+        exclude "map2markdown-cover.xsl"
+        rename '(.*)', 'xsl/$1'
     }
     from(".") {
         include "LICENSE"

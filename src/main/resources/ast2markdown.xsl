@@ -30,7 +30,7 @@
     <xsl:value-of select="$indent"/>
     <xsl:call-template name="process-inline-contents"/>
     <xsl:value-of select="$linefeed"/>
-    <xsl:if test="parent::li and following-sibling::*">
+    <xsl:if test="parent::li and following-sibling::*[not(self::bulletlist | self::orderedlist)]">
       <xsl:value-of select="$linefeed"/>
     </xsl:if>
   </xsl:template>
