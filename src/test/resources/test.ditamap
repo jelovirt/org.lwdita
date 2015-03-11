@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE map PUBLIC "-//OASIS//DTD DITA Map//EN" "map.dtd">
+<map>
+  <keydef keys="key" href="concept.md" format="markdown"/>
+  <keydef keys="image-key" href="test.jpg" format="png"/>
+  <topicref href="codeblock.md" format="markdown"/>
+  <topicref href="dl.md" format="markdown"/>
+  <topicref href="escape.md" format="markdown"/>
+  <topicref href="header.md" format="markdown"/>
+  <topicref href="header_attributes.md" format="markdown"/>
+  <topicref href="image.md" format="markdown"/>
+  <topicref href="inline.md" format="markdown"/>
+  <topicref href="link.md" format="markdown"/>
+  <topicref href="ol.md" format="markdown"/>
+  <topicref href="pandoc_header.md" format="markdown"/>
+  <topicref href="quote.md" format="markdown"/>
+  <topicref href="table.md" format="markdown"/>
+  <topicref href="ul.md" format="markdown"/>
+  <topicref href="concept.md" format="markdown"/>
+  <topicref href="task.md" format="markdown"/>
+  <topicref href="reference.md" format="markdown"/>
+  <topicref href="topic.dita"/>
+</map>

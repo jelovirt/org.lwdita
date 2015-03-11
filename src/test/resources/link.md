@@ -1,7 +1,7 @@
 Links
 =====
 
-[Markdown](test.md)
+[Markdown](concept.md)
 
 [DITA](topic.dita)
 
