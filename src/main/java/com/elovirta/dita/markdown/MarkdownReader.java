@@ -1,7 +1,5 @@
 package com.elovirta.dita.markdown;
 
-import static org.apache.commons.io.IOUtils.*;
-
 import org.pegdown.Extensions;
 import org.pegdown.LinkRenderer;
 import org.pegdown.PegDownProcessor;
@@ -15,10 +13,16 @@ import javax.xml.transform.sax.SAXResult;
 import javax.xml.transform.sax.SAXTransformerFactory;
 import javax.xml.transform.sax.TransformerHandler;
 import javax.xml.transform.stream.StreamSource;
-import java.io.*;
+import java.io.CharArrayWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+
+import static org.apache.commons.io.IOUtils.closeQuietly;
+import static org.apache.commons.io.IOUtils.copy;
 
 /**
  * XMLReader implementation for Markdown.
@@ -39,9 +43,7 @@ public class MarkdownReader implements XMLReader {
             final URI style = getClass().getResource("/specialize.xsl").toURI();
             tf = (SAXTransformerFactory) TransformerFactory.newInstance();
             t = tf.newTemplates(new StreamSource(style.toString()));
-        } catch (final URISyntaxException e) {
-            throw new RuntimeException(e);
-        } catch (TransformerConfigurationException e) {
+        } catch (final URISyntaxException | TransformerConfigurationException e) {
             throw new RuntimeException(e);
         }
     }

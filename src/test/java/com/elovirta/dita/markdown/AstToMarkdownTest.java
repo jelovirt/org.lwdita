@@ -1,14 +1,9 @@
 package com.elovirta.dita.markdown;
 
 import org.junit.Test;
-import org.xml.sax.InputSource;
-import org.xml.sax.helpers.DefaultHandler;
 
-import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.sax.SAXResult;
-import javax.xml.transform.sax.SAXSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 import java.io.*;
@@ -48,7 +43,7 @@ public class AstToMarkdownTest {
         try {
             i = new InputStreamReader(getClass().getResourceAsStream("/" + input));
             char[] buf = new char[1024];
-            int len ;
+            int len;
             while ((len = i.read(buf)) != -1) {
                 o.write(buf, 0, len);
             }

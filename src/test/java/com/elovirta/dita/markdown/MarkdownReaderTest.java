@@ -4,12 +4,10 @@ import org.junit.Test;
 import org.xml.sax.InputSource;
 import org.xml.sax.helpers.DefaultHandler;
 
-import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.sax.SAXResult;
 import javax.xml.transform.sax.SAXSource;
-import javax.xml.transform.stream.StreamResult;
 import java.io.InputStream;
 
 public class MarkdownReaderTest {
@@ -41,12 +39,12 @@ public class MarkdownReaderTest {
         run("pandoc_header.md");
     }
 
-    @Test(expected=ParseException.class)
+    @Test(expected = ParseException.class)
     public void testInvalidHeader() throws Exception {
         run("invalid_header.md");
     }
 
-    @Test(expected=ParseException.class)
+    @Test(expected = ParseException.class)
     public void testInvalidSectionHeader() throws Exception {
         run("invalid_section_header.md");
     }

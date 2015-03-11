@@ -12,7 +12,7 @@ interface ToDitaSerializerPlugin {
     /**
      * Visit the given node
      *
-     * @param node The node to visit
+     * @param node    The node to visit
      * @param visitor The visitor, for delegating back to handling children, etc
      * @param printer The printer to print output to
      * @return true if this plugin knew how to serialize the node, false otherwise

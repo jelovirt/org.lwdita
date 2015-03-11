@@ -1,14 +1,12 @@
 package com.elovirta.dita.markdown;
 
+import com.elovirta.dita.markdown.ToDitaSerializer.Metadata;
 import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.Collections;
-import com.elovirta.dita.markdown.ToDitaSerializer;
-import com.elovirta.dita.markdown.ToDitaSerializer.Metadata;
-import com.elovirta.dita.markdown.ToDitaSerializer.Title;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class ToDitaSerializerTest {
 
