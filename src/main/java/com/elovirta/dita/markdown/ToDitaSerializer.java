@@ -194,7 +194,7 @@ public class ToDitaSerializer implements Visitor {
 
     @Override
     public void visit(final BlockQuoteNode node) {
-        printTag(node, TOPIC_PRE, BLOCKQUOTE_ATTS);
+        printTag(node, TOPIC_LQ, BLOCKQUOTE_ATTS);
     }
 
     @Override
