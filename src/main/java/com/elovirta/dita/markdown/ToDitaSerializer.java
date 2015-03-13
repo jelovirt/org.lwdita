@@ -108,7 +108,7 @@ public class ToDitaSerializer implements Visitor {
                 endElement();
             }
         } catch (final ParseException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             throw new SAXException("Failed to parse Markdown: " + e.getMessage(), e);
         }
         contentHandler.endPrefixMapping(ATTRIBUTE_PREFIX_DITAARCHVERSION);
@@ -749,7 +749,11 @@ public class ToDitaSerializer implements Visitor {
             }
         }
         startElement(PR_D_CODEBLOCK, atts.build());
-        characters(node.getText());
+        String text = node.getText();
+        if (text.endsWith("\n")) {
+            text = text.substring(0, text.length() - 1);
+        }
+        characters(text);
         endElement();
     }
 
@@ -939,7 +943,7 @@ public class ToDitaSerializer implements Visitor {
         try {
             contentHandler.startElement(NULL_NS_URI, tag.localName, tag.localName, atts);
         } catch (final SAXException e) {
-            e.printStackTrace();
+            throw new ParseException(e);
         }
         tagStack.addFirst(tag);
     }
@@ -955,7 +959,7 @@ public class ToDitaSerializer implements Visitor {
         try {
             contentHandler.endElement(NULL_NS_URI, tag.localName, tag.localName);
         } catch (final SAXException e) {
-            e.printStackTrace();
+            throw new ParseException(e);
         }
     }
 
@@ -963,7 +967,7 @@ public class ToDitaSerializer implements Visitor {
         try {
             contentHandler.characters(new char[]{c}, 0, 1);
         } catch (final SAXException e) {
-            e.printStackTrace();
+            throw new ParseException(e);
         }
     }
 
@@ -972,7 +976,7 @@ public class ToDitaSerializer implements Visitor {
         try {
             contentHandler.characters(cs, 0, cs.length);
         } catch (final SAXException e) {
-            e.printStackTrace();
+            throw new ParseException(e);
         }
     }
 
