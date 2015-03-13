@@ -119,9 +119,11 @@ public class ToDitaSerializer implements Visitor {
      * Replace metadata para with actual metadata element. Modifies AST <b>in-place</b>.
      */
     void clean(final RootNode node) {
+        final Map<String, String> metadata = new HashMap<>();
+
+        // read pandoc_title_block
         final Node first = node.getChildren().get(0);
         if (first instanceof ParaNode && toString(first).startsWith("%")) {
-            final Map<String, String> metadata = new HashMap<>();
             final String[] fields = toString(first).split("\n");
             if (fields.length >= 1) {
                 metadata.put("title", fields[0].substring(1));
@@ -132,8 +134,27 @@ public class ToDitaSerializer implements Visitor {
 //            if (fields.length >= 3) {
 //                metadata.put("date", fields[0].substring(1));
 //            }
-            final MetadataNode m = new MetadataNode(metadata.get("title"));
-            node.getChildren().set(0, m);
+        }
+
+        // insert header
+        if (metadata.containsKey("title")) {
+            boolean levelOneFound = false;
+            for (final Node c: node.getChildren()) {
+                if (c instanceof HeaderNode) {
+                    final HeaderNode h = (HeaderNode) c;
+                    if (h.getLevel() == 1) {
+                        levelOneFound = true;
+                        break;
+                    }
+                }
+            }
+            final Node m;
+            if (levelOneFound) {
+                m = new MetadataNode(metadata.get("title"));
+            } else {
+                m = new HeaderNode(1, new TextNode(metadata.get("title")));
+            }
+            node.getChildren(). set(0, m);
         }
     }
 
