@@ -157,8 +157,9 @@
         <xsl:apply-templates mode="ast"/>
       </xsl:value-of>
     </xsl:variable>
+    <xsl:variable name="idnt" select="if (ancestor-or-self::tablecell) then () else $indent" as="xs:string?"/>
     <xsl:for-each select="tokenize($contents, '\n')">
-      <xsl:value-of select="$indent"/>
+      <xsl:value-of select="$idnt"/>  
       <xsl:value-of select="$prefix"/>
       <xsl:value-of select="."/>
       <xsl:if test="position() ne last()">

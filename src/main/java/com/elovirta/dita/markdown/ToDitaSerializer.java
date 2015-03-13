@@ -6,10 +6,6 @@ package com.elovirta.dita.markdown;
 import org.apache.commons.io.FilenameUtils;
 import org.dita.dost.util.DitaClass;
 import org.parboiled.common.StringUtils;
-import org.pegdown.DefaultVerbatimSerializer;
-import org.pegdown.LinkRenderer;
-import org.pegdown.Printer;
-import org.pegdown.VerbatimSerializer;
 import org.pegdown.ast.*;
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
@@ -78,12 +74,9 @@ public class ToDitaSerializer implements Visitor {
     }
 
     private final ContentHandler contentHandler;
-//    private Printer printer = new Printer();
     private final Map<String, ReferenceNode> references = new HashMap<>();
-
     private final Map<String, String> abbreviations = new HashMap<>();
     private TableNode currentTableNode;
-
     private int currentTableColumn;
 
     private final Deque<DitaClass> tagStack = new ArrayDeque<>();
@@ -94,31 +87,9 @@ public class ToDitaSerializer implements Visitor {
      */
     private int headerLevel = 0;
 
-    public ToDitaSerializer(final ContentHandler contentHandler, LinkRenderer linkRenderer) {
-        this(contentHandler, linkRenderer, Collections.<ToDitaSerializerPlugin>emptyList());
-    }
-
-    private ToDitaSerializer(final ContentHandler contentHandler, LinkRenderer linkRenderer, List<ToDitaSerializerPlugin> plugins) {
+    public ToDitaSerializer(final ContentHandler contentHandler) {
         this.contentHandler = contentHandler;
-//        this.linkRenderer = linkRenderer;
-        List<ToDitaSerializerPlugin> plugins1 = plugins;
-        Map<String, VerbatimSerializer> verbatimSerializers = Collections.<String, VerbatimSerializer>singletonMap(VerbatimSerializer.DEFAULT, DefaultVerbatimSerializer.INSTANCE);
     }
-
-    /*
-    public ToDitaSerializer(final LinkRenderer linkRenderer, final Map<String, VerbatimSerializer> verbatimSerializers) {
-        this(linkRenderer, verbatimSerializers, Collections.<ToDitaSerializerPlugin>emptyList());
-    }
-
-    public ToDitaSerializer(final LinkRenderer linkRenderer, final Map<String, VerbatimSerializer> verbatimSerializers, final List<ToDitaSerializerPlugin> plugins) {
-        this.linkRenderer = linkRenderer;
-        this.verbatimSerializers = new HashMap<String, VerbatimSerializer>(verbatimSerializers);
-        if(!this.verbatimSerializers.containsKey(VerbatimSerializer.DEFAULT)) {
-            this.verbatimSerializers.put(VerbatimSerializer.DEFAULT, DefaultVerbatimSerializer.INSTANCE);
-        }
-        this.plugins = plugins;
-    }
-    */
 
     private static Attributes buildAtts(final DitaClass cls) {
         return new AttributesBuilder()
@@ -142,7 +113,6 @@ public class ToDitaSerializer implements Visitor {
         }
         contentHandler.endPrefixMapping(ATTRIBUTE_PREFIX_DITAARCHVERSION);
         contentHandler.endDocument();
-//        return printer.getString();
     }
 
     /**
@@ -441,10 +411,7 @@ public class ToDitaSerializer implements Visitor {
 
     @Override
     public void visit(final HtmlBlockNode node) {
-        String text = node.getText();
-//        if (text.length() > 0) {
-//            printer.println();
-//        }
+        final String text = node.getText();
         characters(text);
     }
 
@@ -697,15 +664,12 @@ public class ToDitaSerializer implements Visitor {
                 break;
             case Left:
                 tableColumnAlignment = "left";
-//                printer.print(" align=\"left\"");
                 break;
             case Right:
                 tableColumnAlignment = "right";
-//                printer.print(" align=\"right\"");
                 break;
             case Center:
                 tableColumnAlignment = "center";
-//                printer.print(" align=\"center\"");
                 break;
             default:
                 throw new ParseException("Unsupported table column alignment: " + node.getAlignment());
@@ -768,8 +732,6 @@ public class ToDitaSerializer implements Visitor {
 
     @Override
     public void visit(final VerbatimNode node) {
-//        final VerbatimSerializer serializer = lookupSerializer(node.getType());
-//        serializer.serialize(node, printer);
         final AttributesBuilder atts = new AttributesBuilder(CODEBLOCK_ATTS);
         if (!StringUtils.isEmpty(node.getType())) {
             final String type = node.getType().trim();
@@ -790,14 +752,6 @@ public class ToDitaSerializer implements Visitor {
         characters(node.getText());
         endElement();
     }
-
-//    private VerbatimSerializer lookupSerializer(final String type) {
-//        if (type != null && verbatimSerializers.containsKey(type)) {
-//            return verbatimSerializers.get(type);
-//        } else {
-//            return verbatimSerializers.get(VerbatimSerializer.DEFAULT);
-//        }
-//    }
 
     @Override
     public void visit(final WikiLinkNode node) {
@@ -865,12 +819,6 @@ public class ToDitaSerializer implements Visitor {
         }
     }
 
-//    private void visitChildren(final SuperNode node) {
-//        for (final Node child : node.getChildren()) {
-//            child.accept(this);
-//        }
-//    }
-
     private void visitChildren(final Node node) {
         for (final Node child : node.getChildren()) {
             child.accept(this);
@@ -918,19 +866,6 @@ public class ToDitaSerializer implements Visitor {
 
         return atts;
     }
-
-//    private void printAttribute(String name, String value) {
-//        printer.print(' ').print(name).print('=').print('"').print(value).print('"');
-//    }
-
-//    private String printChildrenToString(final SuperNode node) {
-//        Printer priorPrinter = printer;
-//        printer = new Printer();
-//        visitChildren(node);
-//        String result = printer.getString();
-//        printer = priorPrinter;
-//        return result;
-//    }
 
     private String normalize(final String string) {
         StringBuilder sb = new StringBuilder();

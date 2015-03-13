@@ -166,7 +166,7 @@ public class MarkdownReader implements XMLReader {
             throw new SAXException(e);
         }
         h.setResult(new SAXResult(contentHandler));
-        final ToDitaSerializer s = new ToDitaSerializer(h, new LinkRenderer());//verbatimSerializerMap
+        final ToDitaSerializer s = new ToDitaSerializer(h);
         s.toHtml(root);
     }
 
