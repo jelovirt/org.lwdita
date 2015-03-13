@@ -168,7 +168,9 @@
   </xsl:template>
   
   <xsl:template match="table" mode="ast">
+    <xsl:param name="indent" tunnel="yes" as="xs:string" select="''"/>
     <xsl:for-each select="thead">
+      <xsl:value-of select="$indent"/>
       <xsl:for-each select="tr">
         <xsl:text>|</xsl:text>
         <xsl:for-each select="tablecell">
@@ -178,6 +180,7 @@
         <xsl:value-of select="$linefeed"/>
       </xsl:for-each>
       <xsl:for-each select="tr">
+        <xsl:value-of select="$indent"/>
         <xsl:text>|</xsl:text>
         <xsl:for-each select="tablecell">
           <xsl:variable name="colnum" as="xs:integer" select="position()"/>
@@ -195,6 +198,7 @@
     </xsl:for-each>
     <xsl:for-each select="tbody">
       <xsl:for-each select="tr">
+        <xsl:value-of select="$indent"/>
         <xsl:text>|</xsl:text>
         <xsl:for-each select="tablecell">
           <!--xsl:apply-templates mode="ast"/-->

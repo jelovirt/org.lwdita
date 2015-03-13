@@ -20,4 +20,5 @@
   <topicref href="task.md" format="markdown"/>
   <topicref href="reference.md" format="markdown"/>
   <topicref href="topic.dita"/>
+  <topicref href="nested.md" format="markdown"/>
 </map>
