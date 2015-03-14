@@ -265,6 +265,12 @@
       <xsl:value-of select="$linefeed"/>
     </xsl:if>
   </xsl:template>
+  
+  <xsl:template match="image[empty(@href) and @keyref]" mode="ast">
+    <xsl:text>![</xsl:text>
+    <xsl:value-of select="@keyref"/>
+    <xsl:text>]</xsl:text>
+  </xsl:template>
 
   <xsl:template match="span" mode="ast">
     <xsl:apply-templates mode="ast"/>
