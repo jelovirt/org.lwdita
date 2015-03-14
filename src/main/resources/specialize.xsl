@@ -85,7 +85,7 @@
     <step class="- topic/li task/step ">
       <xsl:apply-templates select="@* except @class"/>
       <xsl:for-each select="*[1]">
-        <cmd class="- topic/ph task/cmd">
+        <cmd class="- topic/ph task/cmd ">
           <xsl:apply-templates select="@* except @class | node()"/>
         </cmd>
       </xsl:for-each>
