@@ -33,7 +33,7 @@ Install
 1.  Run plug-in installation command
 
     ~~~~ {.sh}
-    dita -install https://github.com/jelovirt/dita-ot-markdown/releases/download/0.6.0/com.elovirta.dita.markdown_0.6.0.zip
+    dita -install https://github.com/jelovirt/dita-ot-markdown/releases/download/1.0.0/com.elovirta.dita.markdown_1.0.0.zip
     ~~~~
 
 The `dita` command line tool requires no additional configuration;
@@ -69,4 +69,4 @@ Support this project and others by [@jelovirt](https://github.com/jelovirt) via 
 License
 -------
 
-The DITA Open Toolkit is licensed for use under the [Apache License 2.0](http://www.apache.org/licenses/LICENSE-2.0).
+DITA-OT Markdown is licensed for use under the [Apache License 2.0](http://www.apache.org/licenses/LICENSE-2.0).
