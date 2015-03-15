@@ -17,7 +17,6 @@ public class AstToMarkdownTest {
         InputStream ri = null;
         try {
             final URI style = getClass().getResource("/ast.xsl").toURI();
-            System.err.println(style.toString());
             final Transformer t = TransformerFactory.newInstance().newTransformer(new StreamSource(style.toString()));
             ri = getClass().getResourceAsStream("/" + input);
             final StringWriter o = new StringWriter();

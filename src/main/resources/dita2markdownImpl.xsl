@@ -94,10 +94,7 @@
 
   <!-- Define the error message prefix identifier -->
   <xsl:variable name="msgprefix">DOTX</xsl:variable>
-  
-  
-  <xsl:variable name="HTML_ID_SEPARATOR" select="'__'"/>
-  
+    
   <!-- these elements are never processed in a conventional presentation. can be overridden. -->
   <xsl:template match="*[contains(@class, ' topic/no-topic-nesting ')]"/>
 
@@ -180,7 +177,7 @@
           </xsl:if>
         </xsl:with-param>
       </xsl:call-template>
-      <xsl:attribute name="id" select="dita-ot:generate-id(parent::*/@id, @id)"/>
+      <xsl:attribute name="id" select="../@id"/>
       <xsl:apply-templates/>
     </header>
   </xsl:template>
@@ -577,7 +574,6 @@
   <!-- handle all levels thru browser processing -->
   <xsl:template match="*[contains(@class, ' topic/ul ')]" name="topic.ul">
     <xsl:apply-templates select="*[contains(@class, ' ditaot-d/ditaval-startprop ')]" mode="out-of-line"/>
-    <xsl:call-template name="setaname"/>
     <bulletlist>
       <xsl:call-template name="commonattributes"/>
       <xsl:apply-templates select="@compact"/>
@@ -591,7 +587,6 @@
   <!-- handle all levels thru browser processing -->
   <xsl:template match="*[contains(@class, ' topic/sl ')]" name="topic.sl">
     <xsl:apply-templates select="*[contains(@class, ' ditaot-d/ditaval-startprop ')]" mode="out-of-line"/>
-    <xsl:call-template name="setaname"/>
     <ul class="simple">
       <xsl:call-template name="commonattributes">
         <xsl:with-param name="default-output-class" select="'simple'"/>
@@ -608,7 +603,6 @@
   <xsl:template match="*[contains(@class, ' topic/ol ')]" name="topic.ol">
     <xsl:variable name="olcount" select="count(ancestor-or-self::*[contains(@class, ' topic/ol ')])"/>
     <xsl:apply-templates select="*[contains(@class, ' ditaot-d/ditaval-startprop ')]" mode="out-of-line"/>
-    <xsl:call-template name="setaname"/>
     <orderedlist>
       <xsl:call-template name="commonattributes"/>
       <xsl:apply-templates select="@compact"/>
@@ -696,7 +690,6 @@
   
   <!-- DL -->
   <xsl:template match="*[contains(@class, ' topic/dl ')]" name="topic.dl">
-    <xsl:call-template name="setaname"/>
     <xsl:apply-templates select="*[contains(@class, ' ditaot-d/ditaval-startprop ')]" mode="out-of-line"/>
     <definitionlist>
       <!-- handle DL compacting - default=yes -->
@@ -734,7 +727,7 @@
       <xsl:choose>
         <xsl:when test="$is-first-dt and exists(../@id) and exists(@id)">
           <xsl:call-template name="setidaname"/>
-          <link id="{dita-ot:get-prefixed-id(.., ../@id)}"/> 
+          <link id="{../@id}"/> 
         </xsl:when>
         <xsl:when test="$is-first-dt and exists(../@id) and empty(@id)">
           <xsl:for-each select="..">
@@ -1486,7 +1479,6 @@
 
 <xsl:template name="dotable">
   <xsl:apply-templates select="*[contains(@class, ' ditaot-d/ditaval-startprop ')]" mode="out-of-line"/>
-  <xsl:call-template name="setaname"/>
   <table>
     <xsl:call-template name="setid"/>
     <xsl:call-template name="commonattributes"/>
@@ -1851,7 +1843,6 @@
     </xsl:variable>
     <xsl:call-template name="spec-title"/>
     <xsl:apply-templates select="*[contains(@class, ' ditaot-d/ditaval-startprop ')]" mode="out-of-line"/>
-    <xsl:call-template name="setaname"/>
     <table>
      <xsl:call-template name="setid"/>
       <xsl:call-template name="commonattributes"/>
@@ -2211,26 +2202,12 @@
 
 <!-- ================= COMMON ATTRIBUTE PROCESSORS ====================== -->
 
-  <xsl:function name="dita-ot:generate-id" as="xs:string">
-    <xsl:param name="topic" as="xs:string?"/>
-    <xsl:param name="element" as="xs:string?"/>
-    
-    <xsl:value-of select="string-join(($topic, $element), $HTML_ID_SEPARATOR)"/>
-  </xsl:function>
-
-<xsl:function name="dita-ot:get-prefixed-id" as="xs:string">
-  <xsl:param name="element" as="element()"/>
-  <xsl:param name="id" as="xs:string"/>
-
-  <xsl:sequence select="dita-ot:generate-id($element/ancestor::*[contains(@class, ' topic/body ')][1]/parent::*/@id, $id)"/>
-</xsl:function>
-
 <xsl:function name="dita-ot:generate-html-id" as="xs:string">
   <xsl:param name="element" as="element()"/>
 
   <xsl:sequence
     select="if (exists($element/@id))
-          then dita-ot:get-prefixed-id($element, $element/@id)
+          then $element/@id
           else generate-id($element)"/>
 </xsl:function>
 
@@ -2239,9 +2216,6 @@
 <xsl:template name="setidaname">
  <xsl:if test="@id">
   <xsl:call-template name="setidattr">
-   <xsl:with-param name="idvalue" select="@id"/>
-  </xsl:call-template>
-  <xsl:call-template name="setanametag">
    <xsl:with-param name="idvalue" select="@id"/>
   </xsl:call-template>
  </xsl:if>
@@ -2256,24 +2230,10 @@
  </xsl:if>
 </xsl:template>
 
-<!-- Set A-name only -->
-<xsl:template name="setaname">
- <xsl:if test="@id">
-  <xsl:call-template name="setanametag">
-   <xsl:with-param name="idvalue" select="@id"/>
-  </xsl:call-template>
- </xsl:if>
-</xsl:template>
-
 <!-- Set the ID attr for IE -->
 <xsl:template name="setidattr">
   <xsl:param name="idvalue"/>
-  <xsl:attribute name="id" select="dita-ot:get-prefixed-id($idvalue/parent::*, $idvalue)"/>
-</xsl:template>
-
-<!-- Legacy named template for generating HTML4 anchors -->
-<xsl:template name="setanametag">
-  <xsl:param name="idvalue"/>
+  <xsl:attribute name="id" select="$idvalue"/>
 </xsl:template>
 
 <!-- Create & insert an ID for the generated table of contents -->
@@ -2544,8 +2504,9 @@
     </xsl:param>
     <header level="{$headLevel}">
       <xsl:call-template name="commonattributes">
-        <xsl:with-param name="default-output-class" select="'section'"/>
+        <xsl:with-param name="default-output-class" select="name(..)"/>
       </xsl:call-template>
+      <xsl:copy-of select="../@id"/>
       <xsl:apply-templates/>
     </header>
   </xsl:template>
@@ -2940,12 +2901,7 @@
     <xsl:apply-templates select="." mode="chapterBody"/>
   </xsl:template>
   <xsl:template match="*" mode="chapterBody">
-    <!--body>
-      <xsl:apply-templates select="." mode="addAttributesToHtmlBodyElement"/>
-      <xsl:call-template name="setaname"/-->
-      
-      <xsl:apply-templates select="." mode="addContentToHtmlBodyElement"/>
-    <!--/body-->
+    <xsl:apply-templates select="." mode="addContentToHtmlBodyElement"/>
   </xsl:template>
 
   <!-- Add all attributes. To add your own additional attributes, use mode="addAttributesToBody". -->

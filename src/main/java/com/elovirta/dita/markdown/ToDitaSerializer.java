@@ -337,8 +337,10 @@ public class ToDitaSerializer implements Visitor {
             }
             final DitaClass cls = sections.get(section);
             final AttributesBuilder atts = new AttributesBuilder()
-                    .add(ATTRIBUTE_NAME_CLASS, cls.toString())
-                    .add(ATTRIBUTE_NAME_ID, header.id);
+                    .add(ATTRIBUTE_NAME_CLASS, cls.toString());
+            if (header.id != null) {
+                atts.add(ATTRIBUTE_NAME_ID, header.id);
+            }
             final Collection<String> classes = new ArrayList<>(header.classes);
             classes.removeAll(sections.keySet());
             if (!classes.isEmpty()) {
@@ -359,7 +361,7 @@ public class ToDitaSerializer implements Visitor {
             headerLevel = node.getLevel();
 
             final AttributesBuilder atts = new AttributesBuilder(TOPIC_ATTS)
-                    .add(ATTRIBUTE_NAME_ID, header.id);
+                    .add(ATTRIBUTE_NAME_ID, header.id != null ? header.id : getId(header.title));
             if (!header.classes.isEmpty()) {
                 atts.add("outputclass", StringUtils.join(header.classes, " "));
             }
@@ -411,20 +413,22 @@ public class ToDitaSerializer implements Visitor {
                 if (m.group(2) != null) {
                     final Metadata metadata = Metadata.parse(m.group(2));
                     classes.addAll(metadata.classes);
-                    id = metadata.id != null ? metadata.id : getId(title);
+                    id = metadata.id; // != null ? metadata.id : getId(title);
                 } else {
-                    id = getId(title);
+//                    id = getId(title);
+                    id = null;
                 }
             } else {
                 title = contents;
-                id = getId(contents);
+//                id = getId(contents);
+                id = null;
             }
         }
     }
 
-    private String getId(final HeaderNode node) {
-        return getId(toString(node));
-    }
+//    private String getId(final HeaderNode node) {
+//        return getId(toString(node));
+//    }
 
     private static String getId(final String contents) {
         return contents.toLowerCase().replaceAll("[^\\w]", " ").trim().replaceAll("\\s+", "_");
