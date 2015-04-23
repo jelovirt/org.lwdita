@@ -7,7 +7,7 @@ DITA-OT Markdown plug-in contains
     Markdown DITA as a source document format,
 -   and a transtype to generate Markdown from DITA source.
 
-The DITA Markdown files need to use a subset of Markdown constructs for
+The Markdown DITA files need to use a subset of Markdown constructs for
 compatibility with DITA content models.
 
 Requirements
