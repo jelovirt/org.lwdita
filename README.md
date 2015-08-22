@@ -62,9 +62,7 @@ See [Syntax reference](https://github.com/jelovirt/dita-ot-markdown/wiki/Syntax-
 Donating
 --------
 
-Support this project and others by [@jelovirt](https://github.com/jelovirt) via Gratipay.
-
-[![Support via Gratipay](https://cdn.rawgit.com/gratipay/gratipay-badge/2.3.0/dist/gratipay.png)](https://gratipay.com/jelovirt/)
+Support this project and others by [@jelovirt](https://github.com/jelovirt) via [Paypal](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=jarno%40elovirta%2ecom&lc=FI&item_name=Jarno%20Elovirta&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donate_LG%2egif%3aNonHosted).
 
 License
 -------
