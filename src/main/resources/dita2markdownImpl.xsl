@@ -1836,9 +1836,9 @@
       </xsl:variable>
       <xsl:sequence select="max($count-per-row)"/>
     </xsl:variable>
-    <xsl:variable name="relcolwidth" as="xs:integer*">
+    <xsl:variable name="relcolwidth" as="xs:double*">
       <xsl:for-each select="tokenize(normalize-space(translate(@relcolwidth, '*', '')), '\s+')">
-        <xsl:sequence select="xs:integer(.)"/>
+        <xsl:sequence select="xs:double(.)"/>
       </xsl:for-each>
     </xsl:variable>
     <xsl:call-template name="spec-title"/>
