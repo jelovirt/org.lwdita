@@ -396,8 +396,8 @@
   <xsl:template match="*" mode="process.note.common-processing">
     <xsl:param name="type" select="@type"/>
     <xsl:param name="title">
-      <xsl:call-template name="getString">
-        <xsl:with-param name="stringName" select="concat(upper-case(substring($type, 1, 1)),
+      <xsl:call-template name="getVariable">
+        <xsl:with-param name="id" select="concat(upper-case(substring($type, 1, 1)),
                                                          substring($type, 2))"/>
       </xsl:call-template>
     </xsl:param>
@@ -410,8 +410,8 @@
       <xsl:apply-templates select="*[contains(@class, ' ditaot-d/ditaval-startprop ')]/prop" mode="ditaval-outputflag"/>
       <strong>
         <xsl:value-of select="$title"/>
-        <xsl:call-template name="getString">
-          <xsl:with-param name="stringName" select="'ColonSymbol'"/>
+        <xsl:call-template name="getVariable">
+          <xsl:with-param name="id" select="'ColonSymbol'"/>
         </xsl:call-template>
       </strong>
       <xsl:text> </xsl:text>
@@ -488,11 +488,11 @@
       <xsl:call-template name="setidaname"/>
       <!-- Normal flags go before the generated title; revision flags only go on the content. -->
       <xsl:apply-templates select="*[contains(@class, ' ditaot-d/ditaval-startprop ')]/prop" mode="ditaval-outputflag"/>
-      <xsl:call-template name="getString">
-        <xsl:with-param name="stringName" select="'Caution'"/>
+      <xsl:call-template name="getVariable">
+        <xsl:with-param name="id" select="'Caution'"/>
       </xsl:call-template>
-      <xsl:call-template name="getString">
-        <xsl:with-param name="stringName" select="'ColonSymbol'"/>
+      <xsl:call-template name="getVariable">
+        <xsl:with-param name="id" select="'ColonSymbol'"/>
       </xsl:call-template>
     </div>
     <div>
@@ -513,8 +513,8 @@
      <xsl:call-template name="setidaname"/>
      <!-- Normal flags go before the generated title; revision flags only go on the content. -->
      <xsl:apply-templates select="*[contains(@class, ' ditaot-d/ditaval-startprop ')]/prop" mode="ditaval-outputflag"/>
-     <xsl:call-template name="getString">
-       <xsl:with-param name="stringName" select="'Danger'"/>
+     <xsl:call-template name="getVariable">
+       <xsl:with-param name="id" select="'Danger'"/>
      </xsl:call-template>
    </div>
    <div>
@@ -957,12 +957,12 @@
      <xsl:call-template name="commonattributes">
        <xsl:with-param name="default-output-class">q</xsl:with-param>
      </xsl:call-template>
-     <xsl:call-template name="getString">
-       <xsl:with-param name="stringName" select="'OpenQuote'"/>
+     <xsl:call-template name="getVariable">
+       <xsl:with-param name="id" select="'OpenQuote'"/>
      </xsl:call-template>
      <xsl:apply-templates/>
-     <xsl:call-template name="getString">
-       <xsl:with-param name="stringName" select="'CloseQuote'"/>
+     <xsl:call-template name="getVariable">
+       <xsl:with-param name="id" select="'CloseQuote'"/>
      </xsl:call-template>
    </span>
  </xsl:template>
@@ -2119,11 +2119,11 @@
       <xsl:call-template name="commonattributes"/>
       <xsl:call-template name="setidaname"/>
       <strong>
-        <xsl:call-template name="getString">
-         <xsl:with-param name="stringName" select="'Required cleanup'"/>
+        <xsl:call-template name="getVariable">
+         <xsl:with-param name="id" select="'Required cleanup'"/>
        </xsl:call-template>
-       <xsl:call-template name="getString">
-        <xsl:with-param name="stringName" select="'ColonSymbol'"/>
+       <xsl:call-template name="getVariable">
+        <xsl:with-param name="id" select="'ColonSymbol'"/>
        </xsl:call-template>
         <xsl:text> </xsl:text>
       </strong>
@@ -2140,11 +2140,11 @@
      <xsl:call-template name="commonattributes"/>
      <xsl:call-template name="setidaname"/>
      <strong>
-       <xsl:call-template name="getString">
-        <xsl:with-param name="stringName" select="'Draft comment'"/>
+       <xsl:call-template name="getVariable">
+        <xsl:with-param name="id" select="'Draft comment'"/>
       </xsl:call-template>
-      <xsl:call-template name="getString">
-        <xsl:with-param name="stringName" select="'ColonSymbol'"/>
+      <xsl:call-template name="getVariable">
+        <xsl:with-param name="id" select="'ColonSymbol'"/>
        </xsl:call-template>
        <xsl:text> </xsl:text>
      </strong>
@@ -2589,8 +2589,8 @@
   <xsl:template name="gen-toc">
     <div>
       <header class="sectiontitle">
-        <xsl:call-template name="getString">
-          <xsl:with-param name="stringName" select="'Contents'"/>
+        <xsl:call-template name="getVariable">
+          <xsl:with-param name="id" select="'Contents'"/>
         </xsl:call-template>
       </header>
        <bulletlist>
@@ -2642,7 +2642,7 @@
 
  <!-- table caption -->
  <xsl:template name="place-tbl-lbl">
- <xsl:param name="stringName"/>
+ <xsl:param name="id"/>
    <!-- Number of table/title's before this one -->
    <xsl:variable name="tbl-count-actual" select="count(preceding::*[contains(@class, ' topic/table ')]/*[contains(@class, ' topic/title ')])+1"/>
  
@@ -2660,14 +2660,14 @@
            <xsl:when test="$ancestorlang = ('hu', 'hu-hu')">
              <xsl:value-of select="$tbl-count-actual"/>
              <xsl:text>. </xsl:text>
-             <xsl:call-template name="getString">
-               <xsl:with-param name="stringName" select="'Table'"/>
+             <xsl:call-template name="getVariable">
+               <xsl:with-param name="id" select="'Table'"/>
               </xsl:call-template>
              <xsl:text> </xsl:text>
            </xsl:when>
            <xsl:otherwise>
-             <xsl:call-template name="getString">
-               <xsl:with-param name="stringName" select="'Table'"/>
+             <xsl:call-template name="getVariable">
+               <xsl:with-param name="id" select="'Table'"/>
               </xsl:call-template>
              <xsl:text> </xsl:text>
              <xsl:value-of select="$tbl-count-actual"/>
@@ -2718,7 +2718,7 @@
 
  <!-- Figure caption -->
  <xsl:template name="place-fig-lbl">
- <xsl:param name="stringName"/>
+ <xsl:param name="id"/>
    <!-- Number of fig/title's including this one -->
    <xsl:variable name="fig-count-actual" select="count(preceding::*[contains(@class, ' topic/fig ')]/*[contains(@class, ' topic/title ')])+1"/>
    <xsl:variable name="ancestorlang">
@@ -2732,14 +2732,14 @@
          <xsl:when test="$ancestorlang = ('hu', 'hu-hu')">
           <xsl:value-of select="$fig-count-actual"/>
           <xsl:text>. </xsl:text>
-          <xsl:call-template name="getString">
-           <xsl:with-param name="stringName" select="'Figure'"/>
+          <xsl:call-template name="getVariable">
+           <xsl:with-param name="id" select="'Figure'"/>
           </xsl:call-template>
           <xsl:text> </xsl:text>
          </xsl:when>
          <xsl:otherwise>
-          <xsl:call-template name="getString">
-           <xsl:with-param name="stringName" select="'Figure'"/>
+          <xsl:call-template name="getVariable">
+           <xsl:with-param name="id" select="'Figure'"/>
           </xsl:call-template>
           <xsl:text> </xsl:text>
           <xsl:value-of select="$fig-count-actual"/>
@@ -2847,8 +2847,8 @@
       <meta name="copyright">
         <xsl:attribute name="content">
           <xsl:text>(C) </xsl:text>
-          <xsl:call-template name="getString">
-            <xsl:with-param name="stringName" select="'Copyright'"/>
+          <xsl:call-template name="getVariable">
+            <xsl:with-param name="id" select="'Copyright'"/>
           </xsl:call-template>
           <xsl:text> </xsl:text>
           <xsl:value-of select="$YEAR"/>
@@ -2857,8 +2857,8 @@
       <meta name="DC.rights.owner">
         <xsl:attribute name="content">
           <xsl:text>(C) </xsl:text>
-          <xsl:call-template name="getString">
-            <xsl:with-param name="stringName" select="'Copyright'"/>
+          <xsl:call-template name="getVariable">
+            <xsl:with-param name="id" select="'Copyright'"/>
           </xsl:call-template>
           <xsl:text> </xsl:text><xsl:value-of select="$YEAR"/>
         </xsl:attribute>

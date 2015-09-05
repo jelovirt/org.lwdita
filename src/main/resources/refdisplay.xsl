@@ -22,8 +22,8 @@
            <th valign="bottom">           
              <xsl:attribute name="id"><xsl:value-of select="generate-id(parent::*)"/>-type</xsl:attribute>
              <xsl:call-template name="th-align"/>
-             <xsl:call-template name="getString">
-               <xsl:with-param name="stringName" select="'Type'"/>
+             <xsl:call-template name="getVariable">
+               <xsl:with-param name="id" select="'Type'"/>
              </xsl:call-template>
            </th>
          </xsl:when>
@@ -38,8 +38,8 @@
            <th valign="bottom">           
              <xsl:attribute name="id"><xsl:value-of select="generate-id(parent::*)"/>-value</xsl:attribute>
              <xsl:call-template name="th-align"/>
-             <xsl:call-template name="getString">
-               <xsl:with-param name="stringName" select="'Value'"/>
+             <xsl:call-template name="getVariable">
+               <xsl:with-param name="id" select="'Value'"/>
              </xsl:call-template>
            </th>
          </xsl:when>
@@ -54,8 +54,8 @@
            <th valign="bottom">           
              <xsl:attribute name="id"><xsl:value-of select="generate-id(parent::*)"/>-desc</xsl:attribute>
              <xsl:call-template name="th-align"/>
-             <xsl:call-template name="getString">
-               <xsl:with-param name="stringName" select="'Description'"/>
+             <xsl:call-template name="getVariable">
+               <xsl:with-param name="id" select="'Description'"/>
              </xsl:call-template>
            </th>
          </xsl:when>
@@ -96,24 +96,24 @@
         <xsl:if test="../*/*[contains(@class,' reference/proptype ')]">
           <th id="{generate-id(parent::*)}-type" valign="bottom">
             <xsl:call-template name="th-align"/>
-            <xsl:call-template name="getString">
-              <xsl:with-param name="stringName" select="'Type'"/>
+            <xsl:call-template name="getVariable">
+              <xsl:with-param name="id" select="'Type'"/>
             </xsl:call-template>
           </th>
         </xsl:if>
         <xsl:if test="../*/*[contains(@class,' reference/propvalue ')]">
           <th id="{generate-id(parent::*)}-value" valign="bottom">
             <xsl:call-template name="th-align"/>
-            <xsl:call-template name="getString">
-              <xsl:with-param name="stringName" select="'Value'"/>
+            <xsl:call-template name="getVariable">
+              <xsl:with-param name="id" select="'Value'"/>
             </xsl:call-template>
           </th>
         </xsl:if>
         <xsl:if test="../*/*[contains(@class,' reference/propdesc ')]">
           <th id="{generate-id(parent::*)}-desc" valign="bottom">
             <xsl:call-template name="th-align"/>
-            <xsl:call-template name="getString">
-              <xsl:with-param name="stringName" select="'Description'"/>
+            <xsl:call-template name="getVariable">
+              <xsl:with-param name="id" select="'Description'"/>
             </xsl:call-template>
           </th>
         </xsl:if>
@@ -292,8 +292,8 @@
     <xsl:if test="normalize-space(string-join($links, ''))">
       <linklist class="- topic/linklist " outputclass="relinfo relref">
         <title class="- topic/title ">
-          <xsl:call-template name="getString">
-            <xsl:with-param name="stringName" select="'Related reference'"/>
+          <xsl:call-template name="getVariable">
+            <xsl:with-param name="id" select="'Related reference'"/>
           </xsl:call-template>
         </title>
         <xsl:copy-of select="$links"/>
