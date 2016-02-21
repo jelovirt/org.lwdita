@@ -408,7 +408,9 @@ Each child is indented, the linktext is bold, and the shortdesc appears in norma
         <xsl:with-param name="id" select="'ColonSymbol'"/>
       </xsl:call-template>
     </strong>
-    <xsl:text> </xsl:text>
+    <span>
+      <xsl:text> </xsl:text>
+    </span>
     <xsl:call-template name="makelink"/>
   </xsl:template>
 
@@ -423,7 +425,9 @@ Each child is indented, the linktext is bold, and the shortdesc appears in norma
         <xsl:with-param name="id" select="'ColonSymbol'"/>
       </xsl:call-template>
     </strong>
-    <xsl:text> </xsl:text>
+    <span>
+      <xsl:text> </xsl:text>
+    </span>
     <xsl:call-template name="makelink"/>
   </xsl:template>
 
@@ -438,7 +442,9 @@ Each child is indented, the linktext is bold, and the shortdesc appears in norma
         <xsl:with-param name="id" select="'ColonSymbol'"/>
       </xsl:call-template>
     </strong>
-    <xsl:text> </xsl:text>
+    <span>
+      <xsl:text> </xsl:text>
+    </span>
     <xsl:call-template name="makelink"/>
   </xsl:template>
 

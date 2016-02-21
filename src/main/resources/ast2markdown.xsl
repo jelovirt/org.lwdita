@@ -316,7 +316,14 @@
     <xsl:if test="preceding-sibling::node() and matches(., '^\s') and $normalized">
       <xsl:text> </xsl:text>
     </xsl:if>
-    <xsl:value-of select="$normalized"/>
+    <xsl:choose>
+      <xsl:when test="string-length(.) gt 0 and string-length($normalized) eq 0">
+        <xsl:text> </xsl:text>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="$normalized"/>
+      </xsl:otherwise>
+    </xsl:choose>
     <xsl:if test="following-sibling::node() and matches(., '\s$') and $normalized">
       <xsl:text> </xsl:text>
     </xsl:if>
