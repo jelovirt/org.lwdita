@@ -3,6 +3,7 @@
   <!-- DITA to Markdown -->
   <transtype name="markdown" desc="Markdown"/>
   <transtype name="markdown_github" desc="GitHub-flavored Markdown"/>
+  <transtype name="markdown_gitbook" desc="GitBook"/>
   <feature extension="dita.conductor.target.relative" file="conductor.xml"/>
   <template file="build_template.xml"/>
   <template file="xsl/dita2markdown_template.xsl"/>
