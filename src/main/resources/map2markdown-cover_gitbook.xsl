@@ -5,7 +5,7 @@
   <xsl:import href="map2markdown-cover.xsl"/>
 
   <xsl:template match="*[contains(@class, ' map/map ')]" mode="chapterBody">
-    <header level="1">SUMMARY</header>
+    <header level="1">Summary</header>
 
     <xsl:apply-templates select="*[contains(@class, ' ditaot-d/ditaval-startprop ')]/@outputclass" mode="add-ditaval-style"/>
     <xsl:apply-templates select="." mode="toc"/>
