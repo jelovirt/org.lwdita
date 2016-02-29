@@ -38,6 +38,11 @@
         <isset property="args.markdown.toc" />
       </not>
     </condition>
+    <condition property="args.rellinks" value="nofamily">
+      <not>
+        <isset property="args.rellinks" />
+      </not>
+    </condition>
   </target>
     
   <target name="dita2markdown"
