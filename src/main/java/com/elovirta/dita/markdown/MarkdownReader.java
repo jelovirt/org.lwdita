@@ -38,7 +38,7 @@ public class MarkdownReader implements XMLReader {
     private ErrorHandler errorHandler;
 
     public MarkdownReader() {
-        p = new PegDownProcessor(Extensions.ALL);
+        p = new PegDownProcessor(Extensions.ALL - Extensions.SMARTYPANTS);
         try {
             final URI style = getClass().getResource("/specialize.xsl").toURI();
             tf = (SAXTransformerFactory) TransformerFactory.newInstance();
