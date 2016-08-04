@@ -205,6 +205,11 @@ public class ToDitaSerializer implements Visitor {
     }
 
     @Override
+    public void visit(AnchorLinkNode node) {
+        throw new UnsupportedOperationException(node.toString());
+    }
+
+    @Override
     public void visit(final AutoLinkNode node) {
         final AttributesBuilder atts = getLinkAttributes(node.getText());
 
