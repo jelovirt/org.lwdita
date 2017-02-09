@@ -11,13 +11,13 @@
   <template file="xsl/map2markdown-cover_template.xsl"/>  
   <!-- Markdown to DITA -->
   <feature extension="dita.conductor.lib.import" file="markdown-${version}.jar"/>
-  <feature extension="dita.conductor.lib.import" file="pegdown-1.4.2.jar"/>
-  <feature extension="dita.conductor.lib.import" file="asm-analysis-4.1.jar"/>
-  <feature extension="dita.conductor.lib.import" file="asm-tree-4.1.jar"/>
-  <feature extension="dita.conductor.lib.import" file="asm-util-4.1.jar"/>
-  <feature extension="dita.conductor.lib.import" file="asm-4.1.jar"/>
-  <feature extension="dita.conductor.lib.import" file="parboiled-core-1.1.6.jar"/>
-  <feature extension="dita.conductor.lib.import" file="parboiled-java-1.1.6.jar"/>
+  <feature extension="dita.conductor.lib.import" file="pegdown-1.6.0.jar"/>
+  <feature extension="dita.conductor.lib.import" file="asm-analysis-5.0.3.jar"/>
+  <feature extension="dita.conductor.lib.import" file="asm-tree-5.0.3.jar"/>
+  <feature extension="dita.conductor.lib.import" file="asm-util-5.0.3.jar"/>
+  <feature extension="dita.conductor.lib.import" file="asm-5.0.3.jar"/>
+  <feature extension="dita.conductor.lib.import" file="parboiled-core-1.1.7.jar"/>
+  <feature extension="dita.conductor.lib.import" file="parboiled-java-1.1.7.jar"/>
   <feature extension="dita.parser">
     <parser format="markdown" class="com.elovirta.dita.markdown.MarkdownReader"/>
   </feature>
