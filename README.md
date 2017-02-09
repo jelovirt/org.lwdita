@@ -10,38 +10,6 @@ DITA-OT Markdown plug-in contains
 The Markdown DITA files need to use a subset of Markdown constructs for
 compatibility with DITA content models.
 
-Requirements
-------------
-
-DITA-OT 2.1 is required. Earlier versions of DITA-OT do not have the
-required extension points.
-
-Build
------
-
-1.  To build the DITA-OT Markdown plug-in for local testing, first install the DITA-OT distribution JAR file dependencies by running `gradle install` from your clone of the [DITA-OT repository](https://github.com/dita-ot/dita-ot).
-    The required dependencies are installed to a local Maven repository in your home directory under `.m2/repository/org/dita-ot/dost/`. 
-2.  Run the Gradle distribution task to generate the plug-in distribution package:
-
-    ~~~~ {.sh}
-    ./gradlew dist
-    ~~~~
-
-    The distribution ZIP file is generated under `build/distributions`.
-
-Install
--------
-
-1.  Run the plug-in installation command:
-
-    ~~~~ {.sh}
-    dita -install https://github.com/jelovirt/dita-ot-markdown/releases/download/1.1.0/com.elovirta.dita.markdown_1.1.0.zip
-    ~~~~
-
-The `dita` command line tool requires no additional configuration;
-running DITA-OT using Ant requires adding plug-in contributed JAR files
-to `CLASSPATH` with e.g. `-lib plugins/com.elovirta.dita.markdown`.
-
 Usage
 -----
 
@@ -70,6 +38,40 @@ The DITA-OT Markdown plug-in extends the DITA Open Toolkit with additional outpu
 * To generate [GitHub Flavored Markdown](https://help.github.com/categories/writing-on-github/) files, use the `markdown_github` transtype.
 
 * To publish GitHub Flavored Markdown and generate a  `SUMMARY.md` table of contents file for publication via [GitBook](https://www.gitbook.com), use the `markdown_gitbook` transtype.
+
+Requirements
+------------
+
+DITA-OT 2.1 is required. Earlier versions of DITA-OT do not have the
+required extension points.
+
+Install
+-------
+
+1.  Run the plug-in installation command:
+
+    ~~~~ {.sh}
+    dita -install https://github.com/jelovirt/dita-ot-markdown/releases/download/1.1.0/com.elovirta.dita.markdown_1.1.0.zip
+    ~~~~
+
+The `dita` command line tool requires no additional configuration;
+running DITA-OT using Ant requires adding plug-in contributed JAR files
+to `CLASSPATH` with e.g. `-lib plugins/com.elovirta.dita.markdown`.
+
+Build
+-----
+
+To build the DITA-OT Markdown plug-in:
+
+1.  Install the DITA-OT distribution JAR file dependencies by running `gradle install` from your clone of the [DITA-OT repository](https://github.com/dita-ot/dita-ot).
+    The required dependencies are installed to a local Maven repository in your home directory under `.m2/repository/org/dita-ot/dost/`. 
+2.  Run the Gradle distribution task to generate the plug-in distribution package:
+
+    ~~~~ {.sh}
+    ./gradlew dist
+    ~~~~
+
+    The distribution ZIP file is generated under `build/distributions`.
 
 Donating
 --------
