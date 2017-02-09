@@ -61,7 +61,7 @@ to `CLASSPATH` with e.g. `-lib plugins/com.elovirta.dita.markdown`.
 Build
 -----
 
-To build the DITA-OT Markdown plug-in:
+To build the DITA-OT Markdown plug-in from source:
 
 1.  Install the DITA-OT distribution JAR file dependencies by running `gradle install` from your clone of the [DITA-OT repository](https://github.com/dita-ot/dita-ot).
     The required dependencies are installed to a local Maven repository in your home directory under `.m2/repository/org/dita-ot/dost/`. 
