@@ -886,11 +886,11 @@ public class ToDitaSerializer implements Visitor {
                 format = null;
                 break;
             default:
-                format = ext;
+                format = !ext.isEmpty() ? ext : "html";
                 break;
         }
         if (format != null) {
-            atts.add(ATTRIBUTE_NAME_FORMAT, ext);
+            atts.add(ATTRIBUTE_NAME_FORMAT, format);
         }
 
         final URI uri = toURI(href);
