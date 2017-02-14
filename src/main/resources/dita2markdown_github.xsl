@@ -6,4 +6,24 @@
   
   <xsl:template name="ast-attibutes"/>
   
+  <xsl:template match="*[contains(@class, ' topic/dl ')]">
+    <xsl:variable name="ul" as="element()">
+      <ul class="- topic/ul ">
+        <xsl:for-each select="*[contains(@class, ' topic/dlentry ')]">
+          <li class="- topic/li ">
+            <b class="+ topic/ph hi-d/b ">
+              <xsl:copy-of select="*[contains(@class, ' topic/dt ')]/node()"/>
+            </b>
+            <xsl:for-each select="*[contains(@class, ' topic/dd ')]">
+              <p class="- topic/p ">
+                <xsl:copy-of select="node()"/>
+              </p>
+            </xsl:for-each>
+          </li>
+        </xsl:for-each>
+      </ul>
+    </xsl:variable>
+    <xsl:apply-templates select="$ul"/>
+  </xsl:template>
+  
 </xsl:stylesheet>
