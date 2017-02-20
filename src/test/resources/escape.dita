@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
-<topic id="escape">
-  <title>Escape</title>
-  <body>
-    <p>Asterisk * bracket [foo].</p>
-    <p>\`*_{}[]()&gt;#+-.!</p>
+<topic xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/" class="- topic/topic "
+  domains="(topic abbrev-d)                            a(props deliveryTarget)                            (topic equation-d)                            (topic hazard-d)                            (topic hi-d)                            (topic indexing-d)                            (topic markup-d)                            (topic mathml-d)                            (topic pr-d)                            (topic relmgmt-d)                            (topic sw-d)                            (topic svg-d)                            (topic ui-d)                            (topic ut-d)                            (topic markup-d xml-d)   "
+  id="escape" ditaarch:DITAArchVersion="1.3">
+  <title class="- topic/title ">Escape</title>
+  <body class="- topic/body ">
+    <p class="- topic/p ">Asterisk * bracket [foo].</p>
+    <p class="- topic/p ">\`*_{}[]()&gt;#+-.!</p>
   </body>
 </topic>

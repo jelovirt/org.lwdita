@@ -1,17 +1,21 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
-<topic id="quote">
-  <title>Quote</title>
-  <body>
-    <lq><p>This is email
-And so it this</p><p>Again.</p></lq>
-    <ul>
-      <li>
-        <p>List</p>
-        <lq><p>Quote in list</p></lq>
+<topic xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/" class="- topic/topic "
+  domains="(topic abbrev-d)                            a(props deliveryTarget)                            (topic equation-d)                            (topic hazard-d)                            (topic hi-d)                            (topic indexing-d)                            (topic markup-d)                            (topic mathml-d)                            (topic pr-d)                            (topic relmgmt-d)                            (topic sw-d)                            (topic svg-d)                            (topic ui-d)                            (topic ut-d)                            (topic markup-d xml-d)   "
+  id="quote" ditaarch:DITAArchVersion="1.3">
+  <title class="- topic/title ">Quote</title>
+  <body class="- topic/body ">
+    <lq class="- topic/lq ">
+      <p class="- topic/p ">This is email And so it this</p>
+      <p class="- topic/p ">Again.</p>
+    </lq>
+    <ul class="- topic/ul ">
+      <li class="- topic/li ">
+        <p class="- topic/p ">List</p>
+        <lq class="- topic/lq ">
+          <p class="- topic/p ">Quote in list</p>
+        </lq>
       </li>
-      <li>
-        <p>Second list</p>
+      <li class="- topic/li ">
+        <p class="- topic/p ">Second list</p>
       </li>
     </ul>
   </body>

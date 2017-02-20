@@ -1,0 +1,7 @@
+<concept xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/"
+  class="- topic/topic concept/concept " id="concept">
+  <title class="- topic/title ">Concept </title>
+  <conbody class="- topic/body concept/conbody ">
+    <p class="- topic/p ">This is a concept.</p>
+  </conbody>
+</concept>

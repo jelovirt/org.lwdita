@@ -1,0 +1,9 @@
+<reference xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/"
+  class="- topic/topic reference/reference " id="reference">
+  <title class="- topic/title ">Reference </title>
+  <refbody class="- topic/body reference/refbody ">
+    <section class="- topic/section ">
+      <p class="- topic/p ">This is reference.</p>
+    </section>
+  </refbody>
+</reference>

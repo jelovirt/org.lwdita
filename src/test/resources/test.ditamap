@@ -1,24 +1,22 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE map PUBLIC "-//OASIS//DTD DITA Map//EN" "map.dtd">
-<map>
-  <keydef keys="key" href="concept.md" format="markdown"/>
-  <keydef keys="image-key" href="test.jpg" format="png"/>
-  <topicref href="codeblock.md" format="markdown"/>
-  <topicref href="dl.md" format="markdown"/>
-  <topicref href="escape.md" format="markdown"/>
-  <topicref href="header.md" format="markdown"/>
-  <topicref href="header_attributes.md" format="markdown"/>
-  <topicref href="image.md" format="markdown"/>
-  <topicref href="inline.md" format="markdown"/>
-  <topicref href="link.md" format="markdown"/>
-  <topicref href="ol.md" format="markdown"/>
-  <topicref href="pandoc_header.md" format="markdown"/>
-  <topicref href="quote.md" format="markdown"/>
-  <topicref href="table.md" format="markdown"/>
-  <topicref href="ul.md" format="markdown"/>
-  <topicref href="concept.md" format="markdown"/>
-  <topicref href="task.md" format="markdown"/>
-  <topicref href="reference.md" format="markdown"/>
-  <topicref href="topic.dita"/>
-  <topicref href="nested.md" format="markdown"/>
+<map xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/" class="- map/map " domains="(map mapgroup-d)                            (topic abbrev-d)                            (topic delay-d)                            a(props deliveryTarget)                            (map ditavalref-d)                            (map glossref-d)                            (topic hazard-d)                            (topic hi-d)                            (topic indexing-d)                            (topic markup-d)                            (topic pr-d)                            (topic relmgmt-d)                            (topic sw-d)                            (topic ui-d)                            (topic ut-d)                            (topic markup-d xml-d)   " ditaarch:DITAArchVersion="1.3">
+  <keydef class="+ map/topicref mapgroup-d/keydef " format="markdown" href="concept.md" keys="key" processing-role="resource-only"></keydef>
+  <keydef class="+ map/topicref mapgroup-d/keydef " format="png" href="test.jpg" keys="image-key" processing-role="resource-only"></keydef>
+  <topicref class="- map/topicref " format="markdown" href="codeblock.md"></topicref>
+  <topicref class="- map/topicref " format="markdown" href="dl.md"></topicref>
+  <topicref class="- map/topicref " format="markdown" href="escape.md"></topicref>
+  <topicref class="- map/topicref " format="markdown" href="header.md"></topicref>
+  <topicref class="- map/topicref " format="markdown" href="header_attributes.md"></topicref>
+  <topicref class="- map/topicref " format="markdown" href="image.md"></topicref>
+  <topicref class="- map/topicref " format="markdown" href="inline.md"></topicref>
+  <topicref class="- map/topicref " format="markdown" href="link.md"></topicref>
+  <topicref class="- map/topicref " format="markdown" href="ol.md"></topicref>
+  <topicref class="- map/topicref " format="markdown" href="pandoc_header.md"></topicref>
+  <topicref class="- map/topicref " format="markdown" href="quote.md"></topicref>
+  <topicref class="- map/topicref " format="markdown" href="table.md"></topicref>
+  <topicref class="- map/topicref " format="markdown" href="ul.md"></topicref>
+  <topicref class="- map/topicref " format="markdown" href="concept.md"></topicref>
+  <topicref class="- map/topicref " format="markdown" href="task.md"></topicref>
+  <topicref class="- map/topicref " format="markdown" href="reference.md"></topicref>
+  <topicref class="- map/topicref " href="topic.dita"></topicref>
+  <topicref class="- map/topicref " format="markdown" href="nested.md"></topicref>
 </map>

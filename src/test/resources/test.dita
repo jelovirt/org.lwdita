@@ -1,0 +1,147 @@
+<topic xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/"
+       class="- topic/topic "
+       id="test">
+  <title class="- topic/title ">Test</title>
+  <body class="- topic/body ">
+    <p class="- topic/p ">Paragraph <i class="+ topic/ph hi-d/i ">test</i> and <b class="+ topic/ph hi-d/b ">list</b>:</p>
+    <ul class="- topic/ul ">
+      <li class="- topic/li ">hyphen</li>
+      <li class="- topic/li ">list</li>
+      <li class="- topic/li ">item</li>
+      <li class="- topic/li ">
+        <p class="- topic/p ">asterix</p>
+        <ul class="- topic/ul ">
+          <li class="- topic/li ">list</li>
+        </ul>
+      </li>
+      <li class="- topic/li ">item<ul class="- topic/ul ">
+        <li class="- topic/li ">nested</li>
+      </ul>
+      </li>
+    </ul>
+    <ol class="- topic/ol ">
+      <li class="- topic/li ">ordered</li>
+      <li class="- topic/li ">list</li>
+      <li class="- topic/li ">item<ol class="- topic/ol ">
+        <li class="- topic/li ">nested</li>
+        <li class="- topic/li ">list</li>
+      </ol>
+      </li>
+    </ol>
+    <section class="- topic/section ">
+      <title class="- topic/title ">Codeblock </title>
+      <p class="- topic/p ">Code example on <codeph class="+ topic/ph pr-d/codeph ">for</codeph> loop:</p>
+      <codeblock class="+ topic/pre pr-d/codeblock ">for i in items:
+        println(i)</codeblock>
+      <p class="- topic/p ">Fenced block:</p>
+      <codeblock class="+ topic/pre pr-d/codeblock " id="foreach-example" outputclass="scala">items.foreach(println)</codeblock>
+    </section>
+  </body>
+  <topic class="- topic/topic " id="tables">
+    <title class="- topic/title ">Tables</title>
+    <body class="- topic/body ">
+      <table class="- topic/table ">
+        <title class="- topic/title ">simple_table</title>
+        <tgroup class="- topic/tgroup " cols="3">
+          <colspec align="left" class="- topic/colspec " colname="col1"/>
+          <colspec align="center" class="- topic/colspec " colname="col2"/>
+          <colspec align="right" class="- topic/colspec " colname="col3"/>
+          <thead class="- topic/thead ">
+            <row class="- topic/row ">
+              <entry align="left" class="- topic/entry ">First Header </entry>
+              <entry align="center" class="- topic/entry ">Second Header </entry>
+              <entry align="right" class="- topic/entry ">Third Header </entry>
+            </row>
+          </thead>
+          <tbody class="- topic/tbody ">
+            <row class="- topic/row ">
+              <entry align="left" class="- topic/entry ">First row </entry>
+              <entry align="center" class="- topic/entry ">Data </entry>
+              <entry align="right" class="- topic/entry ">Very long data entry </entry>
+            </row>
+            <row class="- topic/row ">
+              <entry align="left" class="- topic/entry ">Second row </entry>
+              <entry align="center" class="- topic/entry ">
+                <b class="+ topic/ph hi-d/b ">Cell</b>
+              </entry>
+              <entry align="right" class="- topic/entry ">
+                <i class="+ topic/ph hi-d/i ">Cell</i>
+              </entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+      <table class="- topic/table ">
+        <title class="- topic/title ">Prototype table]<xref class="- topic/xref " keyref="reference_table"/>
+        </title>
+        <tgroup class="- topic/tgroup " cols="3">
+          <colspec class="- topic/colspec " colname="col1"/>
+          <colspec align="center" class="- topic/colspec " colname="col2"/>
+          <colspec align="right" class="- topic/colspec " colname="col3"/>
+          <thead class="- topic/thead ">
+            <row class="- topic/row ">
+              <entry class="- topic/entry "> </entry>
+              <entry align="center" class="- topic/entry " nameend="col3" namest="col2">Grouping </entry>
+            </row>
+            <row class="- topic/row ">
+              <entry class="- topic/entry ">First Header </entry>
+              <entry align="center" class="- topic/entry ">Second Header </entry>
+              <entry align="right" class="- topic/entry ">Third Header </entry>
+            </row>
+          </thead>
+          <tbody class="- topic/tbody ">
+            <row class="- topic/row ">
+              <entry class="- topic/entry ">Content </entry>
+              <entry align="center" class="- topic/entry " nameend="col3" namest="col2">
+                <i class="+ topic/ph hi-d/i ">Long Cell</i>
+              </entry>
+            </row>
+            <row class="- topic/row ">
+              <entry class="- topic/entry ">Content </entry>
+              <entry align="center" class="- topic/entry ">
+                <b class="+ topic/ph hi-d/b ">Cell</b>
+              </entry>
+              <entry align="right" class="- topic/entry ">Cell </entry>
+            </row>
+            <row class="- topic/row ">
+              <entry class="- topic/entry ">New section </entry>
+              <entry align="center" class="- topic/entry ">More </entry>
+              <entry align="right" class="- topic/entry ">Data </entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </body>
+  </topic>
+  <topic class="- topic/topic " id="links">
+    <title class="- topic/title ">Links</title>
+    <body class="- topic/body ">
+      <ul class="- topic/ul ">
+        <li class="- topic/li ">
+          <xref class="- topic/xref " href="test.md">Markdown</xref>
+        </li>
+        <li class="- topic/li ">
+          <xref class="- topic/xref " href="test.dita">DITA</xref>
+        </li>
+        <li class="- topic/li ">
+          <xref class="- topic/xref " format="html" href="test.html">HTML</xref>
+        </li>
+        <li class="- topic/li ">
+          <xref class="- topic/xref " format="html" href="http://www.example.com/test.html"
+                scope="external">External</xref>
+        </li>
+      </ul>
+    </body>
+  </topic>
+  <topic class="- topic/topic " id="keys">
+    <title class="- topic/title ">Keys</title>
+    <body class="- topic/body ">
+      <p class="- topic/p ">This is <xref class="- topic/xref " href="test.md">an example</xref> reference-style link.</p>
+      <p class="- topic/p ">This is <xref class="- topic/xref " href="test.md">key-a</xref> reference-style link.</p>
+      <p class="- topic/p ">This is <xref class="- topic/xref " href="test.md">Markdown</xref> reference-style link.</p>
+      <p class="- topic/p ">This is <xref class="- topic/xref " href="test.md">Markdown</xref> reference-style link.</p>
+      <p class="- topic/p ">This is <xref class="- topic/xref " keyref="key-missing">an example</xref> reference-style link.</p>
+      <p class="- topic/p ">This is <xref class="- topic/xref " keyref="key-missing"/> reference-style link.</p>
+    </body>
+  </topic>
+</topic>

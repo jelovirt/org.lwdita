@@ -1,33 +1,47 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
-<topic id="root">
-  <title> Root</title>
-  <topic id="a">
-    <title>A</title>
-    <body/>
-    <topic id="a_1">
-      <title>A.1</title>
-      <body/>
-      <topic id="a_1_a">
-        <title>A.1.a</title>
-        <body/>
-        <topic id="a_1_a_i">
-          <title>A.1.a.I</title>
-          <body/>
+<topic xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/" class="- topic/topic "
+  domains="(topic abbrev-d)                            a(props deliveryTarget)                            (topic equation-d)                            (topic hazard-d)                            (topic hi-d)                            (topic indexing-d)                            (topic markup-d)                            (topic mathml-d)                            (topic pr-d)                            (topic relmgmt-d)                            (topic sw-d)                            (topic svg-d)                            (topic ui-d)                            (topic ut-d)                            (topic markup-d xml-d)   "
+  id="root" ditaarch:DITAArchVersion="1.3">
+  <title class="- topic/title "> Root</title>
+  <topic class="- topic/topic "
+    domains="(topic abbrev-d)                            a(props deliveryTarget)                            (topic equation-d)                            (topic hazard-d)                            (topic hi-d)                            (topic indexing-d)                            (topic markup-d)                            (topic mathml-d)                            (topic pr-d)                            (topic relmgmt-d)                            (topic sw-d)                            (topic svg-d)                            (topic ui-d)                            (topic ut-d)                            (topic markup-d xml-d)   "
+    id="a" ditaarch:DITAArchVersion="1.3">
+    <title class="- topic/title ">A</title>
+    <body class="- topic/body "/>
+    <topic class="- topic/topic "
+      domains="(topic abbrev-d)                            a(props deliveryTarget)                            (topic equation-d)                            (topic hazard-d)                            (topic hi-d)                            (topic indexing-d)                            (topic markup-d)                            (topic mathml-d)                            (topic pr-d)                            (topic relmgmt-d)                            (topic sw-d)                            (topic svg-d)                            (topic ui-d)                            (topic ut-d)                            (topic markup-d xml-d)   "
+      id="a_1" ditaarch:DITAArchVersion="1.3">
+      <title class="- topic/title ">A.1</title>
+      <body class="- topic/body "/>
+      <topic class="- topic/topic "
+        domains="(topic abbrev-d)                            a(props deliveryTarget)                            (topic equation-d)                            (topic hazard-d)                            (topic hi-d)                            (topic indexing-d)                            (topic markup-d)                            (topic mathml-d)                            (topic pr-d)                            (topic relmgmt-d)                            (topic sw-d)                            (topic svg-d)                            (topic ui-d)                            (topic ut-d)                            (topic markup-d xml-d)   "
+        id="a_1_a" ditaarch:DITAArchVersion="1.3">
+        <title class="- topic/title ">A.1.a</title>
+        <body class="- topic/body "/>
+        <topic class="- topic/topic "
+          domains="(topic abbrev-d)                            a(props deliveryTarget)                            (topic equation-d)                            (topic hazard-d)                            (topic hi-d)                            (topic indexing-d)                            (topic markup-d)                            (topic mathml-d)                            (topic pr-d)                            (topic relmgmt-d)                            (topic sw-d)                            (topic svg-d)                            (topic ui-d)                            (topic ut-d)                            (topic markup-d xml-d)   "
+          id="a_1_a_i" ditaarch:DITAArchVersion="1.3">
+          <title class="- topic/title ">A.1.a.I</title>
+          <body class="- topic/body "/>
         </topic>
       </topic>
     </topic>
-    <topic id="a_2">
-      <title>A.2</title>
-      <body/>
+    <topic class="- topic/topic "
+      domains="(topic abbrev-d)                            a(props deliveryTarget)                            (topic equation-d)                            (topic hazard-d)                            (topic hi-d)                            (topic indexing-d)                            (topic markup-d)                            (topic mathml-d)                            (topic pr-d)                            (topic relmgmt-d)                            (topic sw-d)                            (topic svg-d)                            (topic ui-d)                            (topic ut-d)                            (topic markup-d xml-d)   "
+      id="a_2" ditaarch:DITAArchVersion="1.3">
+      <title class="- topic/title ">A.2</title>
+      <body class="- topic/body "/>
     </topic>
   </topic>
-  <topic id="b">
-    <title>B</title>
-    <body/>
-    <topic id="b_1">
-      <title>B.1</title>
-      <body/>
+  <topic class="- topic/topic "
+    domains="(topic abbrev-d)                            a(props deliveryTarget)                            (topic equation-d)                            (topic hazard-d)                            (topic hi-d)                            (topic indexing-d)                            (topic markup-d)                            (topic mathml-d)                            (topic pr-d)                            (topic relmgmt-d)                            (topic sw-d)                            (topic svg-d)                            (topic ui-d)                            (topic ut-d)                            (topic markup-d xml-d)   "
+    id="b" ditaarch:DITAArchVersion="1.3">
+    <title class="- topic/title ">B</title>
+    <body class="- topic/body "/>
+    <topic class="- topic/topic "
+      domains="(topic abbrev-d)                            a(props deliveryTarget)                            (topic equation-d)                            (topic hazard-d)                            (topic hi-d)                            (topic indexing-d)                            (topic markup-d)                            (topic mathml-d)                            (topic pr-d)                            (topic relmgmt-d)                            (topic sw-d)                            (topic svg-d)                            (topic ui-d)                            (topic ut-d)                            (topic markup-d xml-d)   "
+      id="b_1" ditaarch:DITAArchVersion="1.3">
+      <title class="- topic/title ">B.1</title>
+      <body class="- topic/body "/>
     </topic>
   </topic>
 </topic>

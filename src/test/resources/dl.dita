@@ -1,18 +1,19 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
-<topic id="definition_list">
-  <title>Definition list</title>
-  <body>
-    <dl>
-      <dlentry>
-        <dt>Apple</dt>
-        <dd>Pomaceous fruit of plants of the genus Malus in the family Rosaceae.</dd>
+<topic xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/" class="- topic/topic "
+  domains="(topic abbrev-d)                            a(props deliveryTarget)                            (topic equation-d)                            (topic hazard-d)                            (topic hi-d)                            (topic indexing-d)                            (topic markup-d)                            (topic mathml-d)                            (topic pr-d)                            (topic relmgmt-d)                            (topic sw-d)                            (topic svg-d)                            (topic ui-d)                            (topic ut-d)                            (topic markup-d xml-d)   "
+  id="definition_list" ditaarch:DITAArchVersion="1.3">
+  <title class="- topic/title ">Definition list</title>
+  <body class="- topic/body ">
+    <dl class="- topic/dl ">
+      <dlentry class="- topic/dlentry ">
+        <dt class="- topic/dt ">Apple</dt>
+        <dd class="- topic/dd ">Pomaceous fruit of plants of the genus Malus in the family
+          Rosaceae.</dd>
       </dlentry>
-      <dlentry>
-        <dt>Orange Nested</dt>
-        <dd>
-          <p>The fruit of an evergreen tree of the genus Citrus.</p>
-          <p>para</p>
+      <dlentry class="- topic/dlentry ">
+        <dt class="- topic/dt ">Orange Nested</dt>
+        <dd class="- topic/dd ">
+          <p class="- topic/p ">The fruit of an evergreen tree of the genus Citrus.</p>
+          <p class="- topic/p ">para</p>
         </dd>
       </dlentry>
     </dl>

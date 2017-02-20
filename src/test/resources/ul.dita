@@ -1,34 +1,38 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
-<topic id="bullet_list">
-  <title>Bullet list</title>
-  <body>
-    <p>Hyphen:</p>
-    <ul>
-      <li>hyphen list list list list list list list list list list list list list list list list list list list list list list list</li>
-      <li>list<ul><li>item<ul><li>four</li></ul></li><li>fifth<ul><li>sixth</li></ul></li></ul></li>
+<topic xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/" class="- topic/topic "
+  domains="(topic abbrev-d)                            a(props deliveryTarget)                            (topic equation-d)                            (topic hazard-d)                            (topic hi-d)                            (topic indexing-d)                            (topic markup-d)                            (topic mathml-d)                            (topic pr-d)                            (topic relmgmt-d)                            (topic sw-d)                            (topic svg-d)                            (topic ui-d)                            (topic ut-d)                            (topic markup-d xml-d)   "
+  id="bullet_list" ditaarch:DITAArchVersion="1.3">
+  <title class="- topic/title ">Bullet list</title>
+  <body class="- topic/body ">
+    <p class="- topic/p ">Hyphen:</p>
+    <ul class="- topic/ul ">
+      <li class="- topic/li ">hyphen list list list list list list list list list list list list
+        list list list list list list list list list list list</li>
+      <li class="- topic/li ">list<ul class="- topic/ul "><li class="- topic/li ">item<ul
+              class="- topic/ul "><li class="- topic/li ">four</li></ul></li><li class="- topic/li "
+              >fifth<ul class="- topic/ul "><li class="- topic/li ">sixth</li></ul></li></ul></li>
     </ul>
-    <p>Asterix:</p>
-    <ul>
-      <li>inline <i>bold</i> normal<ul><li>inline</li></ul></li>
-      <li>
-        <p>para</p>
-        <ul>
-          <li>inline</li>
+    <p class="- topic/p ">Asterix:</p>
+    <ul class="- topic/ul ">
+      <li class="- topic/li ">inline <i class="+ topic/ph hi-d/i ">bold</i> normal<ul
+          class="- topic/ul "><li class="- topic/li ">inline</li></ul></li>
+      <li class="- topic/li ">
+        <p class="- topic/p ">para</p>
+        <ul class="- topic/ul ">
+          <li class="- topic/li ">inline</li>
         </ul>
       </li>
-      <li>
-        <p>para</p>
-        <p>para</p>
+      <li class="- topic/li ">
+        <p class="- topic/p ">para</p>
+        <p class="- topic/p ">para</p>
       </li>
-      <li>
-        <p>para</p>
-        <p>para - below this will not work</p>
+      <li class="- topic/li ">
+        <p class="- topic/p ">para</p>
+        <p class="- topic/p ">para - below this will not work</p>
       </li>
-      <li>
-        <p>para</p>
-        <ul>
-          <li>para</li>
+      <li class="- topic/li ">
+        <p class="- topic/p ">para</p>
+        <ul class="- topic/ul ">
+          <li class="- topic/li ">para</li>
         </ul>
       </li>
     </ul>
