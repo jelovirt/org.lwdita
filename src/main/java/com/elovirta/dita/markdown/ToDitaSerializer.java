@@ -345,6 +345,8 @@ public class ToDitaSerializer implements Visitor {
                     .add(ATTRIBUTE_NAME_CLASS, cls.toString());
             if (header.id != null) {
                 atts.add(ATTRIBUTE_NAME_ID, header.id);
+            } else {
+                atts.add(ATTRIBUTE_NAME_ID, getId(header.title));
             }
             final Collection<String> classes = new ArrayList<>(header.classes);
             classes.removeAll(sections.keySet());
@@ -365,8 +367,12 @@ public class ToDitaSerializer implements Visitor {
             }
             headerLevel = node.getLevel();
 
-            final AttributesBuilder atts = new AttributesBuilder(TOPIC_ATTS)
-                    .add(ATTRIBUTE_NAME_ID, header.id != null ? header.id : getId(header.title));
+            final AttributesBuilder atts = new AttributesBuilder(TOPIC_ATTS);
+            if (header.id != null) {
+                atts.add(ATTRIBUTE_NAME_ID, header.id);
+            } else {
+                atts.add(ATTRIBUTE_NAME_ID, getId(header.title));
+            }
             if (!header.classes.isEmpty()) {
                 atts.add("outputclass", StringUtils.join(header.classes, " "));
             }

@@ -28,7 +28,7 @@
       </ol>
       </li>
     </ol>
-    <section class="- topic/section ">
+    <section class="- topic/section " id="codeblock">
       <title class="- topic/title ">Codeblock </title>
       <p class="- topic/p ">Code example on <codeph class="+ topic/ph pr-d/codeph ">for</codeph> loop:</p>
       <codeblock class="+ topic/pre pr-d/codeblock ">for i in items:

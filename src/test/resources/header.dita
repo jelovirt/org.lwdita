@@ -13,7 +13,7 @@
       id="a_1_a" ditaarch:DITAArchVersion="1.3">
       <title class="- topic/title ">A.1.a</title>
       <body class="- topic/body ">
-        <section class="- topic/section "><!-- id="a_1_a_i"-->
+        <section class="- topic/section " id="a_1_a_i">
           <title class="- topic/title ">A.1.a.I </title>
         </section>
         <example class="- topic/example " id="example">
