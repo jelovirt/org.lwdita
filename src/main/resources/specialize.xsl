@@ -113,12 +113,19 @@
   <!-- common -->
   
   <xsl:template match="topic/@outputclass">
-    <xsl:variable name="classes" select="tokenize(., '\s+')[. ne $type]" as="xs:string*"/>
-    <xsl:if test="exists($classes)">
-      <xsl:attribute name="{name()}">
-        <xsl:value-of select="$classes" separator=" "/>
-      </xsl:attribute>
-    </xsl:if>
+    <xsl:choose>
+      <xsl:when test="exists($type)">
+        <xsl:variable name="classes" select="tokenize(., '\s+')[. ne $type]" as="xs:string*"/>
+        <xsl:if test="exists($classes)">
+          <xsl:attribute name="{name()}">
+            <xsl:value-of select="$classes" separator=" "/>
+          </xsl:attribute>
+        </xsl:if>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:next-match/>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
   <xsl:template match="@* | node()" priority="-10">
