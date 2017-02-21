@@ -269,18 +269,29 @@ public class ToDitaSerializer implements Visitor {
 
     @Override
     public void visit(final ExpImageNode node) {
-        final AttributesBuilder atts = new AttributesBuilder(IMAGE_ATTS)
-                .add(ATTRIBUTE_NAME_HREF, node.url);
+        writeImage(node, node.title, null, node.url, null);
+    }
 
-        if (!node.title.isEmpty()) {
+    private void writeImage(SuperNode node, final String title, final String alt, final String url, final String key) {
+        final AttributesBuilder atts = new AttributesBuilder(IMAGE_ATTS)
+                .add(ATTRIBUTE_NAME_HREF, url);
+        if (key != null) {
+            atts.add(ATTRIBUTE_NAME_KEYREF, key);
+        }
+
+        if (!title.isEmpty()) {
             startElement(TOPIC_FIG, FIG_ATTS);
             startElement(TOPIC_TITLE, TITLE_ATTS);
-            characters(node.title);
+            characters(title);
             endElement();
             startElement(TOPIC_IMAGE, atts.build());
             if (hasChildren(node)) {
                 startElement(TOPIC_ALT, ALT_ATTS);
-                visitChildren(node);
+                if (alt != null) {
+                    characters(alt);
+                } else {
+                    visitChildren(node);
+                }
                 endElement();
             }
             endElement();
@@ -290,7 +301,11 @@ public class ToDitaSerializer implements Visitor {
             startElement(TOPIC_IMAGE, atts.build());
             if (hasChildren(node)) {
                 startElement(TOPIC_ALT, ALT_ATTS);
-                visitChildren(node);
+                if (alt != null) {
+                    characters(alt);
+                } else {
+                    visitChildren(node);
+                }
                 endElement();
             }
             endElement();
@@ -298,7 +313,11 @@ public class ToDitaSerializer implements Visitor {
             startElement(TOPIC_IMAGE, atts.build());
             if (hasChildren(node)) {
                 startElement(TOPIC_ALT, ALT_ATTS);
-                visitChildren(node);
+                if (alt != null) {
+                    characters(alt);
+                } else {
+                    visitChildren(node);
+                }
                 endElement();
             }
             endElement();
@@ -546,15 +565,7 @@ public class ToDitaSerializer implements Visitor {
             }
             endElement();
         } else {
-            final Attributes atts = new AttributesBuilder(IMAGE_ATTS)
-                    .add(ATTRIBUTE_NAME_HREF, refNode.getUrl())
-                    .build();
-            startElement(TOPIC_IMAGE, atts);
-            startElement(TOPIC_ALT, ALT_ATTS);
-            //characters(refNode.getTitle());
-            visitChildren(refNode);
-            endElement();
-            endElement();
+            writeImage(refNode, refNode.getTitle(), text, refNode.getUrl(), key);
         }
     }
 

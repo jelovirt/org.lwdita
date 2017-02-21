@@ -15,15 +15,11 @@
       </image>
     </fig>
     <image class="- topic/image " keyref="image-key"/>
-    <!-- FIXME -->
-    <!--fig class="- topic/fig ">
+    <fig class="- topic/fig ">
       <title class="- topic/title ">Title</title>
-      <image class="- topic/image " keyref="img_id" placement="inline">
+      <image class="- topic/image " href="test.jpg" keyref="img_id">
         <alt class="- topic/alt ">Alt</alt>
       </image>
-    </fig-->
-    <image class="- topic/image " href="test.jpg">
-      <alt class="- topic/alt ">img_id</alt>
-    </image>
+    </fig>
   </body>
 </topic>
