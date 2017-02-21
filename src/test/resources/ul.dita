@@ -7,32 +7,41 @@
     <ul class="- topic/ul ">
       <li class="- topic/li ">hyphen list list list list list list list list list list list list
         list list list list list list list list list list list</li>
-      <li class="- topic/li ">list<ul class="- topic/ul "><li class="- topic/li ">item<ul
-              class="- topic/ul "><li class="- topic/li ">four</li></ul></li><li class="- topic/li "
-              >fifth<ul class="- topic/ul "><li class="- topic/li ">sixth</li></ul></li></ul></li>
+      <li class="- topic/li ">list<ul class="- topic/ul ">
+          <li class="- topic/li ">item<ul class="- topic/ul ">
+              <li class="- topic/li ">four</li>
+            </ul>
+          </li>
+          <li class="- topic/li ">fifth<ul class="- topic/ul ">
+              <li class="- topic/li ">sixth</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
     </ul>
     <p class="- topic/p ">Asterix:</p>
     <ul class="- topic/ul ">
       <li class="- topic/li ">inline <i class="+ topic/ph hi-d/i ">bold</i> normal<ul
-          class="- topic/ul "><li class="- topic/li ">inline</li></ul></li>
-      <li class="- topic/li ">
-        <p class="- topic/p ">para</p>
-        <ul class="- topic/ul ">
+          class="- topic/ul ">
           <li class="- topic/li ">inline</li>
         </ul>
       </li>
-      <li class="- topic/li ">
-        <p class="- topic/p ">para</p>
-        <p class="- topic/p ">para</p>
+      <li class="- topic/li ">para<ul class="- topic/ul ">
+          <li class="- topic/li ">
+            <p class="- topic/p ">inline</p>
+          </li>
+        </ul>
+      </li>
+      <li class="- topic/li ">para<p class="- topic/p ">para</p>
       </li>
       <li class="- topic/li ">
         <p class="- topic/p ">para</p>
         <p class="- topic/p ">para - below this will not work</p>
       </li>
-      <li class="- topic/li ">
-        <p class="- topic/p ">para</p>
-        <ul class="- topic/ul ">
-          <li class="- topic/li ">para</li>
+      <li class="- topic/li ">para<ul class="- topic/ul ">
+          <li class="- topic/li ">
+            <p class="- topic/p ">para</p>
+          </li>
         </ul>
       </li>
     </ul>

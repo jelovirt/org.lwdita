@@ -19,6 +19,9 @@
       <para>
         <span/>
       </para>
+      <para>
+        <link href="address@example.com"/>
+      </para>
     </div>
   </div>
 </pandoc>

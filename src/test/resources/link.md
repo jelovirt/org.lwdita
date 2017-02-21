@@ -10,3 +10,5 @@ Links
 [External](http://www.example.com/test.html)
 
 [key]
+
+<address@example.com>

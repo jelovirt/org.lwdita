@@ -19,6 +19,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static javax.xml.XMLConstants.NULL_NS_URI;
+import static javax.xml.XMLConstants.XML_NS_URI;
 import static org.dita.dost.util.Constants.*;
 import static org.dita.dost.util.URLUtils.toURI;
 import static org.dita.dost.util.XMLUtils.AttributesBuilder;
@@ -779,7 +780,8 @@ public class ToDitaSerializer implements Visitor {
 
     @Override
     public void visit(final VerbatimNode node) {
-        final AttributesBuilder atts = new AttributesBuilder(CODEBLOCK_ATTS);
+        final AttributesBuilder atts = new AttributesBuilder(CODEBLOCK_ATTS)
+            .add(XML_NS_URI, "space", "xml:space", "CDATA", "preserve");
         if (!StringUtils.isEmpty(node.getType())) {
             final String type = node.getType().trim();
             final Metadata metadata;

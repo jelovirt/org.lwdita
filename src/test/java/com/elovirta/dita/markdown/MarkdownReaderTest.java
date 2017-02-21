@@ -130,4 +130,48 @@ public class MarkdownReaderTest {
         run("image.md");
     }
 
+    @Test
+    public void testLink() throws Exception {
+        run("link.md");
+    }
+
+    @Test
+    public void testUl() throws Exception {
+        run("ul.md");
+    }
+
+    @Test
+    public void testOl() throws Exception {
+        run("ol.md");
+    }
+
+    @Test
+    public void testInline() throws Exception {
+        run("inline.md");
+    }
+
+    @Test
+    public void testTable() throws Exception {
+        run("table.md");
+    }
+
+    @Test
+    public void testQuote() throws Exception {
+        run("quote.md");
+    }
+
+    @Test
+    public void testEscape() throws Exception {
+        run("escape.md");
+    }
+
+    @Test
+    public void testDl() throws Exception {
+        run("dl.md");
+    }
+
+    @Test
+    public void testCodeblock() throws Exception {
+        run("codeblock.md");
+    }
 }
