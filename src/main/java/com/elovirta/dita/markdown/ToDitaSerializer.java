@@ -483,7 +483,7 @@ public class ToDitaSerializer implements Visitor {
 
     @Override
     public void visit(final MailLinkNode node) {
-        final AttributesBuilder atts = getLinkAttributes(node.getText());
+        final AttributesBuilder atts = getLinkAttributes("mailto:" + node.getText());
 
         startElement(TOPIC_XREF, atts.build());
         visitChildren(node);
