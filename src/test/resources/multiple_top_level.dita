@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dita xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/">
+  <topic class="- topic/topic " id="heading_a">
+    <title class="- topic/title ">Heading A</title>
+    <body class="- topic/body ">
+      <p class="- topic/p ">Content A.</p>
+    </body>
+    <topic class="- topic/topic " id="heading_a_1">
+      <title class="- topic/title ">Heading A.1</title>
+      <body class="- topic/body ">
+        <p class="- topic/p ">Content A.1.</p>
+      </body>
+    </topic>
+  </topic>
+  <topic class="- topic/topic " id="heading_b">
+    <title class="- topic/title ">Heading B</title>
+    <body class="- topic/body ">
+      <p class="- topic/p ">Content B.</p>
+    </body>
+    <topic class="- topic/topic " id="heading_b_1">
+      <title class="- topic/title ">Heading B.1</title>
+      <body class="- topic/body ">
+        <p class="- topic/p ">Content B.1.</p>
+      </body>
+    </topic>
+  </topic>
+</dita>

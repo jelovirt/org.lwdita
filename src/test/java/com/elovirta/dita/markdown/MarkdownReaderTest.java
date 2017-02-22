@@ -174,4 +174,10 @@ public class MarkdownReaderTest {
     public void testCodeblock() throws Exception {
         run("codeblock.md");
     }
+
+    @Test
+    public void testMultipleTopLevel() throws Exception {
+        run("multiple_top_level.md");
+    }
+
 }

@@ -10,6 +10,7 @@ import org.pegdown.ast.*;
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
+import org.xml.sax.helpers.AttributesImpl;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
@@ -63,6 +64,7 @@ public class ToDitaSerializer implements Visitor {
     private static final Attributes PH_ATTS = buildAtts(TOPIC_PH);
     private static final Attributes ENTRY_ATTS = buildAtts(TOPIC_ENTRY);
     private static final Attributes FIG_ATTS = buildAtts(TOPIC_FIG);
+    private static final Attributes EMPTY_ATTS = new AttributesImpl();
 
     private static final Map<String, DitaClass> sections = new HashMap<>();
     static {
@@ -101,8 +103,12 @@ public class ToDitaSerializer implements Visitor {
     public void toHtml(final RootNode astRoot) throws SAXException {
         checkArgNotNull(astRoot, "astRoot");
         clean(astRoot);
+        final boolean isCompound = hasMultipleTopLevelHeaders(astRoot);
         contentHandler.startDocument();
         contentHandler.startPrefixMapping(ATTRIBUTE_PREFIX_DITAARCHVERSION, DITA_NAMESPACE);
+        if (isCompound) {
+            contentHandler.startElement(NULL_NS_URI, ELEMENT_NAME_DITA, ELEMENT_NAME_DITA, EMPTY_ATTS);
+        }
         try {
             astRoot.accept(this);
             while (!tagStack.isEmpty()) {
@@ -112,8 +118,18 @@ public class ToDitaSerializer implements Visitor {
             //e.printStackTrace();
             throw new SAXException("Failed to parse Markdown: " + e.getMessage(), e);
         }
+        if (isCompound) {
+            contentHandler.endElement(NULL_NS_URI, ELEMENT_NAME_DITA, ELEMENT_NAME_DITA);
+        }
         contentHandler.endPrefixMapping(ATTRIBUTE_PREFIX_DITAARCHVERSION);
         contentHandler.endDocument();
+    }
+
+    private boolean hasMultipleTopLevelHeaders(RootNode astRoot) {
+        final long count = astRoot.getChildren().stream()
+                .filter(n -> (n instanceof HeaderNode) && (((HeaderNode) n).getLevel() == 1))
+                .count();
+        return count > 1;
     }
 
     /**
