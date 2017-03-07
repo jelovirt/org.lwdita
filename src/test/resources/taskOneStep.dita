@@ -1,0 +1,17 @@
+<task xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/"
+  class="- topic/topic task/task " id="task">
+  <title class="- topic/title ">Task </title>
+  <taskbody class="- topic/body task/taskbody ">
+    <context class="- topic/section task/context ">
+      <p class="- topic/p ">Context</p>
+    </context>
+    <steps class="- topic/ol task/steps ">
+      <step class="- topic/li task/step ">
+        <cmd class="- topic/ph task/cmd ">Command</cmd>
+        <info class="- topic/itemgroup task/info ">
+          <p class="- topic/p ">Info.</p>
+        </info>
+      </step>
+    </steps>
+  </taskbody>
+</task>
