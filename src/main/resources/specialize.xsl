@@ -84,14 +84,30 @@
   <xsl:template match="body[$type = 'task']/ol/li | body[$type = 'task']/ul/li">
     <step class="- topic/li task/step ">
       <xsl:apply-templates select="@* except @class"/>
-      <xsl:for-each select="*[1]">
-        <cmd class="- topic/ph task/cmd ">
-          <xsl:apply-templates select="@* except @class | node()"/>
-        </cmd>
-      </xsl:for-each>
-      <info class="- topic/itemgroup task/info ">
-        <xsl:apply-templates select="*[position() gt 1]"/>
-      </info>
+      <xsl:choose>
+        <xsl:when test="node()[1][self::text()][normalize-space()!='']">
+          <cmd class="- topic/ph task/cmd ">
+            <xsl:copy-of select="node()[1]"/>
+          </cmd>
+          <xsl:if test="*">
+            <info class="- topic/itemgroup task/info ">
+              <xsl:apply-templates select="*"/>
+            </info>  
+          </xsl:if>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:for-each select="*[1]">
+            <cmd class="- topic/ph task/cmd ">
+              <xsl:apply-templates select="@* except @class | node()"/>
+            </cmd>
+          </xsl:for-each>
+          <xsl:if test="*[2]">
+            <info class="- topic/itemgroup task/info ">
+              <xsl:apply-templates select="*[position() gt 1]"/>
+            </info>    
+          </xsl:if>
+        </xsl:otherwise>
+      </xsl:choose>
     </step>
   </xsl:template>
 
