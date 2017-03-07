@@ -76,7 +76,7 @@
   </xsl:template>
 
   <xsl:template match="body[$type = 'task']/ul">
-    <steps-unordered class="- topic/ul task/staps-unordered ">
+    <steps-unordered class="- topic/ul task/steps-unordered ">
       <xsl:apply-templates select="@* except @class | node()"/>
     </steps-unordered>
   </xsl:template>
