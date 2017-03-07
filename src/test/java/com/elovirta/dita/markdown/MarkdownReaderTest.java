@@ -121,6 +121,11 @@ public class MarkdownReaderTest {
     }
 
     @Test
+    public void testTaskOneStep() throws Exception {
+        run("taskOneStep.md");
+    }
+
+    @Test
     public void testReference() throws Exception {
         run("reference.md");
     }
