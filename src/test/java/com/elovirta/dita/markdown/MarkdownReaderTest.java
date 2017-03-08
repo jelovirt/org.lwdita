@@ -184,5 +184,10 @@ public class MarkdownReaderTest {
     public void testMultipleTopLevel() throws Exception {
         run("multiple_top_level.md");
     }
+    
+    @Test
+    public void testMultipleTopLevelSpecialized() throws Exception {
+        run("multiple_top_level_specialized.md");
+    }
 
 }
