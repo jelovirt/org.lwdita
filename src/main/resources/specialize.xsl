@@ -32,21 +32,21 @@
   <xsl:template match="topic" mode="reference">
     <reference class="- topic/topic reference/reference "
                domains="(topic reference) (topic hi-d) (topic ut-d) (topic indexing-d) (topic hazard-d) (topic abbrev-d) (topic pr-d) (topic sw-d) (topic ui-d)">
-      <xsl:apply-templates select="@* except (@class | @domains) | node()" mode="reference"/>
+      <xsl:apply-templates select="@* except (@class | @domains) | node()" mode="#current"/>
     </reference>
   </xsl:template>
 
   <xsl:template match="body" mode="reference">
     <refbody class="- topic/body reference/refbody ">
-      <xsl:apply-templates select="@* except @class" mode="reference"/>
+      <xsl:apply-templates select="@* except @class" mode="#current"/>
       <xsl:for-each-group select="*" group-adjacent="contains(@class, ' topic/table ') or contains(@class, ' topic/section ')">
         <xsl:choose>
           <xsl:when test="current-grouping-key()">
-            <xsl:apply-templates select="current-group()" mode="reference"/>
+            <xsl:apply-templates select="current-group()" mode="#current"/>
           </xsl:when>
           <xsl:otherwise>
             <section class="- topic/section ">
-              <xsl:apply-templates select="current-group()" mode="reference"/>
+              <xsl:apply-templates select="current-group()" mode="#current"/>
             </section>
           </xsl:otherwise>
         </xsl:choose>
@@ -59,26 +59,26 @@
   <xsl:template match="topic" mode="task">
     <task class="- topic/topic task/task "
           domains="(topic task) (topic hi-d) (topic ut-d) (topic indexing-d) (topic hazard-d) (topic abbrev-d) (topic pr-d) (topic sw-d) (topic ui-d) (topic task strictTaskbody-c)">
-      <xsl:apply-templates select="@* except (@class | @domains) | node()" mode="task"/>
+      <xsl:apply-templates select="@* except (@class | @domains) | node()" mode="#current"/>
     </task>
   </xsl:template>
 
   <xsl:template match="body" mode="task">
     <taskbody class="- topic/body task/taskbody ">
-      <xsl:apply-templates select="@* except @class" mode="task"/>
+      <xsl:apply-templates select="@* except @class" mode="#current"/>
       <xsl:for-each-group select="*" group-adjacent="contains(@class, ' topic/ol ') or contains(@class, ' topic/ul ') or contains(@class, ' topic/section ')">
         <xsl:choose>
           <xsl:when test="current-grouping-key()">
-            <xsl:apply-templates select="current-group()" mode="task"/>
+            <xsl:apply-templates select="current-group()" mode="#current"/>
           </xsl:when>
           <xsl:when test="current-group()[1]/preceding-sibling::*[contains(@class, ' topic/ol ') or contains(@class, ' topic/ul ')]">
             <result class="- topic/section task/result ">
-              <xsl:apply-templates select="current-group()" mode="task"/>
+              <xsl:apply-templates select="current-group()" mode="#current"/>
             </result>
           </xsl:when>
           <xsl:otherwise>
             <context class="- topic/section task/context ">
-              <xsl:apply-templates select="current-group()" mode="task"/>
+              <xsl:apply-templates select="current-group()" mode="#current"/>
             </context>
           </xsl:otherwise>
         </xsl:choose>
@@ -88,19 +88,19 @@
 
   <xsl:template match="body/ol" mode="task">
     <steps class="- topic/ol task/steps ">
-      <xsl:apply-templates select="@* except @class | node()" mode="task"/>
+      <xsl:apply-templates select="@* except @class | node()" mode="#current"/>
     </steps>
   </xsl:template>
 
   <xsl:template match="body/ul" mode="task">
     <steps-unordered class="- topic/ul task/steps-unordered ">
-      <xsl:apply-templates select="@* except @class | node()" mode="task"/>
+      <xsl:apply-templates select="@* except @class | node()" mode="#current"/>
     </steps-unordered>
   </xsl:template>
 
   <xsl:template match="body/ol/li | body/ul/li" mode="task">
     <step class="- topic/li task/step ">
-      <xsl:apply-templates select="@* except @class" mode="task"/>
+      <xsl:apply-templates select="@* except @class" mode="#current"/>
       <xsl:choose>
         <xsl:when test="node()[1][self::text()][normalize-space()!='']">
           <cmd class="- topic/ph task/cmd ">
@@ -108,19 +108,19 @@
           </cmd>
           <xsl:if test="*">
             <info class="- topic/itemgroup task/info ">
-              <xsl:apply-templates select="*" mode="task"/>
+              <xsl:apply-templates select="*" mode="#current"/>
             </info>  
           </xsl:if>
         </xsl:when>
         <xsl:otherwise>
           <xsl:for-each select="*[1]">
             <cmd class="- topic/ph task/cmd ">
-              <xsl:apply-templates select="@* except @class | node()" mode="task"/>
+              <xsl:apply-templates select="@* except @class | node()" mode="#current"/>
             </cmd>
           </xsl:for-each>
           <xsl:if test="*[2]">
             <info class="- topic/itemgroup task/info ">
-              <xsl:apply-templates select="*[position() gt 1]" mode="task"/>
+              <xsl:apply-templates select="*[position() gt 1]" mode="#current"/>
             </info>    
           </xsl:if>
         </xsl:otherwise>
@@ -133,13 +133,13 @@
   <xsl:template match="topic" mode="concept">
     <concept class="- topic/topic concept/concept "
              domains="(topic concept) (topic hi-d) (topic ut-d) (topic indexing-d) (topic hazard-d) (topic abbrev-d) (topic pr-d) (topic sw-d) (topic ui-d)">
-      <xsl:apply-templates select="@* except (@class | @domains) | node()" mode="concept"/>
+      <xsl:apply-templates select="@* except (@class | @domains) | node()" mode="#current"/>
     </concept>
   </xsl:template>
 
   <xsl:template match="body" mode="concept">
     <conbody class="- topic/body concept/conbody ">
-      <xsl:apply-templates select="@* except @class | node()" mode="concept"/>
+      <xsl:apply-templates select="@* except @class | node()" mode="#current"/>
     </conbody>
   </xsl:template>
 
@@ -164,7 +164,7 @@
 
   <xsl:template match="@* | node()" priority="-10" mode="#all">
     <xsl:copy>
-      <xsl:apply-templates select="@* | node()"/>
+      <xsl:apply-templates select="@* | node()" mode="#current"/>
     </xsl:copy>
   </xsl:template>
 
