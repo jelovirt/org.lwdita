@@ -45,7 +45,7 @@ public class ToDitaSerializer implements Visitor {
     private static final Attributes CODEPH_ATTS = buildAtts(PR_D_CODEPH);
     private static final Attributes CODEBLOCK_ATTS = buildAtts(PR_D_CODEBLOCK);
     private static final Attributes DT_ATTS = buildAtts(TOPIC_DT);
-    private static final Attributes DEL_ATTS = new AttributesBuilder().add(ATTRIBUTE_NAME_CLASS, TOPIC_PH.toString()).add("importance", "deleted").build();
+    private static final Attributes DEL_ATTS = new AttributesBuilder().add(ATTRIBUTE_NAME_CLASS, TOPIC_PH.toString()).add("status", "deleted").build();
     private static final Attributes TITLE_ATTS = buildAtts(TOPIC_TITLE);
     private static final Attributes BLOCKQUOTE_ATTS = buildAtts(TOPIC_LQ);
     private static final Attributes UL_ATTS = buildAtts(TOPIC_UL);

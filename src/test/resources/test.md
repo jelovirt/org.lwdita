@@ -1,6 +1,6 @@
 # Test
 
-Paragraph *test* and **list**:
+Paragraph ~~Text~~ *test* and **list**:
 
 -   hyphen
 -   list
