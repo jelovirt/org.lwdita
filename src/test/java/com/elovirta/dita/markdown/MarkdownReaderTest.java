@@ -189,5 +189,19 @@ public class MarkdownReaderTest {
     public void testMultipleTopLevelSpecialized() throws Exception {
         run("multiple_top_level_specialized.md");
     }
+    
+    @Test
+    public void testNoBOM() throws Exception {
+        run("testNoBOM.md");
+    }
 
+    @Test
+    public void testBOM() throws Exception {
+        run("testBOM.md");
+    }
+    
+    @Test
+    public void testShort() throws Exception {
+        run("short.md");
+    }
 }

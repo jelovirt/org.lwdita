@@ -1,7 +1,6 @@
 package com.elovirta.dita.markdown;
 
 import org.pegdown.Extensions;
-import org.pegdown.LinkRenderer;
 import org.pegdown.PegDownProcessor;
 import org.pegdown.ast.RootNode;
 import org.xml.sax.*;
@@ -13,10 +12,7 @@ import javax.xml.transform.sax.SAXResult;
 import javax.xml.transform.sax.SAXTransformerFactory;
 import javax.xml.transform.sax.TransformerHandler;
 import javax.xml.transform.stream.StreamSource;
-import java.io.CharArrayWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
+import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -124,7 +120,10 @@ public class MarkdownReader implements XMLReader {
         final CharArrayWriter out = new CharArrayWriter();
         if (input.getByteStream() != null) {
             final String encoding = input.getEncoding() != null ? input.getEncoding() : "UTF-8";
-            final Reader in = new InputStreamReader(input.getByteStream(), encoding);
+            final InputStream is = "UTF-8".equalsIgnoreCase(encoding)
+                    ? consumeBOM(input.getByteStream())
+                    : input.getByteStream();
+            final Reader in = new InputStreamReader(is, encoding);
             try {
                 copy(in, out);
             } finally {
@@ -158,7 +157,29 @@ public class MarkdownReader implements XMLReader {
         return out.toCharArray();
     }
 
-    private void parseAST(final RootNode root) throws SAXException {
+    /**
+     * Returns an input stream that skips the BOM if present.
+     *
+     * @param byteStream the original input stream
+     * @return An input stream without a possible BOM
+     * @throws IOException
+     */
+    private InputStream consumeBOM(final InputStream in) throws IOException {
+        BufferedInputStream bin = new BufferedInputStream(in);
+        bin.mark(3);
+        try {
+            final byte[] buf = new byte[3];
+            bin.read(buf);
+            if (buf[0] != (byte)0xEF || buf[1] != (byte)0xBB || buf[2] != (byte)0xBF) {
+                bin.reset();
+            }
+        } catch (final IOException e) {
+            bin.reset();
+        }
+        return bin;
+    }
+
+	private void parseAST(final RootNode root) throws SAXException {
         final TransformerHandler h;
         try {
             h = tf.newTransformerHandler(t);
