@@ -4,6 +4,7 @@ import org.pegdown.Extensions;
 import org.pegdown.PegDownProcessor;
 import org.pegdown.ast.RootNode;
 import org.xml.sax.*;
+import org.yaml.snakeyaml.Yaml;
 
 import javax.xml.transform.Templates;
 import javax.xml.transform.TransformerConfigurationException;
@@ -16,6 +17,8 @@ import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.Iterator;
+import java.util.Map;
 
 import static org.apache.commons.io.IOUtils.closeQuietly;
 import static org.apache.commons.io.IOUtils.copy;
@@ -106,7 +109,11 @@ public class MarkdownReader implements XMLReader {
 
     @Override
     public void parse(final InputSource input) throws IOException, SAXException {
-        final char[] markdownContent = getMarkdownContent(input);
+        char[] markdownContent = getMarkdownContent(input);
+        final Map<String, Object> header = parserYaml(markdownContent);
+        if (header != null) {
+            markdownContent = consumeYaml(markdownContent);
+        }
         final RootNode root = p.parseMarkdown(markdownContent);
         parseAST(root);
     }
@@ -155,6 +162,44 @@ public class MarkdownReader implements XMLReader {
             }
         }
         return out.toCharArray();
+    }
+
+    /** Return char array after YAML document. */
+    private char[] consumeYaml(char[] cs) {
+        for (int i = 0, j = 0; i < cs.length; i++) {
+            if (cs[i] == '\n') {
+                if (j != 0 && isYamlDocumentStart(cs, j)) {
+                    final char[] buf = new char[cs.length - i];
+                    System.arraycopy(cs, i, buf, 0, buf.length);
+                    return buf;
+                }
+                j = i + 1;
+            }
+        }
+        return cs;
+    }
+
+    /** Check if character array offset is the start of YAML document. */
+    private boolean isYamlDocumentStart(char[] cs, int i) {
+        return cs[i] == '-' && cs[i + 1] == '-' && cs[i + 2] == '-';
+    }
+
+    private Map<String, Object> parserYaml(char[] markdownContent) throws IOException {
+        if (markdownContent.length > 3 && isYamlDocumentStart(markdownContent, 0)) {
+            Yaml yaml = new Yaml();
+            try (final CharArrayReader in = new CharArrayReader(markdownContent)) {
+                final Iterator<Object> docs = yaml.loadAll(in).iterator();
+                if (docs.hasNext()) {
+                    final Object doc = docs.next();
+                    if (doc instanceof Map) {
+                        return (Map<String, Object>) doc;
+                    } else {
+                        System.err.println("Only top level maps supported, found " + doc.getClass().getName());
+                    }
+                }
+            }
+        }
+        return null;
     }
 
     /**

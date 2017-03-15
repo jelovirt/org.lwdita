@@ -204,4 +204,9 @@ public class MarkdownReaderTest {
     public void testShort() throws Exception {
         run("short.md");
     }
+
+    @Test
+    public void testYaml() throws Exception {
+        run("yaml.md");
+    }
 }
