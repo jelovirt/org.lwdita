@@ -5,7 +5,11 @@
   <xsl:import href="dita2markdown.xsl"/>
   
   <xsl:template name="ast-attibutes"/>
-  
+
+  <xsl:template match="*" mode="chapterHead">
+    <xsl:call-template name="getMeta"/>
+  </xsl:template>
+
   <xsl:template match="*[contains(@class, ' topic/dl ')]">
     <xsl:variable name="ul" as="element()">
       <ul class="- topic/ul ">

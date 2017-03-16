@@ -2818,7 +2818,7 @@
   </xsl:template>
     
   <xsl:template match="*" mode="chapterHead">
-    <xsl:call-template name="getMeta"/>
+    <!--xsl:call-template name="getMeta"/-->
   </xsl:template>
     
   <xsl:template match="*" mode="chapterBody">
