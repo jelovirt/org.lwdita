@@ -115,7 +115,7 @@ public class MarkdownReader implements XMLReader {
             markdownContent = consumeYaml(markdownContent);
         }
         final RootNode root = p.parseMarkdown(markdownContent);
-        parseAST(root);
+        parseAST(root, header);
     }
 
     @Override
@@ -164,7 +164,9 @@ public class MarkdownReader implements XMLReader {
         return out.toCharArray();
     }
 
-    /** Return char array after YAML document. */
+    /**
+     * Return char array after YAML document.
+     */
     private char[] consumeYaml(char[] cs) {
         for (int i = 0, j = 0; i < cs.length; i++) {
             if (cs[i] == '\n') {
@@ -179,7 +181,9 @@ public class MarkdownReader implements XMLReader {
         return cs;
     }
 
-    /** Check if character array offset is the start of YAML document. */
+    /**
+     * Check if character array offset is the start of YAML document.
+     */
     private boolean isYamlDocumentStart(char[] cs, int i) {
         return cs[i] == '-' && cs[i + 1] == '-' && cs[i + 2] == '-';
     }
@@ -205,7 +209,7 @@ public class MarkdownReader implements XMLReader {
     /**
      * Returns an input stream that skips the BOM if present.
      *
-     * @param byteStream the original input stream
+     * @param in the original input stream
      * @return An input stream without a possible BOM
      * @throws IOException
      */
@@ -215,7 +219,7 @@ public class MarkdownReader implements XMLReader {
         try {
             final byte[] buf = new byte[3];
             bin.read(buf);
-            if (buf[0] != (byte)0xEF || buf[1] != (byte)0xBB || buf[2] != (byte)0xBF) {
+            if (buf[0] != (byte) 0xEF || buf[1] != (byte) 0xBB || buf[2] != (byte) 0xBF) {
                 bin.reset();
             }
         } catch (final IOException e) {
@@ -224,7 +228,7 @@ public class MarkdownReader implements XMLReader {
         return bin;
     }
 
-	private void parseAST(final RootNode root) throws SAXException {
+    private void parseAST(final RootNode root, final Map<String, Object> header) throws SAXException {
         final TransformerHandler h;
         try {
             h = tf.newTransformerHandler(t);
@@ -232,7 +236,7 @@ public class MarkdownReader implements XMLReader {
             throw new SAXException(e);
         }
         h.setResult(new SAXResult(contentHandler));
-        final ToDitaSerializer s = new ToDitaSerializer(h);
+        final ToDitaSerializer s = new ToDitaSerializer(h, header);
         s.toHtml(root);
     }
 

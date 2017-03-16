@@ -19,6 +19,7 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static com.elovirta.dita.markdown.MetadataSerializerImpl.buildAtts;
 import static javax.xml.XMLConstants.NULL_NS_URI;
 import static javax.xml.XMLConstants.XML_NS_URI;
 import static org.dita.dost.util.Constants.*;
@@ -26,7 +27,7 @@ import static org.dita.dost.util.URLUtils.toURI;
 import static org.dita.dost.util.XMLUtils.AttributesBuilder;
 import static org.parboiled.common.Preconditions.checkArgNotNull;
 
-public class ToDitaSerializer implements Visitor {
+public class ToDitaSerializer extends Serializer implements Visitor {
 
     private static final String COLUMN_NAME_COL = "col";
 
@@ -47,6 +48,7 @@ public class ToDitaSerializer implements Visitor {
     private static final Attributes DT_ATTS = buildAtts(TOPIC_DT);
     private static final Attributes DEL_ATTS = new AttributesBuilder().add(ATTRIBUTE_NAME_CLASS, TOPIC_PH.toString()).add("status", "deleted").build();
     private static final Attributes TITLE_ATTS = buildAtts(TOPIC_TITLE);
+    private static final Attributes PROLOG_ATTS = buildAtts(TOPIC_PROLOG);
     private static final Attributes BLOCKQUOTE_ATTS = buildAtts(TOPIC_LQ);
     private static final Attributes UL_ATTS = buildAtts(TOPIC_UL);
     private static final Attributes DL_ATTS = buildAtts(TOPIC_DL);
@@ -67,18 +69,18 @@ public class ToDitaSerializer implements Visitor {
     private static final Attributes EMPTY_ATTS = new AttributesImpl();
 
     private static final Map<String, DitaClass> sections = new HashMap<>();
+
     static {
         sections.put(TOPIC_SECTION.localName, TOPIC_SECTION);
         sections.put(TOPIC_EXAMPLE.localName, TOPIC_EXAMPLE);
     }
 
-    private final ContentHandler contentHandler;
+    private final Map<String, Object> documentMetadata;
     private final Map<String, ReferenceNode> references = new HashMap<>();
     private final Map<String, String> abbreviations = new HashMap<>();
     private TableNode currentTableNode;
     private int currentTableColumn;
 
-    private final Deque<DitaClass> tagStack = new ArrayDeque<>();
     private boolean inSection = false;
 
     /**
@@ -86,14 +88,9 @@ public class ToDitaSerializer implements Visitor {
      */
     private int headerLevel = 0;
 
-    public ToDitaSerializer(final ContentHandler contentHandler) {
-        this.contentHandler = contentHandler;
-    }
-
-    private static Attributes buildAtts(final DitaClass cls) {
-        return new AttributesBuilder()
-                .add(ATTRIBUTE_NAME_CLASS, cls.toString())
-                .build();
+    public ToDitaSerializer(final ContentHandler contentHandler, final Map<String, Object> documentMetadata) {
+        super(contentHandler);
+        this.documentMetadata = documentMetadata;
     }
 
     public void toHtml(final RootNode astRoot) throws SAXException {
@@ -152,7 +149,7 @@ public class ToDitaSerializer implements Visitor {
         // insert header
         if (metadata.containsKey("title")) {
             boolean levelOneFound = false;
-            for (final Node c: node.getChildren()) {
+            for (final Node c : node.getChildren()) {
                 if (c instanceof HeaderNode) {
                     final HeaderNode h = (HeaderNode) c;
                     if (h.getLevel() == 1) {
@@ -167,7 +164,7 @@ public class ToDitaSerializer implements Visitor {
             } else {
                 m = new HeaderNode(1, new TextNode(metadata.get("title")));
             }
-            node.getChildren(). set(0, m);
+            node.getChildren().set(0, m);
         }
     }
 
@@ -412,8 +409,18 @@ public class ToDitaSerializer implements Visitor {
             startElement(TOPIC_TITLE, TITLE_ATTS);
             characters(header.title);
             endElement(); // title
+            if (documentMetadata != null && !documentMetadata.isEmpty()) {
+                outputMetadata(documentMetadata);
+            }
             startElement(TOPIC_BODY, BODY_ATTS);
         }
+    }
+
+    private void outputMetadata(Map<String, Object> documentMetadata) {
+        startElement(TOPIC_PROLOG, PROLOG_ATTS);
+        final MetadataSerializer met = new MetadataSerializerImpl(contentHandler);
+        met.write(documentMetadata);
+        endElement();
     }
 
     static class Metadata {
@@ -793,7 +800,7 @@ public class ToDitaSerializer implements Visitor {
     @Override
     public void visit(final VerbatimNode node) {
         final AttributesBuilder atts = new AttributesBuilder(CODEBLOCK_ATTS)
-            .add(XML_NS_URI, "space", "xml:space", "CDATA", "preserve");
+                .add(XML_NS_URI, "space", "xml:space", "CDATA", "preserve");
         if (!StringUtils.isEmpty(node.getType())) {
             final String type = node.getType().trim();
             final Metadata metadata;
@@ -995,49 +1002,6 @@ public class ToDitaSerializer implements Visitor {
             characters(string.substring(ix));
         } else {
             characters(string);
-        }
-    }
-
-    // ContentHandler methods
-
-    private void startElement(final DitaClass tag, final Attributes atts) {
-        try {
-            contentHandler.startElement(NULL_NS_URI, tag.localName, tag.localName, atts);
-        } catch (final SAXException e) {
-            throw new ParseException(e);
-        }
-        tagStack.addFirst(tag);
-    }
-
-    private void endElement() {
-        if (!tagStack.isEmpty()) {
-            endElement(tagStack.removeFirst());
-        }
-    }
-
-
-    private void endElement(final DitaClass tag) {
-        try {
-            contentHandler.endElement(NULL_NS_URI, tag.localName, tag.localName);
-        } catch (final SAXException e) {
-            throw new ParseException(e);
-        }
-    }
-
-    private void characters(final char c) {
-        try {
-            contentHandler.characters(new char[]{c}, 0, 1);
-        } catch (final SAXException e) {
-            throw new ParseException(e);
-        }
-    }
-
-    private void characters(final String t) {
-        final char[] cs = t.toCharArray();
-        try {
-            contentHandler.characters(cs, 0, cs.length);
-        } catch (final SAXException e) {
-            throw new ParseException(e);
         }
     }
 
