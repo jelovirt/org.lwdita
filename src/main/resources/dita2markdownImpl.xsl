@@ -2354,11 +2354,6 @@
  <xsl:if test="@specentry"><xsl:value-of select="@specentry"/><xsl:text> </xsl:text></xsl:if>
 </xsl:template>
 
-
-<xsl:template name="copyright">
-
-</xsl:template>
-
   <xsl:variable name="cr" as="xs:string"><xsl:text>
 </xsl:text></xsl:variable>
 <!-- Break replace - used for LINES -->
@@ -2817,89 +2812,15 @@
 
   <xsl:template name="chapter-setup">
     <pandoc>
-      <!--xsl:call-template name="chapterHead"/-->
-      <xsl:call-template name="chapterBody"/> 
+      <xsl:apply-templates select="." mode="chapterHead"/>
+      <xsl:apply-templates select="." mode="chapterBody"/>
     </pandoc>
   </xsl:template>
     
-  <xsl:template name="chapterHead">
-    <xsl:apply-templates select="." mode="chapterHead"/>
-  </xsl:template>
   <xsl:template match="*" mode="chapterHead">
-    <head>
-      <!-- initial meta information -->
-      <xsl:call-template name="generateCharset"/>   <!-- Set the character set to UTF-8 -->
-      <xsl:call-template name="generateDefaultCopyright"/> <!-- Generate a default copyright, if needed -->
-      <xsl:call-template name="generateDefaultMeta"/> <!-- Standard meta for security, robots, etc -->
-      <xsl:call-template name="getMeta"/>           <!-- Process metadata from topic prolog -->
-      <xsl:call-template name="copyright"/>         <!-- Generate copyright, if specified manually -->
-      <xsl:call-template name="generateChapterTitle"/> <!-- Generate the <title> element -->
-    </head>
-  </xsl:template>
-  
-  <xsl:template name="generateCharset">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-  </xsl:template>
-  
-  <!-- If there is no copyright in the document, make the standard one -->
-  <xsl:template name="generateDefaultCopyright">
-    <xsl:if test="not(//*[contains(@class, ' topic/copyright ')])">
-      <meta name="copyright">
-        <xsl:attribute name="content">
-          <xsl:text>(C) </xsl:text>
-          <xsl:call-template name="getVariable">
-            <xsl:with-param name="id" select="'Copyright'"/>
-          </xsl:call-template>
-          <xsl:text> </xsl:text>
-          <xsl:value-of select="$YEAR"/>
-        </xsl:attribute>
-      </meta>
-      <meta name="DC.rights.owner">
-        <xsl:attribute name="content">
-          <xsl:text>(C) </xsl:text>
-          <xsl:call-template name="getVariable">
-            <xsl:with-param name="id" select="'Copyright'"/>
-          </xsl:call-template>
-          <xsl:text> </xsl:text><xsl:value-of select="$YEAR"/>
-        </xsl:attribute>
-      </meta>
-    </xsl:if>
-  </xsl:template>
-  
-  <!-- Output metadata that should appear in every XHTML topic -->
-  <xsl:template name="generateDefaultMeta">
-    <xsl:if test="$genDefMeta = 'yes'">
-      <meta name="security" content="public"/>
-      <meta name="Robots" content="index,follow" />
-    </xsl:if>
-  </xsl:template>
-  
-  <xsl:template name="generateChapterTitle">
-    <!-- Title processing - special handling for short descriptions -->
-    <title>
-      <xsl:call-template name="gen-user-panel-title-pfx"/> <!-- hook for a user-XSL title prefix -->
-      <!-- use the searchtitle unless there's no value - else use title -->
-      <xsl:variable name="schtitle"><xsl:apply-templates select="/*[contains(@class, ' topic/topic ')]/*[contains(@class, ' topic/titlealts ')]/*[contains(@class, ' topic/searchtitle ')]" mode="text-only"/></xsl:variable>
-      <xsl:variable name="ditaschtitle"><xsl:apply-templates select="/dita/*[contains(@class, ' topic/topic ')][1]/*[contains(@class, ' topic/titlealts ')]/*[contains(@class, ' topic/searchtitle ')]" mode="text-only"/></xsl:variable>
-      <xsl:variable name="maintitle"><xsl:apply-templates select="/*[contains(@class, ' topic/topic ')]/*[contains(@class, ' topic/title ')]" mode="text-only"/></xsl:variable>
-      <xsl:variable name="ditamaintitle"><xsl:apply-templates select="/dita/*[contains(@class, ' topic/topic ')][1]/*[contains(@class, ' topic/title ')]" mode="text-only"/></xsl:variable>
-      <xsl:variable name="mapschtitle"><xsl:apply-templates select="/*[contains(@class, ' topic/topic ')]/*[contains(@class, ' topic/titlealts ')]/*[contains(@class, ' map/searchtitle ')]" mode="text-only"/></xsl:variable>
-      <xsl:choose>
-        <xsl:when test="string-length($schtitle) > 0"><xsl:value-of select="normalize-space($schtitle)"/></xsl:when>
-        <xsl:when test="string-length($mapschtitle) > 0"><xsl:value-of select="normalize-space($mapschtitle)"/></xsl:when>
-        <xsl:when test="string-length($ditaschtitle) > 0"><xsl:value-of select="normalize-space($ditaschtitle)"/></xsl:when>
-        <xsl:when test="string-length($maintitle) > 0"><xsl:value-of select="normalize-space($maintitle)"/></xsl:when>
-        <xsl:when test="string-length($ditamaintitle) > 0"><xsl:value-of select="normalize-space($ditamaintitle)"/></xsl:when>
-        <xsl:otherwise><xsl:text>***</xsl:text>
-          <xsl:apply-templates select="." mode="ditamsg:no-title-for-topic"/>
-        </xsl:otherwise>
-      </xsl:choose>
-    </title>
+    <xsl:call-template name="getMeta"/>
   </xsl:template>
     
-  <xsl:template name="chapterBody">
-    <xsl:apply-templates select="." mode="chapterBody"/>
-  </xsl:template>
   <xsl:template match="*" mode="chapterBody">
     <xsl:apply-templates select="." mode="addContentToHtmlBodyElement"/>
   </xsl:template>
@@ -2923,13 +2844,8 @@
   <xsl:template match="*" mode="addContentToHtmlBodyElement">
     <div>
       <xsl:apply-templates select="*[contains(@class, ' ditaot-d/ditaval-startprop ')]" mode="out-of-line"/>
-      <xsl:apply-templates/> <!-- this will include all things within topic; therefore, -->
-                             <!-- title content will appear here by fall-through -->
-                             <!-- followed by prolog (but no fall-through is permitted for it) -->
-                             <!-- followed by body content, again by fall-through in document order -->
-                             <!-- followed by related links -->
-                             <!-- followed by child topics by fall-through -->
-      <xsl:call-template name="gen-endnotes"/>    <!-- include footnote-endnotes -->
+      <xsl:apply-templates/>
+      <xsl:call-template name="gen-endnotes"/>
       <xsl:apply-templates select="*[contains(@class, ' ditaot-d/ditaval-endprop ')]" mode="out-of-line"/>
     </div>
   </xsl:template>

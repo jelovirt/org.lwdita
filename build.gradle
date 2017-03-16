@@ -29,6 +29,7 @@ task dist(type: Zip) {
     include { details -> details.file.name.contains('pegdown') }
     include { details -> details.file.name.contains('asm-') }
     include { details -> details.file.name.contains('parboiled-') }
+    include { details -> details.file.name.contains('snakeyaml') }
     from("src/main") {
         include "plugin.xml"
         expand(id: "${project.group}.${project.name}", version: project.version)

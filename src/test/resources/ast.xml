@@ -1,6 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?xml-model href="../../main/resources/ast.rnc" type="application/relax-ng-compact-syntax"?>
 <pandoc>
+  <head>
+    <map>
+      <entry key="author">
+        <array>
+          <entry>Author One</entry>
+          <entry>Author Two</entry>
+        </array>
+      </entry>
+      <entry key="source">Source</entry>
+      <entry key="publisher">Publisher</entry>
+      <entry key="permissions">Permissions</entry>
+      <entry key="audience">Audience</entry>
+      <entry key="category">Category</entry>
+      <entry key="keyword">
+        <array>
+          <entry>Keyword1</entry>
+          <entry>Keyword2</entry>
+        </array>
+      </entry>
+      <entry key="resourceid">
+        <array>
+          <entry>Resourceid1</entry>
+          <entry>Resourceid2</entry>
+        </array>
+      </entry>
+    </map>
+  </head>
   <div>
     <header level="1" id="test">Test</header>
     <div>

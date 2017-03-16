@@ -1,4 +1,4 @@
-pandoc = element pandoc { block* }
+pandoc = element pandoc { head, block* }
 plain = element plain { inline* }
 para = element para { inline* }
 codeblock =
@@ -81,4 +81,21 @@ attr =
   attribute key-value { text }?
 block = para | plain | codeblock | rawblock | blockquote | orderedlist | bulletlist | definitionlist | header | table | \div
 inline = text | emph | strong | strikeout | superscript | subscript | smallcaps | quoted | cite | code | link | image | span
+
+head = element head {
+  yamlValue*
+}
+yamlValue &= element map {
+  element entry {
+    attribute key { text },
+    yamlValue
+  }+
+}
+
+yamlValue &= element array {
+  element entry {
+    yamlValue
+  }*
+}
+
 start = pandoc

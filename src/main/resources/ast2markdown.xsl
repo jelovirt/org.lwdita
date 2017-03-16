@@ -463,5 +463,31 @@
       </xsl:for-each-group>
     </xsl:copy>
   </xsl:template>
+
+  <!-- YAML -->
+
+  <xsl:template match="head" mode="ast">
+    <xsl:text>---&#xA;</xsl:text>
+    <xsl:apply-templates select="*" mode="#current"/>
+    <xsl:text>---&#xA;&#xA;</xsl:text>
+  </xsl:template>
+
+  <xsl:template match="map" mode="ast">
+    <xsl:for-each select="entry">
+      <xsl:value-of select="@key"/>
+      <xsl:text>: </xsl:text>
+      <xsl:apply-templates mode="#current"/>
+      <xsl:text>&#xA;</xsl:text>
+    </xsl:for-each>
+  </xsl:template>
+
+  <xsl:template match="array" mode="ast">
+    <xsl:text>[</xsl:text>
+    <xsl:for-each select="entry">
+      <xsl:if test="position() ne 1">, </xsl:if>
+      <xsl:apply-templates mode="#current"/>
+    </xsl:for-each>
+    <xsl:text>]</xsl:text>
+  </xsl:template>
   
 </xsl:stylesheet>

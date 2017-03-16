@@ -19,4 +19,5 @@
   <topicref class="- map/topicref " format="markdown" href="reference.md"></topicref>
   <topicref class="- map/topicref " href="topic.dita"></topicref>
   <topicref class="- map/topicref " format="markdown" href="nested.md"></topicref>
+  <topicref class="- map/topicref " format="markdown" href="yaml.md"></topicref>
 </map>

@@ -1,3 +1,14 @@
+---
+author: [Author One, Author Two]
+source: Source
+publisher: Publisher
+permissions: Permissions
+audience: Audience
+category: Category
+keyword: [Keyword1, Keyword2]
+resourceid: [Resourceid1, Resourceid2]
+---
+
 # Test {#test}
 
 Paragraph *test* and **list list list list list list list list list list list list list list list list list list list list list list list** or `code`. This is a very long line. This is a very long line. This is a very long line. This is a very long line. This is a very long line. This is a very long line. This is a very long line. This is a very long line. This is a very long line. This is a very long line. This is a very long line.
