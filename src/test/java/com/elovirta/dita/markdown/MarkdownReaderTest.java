@@ -11,14 +11,10 @@ import org.xml.sax.InputSource;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMResult;
-import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.sax.SAXSource;
-import javax.xml.transform.stream.StreamResult;
 import java.io.InputStream;
 
 import static org.custommonkey.xmlunit.XMLAssert.assertXMLEqual;
@@ -184,12 +180,12 @@ public class MarkdownReaderTest {
     public void testMultipleTopLevel() throws Exception {
         run("multiple_top_level.md");
     }
-    
+
     @Test
     public void testMultipleTopLevelSpecialized() throws Exception {
         run("multiple_top_level_specialized.md");
     }
-    
+
     @Test
     public void testNoBOM() throws Exception {
         run("testNoBOM.md");
@@ -199,7 +195,7 @@ public class MarkdownReaderTest {
     public void testBOM() throws Exception {
         run("testBOM.md");
     }
-    
+
     @Test
     public void testShort() throws Exception {
         run("short.md");
