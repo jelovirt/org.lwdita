@@ -2,7 +2,7 @@
   <keydef class="+ map/topicref mapgroup-d/keydef " format="markdown" href="concept.md" keys="key" processing-role="resource-only"></keydef>
   <keydef class="+ map/topicref mapgroup-d/keydef " format="png" href="test.jpg" keys="image-key" processing-role="resource-only"></keydef>
   <topicref class="- map/topicref " format="markdown" href="codeblock.md"></topicref>
-  <topicref class="- map/topicref " format="markdown" href="dl.md"></topicref>
+  <topicref class="- map/topicref " format="md" href="dl.md"></topicref>
   <topicref class="- map/topicref " format="markdown" href="escape.md"></topicref>
   <topicref class="- map/topicref " format="markdown" href="header.md"></topicref>
   <topicref class="- map/topicref " format="markdown" href="header_attributes.md"></topicref>

@@ -21,5 +21,6 @@
   <feature extension="dita.conductor.lib.import" file="snakeyaml-1.18.jar"/>
   <feature extension="dita.parser">
     <parser format="markdown" class="com.elovirta.dita.markdown.MarkdownReader"/>
+    <parser format="md" class="com.elovirta.dita.markdown.MarkdownReader"/>
   </feature>
 </plugin>
