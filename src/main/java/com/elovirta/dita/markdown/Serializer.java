@@ -10,12 +10,12 @@ import java.util.Deque;
 
 import static javax.xml.XMLConstants.NULL_NS_URI;
 
-public class Serializer {
+class Serializer {
 
     final Deque<DitaClass> tagStack = new ArrayDeque<>();
-    final ContentHandler contentHandler;
+    ContentHandler contentHandler;
 
-    public Serializer(final ContentHandler contentHandler) {
+    public void setContentHandler(final ContentHandler contentHandler) {
         this.contentHandler = contentHandler;
     }
 
@@ -37,7 +37,7 @@ public class Serializer {
     }
 
 
-    void endElement(final DitaClass tag) {
+    private void endElement(final DitaClass tag) {
         try {
             contentHandler.endElement(NULL_NS_URI, tag.localName, tag.localName);
         } catch (final SAXException e) {

@@ -1,4 +1,4 @@
-/**
+/*
  * Based on ToHtmlSerializer (C) 2010-2011 Mathias Doenitz
  */
 package com.elovirta.dita.markdown;
@@ -78,6 +78,7 @@ public class ToDitaSerializer extends Serializer implements Visitor {
     private final Map<String, Object> documentMetadata;
     private final Map<String, ReferenceNode> references = new HashMap<>();
     private final Map<String, String> abbreviations = new HashMap<>();
+    private final MetadataSerializer metadataSerializer;
     private TableNode currentTableNode;
     private int currentTableColumn;
 
@@ -88,12 +89,15 @@ public class ToDitaSerializer extends Serializer implements Visitor {
      */
     private int headerLevel = 0;
 
-    public ToDitaSerializer(final ContentHandler contentHandler, final Map<String, Object> documentMetadata) {
-        super(contentHandler);
+    ToDitaSerializer(final ContentHandler contentHandler, final Map<String, Object> documentMetadata) {
         this.documentMetadata = documentMetadata;
+        setContentHandler(contentHandler);
+        metadataSerializer = new MetadataSerializerImpl();
+        metadataSerializer.setContentHandler(contentHandler);
+
     }
 
-    public void toHtml(final RootNode astRoot) throws SAXException {
+    void toHtml(final RootNode astRoot) throws SAXException {
         checkArgNotNull(astRoot, "astRoot");
         clean(astRoot);
         final boolean isCompound = hasMultipleTopLevelHeaders(astRoot);
@@ -128,7 +132,7 @@ public class ToDitaSerializer extends Serializer implements Visitor {
     /**
      * Replace metadata para with actual metadata element. Modifies AST <b>in-place</b>.
      */
-    void clean(final RootNode node) {
+    private void clean(final RootNode node) {
         final Map<String, String> metadata = new HashMap<>();
 
         // read pandoc_title_block
@@ -418,8 +422,7 @@ public class ToDitaSerializer extends Serializer implements Visitor {
 
     private void outputMetadata(Map<String, Object> documentMetadata) {
         startElement(TOPIC_PROLOG, PROLOG_ATTS);
-        final MetadataSerializer met = new MetadataSerializerImpl(contentHandler);
-        met.write(documentMetadata);
+        metadataSerializer.write(documentMetadata);
         endElement();
     }
 
@@ -807,7 +810,7 @@ public class ToDitaSerializer extends Serializer implements Visitor {
             if (type.startsWith("{")) {
                 metadata = Metadata.parse(type.substring(1, type.length() - 1));
             } else {
-                metadata = new Metadata(null, Arrays.asList(type));
+                metadata = new Metadata(null, Collections.singletonList(type));
             }
             if (metadata.id != null) {
                 atts.add(ATTRIBUTE_NAME_ID, metadata.id);
@@ -1010,7 +1013,7 @@ public class ToDitaSerializer extends Serializer implements Visitor {
     private class MetadataNode extends AbstractNode {
         final String title;
 
-        public MetadataNode(final String title) {
+        MetadataNode(final String title) {
             this.title = title;
         }
 

@@ -3,7 +3,6 @@ package com.elovirta.dita.markdown;
 import org.dita.dost.util.DitaClass;
 import org.dita.dost.util.XMLUtils;
 import org.xml.sax.Attributes;
-import org.xml.sax.ContentHandler;
 
 import java.util.Collections;
 import java.util.List;
@@ -12,10 +11,6 @@ import java.util.Map;
 import static org.dita.dost.util.Constants.*;
 
 public class MetadataSerializerImpl extends Serializer implements MetadataSerializer {
-
-    public MetadataSerializerImpl(final ContentHandler contentHandler) {
-        super(contentHandler);
-    }
 
     static Attributes buildAtts(final DitaClass cls) {
         return new XMLUtils.AttributesBuilder()
