@@ -2425,8 +2425,7 @@
 <xsl:template name="sect-heading">
   <xsl:param name="defaulttitle"/> <!-- get param by reference -->
   <xsl:call-template name="output-message">
-    <xsl:with-param name="msgnum">066</xsl:with-param>
-    <xsl:with-param name="msgsev">W</xsl:with-param>
+    <xsl:with-param name="id">DOTX066W</xsl:with-param>
     <xsl:with-param name="msgparams">%1=sect-heading</xsl:with-param>
   </xsl:call-template>
   <xsl:apply-templates select="." mode="dita2html:section-heading">
@@ -2968,41 +2967,35 @@
   <xsl:template match="*" mode="ditamsg:no-glossentry-for-key">
     <xsl:param name="matching-keys"/>
     <xsl:call-template name="output-message">
-      <xsl:with-param name="msgnum">058</xsl:with-param>
-      <xsl:with-param name="msgsev">W</xsl:with-param>
+      <xsl:with-param name="id">DOTX058W</xsl:with-param>
       <xsl:with-param name="msgparams">%1=<xsl:value-of select="$matching-keys"/>;%2=<xsl:value-of select="name()"/></xsl:with-param>
     </xsl:call-template>
   </xsl:template>
   <xsl:template match="*" mode="ditamsg:no-title-for-topic">
     <xsl:call-template name="output-message">
-      <xsl:with-param name="msgnum">037</xsl:with-param>
-      <xsl:with-param name="msgsev">W</xsl:with-param>
-    </xsl:call-template>
+      <xsl:with-param name="id">DOTX037W</xsl:with-param>
+      </xsl:call-template>
   </xsl:template>
   <xsl:template match="*" mode="ditamsg:longdescref-on-object">
     <xsl:call-template name="output-message">
-     <xsl:with-param name="msgnum">038</xsl:with-param>
-     <xsl:with-param name="msgsev">I</xsl:with-param>
+     <xsl:with-param name="id">DOTX038I</xsl:with-param>
      <xsl:with-param name="msgparams">%1=<xsl:value-of select="name(.)"/></xsl:with-param>
     </xsl:call-template>
   </xsl:template>
   <xsl:template match="*" mode="ditamsg:required-cleanup-in-content">
     <xsl:call-template name="output-message">
-     <xsl:with-param name="msgnum">039</xsl:with-param>
-     <xsl:with-param name="msgsev">W</xsl:with-param>
-    </xsl:call-template>
+     <xsl:with-param name="id">DOTX039W</xsl:with-param>
+     </xsl:call-template>
   </xsl:template>
   <xsl:template match="*" mode="ditamsg:draft-comment-in-content">
     <xsl:call-template name="output-message">
-     <xsl:with-param name="msgnum">040</xsl:with-param>
-     <xsl:with-param name="msgsev">I</xsl:with-param>
-    </xsl:call-template>
+     <xsl:with-param name="id">DOTX040I</xsl:with-param>
+     </xsl:call-template>
   </xsl:template>
   <xsl:template match="*" mode="ditamsg:section-with-multiple-titles">
     <xsl:call-template name="output-message">
-      <xsl:with-param name="msgnum">041</xsl:with-param>
-      <xsl:with-param name="msgsev">W</xsl:with-param>
-    </xsl:call-template>
+      <xsl:with-param name="id">DOTX041W</xsl:with-param>
+      </xsl:call-template>
   </xsl:template>
 
 </xsl:stylesheet>
