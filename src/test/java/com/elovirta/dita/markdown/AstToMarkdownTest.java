@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.URIResolver;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 import java.io.*;
@@ -15,9 +16,11 @@ public class AstToMarkdownTest {
 
     private String run(final String input) throws Exception {
         InputStream ri = null;
-        try {
-            final URI style = getClass().getResource("/ast.xsl").toURI();
-            final Transformer t = TransformerFactory.newInstance().newTransformer(new StreamSource(style.toString()));
+        try (InputStream style = getClass().getResourceAsStream("/ast.xsl")) {
+            final TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            URIResolver classpathUriResolver = new ClasspathUriResolver(transformerFactory.getURIResolver());
+            transformerFactory.setURIResolver(classpathUriResolver);
+            final Transformer t = transformerFactory.newTransformer(new StreamSource(style, "/ast.xsl"));
             ri = getClass().getResourceAsStream("/" + input);
             final StringWriter o = new StringWriter();
             t.transform(new StreamSource(ri), new StreamResult(o));
