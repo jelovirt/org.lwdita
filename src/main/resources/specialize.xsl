@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:xs="http://www.w3.org/2001/XMLSchema"
-                exclude-result-prefixes="xs"
+                xmlns:x="https://github.com/jelovirt/dita-ot-markdown"
+                exclude-result-prefixes="xs x"
                 version="2.0">
 
   <xsl:template match="/">
@@ -101,26 +102,30 @@
   <xsl:template match="body/ol/li | body/ul/li" mode="task">
     <step class="- topic/li task/step ">
       <xsl:apply-templates select="@* except @class" mode="#current"/>
+
+      <xsl:variable name="first-block" select="*[x:is-block(.)][1]" as="element()?"/>
+      <xsl:variable name="head" select="if (exists($first-block)) then node()[. &lt;&lt; $first-block] else node()" as="node()*"/>
+      <xsl:variable name="tail" select="if (exists($first-block)) then ($first-block | node()[. &gt;&gt; $first-block]) else ()" as="node()*"/>
       <xsl:choose>
-        <xsl:when test="node()[1][self::text()][normalize-space()!='']">
+        <xsl:when test="exists($head)">
           <cmd class="- topic/ph task/cmd ">
-            <xsl:copy-of select="node()[1]"/>
+            <xsl:copy-of select="$head"/>
           </cmd>
           <xsl:if test="*">
             <info class="- topic/itemgroup task/info ">
-              <xsl:apply-templates select="*" mode="#current"/>
+              <xsl:apply-templates select="$tail" mode="#current"/>
             </info>  
           </xsl:if>
         </xsl:when>
         <xsl:otherwise>
-          <xsl:for-each select="*[1]">
+          <xsl:for-each select="$tail[1]">
             <cmd class="- topic/ph task/cmd ">
               <xsl:apply-templates select="@* except @class | node()" mode="#current"/>
             </cmd>
           </xsl:for-each>
-          <xsl:if test="*[2]">
+          <xsl:if test="$tail[2]">
             <info class="- topic/itemgroup task/info ">
-              <xsl:apply-templates select="*[position() gt 1]" mode="#current"/>
+              <xsl:apply-templates select="$tail[position() gt 1]" mode="#current"/>
             </info>    
           </xsl:if>
         </xsl:otherwise>
@@ -167,5 +172,49 @@
       <xsl:apply-templates select="@* | node()" mode="#current"/>
     </xsl:copy>
   </xsl:template>
+
+  <xsl:variable name="x:is-block-classes" as="xs:string*"
+    select="
+      (
+      ' topic/body ',
+      ' topic/bodydiv ',
+      ' topic/shortdesc ',
+      ' topic/abstract ',
+      ' topic/title ',
+      ' task/info ',
+      ' topic/p ',
+      ' topic/pre ',
+      ' topic/note ',
+      ' topic/fig ',
+      ' topic/figgroup ',
+      ' topic/dl ',
+      ' topic/sl ',
+      ' topic/ol ',
+      ' topic/ul ',
+      ' topic/li ',
+      ' topic/sli ',
+      ' topic/lines ',
+      ' topic/itemgroup ',
+      ' topic/section ',
+      ' topic/sectiondiv ',
+      ' topic/div ',
+      ' topic/lq ',
+      ' topic/table ',
+      ' topic/entry ',
+      ' topic/simpletable ',
+      ' topic/stentry ',
+      ' topic/example ',
+      ' task/cmd ')"/>
+
+  <xsl:function name="x:is-block" as="xs:boolean">
+    <xsl:param name="element" as="node()"/>
+    <xsl:variable name="class" select="string($element/@class)" as="xs:string"/>
+    <xsl:sequence
+      select="
+        some $c in $x:is-block-classes
+          satisfies contains($class, $c) or
+          (contains($class, ' topic/image ') and $element/@placement = 'break')"
+    />
+  </xsl:function>
 
 </xsl:stylesheet>

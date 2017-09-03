@@ -13,10 +13,43 @@
         </info>
       </step>
       <step class="- topic/li task/step ">
-        <cmd class="- topic/ph task/cmd ">Command</cmd>
+        <cmd class="- topic/ph task/cmd "><b class="+ topic/ph hi-d/b ">Command</b></cmd>
         <info class="- topic/itemgroup task/info ">
           <p class="- topic/p ">Info.</p>
         </info>
+      </step>
+      <step class="- topic/li task/step ">
+        <cmd class="- topic/ph task/cmd "><b class="+ topic/ph hi-d/b ">Command</b> tail</cmd>
+        <info class="- topic/itemgroup task/info ">
+          <p class="- topic/p ">Info.</p>
+        </info>
+      </step>
+      <step class="- topic/li task/step ">
+        <cmd class="- topic/ph task/cmd ">head <b class="+ topic/ph hi-d/b ">Command</b></cmd>
+        <info class="- topic/itemgroup task/info ">
+          <p class="- topic/p ">Info.</p>
+        </info>
+      </step>
+      <step class="- topic/li task/step ">
+        <cmd class="- topic/ph task/cmd ">head <b class="+ topic/ph hi-d/b ">Command</b> tail</cmd>
+        <info class="- topic/itemgroup task/info ">
+          <p class="- topic/p ">Info.</p>
+        </info>
+      </step>
+      <step class="- topic/li task/step ">
+        <cmd class="- topic/ph task/cmd ">Command</cmd>
+      </step>
+      <step class="- topic/li task/step ">
+        <cmd class="- topic/ph task/cmd "><b class="+ topic/ph hi-d/b ">Command</b></cmd>
+      </step>
+      <step class="- topic/li task/step ">
+        <cmd class="- topic/ph task/cmd "><b class="+ topic/ph hi-d/b ">Command</b> tail</cmd>
+      </step>
+      <step class="- topic/li task/step ">
+        <cmd class="- topic/ph task/cmd ">head <b class="+ topic/ph hi-d/b ">Command</b></cmd>
+      </step>
+      <step class="- topic/li task/step ">
+        <cmd class="- topic/ph task/cmd ">head <b class="+ topic/ph hi-d/b ">Command</b> tail</cmd>
       </step>
     </steps>
   </taskbody>
