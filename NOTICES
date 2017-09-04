@@ -1,0 +1,12 @@
+Markdown DITA for DITA-OT
+Copyright 2015-${year} Jarno Elovirta
+
+This product includes softwareg:
+
+ASM 5.0.3 which is released under 3-clause BSD license. For details, see lib/asm-license.txt.
+
+Parboiled 1.1.7 which is released under Apache 2.0 license. For details, see lib/parboiled-license.txt.
+
+Pegdown 1.6.0 which is released under Apache 2.0 license. For details, see lib/pegdown-license.txt.
+
+SnakeYAML 1.18 which is released under Apache 2.0 license. For details, see lib/snakeyaml-license.txt.
