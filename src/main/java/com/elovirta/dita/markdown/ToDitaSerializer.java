@@ -3,6 +3,7 @@
  */
 package com.elovirta.dita.markdown;
 
+import com.vladsch.flexmark.ast.Document;
 import org.apache.commons.io.FilenameUtils;
 import org.dita.dost.util.DitaClass;
 import org.parboiled.common.StringUtils;
@@ -97,7 +98,7 @@ public class ToDitaSerializer extends Serializer implements Visitor {
 
     }
 
-    void toHtml(final RootNode astRoot) throws SAXException {
+    void toHtml(final Document astRoot) throws SAXException {
         checkArgNotNull(astRoot, "astRoot");
         clean(astRoot);
         final boolean isCompound = hasMultipleTopLevelHeaders(astRoot);

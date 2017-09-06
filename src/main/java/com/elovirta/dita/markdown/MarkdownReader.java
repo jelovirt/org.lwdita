@@ -1,8 +1,12 @@
 package com.elovirta.dita.markdown;
 
-import org.pegdown.Extensions;
-import org.pegdown.PegDownProcessor;
-import org.pegdown.ast.RootNode;
+import com.vladsch.flexmark.ast.Document;
+import com.vladsch.flexmark.parser.Parser;
+import com.vladsch.flexmark.profiles.pegdown.Extensions;
+import com.vladsch.flexmark.profiles.pegdown.PegdownOptionsAdapter;
+import com.vladsch.flexmark.util.options.DataHolder;
+import com.vladsch.flexmark.util.sequence.BasedSequence;
+import com.vladsch.flexmark.util.sequence.BasedSequenceImpl;
 import org.xml.sax.*;
 import org.yaml.snakeyaml.Yaml;
 
@@ -17,6 +21,7 @@ import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.CharBuffer;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -28,7 +33,11 @@ import static org.apache.commons.io.IOUtils.copy;
  */
 public class MarkdownReader implements XMLReader {
 
-    private final PegDownProcessor p;
+    private static final DataHolder OPTIONS = PegdownOptionsAdapter.flexmarkOptions(
+            Extensions.ALL - Extensions.SMARTYPANTS
+    );
+
+    private final Parser p;
     private final SAXTransformerFactory tf;
     private final Templates t;
 
@@ -37,7 +46,7 @@ public class MarkdownReader implements XMLReader {
     private ErrorHandler errorHandler;
 
     public MarkdownReader() {
-        p = new PegDownProcessor(Extensions.ALL - Extensions.SMARTYPANTS);
+        p = Parser.builder(OPTIONS).build();
         try {
             final URI style = getClass().getResource("/specialize.xsl").toURI();
             tf = (SAXTransformerFactory) TransformerFactory.newInstance();
@@ -114,7 +123,9 @@ public class MarkdownReader implements XMLReader {
         if (header != null) {
             markdownContent = consumeYaml(markdownContent);
         }
-        final RootNode root = p.parseMarkdown(markdownContent);
+        final BasedSequence sequence = BasedSequenceImpl.of(CharBuffer.wrap(markdownContent));
+
+        final Document root = p.parse(sequence);
         parseAST(root, header);
     }
 
@@ -228,7 +239,7 @@ public class MarkdownReader implements XMLReader {
         return bin;
     }
 
-    private void parseAST(final RootNode root, final Map<String, Object> header) throws SAXException {
+    private void parseAST(final Document root, final Map<String, Object> header) throws SAXException {
         final TransformerHandler h;
         try {
             h = tf.newTransformerHandler(t);
