@@ -10,9 +10,9 @@ import java.util.Map;
 
 import static org.dita.dost.util.Constants.*;
 
-public class MetadataSerializerImpl extends Serializer implements MetadataSerializer {
+public class MetadataSerializerImpl extends SaxSerializer implements MetadataSerializer {
 
-    static Attributes buildAtts(final DitaClass cls) {
+    public static Attributes buildAtts(final DitaClass cls) {
         return new XMLUtils.AttributesBuilder()
                 .add(ATTRIBUTE_NAME_CLASS, cls.toString())
                 .build();

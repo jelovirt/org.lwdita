@@ -247,7 +247,7 @@ public class MarkdownReader implements XMLReader {
             throw new SAXException(e);
         }
         h.setResult(new SAXResult(contentHandler));
-        final ToDitaSerializer s = new ToDitaSerializer(h, header);
+        final DitaRenderer s = new DitaRenderer(h, header);
         s.toHtml(root);
     }
 
