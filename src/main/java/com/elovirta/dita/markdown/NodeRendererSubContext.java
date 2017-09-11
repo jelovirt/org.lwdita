@@ -20,11 +20,11 @@ public abstract class NodeRendererSubContext implements NodeRendererContext {
     }
 
     public void flush() {
-        ditaWriter.line().flush();
+//        ditaWriter.line().flush();
     }
 
     public void flush(int maxBlankLines) {
-        ditaWriter.line().flush(maxBlankLines);
+//        ditaWriter.line().flush(maxBlankLines);
     }
 
     protected int getDoNotRenderLinksNesting() {

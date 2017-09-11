@@ -145,8 +145,8 @@ public class DitaWriter {
 //        return this;
 //    }
 
-    final Deque<DitaClass> tagStack = new ArrayDeque<>();
-    protected ContentHandler contentHandler;
+    public final Deque<DitaClass> tagStack = new ArrayDeque<>();
+    public ContentHandler contentHandler;
 
     public void setContentHandler(final ContentHandler contentHandler) {
         this.contentHandler = contentHandler;
@@ -192,6 +192,12 @@ public class DitaWriter {
             contentHandler.characters(cs, 0, cs.length);
         } catch (final SAXException e) {
             throw new ParseException(e);
+        }
+    }
+
+    public void close() {
+        while (!tagStack.isEmpty()) {
+            endElement();
         }
     }
 }

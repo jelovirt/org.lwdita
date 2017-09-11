@@ -18,8 +18,15 @@ import com.vladsch.flexmark.util.html.Escaping;
 import com.vladsch.flexmark.util.options.*;
 import com.vladsch.flexmark.util.sequence.TagRange;
 import org.xml.sax.ContentHandler;
+import org.xml.sax.SAXException;
 
 import java.util.*;
+
+//import static javax.xml.XMLConstants.NULL_NS_URI;
+import static org.dita.dost.util.Constants.ATTRIBUTE_PREFIX_DITAARCHVERSION;
+import static org.dita.dost.util.Constants.DITA_NAMESPACE;
+//import static org.dita.dost.util.Constants.ELEMENT_NAME_DITA;
+//import static org.dita.dost.util.XMLSerializer.EMPTY_ATTS;
 
 public class DitaRenderer implements IRender {
 
@@ -415,7 +422,29 @@ public class DitaRenderer implements IRender {
 
         @Override
         public void render(Node node) {
-            renderNode(node, this);
+            try {
+//            clean(astRoot);
+//            final boolean isCompound = hasMultipleTopLevelHeaders(astRoot);
+                ditaWriter.contentHandler.startDocument();
+                ditaWriter.contentHandler.startPrefixMapping(ATTRIBUTE_PREFIX_DITAARCHVERSION, DITA_NAMESPACE);
+//            if (isCompound) {
+//                contentHandler.startElement(NULL_NS_URI, ELEMENT_NAME_DITA, ELEMENT_NAME_DITA, EMPTY_ATTS);
+//            }
+                try {
+                    renderNode(node, this);
+                    ditaWriter.close();
+                } catch (final ParseException e) {
+                    //e.printStackTrace();
+                    throw new SAXException("Failed to parse Markdown: " + e.getMessage(), e);
+                }
+//            if (isCompound) {
+//                contentHandler.endElement(NULL_NS_URI, ELEMENT_NAME_DITA, ELEMENT_NAME_DITA);
+//            }
+                ditaWriter.contentHandler.endPrefixMapping(ATTRIBUTE_PREFIX_DITAARCHVERSION);
+                ditaWriter.contentHandler.endDocument();
+            } catch (SAXException e) {
+                throw new RuntimeException(e);
+            }
         }
 
         @Override
@@ -517,6 +546,8 @@ public class DitaRenderer implements IRender {
                         subContext.doNotRenderLinksNesting = oldDoNotRenderLinksNesting;
                         subContext.renderingHandlerWrapper = prevWrapper;
                     }
+                } else {
+                    throw new RuntimeException("No renderer configured for " + node.getClass().getName());
                 }
             }
         }
