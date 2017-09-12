@@ -1,5 +1,6 @@
 package com.elovirta.dita.markdown;
 
+import junit.framework.AssertionFailedError;
 import org.custommonkey.xmlunit.XMLUnit;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,7 +15,9 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMResult;
+import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.sax.SAXSource;
+import javax.xml.transform.stream.StreamResult;
 import java.io.InputStream;
 
 import static org.custommonkey.xmlunit.XMLAssert.assertXMLEqual;
@@ -47,8 +50,12 @@ public class MarkdownReaderTest {
         try (final InputStream in = getClass().getResourceAsStream("/" + input.replaceAll("\\.md$", ".dita"));) {
             exp = db.parse(in);
         }
-
-        assertXMLEqual(clean(exp), clean(act));
+        try {
+            assertXMLEqual(clean(exp), clean(act));
+        } catch (AssertionFailedError e) {
+            TransformerFactory.newInstance().newTransformer().transform(new DOMSource(act), new StreamResult(System.out));
+            throw e;
+        }
     }
 
     private Document clean(Document doc) {

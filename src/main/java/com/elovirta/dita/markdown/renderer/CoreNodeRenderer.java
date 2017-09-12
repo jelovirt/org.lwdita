@@ -915,8 +915,12 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
         context.renderChildren(node);
     }
 
+    private void render(final SoftLineBreak node, final NodeRendererContext context, final DitaWriter html) {
+        html.characters('\n');
+    }
+
     private void render(final Node node, final NodeRendererContext context, final DitaWriter html) {
-        throw new RuntimeException();
+        throw new RuntimeException("No renderer configured for " + node.getNodeName());
 //        if (node instanceof MetadataNode) {
 //            final MetadataNode n = (MetadataNode) node;
 //            final String id = getId(n.title);
