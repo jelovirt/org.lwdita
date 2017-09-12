@@ -560,7 +560,7 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
     }
 
     private void render(final MailLink node, final NodeRendererContext context, final DitaWriter html) {
-        final AttributesBuilder atts = getLinkAttributes("mailto:" + node.getChars().toString());
+        final AttributesBuilder atts = getLinkAttributes("mailto:" + node.getText());
 
         html.startElement(TOPIC_XREF, atts.build());
         context.renderChildren(node);
