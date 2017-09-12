@@ -1,10 +1,30 @@
 package com.elovirta.dita.markdown;
 
 import com.vladsch.flexmark.ast.Document;
+import com.vladsch.flexmark.ext.abbreviation.AbbreviationExtension;
+import com.vladsch.flexmark.ext.anchorlink.AnchorLinkExtension;
+import com.vladsch.flexmark.ext.aside.AsideExtension;
+import com.vladsch.flexmark.ext.autolink.AutolinkExtension;
+import com.vladsch.flexmark.ext.definition.DefinitionExtension;
+import com.vladsch.flexmark.ext.footnotes.FootnoteExtension;
+import com.vladsch.flexmark.ext.gfm.issues.GfmIssuesExtension;
+import com.vladsch.flexmark.ext.gfm.strikethrough.StrikethroughExtension;
+import com.vladsch.flexmark.ext.gfm.strikethrough.StrikethroughSubscriptExtension;
+import com.vladsch.flexmark.ext.gfm.strikethrough.SubscriptExtension;
+import com.vladsch.flexmark.ext.gfm.tasklist.TaskListExtension;
+import com.vladsch.flexmark.ext.gfm.users.GfmUsersExtension;
+import com.vladsch.flexmark.ext.ins.InsExtension;
+import com.vladsch.flexmark.ext.jekyll.tag.JekyllTagExtension;
+import com.vladsch.flexmark.ext.tables.TablesExtension;
+import com.vladsch.flexmark.ext.typographic.TypographicExtension;
+import com.vladsch.flexmark.ext.wikilink.WikiLinkExtension;
+import com.vladsch.flexmark.ext.yaml.front.matter.YamlFrontMatterExtension;
+import com.vladsch.flexmark.jira.converter.JiraConverterExtension;
 import com.vladsch.flexmark.parser.Parser;
 import com.vladsch.flexmark.profiles.pegdown.Extensions;
-import com.vladsch.flexmark.profiles.pegdown.PegdownOptionsAdapter;
+import com.vladsch.flexmark.superscript.SuperscriptExtension;
 import com.vladsch.flexmark.util.options.DataHolder;
+import com.vladsch.flexmark.util.options.MutableDataSet;
 import com.vladsch.flexmark.util.sequence.BasedSequence;
 import com.vladsch.flexmark.util.sequence.BasedSequenceImpl;
 import org.xml.sax.*;
@@ -22,9 +42,11 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.CharBuffer;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Map;
 
+import static java.util.Arrays.asList;
 import static org.apache.commons.io.IOUtils.closeQuietly;
 import static org.apache.commons.io.IOUtils.copy;
 
@@ -32,10 +54,6 @@ import static org.apache.commons.io.IOUtils.copy;
  * XMLReader implementation for Markdown.
  */
 public class MarkdownReader implements XMLReader {
-
-    private static final DataHolder OPTIONS = PegdownOptionsAdapter.flexmarkOptions(
-            Extensions.ALL - Extensions.SMARTYPANTS
-    );
 
     private final Parser p;
     private final SAXTransformerFactory tf;
@@ -45,8 +63,40 @@ public class MarkdownReader implements XMLReader {
     private ContentHandler contentHandler;
     private ErrorHandler errorHandler;
 
+    /**
+     * @see <a href="https://github.com/vsch/flexmark-java/wiki/Extensions">Extensions</a>
+     */
     public MarkdownReader() {
-        p = Parser.builder(OPTIONS).build();
+        final MutableDataSet options = new MutableDataSet();
+        options.set(Parser.EXTENSIONS, asList(
+                AbbreviationExtension.create(),
+                AnchorLinkExtension.create(),
+                AsideExtension.create(),
+                FootnoteExtension.create(),
+//                GfmIssuesExtension.create(),
+//                GfmUsersExtension.create(),
+//                TaskListExtension.create(),
+                InsExtension.create(),
+                JekyllTagExtension.create(),
+//                JiraConverterExtension.create(),
+//                StrikethroughSubscriptExtension.create(),
+                SuperscriptExtension.create(),
+//                SubscriptExtension.create(),
+                TablesExtension.create(),
+                TypographicExtension.create(),
+//                WikiLinkExtension.create(),
+                AutolinkExtension.create(),
+                YamlFrontMatterExtension.create(),
+                DefinitionExtension.create(),
+                StrikethroughExtension.create()))
+                .set(DefinitionExtension.TILDE_MARKER, false)
+                .set(TablesExtension.COLUMN_SPANS, false)
+                .set(TablesExtension.APPEND_MISSING_COLUMNS, true)
+                .set(TablesExtension.DISCARD_EXTRA_COLUMNS, true)
+                .set(TablesExtension.HEADER_SEPARATOR_COLUMN_MATCH, true);
+
+//        options.set(HtmlRenderer.SOFT_BREAK, "<br />\n");
+        p = Parser.builder(options).build();
         try {
             final URI style = getClass().getResource("/specialize.xsl").toURI();
             tf = (SAXTransformerFactory) TransformerFactory.newInstance();
