@@ -147,6 +147,7 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
                 new NodeRenderingHandler<ImageRef>(ImageRef.class, (node, context, html) -> render(node, context, html)),
                 new NodeRenderingHandler<IndentedCodeBlock>(IndentedCodeBlock.class, (node, context, html) -> render(node, context, html)),
                 new NodeRenderingHandler<Link>(Link.class, (node, context, html) -> render(node, context, html)),
+                new NodeRenderingHandler<Strikethrough>(Strikethrough.class, (node, context, html) -> render(node, context, html)),
                 new NodeRenderingHandler<LinkRef>(LinkRef.class, (node, context, html) -> render(node, context, html)),
                 new NodeRenderingHandler<BulletListItem>(BulletListItem.class, (node, context, html) -> render(node, context, html)),
                 new NodeRenderingHandler<OrderedListItem>(OrderedListItem.class, (node, context, html) -> render(node, context, html)),
@@ -154,6 +155,7 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
                 new NodeRenderingHandler<OrderedList>(OrderedList.class, (node, context, html) -> render(node, context, html)),
                 new NodeRenderingHandler<Paragraph>(Paragraph.class, (node, context, html) -> render(node, context, html)),
                 new NodeRenderingHandler<Reference>(Reference.class, (node, context, html) -> render(node, context, html)),
+                new NodeRenderingHandler<TableBlock>(TableBlock.class, (node, context, html) -> render(node, context, html)),
                 new NodeRenderingHandler<SoftLineBreak>(SoftLineBreak.class, (node, context, html) -> render(node, context, html)),
                 new NodeRenderingHandler<StrongEmphasis>(StrongEmphasis.class, (node, context, html) -> render(node, context, html)),
                 new NodeRenderingHandler<Text>(Text.class, (node, context, html) -> render(node, context, html)),
@@ -620,11 +622,11 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
     }
 
     private void render(final ReferenceNode node, final NodeRendererContext context, final DitaWriter html) {
-        // reference nodes are not printed
+        throw new RuntimeException();
     }
 
     private void render(final Reference node, final NodeRendererContext context, final DitaWriter html) {
-        // reference nodes are not printed
+        throw new RuntimeException();
     }
 
     private void render(final ImageRef node, final NodeRendererContext context, final DitaWriter html) {
@@ -653,7 +655,7 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
             final AttributesBuilder atts = new AttributesBuilder(XREF_ATTS)
                     .add(ATTRIBUTE_NAME_KEYREF, key);
             html.startElement(TOPIC_XREF, atts.build());
-            if (node.getReference() != null) {
+            if (node.getReference() != null && key == null) {
                 context.renderChildren(node);
             }
             html.endElement();
@@ -667,6 +669,30 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
             }
             html.endElement();
         }
+    }
+
+    private void render(final Link node, final NodeRendererContext context, final DitaWriter html) {
+        final String text = node.toString();
+//        final String key = node.getReference() != null ? node.getReference().toString() : text;
+//        final ReferenceNode refNode = references.get(normalize(key));
+//        if (refNode == null) { // "fake" reference link
+//            final AttributesBuilder atts = new AttributesBuilder(XREF_ATTS)
+//                    .add(ATTRIBUTE_NAME_KEYREF, key);
+//            html.startElement(TOPIC_XREF, atts.build());
+//            if (node.getReference() != null) {
+//                context.renderChildren(node);
+//            }
+//            html.endElement();
+//        } else {
+            final AttributesBuilder atts = getLinkAttributes(node.getUrl().toString());
+            html.startElement(TOPIC_XREF, atts.build());
+//            if (refNode.toString() != null) {
+//                html.characters(refNode.toString());
+//            } else {
+                context.renderChildren(node);
+//            }
+            html.endElement();
+//        }
     }
 
 //    @Override
