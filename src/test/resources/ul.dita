@@ -55,7 +55,12 @@
       </li>
       <li class="- topic/li ">
         <p class="- topic/p ">para</p>
-        <p class="- topic/p ">para - below this will not work</p>
+        <p class="- topic/p ">para</p>
+        <ul class="- topic/ul ">
+          <li class="- topic/li ">
+            <p class="- topic/p ">below this will not work</p>
+          </li>
+        </ul>
       </li>
       <li class="- topic/li ">
         <p class="- topic/p ">para</p>
