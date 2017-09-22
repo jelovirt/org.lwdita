@@ -4,6 +4,7 @@
 package com.elovirta.dita.markdown.renderer;
 
 import com.elovirta.dita.markdown.*;
+import com.google.common.collect.ImmutableList;
 import com.vladsch.flexmark.ast.*;
 import com.vladsch.flexmark.ext.abbreviation.Abbreviation;
 import com.vladsch.flexmark.ext.anchorlink.AnchorLink;
@@ -16,9 +17,11 @@ import com.vladsch.flexmark.ext.gfm.tables.TableBody;
 import com.vladsch.flexmark.ext.gfm.tables.TableHead;
 import com.vladsch.flexmark.ext.gfm.tables.TableRow;
 import com.vladsch.flexmark.ext.typographic.TypographicQuotes;
+import com.vladsch.flexmark.html.HtmlWriter;
 import com.vladsch.flexmark.parser.ListOptions;
 import com.vladsch.flexmark.parser.Parser;
 import com.vladsch.flexmark.util.options.DataHolder;
+import com.vladsch.flexmark.util.sequence.BasedSequence;
 import org.apache.commons.io.FilenameUtils;
 import org.dita.dost.util.DitaClass;
 import org.xml.sax.Attributes;
@@ -417,10 +420,33 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
         return null;
     }
 
+    private final static Pattern p = Pattern.compile("^(.+?)(?:\\{(.+?)\\})?$");
+
+    private Metadata parseMetadata(Node node) {
+        List<String> classes;
+        String id;
+        BasedSequence info = node.getChars();
+        final Matcher m = p.matcher(info);
+        if (m.matches()) {
+            if (m.group(2) != null) {
+                return Metadata.parse(m.group(2));
+            } else {
+//                    id = getId(title);
+                id = null;
+            }
+        } else {
+//                id = getId(contents);
+            id = null;
+        }
+        return null;
+    }
+
     private void render(final Heading node, final NodeRendererContext context, final DitaWriter html) {
         if (node.getLevel() > headerLevel + 1) {
             throw new ParseException("Header level raised from " + headerLevel + " to " + node.getLevel() + " without intermediate header level");
         }
+        final StringBuilder buf = new StringBuilder();
+        node.getAstExtra(buf);
         final Title header = new Title(node);
 
         if (inSection) {
@@ -461,7 +487,9 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
             headerLevel = node.getLevel();
 
             final AttributesBuilder atts = new AttributesBuilder(TOPIC_ATTS);
-            if (node.getAnchorRefId() != null) {
+            if (header.id != null) {
+                atts.add(ATTRIBUTE_NAME_ID, header.id);
+            } else if (node.getAnchorRefId() != null) {
                 atts.add(ATTRIBUTE_NAME_ID, node.getAnchorRefId());
             } else {
                 atts.add(ATTRIBUTE_NAME_ID, getId(header.title));
@@ -472,7 +500,11 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
             html.startElement(TOPIC_TOPIC, atts.build());
             html.startElement(TOPIC_TITLE, TITLE_ATTS);
 //            html.characters(header.title);
-            context.renderChildren(node);
+            if (header.title != null) {
+                html.characters(header.title);
+            } else {
+                context.renderChildren(node);
+            }
             html.endElement(); // title
 //            if (documentMetadata != null && !documentMetadata.isEmpty()) {
 //                outputMetadata(documentMetadata, html);
@@ -518,16 +550,16 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
         final Collection<String> classes;
 
         Title(final Heading node) {
-            final String contents = node.toString();
+            final String contents = node.getText().toString();
             classes = new ArrayList<>();
-            final Pattern p = Pattern.compile("^(.+?)(?:\\s*#{" + node.getLevel() + "}?\\s*)?(?:\\{(.+?)\\})?$");
+            final Pattern p = Pattern.compile("^(.+?)(?:\\{(.*?)\\})?$");
             final Matcher m = p.matcher(contents);
             if (m.matches()) {
                 title = m.group(1);
                 if (m.group(2) != null) {
                     final Metadata metadata = Metadata.parse(m.group(2));
                     classes.addAll(metadata.classes);
-                    id = metadata.id; // != null ? metadata.id : getId(title);
+                    id = metadata.id != null ? metadata.id : getId(title);
                 } else {
 //                    id = getId(title);
                     id = null;
@@ -901,6 +933,79 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
 //        }
         html.startElement(PR_D_CODEBLOCK, atts.build());
         String text = node.getChars().toString();
+        if (text.endsWith("\n")) {
+            text = text.substring(0, text.length() - 1);
+        }
+        html.characters(text);
+        html.endElement();
+    }
+
+    private void render(final IndentedCodeBlock node, final NodeRendererContext context, final DitaWriter html) {
+        final AttributesBuilder atts = new AttributesBuilder(CODEBLOCK_ATTS)
+                .add(XML_NS_URI, "space", "xml:space", "CDATA", "preserve");
+//        if (node.getType() != null && !node.getType().isEmpty()) {
+//            final String type = node.getType().trim();
+//            final Metadata metadata;
+//            if (type.startsWith("{")) {
+//                metadata = Metadata.parse(type.substring(1, type.length() - 1));
+//            } else {
+//                metadata = new Metadata(null, Collections.singletonList(type));
+//            }
+//            if (metadata.id != null) {
+//                atts.add(ATTRIBUTE_NAME_ID, metadata.id);
+//            }
+//            if (!metadata.classes.isEmpty()) {
+//                atts.add("outputclass", String.join(" ", metadata.classes));
+//            }
+//        }
+        html.startElement(PR_D_CODEBLOCK, atts.build());
+        String text = node.getChars().toString();
+        if (text.endsWith("\n")) {
+            text = text.substring(0, text.length() - 1);
+        }
+        html.characters(text);
+        html.endElement();
+    }
+
+    private void render(final FencedCodeBlock node, final NodeRendererContext context, final DitaWriter html) {
+        final AttributesBuilder atts = new AttributesBuilder(CODEBLOCK_ATTS)
+                .add(XML_NS_URI, "space", "xml:space", "CDATA", "preserve");
+//        if (node.getType() != null && !node.getType().isEmpty()) {
+//            final String type = node.getType().trim();
+//            final Metadata metadata;
+//            if (type.startsWith("{")) {
+//                metadata = Metadata.parse(type.substring(1, type.length() - 1));
+//            } else {
+//                metadata = new Metadata(null, Collections.singletonList(type));
+//            }
+//            if (metadata.id != null) {
+//                atts.add(ATTRIBUTE_NAME_ID, metadata.id);
+//            }
+//            if (!metadata.classes.isEmpty()) {
+//                atts.add("outputclass", String.join(" ", metadata.classes));
+//            }
+//        }
+
+
+        BasedSequence info = node.getInfo();
+        if (info.isNotNull() && !info.isBlank()) {
+            int space = info.indexOf(' ');
+            BasedSequence language;
+            if (space == -1) {
+                language = info;
+            } else {
+                language = info.subSequence(0, space);
+            }
+            atts.add("class", /*context.getDitaOptions().languageClassPrefix +*/ language.unescape());
+        } else {
+            String noLanguageClass = context.getDitaOptions().noLanguageClass.trim();
+            if (!noLanguageClass.isEmpty()) {
+                atts.add("class", noLanguageClass);
+            }
+        }
+
+        html.startElement(PR_D_CODEBLOCK, atts.build());
+        String text = node.getContentChars().normalizeEOL();
         if (text.endsWith("\n")) {
             text = text.substring(0, text.length() - 1);
         }
