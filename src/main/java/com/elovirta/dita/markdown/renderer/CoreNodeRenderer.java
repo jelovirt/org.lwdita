@@ -36,6 +36,7 @@ import java.util.regex.Pattern;
 import java.util.stream.StreamSupport;
 
 import static com.elovirta.dita.markdown.MetadataSerializerImpl.buildAtts;
+import static com.elovirta.dita.markdown.renderer.HeaderIdGenerator.generateId;
 import static javax.xml.XMLConstants.XML_NS_URI;
 import static org.dita.dost.util.Constants.*;
 import static org.dita.dost.util.URLUtils.toURI;
@@ -461,7 +462,9 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
             final DitaClass cls = sections.get(section);
             final AttributesBuilder atts = new AttributesBuilder()
                     .add(ATTRIBUTE_NAME_CLASS, cls.toString());
-            if (node.getAnchorRefId() != null) {
+            if (header.id != null) {
+                atts.add(ATTRIBUTE_NAME_ID, header.id);
+            } else if (node.getAnchorRefId() != null) {
                 atts.add(ATTRIBUTE_NAME_ID, node.getAnchorRefId());
             } else {
                 atts.add(ATTRIBUTE_NAME_ID, getId(header.title));
@@ -474,8 +477,11 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
             html.startElement(cls, atts.build());
             inSection = true;
             html.startElement(TOPIC_TITLE, TITLE_ATTS);
-//            html.characters(header.title);
-            context.renderChildren(node);
+            if (header.title != null) {
+                html.characters(header.title);
+            } else {
+                context.renderChildren(node);
+            }
             html.endElement(); // title
         } else {
             if (headerLevel > 0) {
@@ -573,7 +579,7 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
                 if (m.group(2) != null) {
                     final Metadata metadata = Metadata.parse(m.group(2));
                     classes.addAll(metadata.classes);
-                    id = metadata.id != null ? metadata.id : getId(title);
+                    id = metadata.id != null ? metadata.id : generateId(title.replaceAll("\\s+", " ").trim(), " -_", false);
                 } else {
 //                    id = getId(title);
                     id = null;
@@ -591,7 +597,10 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
 //    }
 
     private static String getId(final String contents) {
-        return contents.toLowerCase().replaceAll("[^\\w]", " ").trim().replaceAll("\\s+", "_");
+        return contents.toLowerCase()
+                .replaceAll("[^\\w]", "")
+                .trim()
+                .replaceAll("\\s+", "_");
     }
 
     private void render(final HtmlBlock node, final NodeRendererContext context, final DitaWriter html) {
