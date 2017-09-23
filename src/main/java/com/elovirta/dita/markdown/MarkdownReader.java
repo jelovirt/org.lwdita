@@ -7,28 +7,19 @@ import com.vladsch.flexmark.ext.aside.AsideExtension;
 import com.vladsch.flexmark.ext.autolink.AutolinkExtension;
 import com.vladsch.flexmark.ext.definition.DefinitionExtension;
 import com.vladsch.flexmark.ext.footnotes.FootnoteExtension;
-import com.vladsch.flexmark.ext.gfm.issues.GfmIssuesExtension;
 import com.vladsch.flexmark.ext.gfm.strikethrough.StrikethroughExtension;
-import com.vladsch.flexmark.ext.gfm.strikethrough.StrikethroughSubscriptExtension;
-import com.vladsch.flexmark.ext.gfm.strikethrough.SubscriptExtension;
-import com.vladsch.flexmark.ext.gfm.tasklist.TaskListExtension;
-import com.vladsch.flexmark.ext.gfm.users.GfmUsersExtension;
 import com.vladsch.flexmark.ext.ins.InsExtension;
 import com.vladsch.flexmark.ext.jekyll.tag.JekyllTagExtension;
 import com.vladsch.flexmark.ext.tables.TablesExtension;
 import com.vladsch.flexmark.ext.typographic.TypographicExtension;
-import com.vladsch.flexmark.ext.wikilink.WikiLinkExtension;
+import com.vladsch.flexmark.ext.yaml.front.matter.AbstractYamlFrontMatterVisitor;
 import com.vladsch.flexmark.ext.yaml.front.matter.YamlFrontMatterExtension;
-import com.vladsch.flexmark.jira.converter.JiraConverterExtension;
 import com.vladsch.flexmark.parser.Parser;
-import com.vladsch.flexmark.profiles.pegdown.Extensions;
 import com.vladsch.flexmark.superscript.SuperscriptExtension;
-import com.vladsch.flexmark.util.options.DataHolder;
 import com.vladsch.flexmark.util.options.MutableDataSet;
 import com.vladsch.flexmark.util.sequence.BasedSequence;
 import com.vladsch.flexmark.util.sequence.BasedSequenceImpl;
 import org.xml.sax.*;
-import org.yaml.snakeyaml.Yaml;
 
 import javax.xml.transform.Templates;
 import javax.xml.transform.TransformerConfigurationException;
@@ -42,8 +33,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.CharBuffer;
-import java.util.Arrays;
-import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import static java.util.Arrays.asList;
@@ -169,13 +159,18 @@ public class MarkdownReader implements XMLReader {
     @Override
     public void parse(final InputSource input) throws IOException, SAXException {
         char[] markdownContent = getMarkdownContent(input);
-        final Map<String, Object> header = parserYaml(markdownContent);
-        if (header != null) {
-            markdownContent = consumeYaml(markdownContent);
-        }
+//        final Map<String, Object> header = parserYaml(markdownContent);
+//        if (header != null) {
+//            markdownContent = consumeYaml(markdownContent);
+//        }
         final BasedSequence sequence = BasedSequenceImpl.of(CharBuffer.wrap(markdownContent));
 
         final Document root = p.parse(sequence);
+
+        final AbstractYamlFrontMatterVisitor v = new AbstractYamlFrontMatterVisitor();
+        v.visit(root);
+        final Map<String, List<String>> header = v.getData();
+
         parseAST(root, header);
     }
 
@@ -226,48 +221,6 @@ public class MarkdownReader implements XMLReader {
     }
 
     /**
-     * Return char array after YAML document.
-     */
-    private char[] consumeYaml(char[] cs) {
-        for (int i = 0, j = 0; i < cs.length; i++) {
-            if (cs[i] == '\n') {
-                if (j != 0 && isYamlDocumentStart(cs, j)) {
-                    final char[] buf = new char[cs.length - i];
-                    System.arraycopy(cs, i, buf, 0, buf.length);
-                    return buf;
-                }
-                j = i + 1;
-            }
-        }
-        return cs;
-    }
-
-    /**
-     * Check if character array offset is the start of YAML document.
-     */
-    private boolean isYamlDocumentStart(char[] cs, int i) {
-        return cs[i] == '-' && cs[i + 1] == '-' && cs[i + 2] == '-';
-    }
-
-    private Map<String, Object> parserYaml(char[] markdownContent) throws IOException {
-        if (markdownContent.length > 3 && isYamlDocumentStart(markdownContent, 0)) {
-            Yaml yaml = new Yaml();
-            try (final CharArrayReader in = new CharArrayReader(markdownContent)) {
-                final Iterator<Object> docs = yaml.loadAll(in).iterator();
-                if (docs.hasNext()) {
-                    final Object doc = docs.next();
-                    if (doc instanceof Map) {
-                        return (Map<String, Object>) doc;
-                    } else {
-                        System.err.println("Only top level maps supported, found " + doc.getClass().getName());
-                    }
-                }
-            }
-        }
-        return null;
-    }
-
-    /**
      * Returns an input stream that skips the BOM if present.
      *
      * @param in the original input stream
@@ -289,7 +242,7 @@ public class MarkdownReader implements XMLReader {
         return bin;
     }
 
-    private void parseAST(final Document root, final Map<String, Object> header) throws SAXException {
+    private void parseAST(final Document root, final Map<String, List<String>> header) throws SAXException {
         final TransformerHandler h;
         try {
             h = tf.newTransformerHandler(t);
@@ -298,7 +251,7 @@ public class MarkdownReader implements XMLReader {
         }
         h.setResult(new SAXResult(contentHandler));
         final Builder builder = new Builder();
-        final DitaRenderer s = new DitaRenderer(builder);
+        final DitaRenderer s = new DitaRenderer(builder, header);
         s.render(root, h);
     }
 

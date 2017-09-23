@@ -3,8 +3,10 @@
  */
 package com.elovirta.dita.markdown.renderer;
 
-import com.elovirta.dita.markdown.*;
-import com.google.common.collect.ImmutableList;
+import com.elovirta.dita.markdown.DitaWriter;
+import com.elovirta.dita.markdown.MetadataSerializerImpl;
+import com.elovirta.dita.markdown.ParseException;
+import com.elovirta.dita.markdown.SaxSerializer;
 import com.vladsch.flexmark.ast.*;
 import com.vladsch.flexmark.ext.abbreviation.Abbreviation;
 import com.vladsch.flexmark.ext.anchorlink.AnchorLink;
@@ -17,16 +19,14 @@ import com.vladsch.flexmark.ext.gfm.tables.TableBody;
 import com.vladsch.flexmark.ext.gfm.tables.TableHead;
 import com.vladsch.flexmark.ext.gfm.tables.TableRow;
 import com.vladsch.flexmark.ext.typographic.TypographicQuotes;
-import com.vladsch.flexmark.html.HtmlWriter;
-import com.vladsch.flexmark.parser.ListOptions;
-import com.vladsch.flexmark.parser.Parser;
+import com.vladsch.flexmark.ext.yaml.front.matter.YamlFrontMatterBlock;
+import com.vladsch.flexmark.ext.yaml.front.matter.YamlFrontMatterNode;
 import com.vladsch.flexmark.util.options.DataHolder;
 import com.vladsch.flexmark.util.sequence.BasedSequence;
 import org.apache.commons.io.FilenameUtils;
 import org.dita.dost.util.DitaClass;
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
-import org.xml.sax.SAXException;
 import org.xml.sax.helpers.AttributesImpl;
 
 import java.net.URI;
@@ -36,7 +36,6 @@ import java.util.regex.Pattern;
 import java.util.stream.StreamSupport;
 
 import static com.elovirta.dita.markdown.MetadataSerializerImpl.buildAtts;
-import static javax.xml.XMLConstants.NULL_NS_URI;
 import static javax.xml.XMLConstants.XML_NS_URI;
 import static org.dita.dost.util.Constants.*;
 import static org.dita.dost.util.URLUtils.toURI;
@@ -93,7 +92,7 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
 //    private final Map<String, Object> documentMetadata;
     private final Map<String, ReferenceNode> references = new HashMap<>();
     private final Map<String, String> abbreviations = new HashMap<>();
-//    private final MetadataSerializer metadataSerializer;
+    private final MetadataSerializerImpl metadataSerializer;
     private TableBlock currentTableNode;
     private int currentTableColumn;
 
@@ -116,19 +115,20 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
 //        myEOLs = null;
 //        myNextLine = 0;
 //        nextLineStartOffset = 0;
+        metadataSerializer = new MetadataSerializerImpl();
     }
 
     CoreNodeRenderer(final ContentHandler contentHandler, final Map<String, Object> documentMetadata) {
 //        this.documentMetadata = documentMetadata;
         setContentHandler(contentHandler);
-//        metadataSerializer = new MetadataSerializerImpl();
-//        metadataSerializer.setContentHandler(contentHandler);
+        metadataSerializer = new MetadataSerializerImpl();
 
     }
 
     @Override
     public Set<NodeRenderingHandler<?>> getNodeRenderingHandlers() {
         return new HashSet<>(Arrays.asList(
+                new NodeRenderingHandler<YamlFrontMatterBlock>(YamlFrontMatterBlock.class, (node, context, html) -> render(node, context, html)),
                 new NodeRenderingHandler<AutoLink>(AutoLink.class, (node, context, html) -> render(node, context, html)),
                 new NodeRenderingHandler<BlockQuote>(BlockQuote.class, (node, context, html) -> render(node, context, html)),
                 new NodeRenderingHandler<BulletList>(BulletList.class, (node, context, html) -> render(node, context, html)),
@@ -506,9 +506,17 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
                 context.renderChildren(node);
             }
             html.endElement(); // title
+            if (node.getLevel() == 1) {
+                final Node firstChild = node.getDocument().getFirstChild();
+                if (firstChild instanceof YamlFrontMatterBlock) {
+                    html.startElement(TOPIC_PROLOG, PROLOG_ATTS);
+                    metadataSerializer.render((YamlFrontMatterBlock) firstChild, context, html);
+                    html.endElement();
+                }
 //            if (documentMetadata != null && !documentMetadata.isEmpty()) {
 //                outputMetadata(documentMetadata, html);
 //            }
+            }
             html.startElement(TOPIC_BODY, BODY_ATTS);
         }
     }
@@ -517,6 +525,12 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
         html.startElement(TOPIC_PROLOG, PROLOG_ATTS);
 //        metadataSerializer.write(documentMetadata);
         html.endElement();
+    }
+
+    private void render(final YamlFrontMatterBlock node, final NodeRendererContext context, final DitaWriter html) {
+//        final String text = node.getChars().toString();
+//        html.characters(text);
+        // YAML header is pulled by Heading renderer
     }
 
     static class Metadata {

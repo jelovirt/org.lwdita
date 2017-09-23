@@ -42,62 +42,17 @@ public class DitaRenderer implements IRender {
     public static final DataKey<Boolean> PERCENT_ENCODE_URLS = new DataKey<Boolean>("ESCAPE_HTML", false);
     public static final DataKey<Integer> INDENT_SIZE = new DataKey<Integer>("INDENT", 0);
     public static final DataKey<Boolean> ESCAPE_HTML = new DataKey<Boolean>("ESCAPE_HTML", false);
-    public static final DataKey<Boolean> ESCAPE_HTML_BLOCKS = new DynamicDefaultKey<Boolean>("ESCAPE_HTML_BLOCKS", new DataValueFactory<Boolean>() {
-        @Override
-        public Boolean create(DataHolder holder) {
-            return ESCAPE_HTML.getFrom(holder);
-        }
-    });
-    public static final DataKey<Boolean> ESCAPE_HTML_COMMENT_BLOCKS = new DynamicDefaultKey<Boolean>("ESCAPE_HTML_COMMENT_BLOCKS", new DataValueFactory<Boolean>() {
-        @Override
-        public Boolean create(DataHolder holder) {
-            return ESCAPE_HTML_BLOCKS.getFrom(holder);
-        }
-    });
-    public static final DataKey<Boolean> ESCAPE_INLINE_HTML = new DynamicDefaultKey<Boolean>("ESCAPE_HTML_BLOCKS", new DataValueFactory<Boolean>() {
-        @Override
-        public Boolean create(DataHolder holder) {
-            return ESCAPE_HTML.getFrom(holder);
-        }
-    });
-    public static final DataKey<Boolean> ESCAPE_INLINE_HTML_COMMENTS = new DynamicDefaultKey<Boolean>("ESCAPE_INLINE_HTML_COMMENTS", new DataValueFactory<Boolean>() {
-        @Override
-        public Boolean create(DataHolder holder) {
-            return ESCAPE_INLINE_HTML.getFrom(holder);
-        }
-    });
+    public static final DataKey<Boolean> ESCAPE_HTML_BLOCKS = new DynamicDefaultKey<Boolean>("ESCAPE_HTML_BLOCKS", holder -> ESCAPE_HTML.getFrom(holder));
+    public static final DataKey<Boolean> ESCAPE_HTML_COMMENT_BLOCKS = new DynamicDefaultKey<Boolean>("ESCAPE_HTML_COMMENT_BLOCKS", holder -> ESCAPE_HTML_BLOCKS.getFrom(holder));
+    public static final DataKey<Boolean> ESCAPE_INLINE_HTML = new DynamicDefaultKey<Boolean>("ESCAPE_HTML_BLOCKS", holder -> ESCAPE_HTML.getFrom(holder));
+    public static final DataKey<Boolean> ESCAPE_INLINE_HTML_COMMENTS = new DynamicDefaultKey<Boolean>("ESCAPE_INLINE_HTML_COMMENTS", holder -> ESCAPE_INLINE_HTML.getFrom(holder));
     public static final DataKey<Boolean> SUPPRESS_HTML = new DataKey<Boolean>("SUPPRESS_HTML", false);
-    public static final DataKey<Boolean> SUPPRESS_HTML_BLOCKS = new DynamicDefaultKey<Boolean>("SUPPRESS_HTML_BLOCKS", new DataValueFactory<Boolean>() {
-        @Override
-        public Boolean create(DataHolder holder) {
-            return SUPPRESS_HTML.getFrom(holder);
-        }
-    });
-    public static final DataKey<Boolean> SUPPRESS_HTML_COMMENT_BLOCKS = new DynamicDefaultKey<Boolean>("SUPPRESS_HTML_COMMENT_BLOCKS", new DataValueFactory<Boolean>() {
-        @Override
-        public Boolean create(DataHolder holder) {
-            return SUPPRESS_HTML_BLOCKS.getFrom(holder);
-        }
-    });
-    public static final DataKey<Boolean> SUPPRESS_INLINE_HTML = new DynamicDefaultKey<Boolean>("SUPPRESS_INLINE_HTML", new DataValueFactory<Boolean>() {
-        @Override
-        public Boolean create(DataHolder holder) {
-            return SUPPRESS_HTML.getFrom(holder);
-        }
-    });
-    public static final DataKey<Boolean> SUPPRESS_INLINE_HTML_COMMENTS = new DynamicDefaultKey<Boolean>("SUPPRESS_INLINE_HTML_COMMENTS", new DataValueFactory<Boolean>() {
-        @Override
-        public Boolean create(DataHolder holder) {
-            return SUPPRESS_INLINE_HTML.getFrom(holder);
-        }
-    });
+    public static final DataKey<Boolean> SUPPRESS_HTML_BLOCKS = new DynamicDefaultKey<Boolean>("SUPPRESS_HTML_BLOCKS", holder -> SUPPRESS_HTML.getFrom(holder));
+    public static final DataKey<Boolean> SUPPRESS_HTML_COMMENT_BLOCKS = new DynamicDefaultKey<Boolean>("SUPPRESS_HTML_COMMENT_BLOCKS", holder -> SUPPRESS_HTML_BLOCKS.getFrom(holder));
+    public static final DataKey<Boolean> SUPPRESS_INLINE_HTML = new DynamicDefaultKey<Boolean>("SUPPRESS_INLINE_HTML", holder -> SUPPRESS_HTML.getFrom(holder));
+    public static final DataKey<Boolean> SUPPRESS_INLINE_HTML_COMMENTS = new DynamicDefaultKey<Boolean>("SUPPRESS_INLINE_HTML_COMMENTS", holder -> SUPPRESS_INLINE_HTML.getFrom(holder));
     public static final DataKey<Boolean> SOURCE_WRAP_HTML = new DataKey<Boolean>("SOURCE_WRAP_HTML", false);
-    public static final DataKey<Boolean> SOURCE_WRAP_HTML_BLOCKS = new DynamicDefaultKey<Boolean>("SOURCE_WRAP_HTML_BLOCKS", new DataValueFactory<Boolean>() {
-        @Override
-        public Boolean create(DataHolder holder) {
-            return SOURCE_WRAP_HTML.getFrom(holder);
-        }
-    });
+    public static final DataKey<Boolean> SOURCE_WRAP_HTML_BLOCKS = new DynamicDefaultKey<Boolean>("SOURCE_WRAP_HTML_BLOCKS", holder -> SOURCE_WRAP_HTML.getFrom(holder));
     //public static final DataKey<Boolean> SOURCE_WRAP_INLINE_HTML = new DynamicDefaultKey<>("SOURCE_WRAP_INLINE_HTML", SOURCE_WRAP_HTML::getFrom);
     public static final DataKey<Boolean> HEADER_ID_GENERATOR_RESOLVE_DUPES = new DataKey<Boolean>("HEADER_ID_GENERATOR_RESOLVE_DUPES", true);
     public static final DataKey<String> HEADER_ID_GENERATOR_TO_DASH_CHARS = new DataKey<String>("HEADER_ID_GENERATOR_TO_DASH_CHARS", " -_");
@@ -110,12 +65,7 @@ public class DitaRenderer implements IRender {
     public static final DataKey<String> SOURCE_POSITION_ATTRIBUTE = new DataKey<String>("SOURCE_POSITION_ATTRIBUTE", "");
     public static final DataKey<Boolean> SOURCE_POSITION_PARAGRAPH_LINES = new DataKey<Boolean>("SOURCE_POSITION_PARAGRAPH_LINES", false);
     public static final DataKey<String> TYPE = new DataKey<String>("TYPE", "HTML");
-    public static final DataKey<ArrayList<TagRange>> TAG_RANGES = new DataKey<ArrayList<TagRange>>("TAG_RANGES", new DataValueFactory<ArrayList<TagRange>>() {
-        @Override
-        public ArrayList<TagRange> create(DataHolder value) {
-            return new ArrayList<TagRange>();
-        }
-    });
+    public static final DataKey<ArrayList<TagRange>> TAG_RANGES = new DataKey<ArrayList<TagRange>>("TAG_RANGES", value -> new ArrayList<TagRange>());
 
     public static final DataKey<Boolean> RECHECK_UNDEFINED_REFERENCES = new DataKey<Boolean>("RECHECK_UNDEFINED_REFERENCES", false);
     public static final DataKey<Boolean> OBFUSCATE_EMAIL = new DataKey<Boolean>("OBFUSCATE_EMAIL", false);
@@ -134,8 +84,9 @@ public class DitaRenderer implements IRender {
     private final DitaRendererOptions ditaOptions;
     private final DataHolder options;
     private final Builder builder;
+    private final Map<String, List<String>> header;
 
-    DitaRenderer(Builder builder) {
+    DitaRenderer(Builder builder, Map<String, List<String>> header) {
 //        final ContentHandler contentHandler, final Map<String, Object> documentMetadata
 //        this.documentMetadata = documentMetadata;
 //        setContentHandler(contentHandler);
@@ -146,6 +97,7 @@ public class DitaRenderer implements IRender {
         this.builder = new Builder(builder); // take a copy to avoid after creation side effects
         this.options = new DataSet(builder);
         this.ditaOptions = new DitaRendererOptions(this.options);
+        this.header = header;
 
         this.ditaIdGeneratorFactory = builder.ditaIdGeneratorFactory;
 
@@ -290,7 +242,7 @@ public class DitaRenderer implements IRender {
             this.document = document;
             this.renderers = new HashMap<>(32);
             this.renderingPhases = new HashSet<>(RenderingPhase.values().length);
-            this.phasedRenderers = new ArrayList<PhasedNodeRenderer>(nodeRendererFactories.size());
+            this.phasedRenderers = new ArrayList<>(nodeRendererFactories.size());
             this.myLinkResolvers = new LinkResolver[linkResolverFactories.size()];
             this.doNotRenderLinksNesting = ditaOptions.doNotRenderLinksInDocument ? 0 : 1;
             this.ditaIdGenerator = ditaIdGeneratorFactory != null ? ditaIdGeneratorFactory.create(this)
