@@ -284,8 +284,14 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
 //            abbreviations.put(abbr, expansion);
 //            printer.clear();
 //        }
+        final boolean isCompound = hasMultipleTopLevelHeaders(node);
+        if (isCompound) {
+            html.startElement(ELEMENT_NAME_DITA, new AttributesImpl());
+        }
         context.renderChildren(node);
-//        context.renderChildren(node);
+        if (isCompound) {
+            html.endElement();
+        }
     }
 
     private void render(final Abbreviation node, final NodeRendererContext context, final DitaWriter html) {

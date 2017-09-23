@@ -145,7 +145,7 @@ public class DitaWriter {
 //        return this;
 //    }
 
-    public final Deque<DitaClass> tagStack = new ArrayDeque<>();
+    public final Deque<String> tagStack = new ArrayDeque<>();
     public ContentHandler contentHandler;
 
     public void setContentHandler(final ContentHandler contentHandler) {
@@ -155,8 +155,12 @@ public class DitaWriter {
     // ContentHandler methods
 
     public void startElement(final DitaClass tag, final org.xml.sax.Attributes atts) {
+        startElement(tag.localName, atts);
+    }
+
+    public void startElement(final String tag, final org.xml.sax.Attributes atts) {
         try {
-            contentHandler.startElement(NULL_NS_URI, tag.localName, tag.localName, atts);
+            contentHandler.startElement(NULL_NS_URI, tag, tag, atts);
         } catch (final SAXException e) {
             throw new ParseException(e);
         }
@@ -169,10 +173,13 @@ public class DitaWriter {
         }
     }
 
-
     public void endElement(final DitaClass tag) {
+        endElement(tag.localName);
+    }
+
+    public void endElement(final String tag) {
         try {
-            contentHandler.endElement(NULL_NS_URI, tag.localName, tag.localName);
+            contentHandler.endElement(NULL_NS_URI, tag, tag);
         } catch (final SAXException e) {
             throw new ParseException(e);
         }

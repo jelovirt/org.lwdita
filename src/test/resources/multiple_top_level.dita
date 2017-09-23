@@ -5,7 +5,7 @@
     <body class="- topic/body ">
       <p class="- topic/p ">Content A.</p>
     </body>
-    <topic class="- topic/topic " id="heading-a-1">
+    <topic class="- topic/topic " id="heading-a1">
       <title class="- topic/title ">Heading A.1</title>
       <body class="- topic/body ">
         <p class="- topic/p ">Content A.1.</p>
@@ -17,7 +17,7 @@
     <body class="- topic/body ">
       <p class="- topic/p ">Content B.</p>
     </body>
-    <topic class="- topic/topic " id="heading-b-1">
+    <topic class="- topic/topic " id="heading-b1">
       <title class="- topic/title ">Heading B.1</title>
       <body class="- topic/body ">
         <p class="- topic/p ">Content B.1.</p>
