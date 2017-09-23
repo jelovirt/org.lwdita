@@ -98,12 +98,12 @@ public class MarkdownReaderTest {
         run("pandoc_header.md");
     }
 
-    @Test(expected = ParseException.class)
+    @Test(expected = RuntimeException.class)
     public void testInvalidHeader() throws Exception {
         run("invalid_header.md");
     }
 
-    @Test(expected = ParseException.class)
+    @Test(expected = RuntimeException.class)
     public void testInvalidSectionHeader() throws Exception {
         run("invalid_section_header.md");
     }
