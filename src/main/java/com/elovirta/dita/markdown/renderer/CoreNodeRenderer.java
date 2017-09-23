@@ -988,7 +988,15 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
 
 
         BasedSequence info = node.getInfo();
-        if (info.isNotNull() && !info.isBlank()) {
+        if (info.startsWith("{") && info.endsWith("}")) {
+            final Metadata metadata = Metadata.parse(info.subSequence(1, info.length() - 1).toString());
+            if (!metadata.classes.isEmpty()) {
+                atts.add("outputclass", String.join(" ", metadata.classes));
+            }
+            if (metadata.id != null) {
+                atts.add(ATTRIBUTE_NAME_ID, metadata.id);
+            }
+        } else if (info.isNotNull() && !info.isBlank()) {
             int space = info.indexOf(' ');
             BasedSequence language;
             if (space == -1) {
@@ -996,11 +1004,11 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
             } else {
                 language = info.subSequence(0, space);
             }
-            atts.add("class", /*context.getDitaOptions().languageClassPrefix +*/ language.unescape());
+            atts.add("outputclass", /*context.getDitaOptions().languageClassPrefix +*/ language.unescape());
         } else {
             String noLanguageClass = context.getDitaOptions().noLanguageClass.trim();
             if (!noLanguageClass.isEmpty()) {
-                atts.add("class", noLanguageClass);
+                atts.add("outputclass", noLanguageClass);
             }
         }
 
