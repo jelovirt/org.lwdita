@@ -14,13 +14,14 @@ import com.vladsch.flexmark.ext.definition.DefinitionItem;
 import com.vladsch.flexmark.ext.definition.DefinitionList;
 import com.vladsch.flexmark.ext.definition.DefinitionTerm;
 import com.vladsch.flexmark.ext.gfm.strikethrough.Strikethrough;
-import com.vladsch.flexmark.ext.gfm.tables.TableBlock;
-import com.vladsch.flexmark.ext.gfm.tables.TableBody;
-import com.vladsch.flexmark.ext.gfm.tables.TableHead;
-import com.vladsch.flexmark.ext.gfm.tables.TableRow;
+import com.vladsch.flexmark.ext.tables.TableBlock;
+import com.vladsch.flexmark.ext.tables.TableBody;
+import com.vladsch.flexmark.ext.tables.TableHead;
+import com.vladsch.flexmark.ext.tables.TableRow;
+import com.vladsch.flexmark.ext.tables.TableCell;
+import com.vladsch.flexmark.ext.tables.TableSeparator;
 import com.vladsch.flexmark.ext.typographic.TypographicQuotes;
 import com.vladsch.flexmark.ext.yaml.front.matter.YamlFrontMatterBlock;
-import com.vladsch.flexmark.ext.yaml.front.matter.YamlFrontMatterNode;
 import com.vladsch.flexmark.util.options.DataHolder;
 import com.vladsch.flexmark.util.sequence.BasedSequence;
 import org.apache.commons.io.FilenameUtils;
@@ -95,6 +96,7 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
     private final Map<String, String> abbreviations = new HashMap<>();
     private final MetadataSerializerImpl metadataSerializer;
     private TableBlock currentTableNode;
+
     private int currentTableColumn;
 
     private boolean inSection = false;
@@ -163,6 +165,11 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
                 new NodeRenderingHandler<Paragraph>(Paragraph.class, (node, context, html) -> render(node, context, html)),
                 new NodeRenderingHandler<Reference>(Reference.class, (node, context, html) -> render(node, context, html)),
                 new NodeRenderingHandler<TableBlock>(TableBlock.class, (node, context, html) -> render(node, context, html)),
+                new NodeRenderingHandler<TableBody>(TableBody.class, (node, context, html) -> render(node, context, html)),
+                new NodeRenderingHandler<TableHead>(TableHead.class, (node, context, html) -> render(node, context, html)),
+                new NodeRenderingHandler<TableRow>(TableRow.class, (node, context, html) -> render(node, context, html)),
+                new NodeRenderingHandler<TableCell>(TableCell.class, (node, context, html) -> render(node, context, html)),
+                new NodeRenderingHandler<TableSeparator>(TableSeparator.class, (node, context, html) -> render(node, context, html)),
                 new NodeRenderingHandler<SoftLineBreak>(SoftLineBreak.class, (node, context, html) -> render(node, context, html)),
                 new NodeRenderingHandler<StrongEmphasis>(StrongEmphasis.class, (node, context, html) -> render(node, context, html)),
                 new NodeRenderingHandler<Text>(Text.class, (node, context, html) -> render(node, context, html)),
@@ -862,27 +869,25 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
 //        html.endElement();
 //    }
 
-//    @Override
-//    private void render(final TableCell node, final NodeRendererContext context, final DitaWriter html) {
+    private void render(final TableCell node, final NodeRendererContext context, final DitaWriter html) {
 //        final List<TableColumnNode> columns = currentTableNode.getColumns();
 //        final TableColumnNode column = columns.get(Math.min(currentTableColumn, columns.size() - 1));
 //
-//        final AttributesBuilder atts = new AttributesBuilder(ENTRY_ATTS);
+        final AttributesBuilder atts = new AttributesBuilder(ENTRY_ATTS);
 //        column.accept(this);
-//        if (tableColumnAlignment != null) {
-//            atts.add(ATTRIBUTE_NAME_ALIGN, tableColumnAlignment);
-//            tableColumnAlignment = null;
-//        }
-//        if (node.getColSpan() > 1) {
-//            atts.add(ATTRIBUTE_NAME_NAMEST, COLUMN_NAME_COL + Integer.toString(currentTableColumn + 1));
-//            atts.add(ATTRIBUTE_NAME_NAMEEND, COLUMN_NAME_COL + Integer.toString(currentTableColumn + node.getColSpan()));
-//        }
-//        html.startElement(TOPIC_ENTRY, atts.build());
-//        context.renderChildren(node);
-//        html.endElement();
-//
-//        currentTableColumn += node.getColSpan();
-//    }
+        if (node.getAlignment() != null) {
+            atts.add(ATTRIBUTE_NAME_ALIGN, node.getAlignment().cellAlignment().name().toLowerCase());
+        }
+        if (node.getSpan() > 1) {
+            atts.add(ATTRIBUTE_NAME_NAMEST, COLUMN_NAME_COL + Integer.toString(currentTableColumn + 1));
+            atts.add(ATTRIBUTE_NAME_NAMEEND, COLUMN_NAME_COL + Integer.toString(currentTableColumn + node.getSpan()));
+        }
+        html.startElement(TOPIC_ENTRY, atts.build());
+        context.renderChildren(node);
+        html.endElement();
+
+        currentTableColumn += node.getSpan();
+    }
 
     private String tableColumnAlignment = null;
 
@@ -917,13 +922,30 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
 //                context.renderChildren(child);
 //            }
 //        }
+        final int maxCols = findMaxCols(node);
         final Attributes atts = new AttributesBuilder(TGROUP_ATTS)
-                .add(ATTRIBUTE_NAME_COLS, Integer.toString(node.getSegments().length))
+                .add(ATTRIBUTE_NAME_COLS, Integer.toString(maxCols))
                 .build();
         html.startElement(TOPIC_TGROUP, atts);
 
-//        int counter = 1;
-//        for (final TableColumnNode col : node.getColumns()) {
+        for (int i = 0; i < maxCols; i++) {
+            final AttributesBuilder catts = new AttributesBuilder(COLSPEC_ATTS)
+                    .add(ATTRIBUTE_NAME_COLNAME, COLUMN_NAME_COL + (i + 1));
+//            switch (col.getAlignment()) {
+//                case Center:
+//                    catts.add(ATTRIBUTE_NAME_ALIGN, "center");
+//                    break;
+//                case Right:
+//                    catts.add(ATTRIBUTE_NAME_ALIGN, "right");
+//                    break;
+//                case Left:
+//                    catts.add(ATTRIBUTE_NAME_ALIGN, "left");
+//                    break;
+//            }
+            html.startElement(TOPIC_COLSPEC, catts.build());
+            html.endElement(); // colspec
+        }
+
 //            final AttributesBuilder catts = new AttributesBuilder(COLSPEC_ATTS)
 //                    .add(ATTRIBUTE_NAME_COLNAME, COLUMN_NAME_COL + counter);
 //            switch (col.getAlignment()) {
@@ -939,16 +961,40 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
 //            }
 //            html.startElement(TOPIC_COLSPEC, catts.build());
 //            html.endElement(); // colspec
-//            counter++;
-//        }
 //        for (final Node child : node.getChildren()) {
 //            if (!(child instanceof TableCaptionNode)) {
 //                context.renderChildren(child);
 //            }
 //        }
+        context.renderChildren(node);
         html.endElement(); // tgroup
         html.endElement(); // table
         currentTableNode = null;
+    }
+
+    private int findMaxCols(TableBlock table) {
+        int max = 0;
+        for (Node body = table.getFirstChild(); body != null; body = body.getNext()) {
+            if (body instanceof TableHead || body instanceof TableBody) {
+                for (Node row = body.getFirstChild(); row != null; row = row.getNext()) {
+                    if (row instanceof TableRow) {
+                        int colCount = 0;
+                        for (Node col = row.getFirstChild(); col != null; col = col.getNext()) {
+                            if (col instanceof TableCell) {
+                                TableCell c = ((TableCell) col);
+                                colCount = colCount + c.getSpan();
+                            }
+                        }
+                        max = Math.max(max, colCount);
+                    }
+                }
+            }
+        }
+        return max;
+}
+
+    private void render(TableSeparator node, NodeRendererContext context, DitaWriter html) {
+        // Ignore
     }
 
     private void render(final TableRow node, final NodeRendererContext context, final DitaWriter html) {

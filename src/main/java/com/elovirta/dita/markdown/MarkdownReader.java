@@ -80,6 +80,7 @@ public class MarkdownReader implements XMLReader {
                 DefinitionExtension.create(),
                 StrikethroughExtension.create()))
                 .set(DefinitionExtension.TILDE_MARKER, false)
+                // for full GFM table compatibility add the following table extension options:
                 .set(TablesExtension.COLUMN_SPANS, false)
                 .set(TablesExtension.APPEND_MISSING_COLUMNS, true)
                 .set(TablesExtension.DISCARD_EXTRA_COLUMNS, true)
