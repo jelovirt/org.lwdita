@@ -135,6 +135,9 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
                 new NodeRenderingHandler<BulletList>(BulletList.class, (node, context, html) -> render(node, context, html)),
                 new NodeRenderingHandler<Code>(Code.class, (node, context, html) -> render(node, context, html)),
                 new NodeRenderingHandler<CodeBlock>(CodeBlock.class, (node, context, html) -> render(node, context, html)),
+                new NodeRenderingHandler<DefinitionList>(DefinitionList.class, (node, context, html) -> render(node, context, html)),
+                new NodeRenderingHandler<DefinitionTerm>(DefinitionTerm.class, (node, context, html) -> render(node, context, html)),
+                new NodeRenderingHandler<DefinitionItem>(DefinitionItem.class, (node, context, html) -> render(node, context, html)),
                 new NodeRenderingHandler<Document>(Document.class, (node, context, html) -> render(node, context, html)),
                 new NodeRenderingHandler<Emphasis>(Emphasis.class, (node, context, html) -> render(node, context, html)),
                 new NodeRenderingHandler<FencedCodeBlock>(FencedCodeBlock.class, (node, context, html) -> render(node, context, html)),
@@ -334,22 +337,33 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
 //                    html.startElement(TOPIC_DLENTRY, DLENTRY_ATTS);
 //                }
 //            }
-//            context.renderChildren(child);
+            context.renderChildren(node);
 //            previous = (child instanceof DefinitionTermNode) ? TOPIC_DT : TOPIC_DD;
 //        }
         html.endElement(); // dlentry
         html.endElement(); // dl
     }
 
-    private void render(final DefinitionItem node, final NodeRendererContext context, final DitaWriter html) {
-        printTag(node, context, html, TOPIC_DD, DD_ATTS);
-    }
-
     private void render(final DefinitionTerm node, final NodeRendererContext context, final DitaWriter html) {
-        if (html.tagStack.peek().equals(TOPIC_DL)) {
+        if (node.getPrevious() == null || !(node.getPrevious() instanceof DefinitionTerm)) {
             html.startElement(TOPIC_DLENTRY, DLENTRY_ATTS);
         }
-        printTag(node, context, html, TOPIC_DT, DT_ATTS);
+//        printTag(node, context, html, TOPIC_DT, DT_ATTS);
+        html.startElement(TOPIC_DT, DT_ATTS);
+        Node child = node.getFirstChild();
+        while (child != null) {
+            Node next = child.getNext();
+            context.renderChildren(child);
+            child = next;
+        }
+        html.endElement();
+    }
+
+    private void render(final DefinitionItem node, final NodeRendererContext context, final DitaWriter html) {
+        printTag(node, context, html, TOPIC_DD, DD_ATTS);
+        if (node.getNext() == null || !(node.getNext() instanceof DefinitionItem)) {
+            html.endElement();
+        }
     }
 
 //    private void render(final ExpImageNode node, final NodeRendererContext context, final DitaWriter html) {
