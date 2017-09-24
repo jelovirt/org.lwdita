@@ -373,11 +373,11 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
         }
     }
 
-//    private void render(final ExpImageNode node, final NodeRendererContext context, final DitaWriter html) {
-//        writeImage(node, node.title, null, node.url, null);
-//    }
+    private void render(final Image node, final NodeRendererContext context, final DitaWriter html) {
+        writeImage(node, node.getTitle().toString(), null, node.getUrl().toString(), null, context, html);
+    }
 
-    private void writeImage(ImageRef node, final String title, final String alt, final String url, final String key, final NodeRendererContext context, DitaWriter html) {
+    private void writeImage(Image node, final String title, final String alt, final String url, final String key, final NodeRendererContext context, DitaWriter html) {
         final AttributesBuilder atts = new AttributesBuilder(IMAGE_ATTS)
                 .add(ATTRIBUTE_NAME_HREF, url);
         if (key != null) {
@@ -414,6 +414,57 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
                 html.endElement();
             }
             html.endElement();
+        } else {
+            html.startElement(TOPIC_IMAGE, atts.build());
+            if (hasChildren(node)) {
+                html.startElement(TOPIC_ALT, ALT_ATTS);
+                if (alt != null) {
+                    html.characters(alt);
+                } else {
+                    context.renderChildren(node);
+                }
+                html.endElement();
+            }
+            html.endElement();
+        }
+    }
+
+    private void writeImage(ImageRef node, final String title, final String alt, final String url, final String key, final NodeRendererContext context, DitaWriter html) {
+        final AttributesBuilder atts = new AttributesBuilder(IMAGE_ATTS)
+                .add(ATTRIBUTE_NAME_HREF, url);
+        if (key != null) {
+            atts.add(ATTRIBUTE_NAME_KEYREF, key);
+        }
+        if (!title.isEmpty()) {
+            html.startElement(TOPIC_FIG, FIG_ATTS);
+            html.startElement(TOPIC_TITLE, TITLE_ATTS);
+            html.characters(title);
+            html.endElement();
+            html.startElement(TOPIC_IMAGE, atts.build());
+            if (hasChildren(node)) {
+                html.startElement(TOPIC_ALT, ALT_ATTS);
+                if (alt != null) {
+                    html.characters(alt);
+                } else {
+                    context.renderChildren(node);
+                }
+                html.endElement();
+            }
+            html.endElement(); // image
+            html.endElement(); // fig
+        } else if (onlyImageChild) {
+            atts.add("placement", "break");
+            html.startElement(TOPIC_IMAGE, atts.build());
+            if (hasChildren(node)) {
+                html.startElement(TOPIC_ALT, ALT_ATTS);
+                if (alt != null) {
+                    html.characters(alt);
+                } else {
+                    context.renderChildren(node);
+                }
+                html.endElement();
+            }
+            html.endElement(); //image
         } else {
             html.startElement(TOPIC_IMAGE, atts.build());
             if (hasChildren(node)) {
@@ -658,31 +709,28 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
     private boolean onlyImageChild = false;
 
     private void render(final Paragraph node, final NodeRendererContext context, final DitaWriter html) {
-//        if (containsImage(node)) {
-//            onlyImageChild = true;
-//            context.renderChildren(node);
-//            onlyImageChild = false;
-//        } else {
+        if (containsImage(node)) {
+            onlyImageChild = true;
+            context.renderChildren(node);
+            onlyImageChild = false;
+        } else {
             printTag(node, context, html, TOPIC_P, P_ATTS);
-//        }
+        }
     }
 
     /**
      * Contains only single image
      */
-//    private boolean containsImage(final ContentNode node) {
-//        if (node.getChildren().size() != 1) {
-//            return false;
-//        } else {
-//            final Node first = node.getChildren().get(0);
-//            if (first instanceof ExpImageNode || first instanceof RefImageNode) {
-//                return true;
-//            } else if (first instanceof SuperNode) {
-//                return containsImage((SuperNode) first);
-//            }
-//        }
-//        return false;
-//    }
+    private boolean containsImage(final ContentNode node) {
+        final Node first = node.getFirstChild();
+        if (first != null && first.getNext() == null) {
+            if (first instanceof Image || first instanceof ImageRef) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private void render(final TypographicQuotes node, final NodeRendererContext context, final DitaWriter html) {
 //        switch (node.getType()) {
 //            case DoubleAngle:
@@ -708,31 +756,31 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
     }
 
     private void render(final Reference node, final NodeRendererContext context, final DitaWriter html) {
-        throw new RuntimeException();
+        // Ignore
     }
 
     private void render(final ImageRef node, final NodeRendererContext context, final DitaWriter html) {
-        final String text = node.toString();
+        final String text = node.getText().toString();
         final String key = node.getReference() != null ? node.getReference().toString() : text;
-        final ReferenceNode refNode = references.get(normalize(key));
+        final Reference refNode = node.getReferenceNode(node.getDocument());
         if (refNode == null) { // "fake" reference image link
             final Attributes atts = new AttributesBuilder(IMAGE_ATTS)
                     .add(ATTRIBUTE_NAME_KEYREF, key)
                     .build();
             html.startElement(TOPIC_IMAGE, atts);
-            if (node.getReference() != null) {
-                context.renderChildren(node);
-            }
+//            if (node.getReference() != null) {
+//                context.renderChildren(node);
+//            }
             html.endElement();
         } else {
-            writeImage(node, refNode.toString(), text, node.getUrl().toString(), key, context, html);
+            writeImage(node, refNode.getTitle().toString(), text, refNode.getUrl().toString(), key, context, html);
         }
     }
 
     private void render(final RefNode node, final NodeRendererContext context, final DitaWriter html) {
-        final String text = node.toString();
+        final String text = node.getText().toString();
         final String key = node.getReference() != null ? node.getReference().toString() : text;
-        final ReferenceNode refNode = references.get(normalize(key));
+        final ReferenceNode refNode = node.getReferenceNode(node.getDocument());
         if (refNode == null) { // "fake" reference link
             final AttributesBuilder atts = new AttributesBuilder(XREF_ATTS)
                     .add(ATTRIBUTE_NAME_KEYREF, key);
@@ -754,9 +802,9 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
     }
 
     private void render(final Link node, final NodeRendererContext context, final DitaWriter html) {
-        final String text = node.toString();
+        final String text = node.getText().toString();
 //        final String key = node.getReference() != null ? node.getReference().toString() : text;
-//        final ReferenceNode refNode = references.get(normalize(key));
+//        final ReferenceNode refNode = node.getReferenceNode(node.getDocument());
 //        if (refNode == null) { // "fake" reference link
 //            final AttributesBuilder atts = new AttributesBuilder(XREF_ATTS)
 //                    .add(ATTRIBUTE_NAME_KEYREF, key);
