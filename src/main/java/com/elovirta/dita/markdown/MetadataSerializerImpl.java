@@ -3,10 +3,8 @@ package com.elovirta.dita.markdown;
 import com.elovirta.dita.markdown.renderer.NodeRenderer;
 import com.elovirta.dita.markdown.renderer.NodeRendererContext;
 import com.elovirta.dita.markdown.renderer.NodeRenderingHandler;
-import com.vladsch.flexmark.ast.*;
-import com.vladsch.flexmark.ext.anchorlink.AnchorLink;
-import com.vladsch.flexmark.ext.gfm.strikethrough.Strikethrough;
-import com.vladsch.flexmark.ext.gfm.tables.TableBlock;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Sets;
 import com.vladsch.flexmark.ext.yaml.front.matter.AbstractYamlFrontMatterVisitor;
 import com.vladsch.flexmark.ext.yaml.front.matter.YamlFrontMatterBlock;
 import org.dita.dost.util.DitaClass;
@@ -14,10 +12,16 @@ import org.dita.dost.util.XMLUtils;
 import org.xml.sax.Attributes;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.dita.dost.util.Constants.*;
 
 public class MetadataSerializerImpl implements NodeRenderer {
+
+    private static final Set<String> KNOWN = ImmutableSet.of(TOPIC_AUTHOR.localName, TOPIC_SOURCE.localName,
+            TOPIC_PUBLISHER.localName, TOPIC_PERMISSIONS.localName, TOPIC_AUDIENCE.localName, TOPIC_CATEGORY.localName,
+            TOPIC_RESOURCEID.localName, TOPIC_KEYWORD.localName);
+
 
     @Override
     public Set<NodeRenderingHandler<?>> getNodeRenderingHandlers() {
@@ -59,6 +63,17 @@ public class MetadataSerializerImpl implements NodeRenderer {
             html.endElement();
         }
         write(header, TOPIC_RESOURCEID, "appid", html);
+        final List<String> keys = Sets.difference(header.keySet(), KNOWN).stream().sorted().collect(Collectors.toList());
+        for (String key : keys) {
+            for (String val : header.get(key)) {
+                html.startElement(TOPIC_DATA.localName, new XMLUtils.AttributesBuilder()
+                        .add(ATTRIBUTE_NAME_CLASS, TOPIC_DATA.toString())
+                        .add(ATTRIBUTE_NAME_NAME, key)
+                        .add(ATTRIBUTE_NAME_VALUE, val)
+                        .build());
+                html.endElement();
+            }
+        }
     }
 
     private void write(final Map<String, List<String>> header, final DitaClass elem, DitaWriter html) {

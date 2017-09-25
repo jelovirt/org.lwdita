@@ -18,6 +18,13 @@
     </metadata>
     <resourceid class="- topic/resourceid " appid="Resourceid1"/>
     <resourceid class="- topic/resourceid " appid="Resourceid2"/>
+    <data class="- topic/data " name="abstract" value="This is the abstract.&#xA;It consists of two paragraphs."/>
+    <data class="- topic/data " name="bar" value="bar"/>
+    <data class="- topic/data " name="bar" value="baz"/>
+    <data class="- topic/data " name="foo" value="foo"/>
+    <data class="- topic/data " name="tags" value="nothing"/>
+    <data class="- topic/data " name="tags" value="nothingness"/>
+    <data class="- topic/data " name="title" value="'This is the title: it contains a colon'"/>
   </prolog>
   <body class="- topic/body "/>
 </topic>

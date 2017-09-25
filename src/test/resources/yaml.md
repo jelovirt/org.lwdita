@@ -21,6 +21,10 @@ abstract: |
   This is the abstract.
 
   It consists of two paragraphs.
+foo: foo
+bar:
+  - bar
+  - baz
 ---
 
 # YAML Header
