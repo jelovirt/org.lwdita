@@ -51,7 +51,7 @@ public class MetadataSerializerImpl implements NodeRenderer {
         if (header.containsKey(TOPIC_AUDIENCE.localName) || header.containsKey(TOPIC_CATEGORY.localName)
                 || header.containsKey(TOPIC_KEYWORD.localName)) {
             html.startElement(TOPIC_METADATA, buildAtts(TOPIC_METADATA));
-            write(header, TOPIC_AUDIENCE, html);
+            write(header, TOPIC_AUDIENCE, ATTRIBUTE_NAME_AUDIENCE, html);
             write(header, TOPIC_CATEGORY, html);
             if (header.containsKey(TOPIC_KEYWORD.localName)) {
                 html.startElement(TOPIC_KEYWORDS, buildAtts(TOPIC_KEYWORDS));
