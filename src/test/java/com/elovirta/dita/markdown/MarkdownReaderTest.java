@@ -211,6 +211,11 @@ public class MarkdownReaderTest {
     }
 
     @Test
+    public void testLinebreak() throws Exception {
+        run("linebreak.md");
+    }
+
+    @Test
     public void testYaml() throws Exception {
         run("yaml.md");
     }

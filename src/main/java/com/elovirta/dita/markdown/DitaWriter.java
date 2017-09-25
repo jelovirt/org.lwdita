@@ -207,4 +207,12 @@ public class DitaWriter {
             endElement();
         }
     }
+
+    public void processingInstruction(String name, String data) {
+        try {
+            contentHandler.processingInstruction(name, data != null ? data : "");
+        } catch (final SAXException e) {
+            throw new ParseException(e);
+        }
+    }
 }

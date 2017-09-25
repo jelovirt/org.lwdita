@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="line-break" class="- topic/topic ">
+  <title class="- topic/title ">Line break</title>
+  <body class="- topic/body ">
+    <p class="- topic/p ">Line<?linebreak?>break.</p>
+  </body>
+</topic>
