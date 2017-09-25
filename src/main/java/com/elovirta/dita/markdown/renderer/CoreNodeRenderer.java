@@ -14,12 +14,7 @@ import com.vladsch.flexmark.ext.definition.DefinitionItem;
 import com.vladsch.flexmark.ext.definition.DefinitionList;
 import com.vladsch.flexmark.ext.definition.DefinitionTerm;
 import com.vladsch.flexmark.ext.gfm.strikethrough.Strikethrough;
-import com.vladsch.flexmark.ext.tables.TableBlock;
-import com.vladsch.flexmark.ext.tables.TableBody;
-import com.vladsch.flexmark.ext.tables.TableHead;
-import com.vladsch.flexmark.ext.tables.TableRow;
-import com.vladsch.flexmark.ext.tables.TableCell;
-import com.vladsch.flexmark.ext.tables.TableSeparator;
+import com.vladsch.flexmark.ext.tables.*;
 import com.vladsch.flexmark.ext.typographic.TypographicQuotes;
 import com.vladsch.flexmark.ext.yaml.front.matter.YamlFrontMatterBlock;
 import com.vladsch.flexmark.util.options.DataHolder;
@@ -165,6 +160,7 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
                 new NodeRenderingHandler<Paragraph>(Paragraph.class, (node, context, html) -> render(node, context, html)),
                 new NodeRenderingHandler<Reference>(Reference.class, (node, context, html) -> render(node, context, html)),
                 new NodeRenderingHandler<TableBlock>(TableBlock.class, (node, context, html) -> render(node, context, html)),
+                new NodeRenderingHandler<TableCaption>(TableCaption.class, (node, context, html) -> render(node, context, html)),
                 new NodeRenderingHandler<TableBody>(TableBody.class, (node, context, html) -> render(node, context, html)),
                 new NodeRenderingHandler<TableHead>(TableHead.class, (node, context, html) -> render(node, context, html)),
                 new NodeRenderingHandler<TableRow>(TableRow.class, (node, context, html) -> render(node, context, html)),
@@ -780,20 +776,20 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
     private void render(final RefNode node, final NodeRendererContext context, final DitaWriter html) {
         final String text = node.getText().toString();
         final String key = node.getReference() != null ? node.getReference().toString() : text;
-        final ReferenceNode refNode = node.getReferenceNode(node.getDocument());
+        final Reference refNode = node.getReferenceNode(node.getDocument());
         if (refNode == null) { // "fake" reference link
             final AttributesBuilder atts = new AttributesBuilder(XREF_ATTS)
                     .add(ATTRIBUTE_NAME_KEYREF, key);
             html.startElement(TOPIC_XREF, atts.build());
-            if (node.getReference() != null && key == null) {
-                context.renderChildren(node);
+            if (!node.getText().toString().isEmpty()) {
+                html.characters(node.getText().toString());
             }
             html.endElement();
         } else {
-            final AttributesBuilder atts = getLinkAttributes(node.getUrl().toString());
+            final AttributesBuilder atts = getLinkAttributes(refNode.getUrl().toString());
             html.startElement(TOPIC_XREF, atts.build());
-            if (refNode.toString() != null) {
-                html.characters(refNode.toString());
+            if (!refNode.getTitle().toString().isEmpty()) {
+                html.characters(refNode.getTitle().toString());
             } else {
                 context.renderChildren(node);
             }
@@ -816,7 +812,7 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
 //        } else {
             final AttributesBuilder atts = getLinkAttributes(node.getUrl().toString());
             html.startElement(TOPIC_XREF, atts.build());
-//            if (refNode.toString() != null) {
+//            if (!refNode.getTitle().toString().isEmpty()) {
 //                html.characters(refNode.toString());
 //            } else {
                 context.renderChildren(node);
@@ -910,12 +906,12 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
         printTag(node, context, html, TOPIC_TBODY, TBODY_ATTS);
     }
 
-//    @Override
-//    private void render(final TableCaptionNode node, final NodeRendererContext context, final DitaWriter html) {
+    private void render(final TableCaption node, final NodeRendererContext context, final DitaWriter html) {
+        // Pull processed by TableBlock
 //        html.startElement(TOPIC_TITLE, TITLE_ATTS);
 //        context.renderChildren(node);
 //        html.endElement();
-//    }
+    }
 
     private void render(final TableCell node, final NodeRendererContext context, final DitaWriter html) {
 //        final List<TableColumnNode> columns = currentTableNode.getColumns();
@@ -965,11 +961,14 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
     private void render(final TableBlock node, final NodeRendererContext context, final DitaWriter html) {
         currentTableNode = node;
         html.startElement(TOPIC_TABLE, TABLE_ATTS);
-//        for (final Node child : node.getChildren()) {
-//            if (child instanceof TableCaptionNode) {
-//                context.renderChildren(child);
-//            }
-//        }
+        for (final Node child : node.getChildren()) {
+            if (child instanceof TableCaption) {
+                html.startElement(TOPIC_TITLE, TITLE_ATTS);
+                context.renderChildren((TableCaption) child);
+                html.endElement();
+//                render((TableCaption) child, context, html);
+            }
+        }
         final int maxCols = findMaxCols(node);
         final Attributes atts = new AttributesBuilder(TGROUP_ATTS)
                 .add(ATTRIBUTE_NAME_COLS, Integer.toString(maxCols))
@@ -1196,7 +1195,7 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
     }
 
     private void render(final Node node, final NodeRendererContext context, final DitaWriter html) {
-        throw new RuntimeException("No renderer configured for " + node.getNodeName());
+        throw new RuntimeException("No renderer configured for " + node.getNodeName() + " = " + node.getClass().getCanonicalName());
 //        if (node instanceof MetadataNode) {
 //            final MetadataNode n = (MetadataNode) node;
 //            final String id = getId(n.title);

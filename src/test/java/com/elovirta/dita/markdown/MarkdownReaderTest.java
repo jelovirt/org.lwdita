@@ -212,4 +212,10 @@ public class MarkdownReaderTest {
     public void testYaml() throws Exception {
         run("yaml.md");
     }
+
+    @Test
+    public void testKeys() throws Exception {
+        run("keys.md");
+    }
+
 }
