@@ -1,6 +1,6 @@
 package com.elovirta.dita.markdown;
 
-import com.elovirta.dita.markdown.ToDitaSerializer.Metadata;
+import com.elovirta.dita.markdown.renderer.Metadata;
 import org.junit.Test;
 
 import java.util.Arrays;

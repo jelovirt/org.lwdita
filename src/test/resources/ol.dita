@@ -1,26 +1,63 @@
 <topic xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/" class="- topic/topic "
   domains="(topic abbrev-d)                            a(props deliveryTarget)                            (topic equation-d)                            (topic hazard-d)                            (topic hi-d)                            (topic indexing-d)                            (topic markup-d)                            (topic mathml-d)                            (topic pr-d)                            (topic relmgmt-d)                            (topic sw-d)                            (topic svg-d)                            (topic ui-d)                            (topic ut-d)                            (topic markup-d xml-d)   "
-  id="numbered_list" ditaarch:DITAArchVersion="1.3">
+  id="numbered-list" ditaarch:DITAArchVersion="1.3">
   <title class="- topic/title ">Numbered list</title>
   <body class="- topic/body ">
     <p class="- topic/p ">Ordered:</p>
     <ol class="- topic/ol ">
-      <li class="- topic/li ">ordered</li>
-      <li class="- topic/li ">list</li>
-      <li class="- topic/li ">item<ol class="- topic/ol "><li class="- topic/li ">nested</li><li
-            class="- topic/li ">list</li></ol></li>
-      <li class="- topic/li ">foo</li>
-      <li class="- topic/li ">foo</li>
-      <li class="- topic/li ">foo</li>
-      <li class="- topic/li ">foo</li>
-      <li class="- topic/li ">foo</li>
-      <li class="- topic/li ">foo</li>
-      <li class="- topic/li ">foo</li>
-      <li class="- topic/li ">foo</li>
-      <li class="- topic/li ">foo</li>
-      <li class="- topic/li ">foo</li>
-      <li class="- topic/li ">foo</li>
-      <li class="- topic/li ">foo</li>
+      <li class="- topic/li ">
+        <p class="- topic/p ">ordered</p>
+      </li>
+      <li class="- topic/li ">
+        <p class="- topic/p ">list</p>
+      </li>
+      <li class="- topic/li ">
+        <p class="- topic/p ">item</p>
+        <ol class="- topic/ol ">
+          <li class="- topic/li ">
+            <p class="- topic/p ">nested</p>
+          </li>
+          <li class="- topic/li ">
+            <p class="- topic/p ">list</p>
+          </li>
+        </ol>
+      </li>
+      <li class="- topic/li ">
+        <p class="- topic/p ">foo</p>
+      </li>
+      <li class="- topic/li ">
+        <p class="- topic/p ">foo</p>
+      </li>
+      <li class="- topic/li ">
+        <p class="- topic/p ">foo</p>
+      </li>
+      <li class="- topic/li ">
+        <p class="- topic/p ">foo</p>
+      </li>
+      <li class="- topic/li ">
+        <p class="- topic/p ">foo</p>
+      </li>
+      <li class="- topic/li ">
+        <p class="- topic/p ">foo</p>
+      </li>
+      <li class="- topic/li ">
+        <p class="- topic/p ">foo</p>
+      </li>
+      <li class="- topic/li ">
+        <p class="- topic/p ">foo</p>
+      </li>
+      <li class="- topic/li ">
+        <p class="- topic/p ">foo</p>
+      </li>
+      <li class="- topic/li ">
+        <p class="- topic/p ">foo</p>
+      </li>
+      <li class="- topic/li ">
+        <p class="- topic/p ">foo</p>
+      </li>
+      <li class="- topic/li ">
+        <p class="- topic/p ">foo</p>
+      </li>
     </ol>
   </body>
 </topic>

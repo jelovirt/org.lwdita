@@ -5,15 +5,15 @@
   <body class="- topic/body "/>
   <topic class="- topic/topic "
     domains="(topic abbrev-d)                            a(props deliveryTarget)                            (topic equation-d)                            (topic hazard-d)                            (topic hi-d)                            (topic indexing-d)                            (topic markup-d)                            (topic mathml-d)                            (topic pr-d)                            (topic relmgmt-d)                            (topic sw-d)                            (topic svg-d)                            (topic ui-d)                            (topic ut-d)                            (topic markup-d xml-d)   "
-    id="a_1" ditaarch:DITAArchVersion="1.3">
+    id="a1" ditaarch:DITAArchVersion="1.3">
     <title class="- topic/title ">A.1</title>
     <body class="- topic/body "/>
     <topic class="- topic/topic "
       domains="(topic abbrev-d)                            a(props deliveryTarget)                            (topic equation-d)                            (topic hazard-d)                            (topic hi-d)                            (topic indexing-d)                            (topic markup-d)                            (topic mathml-d)                            (topic pr-d)                            (topic relmgmt-d)                            (topic sw-d)                            (topic svg-d)                            (topic ui-d)                            (topic ut-d)                            (topic markup-d xml-d)   "
-      id="a_1_a" ditaarch:DITAArchVersion="1.3">
+      id="a1a" ditaarch:DITAArchVersion="1.3">
       <title class="- topic/title ">A.1.a</title>
       <body class="- topic/body ">
-        <section class="- topic/section " id="a_1_a_i">
+        <section class="- topic/section " id="a1ai">
           <title class="- topic/title ">A.1.a.I </title>
         </section>
         <example class="- topic/example " id="example">
@@ -22,7 +22,7 @@
       </body>
       <topic class="- topic/topic "
         domains="(topic abbrev-d)                            a(props deliveryTarget)                            (topic equation-d)                            (topic hazard-d)                            (topic hi-d)                            (topic indexing-d)                            (topic markup-d)                            (topic mathml-d)                            (topic pr-d)                            (topic relmgmt-d)                            (topic sw-d)                            (topic svg-d)                            (topic ui-d)                            (topic ut-d)                            (topic markup-d xml-d)   "
-        id="a_1_a_iii" ditaarch:DITAArchVersion="1.3">
+        id="a1aiii" ditaarch:DITAArchVersion="1.3">
         <title class="- topic/title ">A.1.a.III</title>
         <body class="- topic/body "/>
       </topic>
@@ -30,7 +30,7 @@
   </topic>
   <topic class="- topic/topic "
     domains="(topic abbrev-d)                            a(props deliveryTarget)                            (topic equation-d)                            (topic hazard-d)                            (topic hi-d)                            (topic indexing-d)                            (topic markup-d)                            (topic mathml-d)                            (topic pr-d)                            (topic relmgmt-d)                            (topic sw-d)                            (topic svg-d)                            (topic ui-d)                            (topic ut-d)                            (topic markup-d xml-d)   "
-    id="a_2" ditaarch:DITAArchVersion="1.3">
+    id="a2" ditaarch:DITAArchVersion="1.3">
     <title class="- topic/title ">A.2</title>
     <body class="- topic/body "/>
   </topic>

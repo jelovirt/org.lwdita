@@ -5,7 +5,7 @@
     <conbody class="- topic/body  concept/conbody ">
       <p class="- topic/p ">Content A.</p>
     </conbody>
-    <concept id="heading_a_1" class="- topic/topic concept/concept ">
+    <concept id="heading-a1" class="- topic/topic concept/concept ">
       <title class="- topic/title ">Heading A.1</title>
       <conbody class="- topic/body  concept/conbody ">
         <p class="- topic/p ">Content A.1.</p>
@@ -17,7 +17,7 @@
     <taskbody class="- topic/body task/taskbody ">
       <context class="- topic/section task/context "><p class="- topic/p ">Content B.</p></context>
     </taskbody>
-    <task id="heading_b_1" class="- topic/topic task/task ">
+    <task id="heading-b1" class="- topic/topic task/task ">
       <title class="- topic/title ">Heading B.1</title>
       <taskbody class="- topic/body task/taskbody ">
         <context class="- topic/section task/context "><p class="- topic/p ">Content B.1.</p></context>
@@ -29,7 +29,7 @@
     <refbody class="- topic/body        reference/refbody ">
       <section class="- topic/section "><p class="- topic/p ">Content C.</p></section>
     </refbody>
-    <reference id="heading_c_1" class="- topic/topic       reference/reference ">
+    <reference id="heading-c1" class="- topic/topic       reference/reference ">
       <title class="- topic/title ">Heading C.1</title>
       <refbody class="- topic/body        reference/refbody ">
         <section class="- topic/section "><p class="- topic/p ">Content C.1.</p></section>
@@ -41,7 +41,7 @@
     <body class="- topic/body ">
       <p class="- topic/p ">Content D.</p>
     </body>
-    <topic id="heading_d_1" class="- topic/topic ">
+    <topic id="heading-d1" class="- topic/topic ">
       <title class="- topic/title ">Heading D.1</title>
       <body class="- topic/body ">
         <p class="- topic/p ">Content D.1.</p>

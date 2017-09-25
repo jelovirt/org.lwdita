@@ -1,10 +1,25 @@
 package com.elovirta.dita.markdown;
 
-import org.pegdown.Extensions;
-import org.pegdown.PegDownProcessor;
-import org.pegdown.ast.RootNode;
+import com.vladsch.flexmark.ast.Document;
+import com.vladsch.flexmark.ext.abbreviation.AbbreviationExtension;
+import com.vladsch.flexmark.ext.anchorlink.AnchorLinkExtension;
+import com.vladsch.flexmark.ext.aside.AsideExtension;
+import com.vladsch.flexmark.ext.autolink.AutolinkExtension;
+import com.vladsch.flexmark.ext.definition.DefinitionExtension;
+import com.vladsch.flexmark.ext.footnotes.FootnoteExtension;
+import com.vladsch.flexmark.ext.gfm.strikethrough.StrikethroughExtension;
+import com.vladsch.flexmark.ext.ins.InsExtension;
+import com.vladsch.flexmark.ext.jekyll.tag.JekyllTagExtension;
+import com.vladsch.flexmark.ext.tables.TablesExtension;
+import com.vladsch.flexmark.ext.typographic.TypographicExtension;
+import com.vladsch.flexmark.ext.yaml.front.matter.AbstractYamlFrontMatterVisitor;
+import com.vladsch.flexmark.ext.yaml.front.matter.YamlFrontMatterExtension;
+import com.vladsch.flexmark.parser.Parser;
+import com.vladsch.flexmark.superscript.SuperscriptExtension;
+import com.vladsch.flexmark.util.options.MutableDataSet;
+import com.vladsch.flexmark.util.sequence.BasedSequence;
+import com.vladsch.flexmark.util.sequence.BasedSequenceImpl;
 import org.xml.sax.*;
-import org.yaml.snakeyaml.Yaml;
 
 import javax.xml.transform.Templates;
 import javax.xml.transform.TransformerConfigurationException;
@@ -17,9 +32,11 @@ import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.Iterator;
+import java.nio.CharBuffer;
+import java.util.List;
 import java.util.Map;
 
+import static java.util.Arrays.asList;
 import static org.apache.commons.io.IOUtils.closeQuietly;
 import static org.apache.commons.io.IOUtils.copy;
 
@@ -28,7 +45,7 @@ import static org.apache.commons.io.IOUtils.copy;
  */
 public class MarkdownReader implements XMLReader {
 
-    private final PegDownProcessor p;
+    private final Parser p;
     private final SAXTransformerFactory tf;
     private final Templates t;
 
@@ -36,8 +53,41 @@ public class MarkdownReader implements XMLReader {
     private ContentHandler contentHandler;
     private ErrorHandler errorHandler;
 
+    /**
+     * @see <a href="https://github.com/vsch/flexmark-java/wiki/Extensions">Extensions</a>
+     */
     public MarkdownReader() {
-        p = new PegDownProcessor(Extensions.ALL - Extensions.SMARTYPANTS);
+        final MutableDataSet options = new MutableDataSet();
+        options.set(Parser.EXTENSIONS, asList(
+                AbbreviationExtension.create(),
+                AnchorLinkExtension.create(),
+                AsideExtension.create(),
+                FootnoteExtension.create(),
+//                GfmIssuesExtension.create(),
+//                GfmUsersExtension.create(),
+//                TaskListExtension.create(),
+                InsExtension.create(),
+                JekyllTagExtension.create(),
+//                JiraConverterExtension.create(),
+//                StrikethroughSubscriptExtension.create(),
+                SuperscriptExtension.create(),
+//                SubscriptExtension.create(),
+                TablesExtension.create(),
+                TypographicExtension.create(),
+//                WikiLinkExtension.create(),
+                AutolinkExtension.create(),
+                YamlFrontMatterExtension.create(),
+                DefinitionExtension.create(),
+                StrikethroughExtension.create()))
+                .set(DefinitionExtension.TILDE_MARKER, false)
+                // for full GFM table compatibility add the following table extension options:
+                .set(TablesExtension.COLUMN_SPANS, false)
+                .set(TablesExtension.APPEND_MISSING_COLUMNS, true)
+                .set(TablesExtension.DISCARD_EXTRA_COLUMNS, true)
+                .set(TablesExtension.HEADER_SEPARATOR_COLUMN_MATCH, true);
+
+//        options.set(HtmlRenderer.SOFT_BREAK, "<br />\n");
+        p = Parser.builder(options).build();
         try {
             final URI style = getClass().getResource("/specialize.xsl").toURI();
             tf = (SAXTransformerFactory) TransformerFactory.newInstance();
@@ -110,11 +160,18 @@ public class MarkdownReader implements XMLReader {
     @Override
     public void parse(final InputSource input) throws IOException, SAXException {
         char[] markdownContent = getMarkdownContent(input);
-        final Map<String, Object> header = parserYaml(markdownContent);
-        if (header != null) {
-            markdownContent = consumeYaml(markdownContent);
-        }
-        final RootNode root = p.parseMarkdown(markdownContent);
+//        final Map<String, Object> header = parserYaml(markdownContent);
+//        if (header != null) {
+//            markdownContent = consumeYaml(markdownContent);
+//        }
+        final BasedSequence sequence = BasedSequenceImpl.of(CharBuffer.wrap(markdownContent));
+
+        final Document root = p.parse(sequence);
+
+        final AbstractYamlFrontMatterVisitor v = new AbstractYamlFrontMatterVisitor();
+        v.visit(root);
+        final Map<String, List<String>> header = v.getData();
+
         parseAST(root, header);
     }
 
@@ -165,48 +222,6 @@ public class MarkdownReader implements XMLReader {
     }
 
     /**
-     * Return char array after YAML document.
-     */
-    private char[] consumeYaml(char[] cs) {
-        for (int i = 0, j = 0; i < cs.length; i++) {
-            if (cs[i] == '\n') {
-                if (j != 0 && isYamlDocumentStart(cs, j)) {
-                    final char[] buf = new char[cs.length - i];
-                    System.arraycopy(cs, i, buf, 0, buf.length);
-                    return buf;
-                }
-                j = i + 1;
-            }
-        }
-        return cs;
-    }
-
-    /**
-     * Check if character array offset is the start of YAML document.
-     */
-    private boolean isYamlDocumentStart(char[] cs, int i) {
-        return cs[i] == '-' && cs[i + 1] == '-' && cs[i + 2] == '-';
-    }
-
-    private Map<String, Object> parserYaml(char[] markdownContent) throws IOException {
-        if (markdownContent.length > 3 && isYamlDocumentStart(markdownContent, 0)) {
-            Yaml yaml = new Yaml();
-            try (final CharArrayReader in = new CharArrayReader(markdownContent)) {
-                final Iterator<Object> docs = yaml.loadAll(in).iterator();
-                if (docs.hasNext()) {
-                    final Object doc = docs.next();
-                    if (doc instanceof Map) {
-                        return (Map<String, Object>) doc;
-                    } else {
-                        System.err.println("Only top level maps supported, found " + doc.getClass().getName());
-                    }
-                }
-            }
-        }
-        return null;
-    }
-
-    /**
      * Returns an input stream that skips the BOM if present.
      *
      * @param in the original input stream
@@ -228,7 +243,7 @@ public class MarkdownReader implements XMLReader {
         return bin;
     }
 
-    private void parseAST(final RootNode root, final Map<String, Object> header) throws SAXException {
+    private void parseAST(final Document root, final Map<String, List<String>> header) throws SAXException {
         final TransformerHandler h;
         try {
             h = tf.newTransformerHandler(t);
@@ -236,8 +251,9 @@ public class MarkdownReader implements XMLReader {
             throw new SAXException(e);
         }
         h.setResult(new SAXResult(contentHandler));
-        final ToDitaSerializer s = new ToDitaSerializer(h, header);
-        s.toHtml(root);
+        final Builder builder = new Builder();
+        final DitaRenderer s = new DitaRenderer(builder, header);
+        s.render(root, h);
     }
 
 }

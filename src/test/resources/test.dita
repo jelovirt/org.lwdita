@@ -5,26 +5,28 @@
   <body class="- topic/body ">
     <p class="- topic/p ">Paragraph <ph status="deleted" class="- topic/ph ">Text</ph> <i class="+ topic/ph hi-d/i ">test</i> and <b class="+ topic/ph hi-d/b ">list</b>:</p>
     <ul class="- topic/ul ">
-      <li class="- topic/li ">hyphen</li>
-      <li class="- topic/li ">list</li>
-      <li class="- topic/li ">item</li>
+      <li class="- topic/li "><p class="- topic/p ">hyphen</p></li>
+      <li class="- topic/li "><p class="- topic/p ">list</p></li>
+      <li class="- topic/li "><p class="- topic/p ">item</p></li>
+    </ul>
+    <ul class="- topic/ul ">
       <li class="- topic/li ">
         <p class="- topic/p ">asterix</p>
         <ul class="- topic/ul ">
-          <li class="- topic/li ">list</li>
+          <li class="- topic/li "><p class="- topic/p ">list</p></li>
         </ul>
       </li>
-      <li class="- topic/li ">item<ul class="- topic/ul ">
-        <li class="- topic/li ">nested</li>
+      <li class="- topic/li "><p class="- topic/p ">item</p><ul class="- topic/ul ">
+        <li class="- topic/li "><p class="- topic/p ">nested</p></li>
       </ul>
       </li>
     </ul>
     <ol class="- topic/ol ">
-      <li class="- topic/li ">ordered</li>
-      <li class="- topic/li ">list</li>
-      <li class="- topic/li ">item<ol class="- topic/ol ">
-        <li class="- topic/li ">nested</li>
-        <li class="- topic/li ">list</li>
+      <li class="- topic/li "><p class="- topic/p ">ordered</p></li>
+      <li class="- topic/li "><p class="- topic/p ">list</p></li>
+      <li class="- topic/li "><p class="- topic/p ">item</p><ol class="- topic/ol ">
+        <li class="- topic/li "><p class="- topic/p ">nested</p></li>
+        <li class="- topic/li "><p class="- topic/p ">list</p></li>
       </ol>
       </li>
     </ol>
@@ -43,9 +45,9 @@
       <table class="- topic/table ">
         <title class="- topic/title ">simple_table</title>
         <tgroup class="- topic/tgroup " cols="3">
-          <colspec align="left" class="- topic/colspec " colname="col1"/>
-          <colspec align="center" class="- topic/colspec " colname="col2"/>
-          <colspec align="right" class="- topic/colspec " colname="col3"/>
+          <colspec class="- topic/colspec " colname="col1"/>
+          <colspec class="- topic/colspec " colname="col2"/>
+          <colspec class="- topic/colspec " colname="col3"/>
           <thead class="- topic/thead ">
             <row class="- topic/row ">
               <entry align="left" class="- topic/entry ">First Header </entry>
@@ -72,16 +74,16 @@
         </tgroup>
       </table>
       <table class="- topic/table ">
-        <title class="- topic/title ">Prototype table]<xref class="- topic/xref " keyref="reference_table"/>
-        </title>
+        <title class="- topic/title ">Prototype table][reference_table</title>
         <tgroup class="- topic/tgroup " cols="3">
           <colspec class="- topic/colspec " colname="col1"/>
-          <colspec align="center" class="- topic/colspec " colname="col2"/>
-          <colspec align="right" class="- topic/colspec " colname="col3"/>
+          <colspec class="- topic/colspec " colname="col2"/>
+          <colspec class="- topic/colspec " colname="col3"/>
           <thead class="- topic/thead ">
             <row class="- topic/row ">
               <entry class="- topic/entry "> </entry>
-              <entry align="center" class="- topic/entry " nameend="col3" namest="col2">Grouping </entry>
+              <entry align="center" class="- topic/entry ">Grouping </entry>
+              <entry align="right" class="- topic/entry "> </entry>
             </row>
             <row class="- topic/row ">
               <entry class="- topic/entry ">First Header </entry>
@@ -92,9 +94,10 @@
           <tbody class="- topic/tbody ">
             <row class="- topic/row ">
               <entry class="- topic/entry ">Content </entry>
-              <entry align="center" class="- topic/entry " nameend="col3" namest="col2">
+              <entry align="center" class="- topic/entry ">
                 <i class="+ topic/ph hi-d/i ">Long Cell</i>
               </entry>
+              <entry align="right" class="- topic/entry "/>
             </row>
             <row class="- topic/row ">
               <entry class="- topic/entry ">Content </entry>
@@ -118,17 +121,17 @@
     <body class="- topic/body ">
       <ul class="- topic/ul ">
         <li class="- topic/li ">
-          <xref class="- topic/xref " href="test.md" format="markdown">Markdown</xref>
+          <p class="- topic/p "><xref class="- topic/xref " href="test.md" format="markdown">Markdown</xref></p>
         </li>
         <li class="- topic/li ">
-          <xref class="- topic/xref " href="test.dita">DITA</xref>
+          <p class="- topic/p "><xref class="- topic/xref " href="test.dita">DITA</xref></p>
         </li>
         <li class="- topic/li ">
-          <xref class="- topic/xref " format="html" href="test.html">HTML</xref>
+          <p class="- topic/p "><xref class="- topic/xref " format="html" href="test.html">HTML</xref></p>
         </li>
         <li class="- topic/li ">
-          <xref class="- topic/xref " format="html" href="http://www.example.com/test.html"
-                scope="external">External</xref>
+          <p class="- topic/p "><xref class="- topic/xref " format="html" href="http://www.example.com/test.html"
+                scope="external">External</xref></p>
         </li>
       </ul>
     </body>

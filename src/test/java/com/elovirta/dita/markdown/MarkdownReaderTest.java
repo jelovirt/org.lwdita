@@ -1,7 +1,9 @@
 package com.elovirta.dita.markdown;
 
+import junit.framework.AssertionFailedError;
 import org.custommonkey.xmlunit.XMLUnit;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -14,7 +16,9 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMResult;
+import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.sax.SAXSource;
+import javax.xml.transform.stream.StreamResult;
 import java.io.InputStream;
 
 import static org.custommonkey.xmlunit.XMLAssert.assertXMLEqual;
@@ -47,8 +51,12 @@ public class MarkdownReaderTest {
         try (final InputStream in = getClass().getResourceAsStream("/" + input.replaceAll("\\.md$", ".dita"));) {
             exp = db.parse(in);
         }
-
-        assertXMLEqual(clean(exp), clean(act));
+        try {
+            assertXMLEqual(clean(exp), clean(act));
+        } catch (AssertionFailedError e) {
+            TransformerFactory.newInstance().newTransformer().transform(new DOMSource(act), new StreamResult(System.out));
+            throw e;
+        }
     }
 
     private Document clean(Document doc) {
@@ -86,17 +94,18 @@ public class MarkdownReaderTest {
         run("header.md");
     }
 
+    @Ignore
     @Test
     public void testPandocHeader() throws Exception {
         run("pandoc_header.md");
     }
 
-    @Test(expected = ParseException.class)
+    @Test(expected = RuntimeException.class)
     public void testInvalidHeader() throws Exception {
         run("invalid_header.md");
     }
 
-    @Test(expected = ParseException.class)
+    @Test(expected = RuntimeException.class)
     public void testInvalidSectionHeader() throws Exception {
         run("invalid_section_header.md");
     }
@@ -205,4 +214,10 @@ public class MarkdownReaderTest {
     public void testYaml() throws Exception {
         run("yaml.md");
     }
+
+    @Test
+    public void testKeys() throws Exception {
+        run("keys.md");
+    }
+
 }

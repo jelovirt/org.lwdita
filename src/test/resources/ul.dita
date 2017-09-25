@@ -1,19 +1,31 @@
 <topic xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/" class="- topic/topic "
   domains="(topic abbrev-d)                            a(props deliveryTarget)                            (topic equation-d)                            (topic hazard-d)                            (topic hi-d)                            (topic indexing-d)                            (topic markup-d)                            (topic mathml-d)                            (topic pr-d)                            (topic relmgmt-d)                            (topic sw-d)                            (topic svg-d)                            (topic ui-d)                            (topic ut-d)                            (topic markup-d xml-d)   "
-  id="bullet_list" ditaarch:DITAArchVersion="1.3">
+  id="bullet-list" ditaarch:DITAArchVersion="1.3">
   <title class="- topic/title ">Bullet list</title>
   <body class="- topic/body ">
     <p class="- topic/p ">Hyphen:</p>
     <ul class="- topic/ul ">
-      <li class="- topic/li ">hyphen list list list list list list list list list list list list
-        list list list list list list list list list list list</li>
-      <li class="- topic/li ">list<ul class="- topic/ul ">
-          <li class="- topic/li ">item<ul class="- topic/ul ">
-              <li class="- topic/li ">four</li>
+      <li class="- topic/li ">
+        <p class="- topic/p ">hyphen list list list list list list list list list list list list
+          list list list list list list list list list list list</p>
+      </li>
+      <li class="- topic/li ">
+        <p class="- topic/p ">list</p>
+        <ul class="- topic/ul ">
+          <li class="- topic/li ">
+            <p class="- topic/p ">item</p>
+            <ul class="- topic/ul ">
+              <li class="- topic/li ">
+                <p class="- topic/p ">four</p>
+              </li>
             </ul>
           </li>
-          <li class="- topic/li ">fifth<ul class="- topic/ul ">
-              <li class="- topic/li ">sixth</li>
+          <li class="- topic/li ">
+            <p class="- topic/p ">fifth</p>
+            <ul class="- topic/ul ">
+              <li class="- topic/li ">
+                <p class="- topic/p ">sixth</p>
+              </li>
             </ul>
           </li>
         </ul>
@@ -21,24 +33,38 @@
     </ul>
     <p class="- topic/p ">Asterix:</p>
     <ul class="- topic/ul ">
-      <li class="- topic/li ">inline <i class="+ topic/ph hi-d/i ">bold</i> normal<ul
-          class="- topic/ul ">
-          <li class="- topic/li ">inline</li>
-        </ul>
-      </li>
-      <li class="- topic/li ">para<ul class="- topic/ul ">
+      <li class="- topic/li ">
+        <p class="- topic/p ">inline <i class="+ topic/ph hi-d/i ">bold</i> normal</p>
+        <ul class="- topic/ul ">
           <li class="- topic/li ">
             <p class="- topic/p ">inline</p>
           </li>
         </ul>
       </li>
-      <li class="- topic/li ">para<p class="- topic/p ">para</p>
+      <li class="- topic/li ">
+        <p class="- topic/p ">para</p>
+        <ul class="- topic/ul ">
+          <li class="- topic/li ">
+            <p class="- topic/p ">inline</p>
+          </li>
+        </ul>
       </li>
       <li class="- topic/li ">
         <p class="- topic/p ">para</p>
-        <p class="- topic/p ">para - below this will not work</p>
+        <p class="- topic/p ">para</p>
       </li>
-      <li class="- topic/li ">para<ul class="- topic/ul ">
+      <li class="- topic/li ">
+        <p class="- topic/p ">para</p>
+        <p class="- topic/p ">para</p>
+        <ul class="- topic/ul ">
+          <li class="- topic/li ">
+            <p class="- topic/p ">below this will not work</p>
+          </li>
+        </ul>
+      </li>
+      <li class="- topic/li ">
+        <p class="- topic/p ">para</p>
+        <ul class="- topic/ul ">
           <li class="- topic/li ">
             <p class="- topic/p ">para</p>
           </li>
