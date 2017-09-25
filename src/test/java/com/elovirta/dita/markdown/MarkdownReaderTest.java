@@ -3,6 +3,7 @@ package com.elovirta.dita.markdown;
 import junit.framework.AssertionFailedError;
 import org.custommonkey.xmlunit.XMLUnit;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -93,6 +94,7 @@ public class MarkdownReaderTest {
         run("header.md");
     }
 
+    @Ignore
     @Test
     public void testPandocHeader() throws Exception {
         run("pandoc_header.md");
