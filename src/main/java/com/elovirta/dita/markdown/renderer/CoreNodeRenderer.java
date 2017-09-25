@@ -32,7 +32,6 @@ import java.util.regex.Pattern;
 import java.util.stream.StreamSupport;
 
 import static com.elovirta.dita.markdown.MetadataSerializerImpl.buildAtts;
-import static com.elovirta.dita.markdown.renderer.HeaderIdGenerator.generateId;
 import static javax.xml.XMLConstants.XML_NS_URI;
 import static org.dita.dost.util.Constants.*;
 import static org.dita.dost.util.URLUtils.toURI;
@@ -613,60 +612,7 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
         // YAML header is pulled by Heading renderer
     }
 
-    static class Metadata {
-        final String id;
-        final List<String> classes;
-
-        Metadata(final String id, final List<String> classes) {
-            this.id = id;
-            this.classes = classes;
-        }
-
-        static Metadata parse(final String contents) {
-            final String c = contents.trim();
-            final List<String> classes = new ArrayList<>();
-            String fragment = null;
-            for (final String t : c.split("\\s+")) {
-                if (t.startsWith("#")) {
-                    fragment = t.substring(1);
-                } else if (t.startsWith(".")) {
-                    classes.add(t.substring(1));
-                }
-            }
-            final String id = fragment != null ? fragment : null;
-            return new Metadata(id, classes);
-        }
-    }
-
-    static class Title {
-        final String title;
-        final String id;
-        final Collection<String> classes;
-
-        Title(final Heading node) {
-            final String contents = node.getText().toString();
-            classes = new ArrayList<>();
-            final Pattern p = Pattern.compile("^(.+?)(?:\\{(.*?)\\})?$");
-            final Matcher m = p.matcher(contents);
-            if (m.matches()) {
-                title = m.group(1);
-                if (m.group(2) != null) {
-                    final Metadata metadata = Metadata.parse(m.group(2));
-                    classes.addAll(metadata.classes);
-                    id = metadata.id != null ? metadata.id : generateId(title.replaceAll("\\s+", " ").trim(), " -_", false);
-                } else {
-//                    id = getId(title);
-                    id = null;
-                }
-            } else {
-                title = contents;
-//                id = getId(contents);
-                id = null;
-            }
-        }
-    }
-
-//    private String getId(final Heading node) {
+    //    private String getId(final Heading node) {
 //        return getId(toString(node));
 //    }
 
