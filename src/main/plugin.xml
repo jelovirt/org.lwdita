@@ -12,7 +12,6 @@
   <!-- Markdown to DITA -->
   <feature extension="dita.conductor.lib.import" file="lib/markdown-${version}.jar"/>
   <feature extension="dita.conductor.lib.import" file="lib/flexmark-all-0.26.4.jar"/>
-  <feature extension="dita.conductor.lib.import" file="lib/flexmark-pdf-converter-0.26.4.jar"/>
   <feature extension="dita.conductor.lib.import" file="lib/flexmark-profile-pegdown-0.26.4.jar"/>
   <feature extension="dita.conductor.lib.import" file="lib/flexmark-ext-abbreviation-0.26.4.jar"/>
   <feature extension="dita.conductor.lib.import" file="lib/flexmark-ext-anchorlink-0.26.4.jar"/>

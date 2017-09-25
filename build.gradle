@@ -26,6 +26,7 @@ task dist(type: Zip) {
     }
     from(configurations.runtime) {
         include { details -> details.file.name.contains('flexmark') }
+        exclude { details -> details.file.name.contains('flexmark-pdf') }
         include { details -> details.file.name.contains('autolink') }
         into "lib"
     }
