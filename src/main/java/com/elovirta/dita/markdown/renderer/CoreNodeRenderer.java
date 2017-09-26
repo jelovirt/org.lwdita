@@ -1166,6 +1166,10 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
         }
     }
 
+    private void render(final HtmlInlineComment node, final NodeRendererContext context, final DitaWriter html) {
+        // Ignore
+    }
+
     private void render(final Node node, final NodeRendererContext context, final DitaWriter html) {
         throw new RuntimeException("No renderer configured for " + node.getNodeName() + " = " + node.getClass().getCanonicalName());
 //        if (node instanceof MetadataNode) {

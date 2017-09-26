@@ -230,4 +230,9 @@ public class MarkdownReaderTest {
         run("entity.md");
     }
 
+    @Test
+    public void testComment() throws Exception {
+        run("comment.md");
+    }
+
 }
