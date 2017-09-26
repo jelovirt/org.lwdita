@@ -225,4 +225,9 @@ public class MarkdownReaderTest {
         run("keys.md");
     }
 
+    @Test
+    public void testEntity() throws Exception {
+        run("entity.md");
+    }
+
 }

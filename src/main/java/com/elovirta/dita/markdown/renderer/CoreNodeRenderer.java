@@ -522,6 +522,16 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
         final StringBuilder buf = new StringBuilder();
         node.getAstExtra(buf);
         final Title header = new Title(node);
+        if (header.id != null || !header.classes.isEmpty()) {
+            final Text last = findLastText(node);
+            if (last != null) {
+                final BasedSequence chars = last.getChars();
+                final int i = chars.indexOf('{');
+                final Text copy = new Text(i != -1 ? chars.subSequence(0, i) : chars);
+                last.insertAfter(copy);
+                last.unlink();
+            }
+        }
 
         if (inSection) {
             html.endElement(); // section or example
@@ -550,11 +560,7 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
             html.startElement(cls, atts.build());
             inSection = true;
             html.startElement(TOPIC_TITLE, TITLE_ATTS);
-            if (header.title != null) {
-                html.characters(header.title);
-            } else {
-                context.renderChildren(node);
-            }
+            context.renderChildren(node);
             html.endElement(); // title
         } else {
             if (headerLevel > 0) {
@@ -578,12 +584,7 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
             }
             html.startElement(TOPIC_TOPIC, atts.build());
             html.startElement(TOPIC_TITLE, TITLE_ATTS);
-//            html.characters(header.title);
-            if (header.title != null) {
-                html.characters(header.title);
-            } else {
-                context.renderChildren(node);
-            }
+            context.renderChildren(node);
             html.endElement(); // title
             if (node.getLevel() == 1) {
                 final Node firstChild = node.getDocument().getFirstChild();
@@ -592,12 +593,24 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
                     metadataSerializer.render((YamlFrontMatterBlock) firstChild, context, html);
                     html.endElement();
                 }
-//            if (documentMetadata != null && !documentMetadata.isEmpty()) {
-//                outputMetadata(documentMetadata, html);
-//            }
             }
             html.startElement(TOPIC_BODY, BODY_ATTS);
         }
+    }
+
+    private Text findLastText(Node node) {
+        for (Node child : node.getReversedChildren()) {
+            Text t = null;
+            if (child instanceof Text) {
+                t = (Text) child;
+            } else if (child.hasChildren()) {
+                t = findLastText(child);
+            }
+            if (t != null) {
+                return t;
+            }
+        }
+        return null;
     }
 
     private void outputMetadata(Map<String, Object> documentMetadata, DitaWriter html) {
@@ -1142,6 +1155,15 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
 
     private void render(final HardLineBreak node, final NodeRendererContext context, final DitaWriter html) {
         html.processingInstruction("linebreak", null);
+    }
+
+    private void render(final HtmlEntity node, final NodeRendererContext context, final DitaWriter html) {
+        final BasedSequence chars = node.getChars();
+        final String name = chars.subSequence(1, chars.length() - 1).toString().toLowerCase();
+        final String val = Entities.ENTITIES.getProperty(name);
+        if (val != null) {
+            html.characters(val);
+        }
     }
 
     private void render(final Node node, final NodeRendererContext context, final DitaWriter html) {
