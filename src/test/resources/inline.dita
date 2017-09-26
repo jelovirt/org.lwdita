@@ -10,5 +10,8 @@
       line. This is a very long line. This is a very long line. This is a very long line. This is a
       very long line. This is a very long line. This is a very long line. This is a very long line.
       This is a very long line.</p>
+    <p class="- topic/p ">here is a <b class="+ topic/ph hi-d/b ">bold</b> (<b class="+ topic/ph hi-d/b ">bold</b>) claim</p>
+    <p class="- topic/p ">here is an <i class="+ topic/ph hi-d/i ">italics</i> (<i class="+ topic/ph hi-d/i ">italics</i>) claim</p>
+    <p class="- topic/p ">here is a <codeph class="+ topic/ph pr-d/codeph ">code</codeph> (<codeph class="+ topic/ph pr-d/codeph ">code</codeph>) claim</p>
   </body>
 </topic>
