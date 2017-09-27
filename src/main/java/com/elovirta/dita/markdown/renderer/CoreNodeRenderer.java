@@ -3,10 +3,7 @@
  */
 package com.elovirta.dita.markdown.renderer;
 
-import com.elovirta.dita.markdown.DitaWriter;
-import com.elovirta.dita.markdown.MetadataSerializerImpl;
-import com.elovirta.dita.markdown.ParseException;
-import com.elovirta.dita.markdown.SaxSerializer;
+import com.elovirta.dita.markdown.*;
 import com.vladsch.flexmark.ast.*;
 import com.vladsch.flexmark.ext.abbreviation.Abbreviation;
 import com.vladsch.flexmark.ext.anchorlink.AnchorLink;
@@ -58,6 +55,7 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
     private static final Attributes DT_ATTS = buildAtts(TOPIC_DT);
     private static final Attributes DEL_ATTS = new AttributesBuilder().add(ATTRIBUTE_NAME_CLASS, TOPIC_PH.toString()).add("status", "deleted").build();
     private static final Attributes TITLE_ATTS = buildAtts(TOPIC_TITLE);
+    private static final Attributes SHORTDESC_ATTS = buildAtts(TOPIC_SHORTDESC);
     private static final Attributes PROLOG_ATTS = buildAtts(TOPIC_PROLOG);
     private static final Attributes BLOCKQUOTE_ATTS = buildAtts(TOPIC_LQ);
     private static final Attributes UL_ATTS = buildAtts(TOPIC_UL);
@@ -89,10 +87,11 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
     private final Map<String, ReferenceNode> references = new HashMap<>();
     private final Map<String, String> abbreviations = new HashMap<>();
     private final MetadataSerializerImpl metadataSerializer;
+
+    private final Boolean shortdescParagraph;
+
     private TableBlock currentTableNode;
-
     private int currentTableColumn;
-
     private boolean inSection = false;
 
     /**
@@ -101,6 +100,7 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
     private int headerLevel = 0;
 
     public CoreNodeRenderer(DataHolder options) {
+        this.shortdescParagraph = DitaRenderer.SHORTDESC_PARAGRAPH.getFrom(options);
 //        this.referenceRepository = options.get(Parser.REFERENCES);
 //        this.listOptions = ListOptions.getFrom(options);
 //        this.recheckUndefinedReferences = HtmlRenderer.RECHECK_UNDEFINED_REFERENCES.getFrom(options);
@@ -115,12 +115,12 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
         metadataSerializer = new MetadataSerializerImpl();
     }
 
-    CoreNodeRenderer(final ContentHandler contentHandler, final Map<String, Object> documentMetadata) {
-//        this.documentMetadata = documentMetadata;
-        setContentHandler(contentHandler);
-        metadataSerializer = new MetadataSerializerImpl();
-
-    }
+//    CoreNodeRenderer(final ContentHandler contentHandler, final Map<String, Object> documentMetadata) {
+////        this.documentMetadata = documentMetadata;
+//        setContentHandler(contentHandler);
+//        metadataSerializer = new MetadataSerializerImpl();
+//
+//    }
 
     @Override
     public Set<NodeRenderingHandler<?>> getNodeRenderingHandlers() {
@@ -586,6 +586,11 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
             html.startElement(TOPIC_TITLE, TITLE_ATTS);
             context.renderChildren(node);
             html.endElement(); // title
+            if (shortdescParagraph && node.getNext() instanceof Paragraph) {
+                html.startElement(TOPIC_SHORTDESC, SHORTDESC_ATTS);
+                context.renderChildren(node.getNext());
+                html.endElement(); // shortdesc
+            }
             if (node.getLevel() == 1) {
                 final Node firstChild = node.getDocument().getFirstChild();
                 if (firstChild instanceof YamlFrontMatterBlock) {
@@ -664,7 +669,9 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
     private boolean onlyImageChild = false;
 
     private void render(final Paragraph node, final NodeRendererContext context, final DitaWriter html) {
-        if (containsImage(node)) {
+        if (shortdescParagraph && !inSection && node.getPrevious() instanceof Heading) {
+            // Pulled by Heading
+        } else if (containsImage(node)) {
             onlyImageChild = true;
             context.renderChildren(node);
             onlyImageChild = false;

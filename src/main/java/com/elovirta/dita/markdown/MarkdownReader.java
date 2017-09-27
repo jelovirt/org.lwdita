@@ -45,48 +45,53 @@ import static org.apache.commons.io.IOUtils.copy;
  */
 public class MarkdownReader implements XMLReader {
 
-    private final Parser p;
-    private final SAXTransformerFactory tf;
-    private final Templates t;
+    final Parser p;
+    final SAXTransformerFactory tf;
+    final Templates t;
+    private final MutableDataSet options;
 
-    private EntityResolver resolver;
-    private ContentHandler contentHandler;
-    private ErrorHandler errorHandler;
+    EntityResolver resolver;
+    ContentHandler contentHandler;
+    ErrorHandler errorHandler;
 
     /**
      * @see <a href="https://github.com/vsch/flexmark-java/wiki/Extensions">Extensions</a>
      */
     public MarkdownReader() {
-        final MutableDataSet options = new MutableDataSet();
-        options.set(Parser.EXTENSIONS, asList(
-                AbbreviationExtension.create(),
-                AnchorLinkExtension.create(),
-                AsideExtension.create(),
-                FootnoteExtension.create(),
-//                GfmIssuesExtension.create(),
-//                GfmUsersExtension.create(),
-//                TaskListExtension.create(),
-                InsExtension.create(),
-                JekyllTagExtension.create(),
-//                JiraConverterExtension.create(),
-//                StrikethroughSubscriptExtension.create(),
-                SuperscriptExtension.create(),
-//                SubscriptExtension.create(),
-                TablesExtension.create(),
-                TypographicExtension.create(),
-//                WikiLinkExtension.create(),
-                AutolinkExtension.create(),
-                YamlFrontMatterExtension.create(),
-                DefinitionExtension.create(),
-                StrikethroughExtension.create()))
+        this(new MutableDataSet()
+                .set(Parser.EXTENSIONS, asList(
+                        AbbreviationExtension.create(),
+                        AnchorLinkExtension.create(),
+                        AsideExtension.create(),
+                        FootnoteExtension.create(),
+        //                GfmIssuesExtension.create(),
+        //                GfmUsersExtension.create(),
+        //                TaskListExtension.create(),
+                        InsExtension.create(),
+                        JekyllTagExtension.create(),
+        //                JiraConverterExtension.create(),
+        //                StrikethroughSubscriptExtension.create(),
+                        SuperscriptExtension.create(),
+        //                SubscriptExtension.create(),
+                        TablesExtension.create(),
+                        TypographicExtension.create(),
+        //                WikiLinkExtension.create(),
+                        AutolinkExtension.create(),
+                        YamlFrontMatterExtension.create(),
+                        DefinitionExtension.create(),
+                        StrikethroughExtension.create()))
                 .set(DefinitionExtension.TILDE_MARKER, false)
                 // for full GFM table compatibility add the following table extension options:
                 .set(TablesExtension.COLUMN_SPANS, false)
                 .set(TablesExtension.APPEND_MISSING_COLUMNS, true)
                 .set(TablesExtension.DISCARD_EXTRA_COLUMNS, true)
-                .set(TablesExtension.HEADER_SEPARATOR_COLUMN_MATCH, true);
-
+                .set(TablesExtension.HEADER_SEPARATOR_COLUMN_MATCH, true)
+        );
 //        options.set(HtmlRenderer.SOFT_BREAK, "<br />\n");
+    }
+
+    public MarkdownReader(final MutableDataSet options) {
+        this.options = options;
         p = Parser.builder(options).build();
         try {
             final URI style = getClass().getResource("/specialize.xsl").toURI();
@@ -160,8 +165,8 @@ public class MarkdownReader implements XMLReader {
     @Override
     public void parse(final InputSource input) throws IOException, SAXException {
         char[] markdownContent = getMarkdownContent(input);
-//        final Map<String, Object> header = parserYaml(markdownContent);
-//        if (header != null) {
+//        final Map<String, Object> metadata = parserYaml(markdownContent);
+//        if (metadata != null) {
 //            markdownContent = consumeYaml(markdownContent);
 //        }
         final BasedSequence sequence = BasedSequenceImpl.of(CharBuffer.wrap(markdownContent));
@@ -170,9 +175,9 @@ public class MarkdownReader implements XMLReader {
 
         final AbstractYamlFrontMatterVisitor v = new AbstractYamlFrontMatterVisitor();
         v.visit(root);
-        final Map<String, List<String>> header = v.getData();
+        final Map<String, List<String>> metadata = v.getData();
 
-        parseAST(root, header);
+        parseAST(root, metadata);
     }
 
     @Override
@@ -243,7 +248,7 @@ public class MarkdownReader implements XMLReader {
         return bin;
     }
 
-    private void parseAST(final Document root, final Map<String, List<String>> header) throws SAXException {
+    private void parseAST(final Document root, final Map<String, List<String>> metadata) throws SAXException {
         final TransformerHandler h;
         try {
             h = tf.newTransformerHandler(t);
@@ -251,8 +256,8 @@ public class MarkdownReader implements XMLReader {
             throw new SAXException(e);
         }
         h.setResult(new SAXResult(contentHandler));
-        final Builder builder = new Builder();
-        final DitaRenderer s = new DitaRenderer(builder, header);
+        final Builder builder = new Builder(options);
+        final DitaRenderer s = new DitaRenderer(builder, metadata);
         s.render(root, h);
     }
 

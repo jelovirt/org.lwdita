@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<topic xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/" class="- topic/topic "
+  ditaarch:DITAArchVersion="1.2"
+  domains="(topic hi-d) (topic ut-d) (topic indexing-d) (topic hazard-d) (topic abbrev-d) (topic pr-d) (topic sw-d) (topic ui-d)"
+  id="numbered-list">
+  <title class="- topic/title ">Numbered list</title>
+  <shortdesc class="- topic/shortdesc ">Ordered:</shortdesc>
+  <body class="- topic/body ">
+    <ol class="- topic/ol ">
+      <li class="- topic/li ">
+        <p class="- topic/p ">ordered</p>
+      </li>
+      <li class="- topic/li ">
+        <p class="- topic/p ">list</p>
+      </li>
+      <li class="- topic/li ">
+        <p class="- topic/p ">item</p>
+        <ol class="- topic/ol ">
+          <li class="- topic/li ">
+            <p class="- topic/p ">nested</p>
+          </li>
+          <li class="- topic/li ">
+            <p class="- topic/p ">list</p>
+          </li>
+        </ol>
+      </li>
+      <li class="- topic/li ">
+        <p class="- topic/p ">foo</p>
+      </li>
+      <li class="- topic/li ">
+        <p class="- topic/p ">foo</p>
+      </li>
+      <li class="- topic/li ">
+        <p class="- topic/p ">foo</p>
+      </li>
+      <li class="- topic/li ">
+        <p class="- topic/p ">foo</p>
+      </li>
+      <li class="- topic/li ">
+        <p class="- topic/p ">foo</p>
+      </li>
+      <li class="- topic/li ">
+        <p class="- topic/p ">foo</p>
+      </li>
+      <li class="- topic/li ">
+        <p class="- topic/p ">foo</p>
+      </li>
+      <li class="- topic/li ">
+        <p class="- topic/p ">foo</p>
+      </li>
+      <li class="- topic/li ">
+        <p class="- topic/p ">foo</p>
+      </li>
+      <li class="- topic/li ">
+        <p class="- topic/p ">foo</p>
+      </li>
+      <li class="- topic/li ">
+        <p class="- topic/p ">foo</p>
+      </li>
+      <li class="- topic/li ">
+        <p class="- topic/p ">foo</p>
+      </li>
+    </ol>
+  </body>
+</topic>

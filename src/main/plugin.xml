@@ -46,5 +46,6 @@
   <feature extension="dita.parser">
     <parser format="markdown" class="com.elovirta.dita.markdown.MarkdownReader"/>
     <parser format="md" class="com.elovirta.dita.markdown.MarkdownReader"/>
+    <parser format="mdita" class="com.elovirta.dita.markdown.MDitaReader"/>
   </feature>
 </plugin>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dita>
+  <topic xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/" class="- topic/topic "
+    ditaarch:DITAArchVersion="1.2"
+    domains="(topic hi-d) (topic ut-d) (topic indexing-d) (topic hazard-d) (topic abbrev-d) (topic pr-d) (topic sw-d) (topic ui-d)"
+    id="heading-a">
+    <title class="- topic/title ">Heading A</title>
+    <shortdesc class="- topic/shortdesc ">Content A.</shortdesc>
+    <body class="- topic/body "/>
+    <topic class="- topic/topic " ditaarch:DITAArchVersion="1.2"
+      domains="(topic hi-d) (topic ut-d) (topic indexing-d) (topic hazard-d) (topic abbrev-d) (topic pr-d) (topic sw-d) (topic ui-d)"
+      id="heading-a1">
+      <title class="- topic/title ">Heading A.1</title>
+      <shortdesc class="- topic/shortdesc ">Content A.1.</shortdesc>
+      <body class="- topic/body "/>
+    </topic>
+  </topic>
+  <topic xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/" class="- topic/topic "
+    ditaarch:DITAArchVersion="1.2"
+    domains="(topic hi-d) (topic ut-d) (topic indexing-d) (topic hazard-d) (topic abbrev-d) (topic pr-d) (topic sw-d) (topic ui-d)"
+    id="heading-b">
+    <title class="- topic/title ">Heading B</title>
+    <shortdesc class="- topic/shortdesc ">Content B.</shortdesc>
+    <body class="- topic/body "/>
+    <topic class="- topic/topic " ditaarch:DITAArchVersion="1.2"
+      domains="(topic hi-d) (topic ut-d) (topic indexing-d) (topic hazard-d) (topic abbrev-d) (topic pr-d) (topic sw-d) (topic ui-d)"
+      id="heading-b1">
+      <title class="- topic/title ">Heading B.1</title>
+      <shortdesc class="- topic/shortdesc ">Content B.1.</shortdesc>
+      <body class="- topic/body "/>
+    </topic>
+  </topic>
+</dita>

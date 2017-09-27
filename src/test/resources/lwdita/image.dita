@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<topic xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/" class="- topic/topic "
+  ditaarch:DITAArchVersion="1.2"
+  domains="(topic hi-d) (topic ut-d) (topic indexing-d) (topic hazard-d) (topic abbrev-d) (topic pr-d) (topic sw-d) (topic ui-d)"
+  id="images">
+  <title class="- topic/title ">Images</title>
+  <shortdesc class="- topic/shortdesc ">An inline <image class="- topic/image " href="test.jpg"><alt
+        class="- topic/alt ">Alt</alt></image>.</shortdesc>
+  <body class="- topic/body ">
+    <image class="- topic/image " href="test.jpg" placement="break">
+      <alt class="- topic/alt ">Alt</alt>
+    </image>
+    <fig class="- topic/fig ">
+      <title class="- topic/title ">Title</title>
+      <image class="- topic/image " href="test.jpg">
+        <alt class="- topic/alt ">Alt</alt>
+      </image>
+    </fig>
+    <image class="- topic/image " keyref="image-key"/>
+    <fig class="- topic/fig ">
+      <title class="- topic/title ">Title</title>
+      <image class="- topic/image " href="test.jpg" keyref="img_id">
+        <alt class="- topic/alt ">Alt</alt>
+      </image>
+    </fig>
+  </body>
+</topic>

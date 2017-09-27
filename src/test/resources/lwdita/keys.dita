@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<topic xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/" class="- topic/topic "
+  ditaarch:DITAArchVersion="1.2"
+  domains="(topic hi-d) (topic ut-d) (topic indexing-d) (topic hazard-d) (topic abbrev-d) (topic pr-d) (topic sw-d) (topic ui-d)"
+  id="keys">
+  <title class="- topic/title ">Keys</title>
+  <shortdesc class="- topic/shortdesc ">This is <xref class="- topic/xref " format="markdown"
+      href="test.md">an example</xref> reference-style link.</shortdesc>
+  <body class="- topic/body ">
+    <p class="- topic/p ">This is <xref class="- topic/xref " format="markdown" href="test.md"
+        >key-a</xref> reference-style link.</p>
+    <p class="- topic/p ">This is <xref class="- topic/xref " format="markdown" href="test.md"
+        >Markdown</xref> reference-style link.</p>
+    <p class="- topic/p ">This is <xref class="- topic/xref " format="markdown" href="test.md"
+        >Markdown</xref> reference-style link.</p>
+    <p class="- topic/p ">This is <xref class="- topic/xref " keyref="key-missing">an example</xref>
+      reference-style link.</p>
+    <p class="- topic/p ">This is <xref class="- topic/xref " keyref="key-missing"/> reference-style
+      link.</p>
+  </body>
+</topic>

@@ -8,7 +8,6 @@ import com.vladsch.flexmark.Extension;
 import com.vladsch.flexmark.IRender;
 import com.vladsch.flexmark.ast.Document;
 import com.vladsch.flexmark.ast.Node;
-import com.vladsch.flexmark.util.collection.DataValueFactory;
 import com.vladsch.flexmark.util.collection.DynamicDefaultKey;
 import com.vladsch.flexmark.util.dependency.DependencyHandler;
 import com.vladsch.flexmark.util.dependency.FlatDependencyHandler;
@@ -30,6 +29,7 @@ import static org.dita.dost.util.Constants.DITA_NAMESPACE;
 
 public class DitaRenderer implements IRender {
 
+    public static final DataKey<Boolean> SHORTDESC_PARAGRAPH = new DataKey<Boolean>("SHORTDESC_PARAGRAPH", false);
     public static final DataKey<String> SOFT_BREAK = new DataKey<String>("SOFT_BREAK", "\n");
     public static final DataKey<String> HARD_BREAK = new DataKey<String>("HARD_BREAK", "<br />\n");
     public static final DataKey<String> STRONG_EMPHASIS_STYLE_HTML_OPEN = new DataKey<String>("STRONG_EMPHASIS_STYLE_HTML_OPEN", (String) null);
@@ -84,9 +84,9 @@ public class DitaRenderer implements IRender {
     private final DitaRendererOptions ditaOptions;
     private final DataHolder options;
     private final Builder builder;
-    private final Map<String, List<String>> header;
+    private final Map<String, List<String>> metadata;
 
-    DitaRenderer(Builder builder, Map<String, List<String>> header) {
+    DitaRenderer(Builder builder, Map<String, List<String>> metadata) {
 //        final ContentHandler contentHandler, final Map<String, Object> documentMetadata
 //        this.documentMetadata = documentMetadata;
 //        setContentHandler(contentHandler);
@@ -97,7 +97,7 @@ public class DitaRenderer implements IRender {
         this.builder = new Builder(builder); // take a copy to avoid after creation side effects
         this.options = new DataSet(builder);
         this.ditaOptions = new DitaRendererOptions(this.options);
-        this.header = header;
+        this.metadata = metadata;
 
         this.ditaIdGeneratorFactory = builder.ditaIdGeneratorFactory;
 
@@ -148,7 +148,6 @@ public class DitaRenderer implements IRender {
         renderer.render(node);
 //        renderer.flush(ditaOptions.maxTrailingBlankLines);
     }
-
 
     /**
      * Extension for {@link DitaRenderer}.

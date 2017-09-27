@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<topic xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/" class="- topic/topic "
+  ditaarch:DITAArchVersion="1.2"
+  domains="(topic hi-d) (topic ut-d) (topic indexing-d) (topic hazard-d) (topic abbrev-d) (topic pr-d) (topic sw-d) (topic ui-d)"
+  id="quote">
+  <title class="- topic/title ">Quote</title>
+  <body class="- topic/body ">
+    <lq class="- topic/lq ">
+      <p class="- topic/p ">This is email And so it this</p>
+      <p class="- topic/p ">Again.</p>
+    </lq>
+    <ul class="- topic/ul ">
+      <li class="- topic/li ">
+        <p class="- topic/p ">List</p>
+        <lq class="- topic/lq ">
+          <p class="- topic/p ">Quote in list</p>
+        </lq>
+      </li>
+      <li class="- topic/li ">
+        <p class="- topic/p ">Second list</p>
+      </li>
+    </ul>
+  </body>
+</topic>
