@@ -1,7 +1,5 @@
 package com.elovirta.dita.markdown;
 
-import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class MDitaReaderTest extends MarkdownReaderTest {
@@ -16,4 +14,9 @@ public class MDitaReaderTest extends MarkdownReaderTest {
         return "lwdita/";
     }
 
+    @Override
+    @Test(expected = ParseException.class)
+    public void testHeader() throws Exception {
+        run("header.md");
+    }
 }

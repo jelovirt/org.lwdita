@@ -171,13 +171,19 @@ public class MarkdownReader implements XMLReader {
 //        }
         final BasedSequence sequence = BasedSequenceImpl.of(CharBuffer.wrap(markdownContent));
 
-        final Document root = p.parse(sequence);
+        final Document root;
+        try {
+            root = p.parse(sequence);
 
-        final AbstractYamlFrontMatterVisitor v = new AbstractYamlFrontMatterVisitor();
-        v.visit(root);
-        final Map<String, List<String>> metadata = v.getData();
+            final AbstractYamlFrontMatterVisitor v = new AbstractYamlFrontMatterVisitor();
+            v.visit(root);
+            final Map<String, List<String>> metadata = v.getData();
 
-        parseAST(root, metadata);
+            parseAST(root, metadata);
+        } catch (ParseException e) {
+            throw new SAXException("Failed to parse Markdown: " + e.getMessage(), e);
+        }
+
     }
 
     @Override

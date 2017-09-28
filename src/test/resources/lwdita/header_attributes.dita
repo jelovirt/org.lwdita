@@ -4,17 +4,12 @@
   domains="(topic hi-d) (topic ut-d) (topic indexing-d) (topic hazard-d) (topic abbrev-d) (topic pr-d) (topic sw-d) (topic ui-d)"
   id="foo">
   <title class="- topic/title ">My header </title>
-  <body class="- topic/body "/>
-  <topic class="- topic/topic " ditaarch:DITAArchVersion="1.2"
-    domains="(topic hi-d) (topic ut-d) (topic indexing-d) (topic hazard-d) (topic abbrev-d) (topic pr-d) (topic sw-d) (topic ui-d)"
-    id="foo">
-    <title class="- topic/title ">My header ## </title>
-    <body class="- topic/body "/>
-  </topic>
-  <topic class="- topic/topic " ditaarch:DITAArchVersion="1.2"
-    domains="(topic hi-d) (topic ut-d) (topic indexing-d) (topic hazard-d) (topic abbrev-d) (topic pr-d) (topic sw-d) (topic ui-d)"
-    id="the-site" outputclass="main shine">
-    <title class="- topic/title ">My other header </title>
-    <body class="- topic/body "/>
-  </topic>
+  <body class="- topic/body ">
+    <section class="- topic/section " id="foo">
+      <title class="- topic/title ">My header ## </title>
+    </section>
+    <section class="- topic/section " id="the-site" outputclass="main shine">
+      <title class="- topic/title ">My other header </title>
+    </section>
+  </body>
 </topic>

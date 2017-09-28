@@ -31,6 +31,7 @@ public class DitaRenderer implements IRender {
 
     public static final DataKey<Boolean> SHORTDESC_PARAGRAPH = new DataKey<Boolean>("SHORTDESC_PARAGRAPH", false);
     public static final DataKey<Boolean> ID_FROM_YAML = new DataKey<Boolean>("ID_FROM_YAML", false);
+    public static final DataKey<Boolean> LW_DITA = new DataKey<Boolean>("LW_DITA", false);
     public static final DataKey<String> SOFT_BREAK = new DataKey<String>("SOFT_BREAK", "\n");
     public static final DataKey<String> HARD_BREAK = new DataKey<String>("HARD_BREAK", "<br />\n");
     public static final DataKey<String> STRONG_EMPHASIS_STYLE_HTML_OPEN = new DataKey<String>("STRONG_EMPHASIS_STYLE_HTML_OPEN", (String) null);
@@ -382,13 +383,8 @@ public class DitaRenderer implements IRender {
 //            if (isCompound) {
 //                contentHandler.startElement(NULL_NS_URI, ELEMENT_NAME_DITA, ELEMENT_NAME_DITA, EMPTY_ATTS);
 //            }
-                try {
-                    renderNode(node, this);
-                    ditaWriter.close();
-                } catch (final ParseException e) {
-                    //e.printStackTrace();
-                    throw new SAXException("Failed to parse Markdown: " + e.getMessage(), e);
-                }
+                renderNode(node, this);
+                ditaWriter.close();
 //            if (isCompound) {
 //                contentHandler.endElement(NULL_NS_URI, ELEMENT_NAME_DITA, ELEMENT_NAME_DITA);
 //            }

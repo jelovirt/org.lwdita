@@ -64,12 +64,8 @@
       <p class="- topic/p ">Fenced block:</p>
       <codeblock class="+ topic/pre pr-d/codeblock " id="foreach-example" outputclass="scala" xml:space="preserve">items.foreach(println)</codeblock>
     </section>
-  </body>
-  <topic class="- topic/topic " ditaarch:DITAArchVersion="1.2"
-    domains="(topic hi-d) (topic ut-d) (topic indexing-d) (topic hazard-d) (topic abbrev-d) (topic pr-d) (topic sw-d) (topic ui-d)"
-    id="tables">
-    <title class="- topic/title ">Tables</title>
-    <body class="- topic/body ">
+    <section class="- topic/section " id="tables">
+      <title class="- topic/title ">Tables</title>
       <table class="- topic/table ">
         <title class="- topic/title ">simple_table</title>
         <tgroup class="- topic/tgroup " cols="3">
@@ -142,13 +138,9 @@
           </tbody>
         </tgroup>
       </table>
-    </body>
-  </topic>
-  <topic class="- topic/topic " ditaarch:DITAArchVersion="1.2"
-    domains="(topic hi-d) (topic ut-d) (topic indexing-d) (topic hazard-d) (topic abbrev-d) (topic pr-d) (topic sw-d) (topic ui-d)"
-    id="links">
-    <title class="- topic/title ">Links</title>
-    <body class="- topic/body ">
+    </section>
+    <section class="- topic/section " id="links">
+      <title class="- topic/title ">Links</title>
       <ul class="- topic/ul ">
         <li class="- topic/li ">
           <p class="- topic/p ">
@@ -168,29 +160,25 @@
         <li class="- topic/li ">
           <p class="- topic/p ">
             <xref class="- topic/xref " format="html" href="http://www.example.com/test.html"
-              scope="external">External</xref>
+                  scope="external">External</xref>
           </p>
         </li>
       </ul>
-    </body>
-  </topic>
-  <topic class="- topic/topic " ditaarch:DITAArchVersion="1.2"
-    domains="(topic hi-d) (topic ut-d) (topic indexing-d) (topic hazard-d) (topic abbrev-d) (topic pr-d) (topic sw-d) (topic ui-d)"
-    id="keys">
-    <title class="- topic/title ">Keys</title>
-    <shortdesc class="- topic/shortdesc ">This is <xref class="- topic/xref " format="markdown"
-        href="test.md">an example</xref> reference-style link.</shortdesc>
-    <body class="- topic/body ">
+    </section>
+    <section class="- topic/section " id="keys">
+      <title class="- topic/title ">Keys</title>
+      <p class="- topic/p ">This is <xref class="- topic/xref " format="markdown"
+                                                          href="test.md">an example</xref> reference-style link.</p>
       <p class="- topic/p ">This is <xref class="- topic/xref " format="markdown" href="test.md"
-          >key-a</xref> reference-style link.</p>
+      >key-a</xref> reference-style link.</p>
       <p class="- topic/p ">This is <xref class="- topic/xref " format="markdown" href="test.md"
-          >Markdown</xref> reference-style link.</p>
+      >Markdown</xref> reference-style link.</p>
       <p class="- topic/p ">This is <xref class="- topic/xref " format="markdown" href="test.md"
-          >Markdown</xref> reference-style link.</p>
+      >Markdown</xref> reference-style link.</p>
       <p class="- topic/p ">This is <xref class="- topic/xref " keyref="key-missing">an
-          example</xref> reference-style link.</p>
+        example</xref> reference-style link.</p>
       <p class="- topic/p ">This is <xref class="- topic/xref " keyref="key-missing"/>
         reference-style link.</p>
-    </body>
-  </topic>
+    </section>
+  </body>
 </topic>

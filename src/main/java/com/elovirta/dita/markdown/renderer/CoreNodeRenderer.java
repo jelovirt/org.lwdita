@@ -77,7 +77,6 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
     private static final Attributes EMPTY_ATTS = new AttributesImpl();
 
     private static final Map<String, DitaClass> sections = new HashMap<>();
-
     static {
         sections.put(TOPIC_SECTION.localName, TOPIC_SECTION);
         sections.put(TOPIC_EXAMPLE.localName, TOPIC_EXAMPLE);
@@ -90,6 +89,7 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
 
     private final Boolean shortdescParagraph;
     private final Boolean idFromYaml;
+    private final Boolean lwDita;
 
     private TableBlock currentTableNode;
     private int currentTableColumn;
@@ -103,6 +103,7 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
     public CoreNodeRenderer(DataHolder options) {
         this.shortdescParagraph = DitaRenderer.SHORTDESC_PARAGRAPH.getFrom(options);
         this.idFromYaml = DitaRenderer.ID_FROM_YAML.getFrom(options);
+        this.lwDita = DitaRenderer.LW_DITA.getFrom(options);
 //        this.referenceRepository = options.get(Parser.REFERENCES);
 //        this.listOptions = ListOptions.getFrom(options);
 //        this.recheckUndefinedReferences = HtmlRenderer.RECHECK_UNDEFINED_REFERENCES.getFrom(options);
@@ -520,39 +521,41 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
     private void render(final Heading node, final NodeRendererContext context, final DitaWriter html) {
         if (node.getLevel() > headerLevel + 1) {
             throw new ParseException("Header level raised from " + headerLevel + " to " + node.getLevel() + " without intermediate header level");
+        } else if (lwDita && node.getLevel() > 2) {
+            throw new ParseException("LwDITA does not support level " + node.getLevel() + " header: " + node.getText());
         }
         final StringBuilder buf = new StringBuilder();
         node.getAstExtra(buf);
         final Title header = new Title(node);
-        if (header.id != null || !header.classes.isEmpty()) {
-            final Text last = findLastText(node);
-            if (last != null) {
-                final BasedSequence chars = last.getChars();
-                final int i = chars.indexOf('{');
-                final Text copy = new Text(i != -1 ? chars.subSequence(0, i) : chars);
-                last.insertAfter(copy);
-                last.unlink();
-            }
-        }
+        stripHeaderAttributes(node, header);
 
         if (inSection) {
             html.endElement(); // section or example
             inSection = false;
         }
-        final String section = containsSome(header.classes, sections.keySet());
-        if (section != null) {
+        final DitaClass cls;
+        final boolean isSection;
+        if (lwDita && node.getLevel() == 2) {
+            isSection = true;
+            cls = TOPIC_SECTION;
+        } else {
+            final String sectionClassName = containsSome(header.classes, sections.keySet());
+            if (sectionClassName != null) {
+                isSection = true;
+                cls = sections.get(sectionClassName);
+            } else {
+                isSection = false;
+                cls = null;
+            }
+        }
+        if (isSection) {
             if (node.getLevel() <= headerLevel) {
                 throw new ParseException("Level " + node.getLevel() + " section title must be higher level than parent topic title " + headerLevel);
             }
-            final DitaClass cls = sections.get(section);
-            final AttributesBuilder atts = new AttributesBuilder()
-                    .add(ATTRIBUTE_NAME_CLASS, cls.toString());
-            if (header.id != null) {
-                atts.add(ATTRIBUTE_NAME_ID, header.id);
-            } else if (node.getAnchorRefId() != null) {
-                atts.add(ATTRIBUTE_NAME_ID, node.getAnchorRefId());
-            } else {
-                atts.add(ATTRIBUTE_NAME_ID, getId(header.title));
+            final AttributesBuilder atts = new AttributesBuilder().add(ATTRIBUTE_NAME_CLASS, cls.toString());
+            final String id = getSectionId(node, header);
+            if (id != null) {
+                atts.add(ATTRIBUTE_NAME_ID, id);
             }
             final Collection<String> classes = new ArrayList<>(header.classes);
             classes.removeAll(sections.keySet());
@@ -574,7 +577,7 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
             headerLevel = node.getLevel();
 
             final AttributesBuilder atts = new AttributesBuilder(TOPIC_ATTS);
-            String id = getTopicId(node, header);
+            final String id = getTopicId(node, header);
             if (id != null) {
                 atts.add(ATTRIBUTE_NAME_ID, id);
             }
@@ -602,6 +605,32 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
         }
     }
 
+    /**
+     * Strip header attributes from the heading contents.
+     */
+    private void stripHeaderAttributes(Heading node, Title header) {
+        if (header.id != null || !header.classes.isEmpty()) {
+            final Text last = findLastText(node);
+            if (last != null) {
+                final BasedSequence chars = last.getChars();
+                final int i = chars.indexOf('{');
+                final Text copy = new Text(i != -1 ? chars.subSequence(0, i) : chars);
+                last.insertAfter(copy);
+                last.unlink();
+            }
+        }
+    }
+
+    private String getSectionId(Heading node, Title header) {
+        if (header.id != null) {
+            return header.id;
+        } else if (node.getAnchorRefId() != null) {
+            return node.getAnchorRefId();
+        } else {
+            return getId(header.title);
+        }
+    }
+
     private String getTopicId(final Heading node, final Title header) {
         if (idFromYaml && node.getLevel() == 1 && node.getPrevious() instanceof YamlFrontMatterBlock) {
             final AbstractYamlFrontMatterVisitor v = new AbstractYamlFrontMatterVisitor();
@@ -612,13 +641,7 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
                 return ids.get(0);
             }
         }
-        if (header.id != null) {
-            return header.id;
-        } else if (node.getAnchorRefId() != null) {
-            return node.getAnchorRefId();
-        } else {
-            return getId(header.title);
-        }
+        return getSectionId(node, header);
     }
 
     private Text findLastText(Node node) {
