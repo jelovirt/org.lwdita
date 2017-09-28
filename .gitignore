@@ -3,3 +3,4 @@
 build/
 src/main/resources/dita2markdown.xsl
 src/main/resources/map2markdown-cover.xsl
+out
