@@ -22,6 +22,7 @@
     <data class="- topic/data " name="bar" value="bar"/>
     <data class="- topic/data " name="bar" value="baz"/>
     <data class="- topic/data " name="foo" value="foo"/>
+    <data class="- topic/data " name="id" value="extended-profile"/>
     <data class="- topic/data " name="tags" value="nothing"/>
     <data class="- topic/data " name="tags" value="nothingness"/>
     <data class="- topic/data " name="title" value="'This is the title: it contains a colon'"/>

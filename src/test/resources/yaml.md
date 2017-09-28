@@ -1,4 +1,5 @@
 ---
+id: extended-profile
 title:  'This is the title: it contains a colon'
 author:
   - Author One

@@ -18,9 +18,18 @@ import static org.dita.dost.util.Constants.*;
 
 public class MetadataSerializerImpl implements NodeRenderer {
 
-    private static final Set<String> KNOWN = ImmutableSet.of(TOPIC_AUTHOR.localName, TOPIC_SOURCE.localName,
-            TOPIC_PUBLISHER.localName, TOPIC_PERMISSIONS.localName, TOPIC_AUDIENCE.localName, TOPIC_CATEGORY.localName,
-            TOPIC_RESOURCEID.localName, TOPIC_KEYWORD.localName);
+    private final Set<String> knownKeys;
+
+    public MetadataSerializerImpl(Boolean idFromYaml) {
+        final ImmutableSet.Builder<String> keys = ImmutableSet.<String>builder()
+                .add(TOPIC_AUTHOR.localName, TOPIC_SOURCE.localName,
+                        TOPIC_PUBLISHER.localName, TOPIC_PERMISSIONS.localName, TOPIC_AUDIENCE.localName,
+                        TOPIC_CATEGORY.localName, TOPIC_RESOURCEID.localName, TOPIC_KEYWORD.localName);
+        if (idFromYaml) {
+            keys.add(ATTRIBUTE_NAME_ID);
+        }
+        knownKeys = keys.build();
+    }
 
 
     @Override
@@ -63,7 +72,7 @@ public class MetadataSerializerImpl implements NodeRenderer {
             html.endElement();
         }
         write(header, TOPIC_RESOURCEID, "appid", html);
-        final List<String> keys = Sets.difference(header.keySet(), KNOWN).stream().sorted().collect(Collectors.toList());
+        final List<String> keys = Sets.difference(header.keySet(), knownKeys).stream().sorted().collect(Collectors.toList());
         for (String key : keys) {
             for (String val : header.get(key)) {
                 html.startElement(TOPIC_DATA.localName, new XMLUtils.AttributesBuilder()

@@ -13,13 +13,13 @@ import com.vladsch.flexmark.ext.definition.DefinitionTerm;
 import com.vladsch.flexmark.ext.gfm.strikethrough.Strikethrough;
 import com.vladsch.flexmark.ext.tables.*;
 import com.vladsch.flexmark.ext.typographic.TypographicQuotes;
+import com.vladsch.flexmark.ext.yaml.front.matter.AbstractYamlFrontMatterVisitor;
 import com.vladsch.flexmark.ext.yaml.front.matter.YamlFrontMatterBlock;
 import com.vladsch.flexmark.util.options.DataHolder;
 import com.vladsch.flexmark.util.sequence.BasedSequence;
 import org.apache.commons.io.FilenameUtils;
 import org.dita.dost.util.DitaClass;
 import org.xml.sax.Attributes;
-import org.xml.sax.ContentHandler;
 import org.xml.sax.helpers.AttributesImpl;
 
 import java.net.URI;
@@ -89,6 +89,7 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
     private final MetadataSerializerImpl metadataSerializer;
 
     private final Boolean shortdescParagraph;
+    private final Boolean idFromYaml;
 
     private TableBlock currentTableNode;
     private int currentTableColumn;
@@ -101,6 +102,7 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
 
     public CoreNodeRenderer(DataHolder options) {
         this.shortdescParagraph = DitaRenderer.SHORTDESC_PARAGRAPH.getFrom(options);
+        this.idFromYaml = DitaRenderer.ID_FROM_YAML.getFrom(options);
 //        this.referenceRepository = options.get(Parser.REFERENCES);
 //        this.listOptions = ListOptions.getFrom(options);
 //        this.recheckUndefinedReferences = HtmlRenderer.RECHECK_UNDEFINED_REFERENCES.getFrom(options);
@@ -112,7 +114,7 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
 //        myEOLs = null;
 //        myNextLine = 0;
 //        nextLineStartOffset = 0;
-        metadataSerializer = new MetadataSerializerImpl();
+        metadataSerializer = new MetadataSerializerImpl(idFromYaml);
     }
 
 //    CoreNodeRenderer(final ContentHandler contentHandler, final Map<String, Object> documentMetadata) {
@@ -572,12 +574,9 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
             headerLevel = node.getLevel();
 
             final AttributesBuilder atts = new AttributesBuilder(TOPIC_ATTS);
-            if (header.id != null) {
-                atts.add(ATTRIBUTE_NAME_ID, header.id);
-            } else if (node.getAnchorRefId() != null) {
-                atts.add(ATTRIBUTE_NAME_ID, node.getAnchorRefId());
-            } else {
-                atts.add(ATTRIBUTE_NAME_ID, getId(header.title));
+            String id = getTopicId(node, header);
+            if (id != null) {
+                atts.add(ATTRIBUTE_NAME_ID, id);
             }
             if (!header.classes.isEmpty()) {
                 atts.add("outputclass", String.join(" ", header.classes));
@@ -600,6 +599,25 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
                 }
             }
             html.startElement(TOPIC_BODY, BODY_ATTS);
+        }
+    }
+
+    private String getTopicId(final Heading node, final Title header) {
+        if (idFromYaml && node.getLevel() == 1 && node.getPrevious() instanceof YamlFrontMatterBlock) {
+            final AbstractYamlFrontMatterVisitor v = new AbstractYamlFrontMatterVisitor();
+            v.visit(node.getDocument());
+            final Map<String, List<String>> metadata = v.getData();
+            final List<String> ids = metadata.get("id");
+            if (ids != null && !ids.isEmpty()) {
+                return ids.get(0);
+            }
+        }
+        if (header.id != null) {
+            return header.id;
+        } else if (node.getAnchorRefId() != null) {
+            return node.getAnchorRefId();
+        } else {
+            return getId(header.title);
         }
     }
 

@@ -53,6 +53,7 @@ public class MDitaReader extends MarkdownReader {
                 .set(TablesExtension.DISCARD_EXTRA_COLUMNS, true)
                 .set(TablesExtension.HEADER_SEPARATOR_COLUMN_MATCH, true)
                 .set(DitaRenderer.SHORTDESC_PARAGRAPH, true)
+                .set(DitaRenderer.ID_FROM_YAML, true)
         );
 //        options.set(HtmlRenderer.SOFT_BREAK, "<br />\n");
     }

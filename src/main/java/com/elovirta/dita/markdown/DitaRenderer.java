@@ -30,6 +30,7 @@ import static org.dita.dost.util.Constants.DITA_NAMESPACE;
 public class DitaRenderer implements IRender {
 
     public static final DataKey<Boolean> SHORTDESC_PARAGRAPH = new DataKey<Boolean>("SHORTDESC_PARAGRAPH", false);
+    public static final DataKey<Boolean> ID_FROM_YAML = new DataKey<Boolean>("ID_FROM_YAML", false);
     public static final DataKey<String> SOFT_BREAK = new DataKey<String>("SOFT_BREAK", "\n");
     public static final DataKey<String> HARD_BREAK = new DataKey<String>("HARD_BREAK", "<br />\n");
     public static final DataKey<String> STRONG_EMPHASIS_STYLE_HTML_OPEN = new DataKey<String>("STRONG_EMPHASIS_STYLE_HTML_OPEN", (String) null);
