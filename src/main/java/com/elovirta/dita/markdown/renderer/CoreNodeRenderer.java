@@ -4,6 +4,7 @@
 package com.elovirta.dita.markdown.renderer;
 
 import com.elovirta.dita.markdown.*;
+import com.elovirta.dita.markdown.utils.FragmentContentHandler;
 import com.vladsch.flexmark.ast.*;
 import com.vladsch.flexmark.ext.abbreviation.Abbreviation;
 import com.vladsch.flexmark.ext.anchorlink.AnchorLink;
@@ -17,11 +18,24 @@ import com.vladsch.flexmark.ext.yaml.front.matter.AbstractYamlFrontMatterVisitor
 import com.vladsch.flexmark.ext.yaml.front.matter.YamlFrontMatterBlock;
 import com.vladsch.flexmark.util.options.DataHolder;
 import com.vladsch.flexmark.util.sequence.BasedSequence;
+import nu.validator.htmlparser.sax.HtmlParser;
 import org.apache.commons.io.FilenameUtils;
 import org.dita.dost.util.DitaClass;
 import org.xml.sax.Attributes;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 import org.xml.sax.helpers.AttributesImpl;
 
+import javax.xml.transform.Templates;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.sax.SAXResult;
+import javax.xml.transform.sax.SAXTransformerFactory;
+import javax.xml.transform.sax.TransformerHandler;
+import javax.xml.transform.stream.StreamSource;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringReader;
 import java.net.URI;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -82,7 +96,10 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
         sections.put(TOPIC_EXAMPLE.localName, TOPIC_EXAMPLE);
     }
 
-//    private final Map<String, Object> documentMetadata;
+    private final SAXTransformerFactory tf;
+    private final Templates t;
+
+    //    private final Map<String, Object> documentMetadata;
     private final Map<String, ReferenceNode> references = new HashMap<>();
     private final Map<String, String> abbreviations = new HashMap<>();
     private final MetadataSerializerImpl metadataSerializer;
@@ -116,6 +133,13 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
 //        myNextLine = 0;
 //        nextLineStartOffset = 0;
         metadataSerializer = new MetadataSerializerImpl(idFromYaml);
+
+        try (InputStream in = getClass().getResourceAsStream("/hdita2dita.xsl")) {
+            tf = (SAXTransformerFactory) TransformerFactory.newInstance();
+            t = tf.newTemplates(new StreamSource(in));
+        } catch (IOException | TransformerConfigurationException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 //    CoreNodeRenderer(final ContentHandler contentHandler, final Map<String, Object> documentMetadata) {
@@ -684,7 +708,22 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
 
     private void render(final HtmlBlock node, final NodeRendererContext context, final DitaWriter html) {
         final String text = node.getChars().toString();
-        html.characters(text);
+        final FragmentContentHandler fragmentFilter = new FragmentContentHandler();
+        fragmentFilter.setContentHandler(html.contentHandler);
+        final TransformerHandler h;
+        try {
+            h = tf.newTransformerHandler(t);
+        } catch (final TransformerConfigurationException e) {
+            throw new RuntimeException(e);
+        }
+        h.setResult(new SAXResult(fragmentFilter));
+        final HtmlParser parser = new HtmlParser();
+        parser.setContentHandler(h);
+        try {
+            parser.parse(new InputSource(new StringReader(text)));
+        } catch (IOException|SAXException e) {
+            throw new ParseException("Failed to parse HTML: " + e.getMessage(), e);
+        }
     }
 
     private void render(final HtmlInline node, final NodeRendererContext context, final DitaWriter html) {

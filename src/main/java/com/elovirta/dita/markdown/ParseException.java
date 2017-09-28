@@ -18,7 +18,7 @@ public class ParseException extends RuntimeException {
         super(cause);
     }
 
-    ParseException(String msg, ParseException cause) {
+    public ParseException(String msg, Throwable cause) {
         super(msg, cause);
     }
 }
