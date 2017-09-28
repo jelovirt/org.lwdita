@@ -29,6 +29,7 @@ task dist(type: Zip) {
         include { details -> details.file.name.contains('flexmark') }
         exclude { details -> details.file.name.contains('flexmark-pdf') }
         include { details -> details.file.name.contains('autolink') }
+        include { details -> details.file.name.contains('htmlparser') }
         into "lib"
     }
     from("src/main") {
