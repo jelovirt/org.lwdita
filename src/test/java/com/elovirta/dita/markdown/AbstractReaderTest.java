@@ -9,6 +9,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
+import org.xml.sax.XMLReader;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -27,7 +28,7 @@ public abstract class AbstractReaderTest {
 
     private final DocumentBuilder db;
 
-    abstract MarkdownReader getReader();
+    public abstract XMLReader getReader();
 
     String getPrefix() {
         return "";
@@ -43,8 +44,8 @@ public abstract class AbstractReaderTest {
         }
     }
 
-    void run(final String input) throws Exception {
-        run(input, getPrefix() + input.replaceAll("\\.md$", ".dita"));
+    public void run(final String input) throws Exception {
+        run(input, getPrefix() + input.replaceAll("\\.(md|html)$", ".dita"));
     }
 
     void run(final String input, final String expFile) throws Exception {
@@ -52,7 +53,7 @@ public abstract class AbstractReaderTest {
         try (final InputStream in = getClass().getResourceAsStream("/" + input)) {
             act = db.newDocument();
             final Transformer t = TransformerFactory.newInstance().newTransformer();
-            final MarkdownReader r = getReader();
+            final XMLReader r = getReader();
             final InputSource i = new InputSource(in);
             t.transform(new SAXSource(r, i), new DOMResult(act));
         }

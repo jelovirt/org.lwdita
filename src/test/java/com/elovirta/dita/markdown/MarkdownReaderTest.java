@@ -3,11 +3,12 @@ package com.elovirta.dita.markdown;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.xml.sax.XMLReader;
 
 public class MarkdownReaderTest extends AbstractReaderTest {
 
     @Override
-    MarkdownReader getReader() {
+    public XMLReader getReader() {
         return new MarkdownReader();
     }
 

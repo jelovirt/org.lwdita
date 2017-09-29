@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?><task xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/" class="- topic/topic task/task " ditaarch:DITAArchVersion="1.3" domains="(topic concept) (topic abbrev-d) a(props deliveryTarget) (topic equation-d) (topic hazard-d) (topic hi-d) (topic indexing-d) (topic markup-d) (topic mathml-d) (topic pr-d) (topic relmgmt-d) (topic sw-d) (topic svg-d) (topic ui-d) (topic ut-d) (topic markup-d xml-d)"><title class="- topic/title ">How to do something</title><shortdesc class="- topic/shortdesc ">Introduction to this specific task</shortdesc><body class="- topic/body "><section class="- topic/section task/context/task/context ">
+  <p class="- topic/p ">Use only when ready</p>
+</section><section class="- topic/section task/steps-informal/task/steps-informal ">
+  <ol class="- topic/ol ">
+    <li class="- topic/li "><p class="- topic/p ">Plan something</p></li>
+    <li class="- topic/li "><p class="- topic/p ">Do something</p></li>
+    <li class="- topic/li "><p class="- topic/p ">Evaluate something</p></li>
+  </ol>
+</section><section class="- topic/example ">
+  <p class="- topic/p ">Like this</p>
+</section></body></task>

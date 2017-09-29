@@ -4,7 +4,8 @@
 package com.elovirta.dita.markdown.renderer;
 
 import com.elovirta.dita.markdown.*;
-import com.elovirta.dita.markdown.utils.FragmentContentHandler;
+import com.elovirta.dita.utils.ClasspathURIResolver;
+import com.elovirta.dita.utils.FragmentContentHandler;
 import com.vladsch.flexmark.ast.*;
 import com.vladsch.flexmark.ext.abbreviation.Abbreviation;
 import com.vladsch.flexmark.ext.anchorlink.AnchorLink;
@@ -26,9 +27,7 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.AttributesImpl;
 
-import javax.xml.transform.Templates;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.*;
 import javax.xml.transform.sax.SAXResult;
 import javax.xml.transform.sax.SAXTransformerFactory;
 import javax.xml.transform.sax.TransformerHandler;
@@ -134,8 +133,9 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
 //        nextLineStartOffset = 0;
         metadataSerializer = new MetadataSerializerImpl(idFromYaml);
 
-        try (InputStream in = getClass().getResourceAsStream("/hdita2dita.xsl")) {
+        try (InputStream in = getClass().getResourceAsStream("/hdita2dita-markdown.xsl")) {
             tf = (SAXTransformerFactory) TransformerFactory.newInstance();
+            tf.setURIResolver(new ClasspathURIResolver());
             t = tf.newTemplates(new StreamSource(in));
         } catch (IOException | TransformerConfigurationException e) {
             throw new RuntimeException(e);

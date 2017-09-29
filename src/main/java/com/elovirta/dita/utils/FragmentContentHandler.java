@@ -1,7 +1,6 @@
-package com.elovirta.dita.markdown.utils;
+package com.elovirta.dita.utils;
 
 import org.xml.sax.SAXException;
-import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLFilterImpl;
 
 public class FragmentContentHandler extends XMLFilterImpl {
