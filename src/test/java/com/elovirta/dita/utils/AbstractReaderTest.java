@@ -1,14 +1,13 @@
-package com.elovirta.dita.markdown;
+package com.elovirta.dita.utils;
 
 import junit.framework.AssertionFailedError;
+import org.custommonkey.xmlunit.XMLAssert;
 import org.custommonkey.xmlunit.XMLUnit;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
+import org.xml.sax.XMLReader;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -21,15 +20,13 @@ import javax.xml.transform.sax.SAXSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.InputStream;
 
-import static org.custommonkey.xmlunit.XMLAssert.assertXMLEqual;
-
 public abstract class AbstractReaderTest {
 
     private final DocumentBuilder db;
 
-    abstract MarkdownReader getReader();
+    public abstract XMLReader getReader();
 
-    String getPrefix() {
+    public String getPrefix() {
         return "";
     }
 
@@ -43,8 +40,8 @@ public abstract class AbstractReaderTest {
         }
     }
 
-    void run(final String input) throws Exception {
-        run(input, getPrefix() + input.replaceAll("\\.md$", ".dita"));
+    public void run(final String input) throws Exception {
+        run(input, getPrefix() + input.replaceAll("\\.(md|html)$", ".dita"));
     }
 
     void run(final String input, final String expFile) throws Exception {
@@ -52,7 +49,7 @@ public abstract class AbstractReaderTest {
         try (final InputStream in = getClass().getResourceAsStream("/" + input)) {
             act = db.newDocument();
             final Transformer t = TransformerFactory.newInstance().newTransformer();
-            final MarkdownReader r = getReader();
+            final XMLReader r = getReader();
             final InputSource i = new InputSource(in);
             t.transform(new SAXSource(r, i), new DOMResult(act));
         }
@@ -61,8 +58,10 @@ public abstract class AbstractReaderTest {
         try (final InputStream in = getClass().getResourceAsStream("/" + expFile)) {
             exp = db.parse(in);
         }
+
+        resetXMLUnit();
         try {
-            assertXMLEqual(clean(exp), clean(act));
+            XMLAssert.assertXMLEqual(clean(exp), clean(act));
         } catch (AssertionFailedError e) {
             TransformerFactory.newInstance().newTransformer().transform(new DOMSource(act), new StreamResult(System.out));
             throw e;

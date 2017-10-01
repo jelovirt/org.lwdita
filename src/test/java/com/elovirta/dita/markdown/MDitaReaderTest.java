@@ -5,12 +5,12 @@ import org.junit.Test;
 public class MDitaReaderTest extends MarkdownReaderTest {
 
     @Override
-    MarkdownReader getReader() {
+    public MarkdownReader getReader() {
         return new MDitaReader();
     }
 
     @Override
-    String getPrefix() {
+    public String getPrefix() {
         return "lwdita/";
     }
 

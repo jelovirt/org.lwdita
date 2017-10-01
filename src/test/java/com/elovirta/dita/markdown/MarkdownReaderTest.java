@@ -1,19 +1,15 @@
 package com.elovirta.dita.markdown;
 
-import org.junit.Before;
+import com.elovirta.dita.utils.AbstractReaderTest;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.xml.sax.XMLReader;
 
 public class MarkdownReaderTest extends AbstractReaderTest {
 
     @Override
-    MarkdownReader getReader() {
+    public XMLReader getReader() {
         return new MarkdownReader();
-    }
-
-    @Before
-    public void setUp() {
-        resetXMLUnit();
     }
 
     @Test

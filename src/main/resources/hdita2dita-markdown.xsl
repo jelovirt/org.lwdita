@@ -11,21 +11,7 @@
   <xsl:output indent="yes"></xsl:output>
 
   <xsl:template match="/">
-    <xsl:apply-templates select="html"/>
-  </xsl:template>
-
-  <xsl:template match="html">
-    <xsl:choose>
-      <xsl:when test="count(body/article) gt 1">
-        <dita>
-          <xsl:attribute name="ditaarch:DITAArchVersion">1.3</xsl:attribute>
-          <xsl:apply-templates select="@* | node()"/>
-        </dita>        
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:apply-templates select="body"/>        
-      </xsl:otherwise>
-    </xsl:choose>
+    <xsl:apply-templates select="html/body"/>
   </xsl:template>
 
 </xsl:stylesheet>
