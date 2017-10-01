@@ -1,37 +1,39 @@
-Markdown DITA for DITA-OT
-=========================
+Lightweight DITA for DITA-OT
+============================
 
-DITA-OT Markdown plug-in contains
+DITA-OT LwDITA plug-in contains
 
--   a custom parser for Markdown to allow using
-    Markdown DITA as a source document format,
+-   a custom parser for Markdown and HTML to allow using
+    MDITA and HDITA as a source document format,
 -   and a transtype to generate Markdown from DITA source.
 
 The Markdown DITA files need to use a subset of Markdown constructs for
 compatibility with DITA content models.
 
+
 Usage
 -----
 
-### Using Markdown files as input
+### Using LwDITA files as input
 
-Markdown DITA topics can only be used by linking to them in map files.
+Markdown DITA or HTML DITA topics can only be used by linking to them in map files.
 
 ~~~~ {.xml}
 <map>
-  <topicref href="test.md" format="markdown"/>
+  <topicref href="test.md" format="mdita"/>
+  <topicref href="test.html" format="hdita"/>
 </map>
 ~~~~
 
-The `format` attribute value must be set to `markdown` in order to
-recognize files as Markdown DITA; the file extension is not used to
+The `format` attribute value must be set to `mdita` or `hdita` in order to
+recognize files as Markdown DITA or HTML DITA, respectively; the file extension is not used to
 recognize format.
 
 See [Syntax reference](https://github.com/jelovirt/dita-ot-markdown/wiki/Syntax-reference) for XML and Markdown DITA correspondence.
 
 ### Generating Markdown output
 
-The DITA-OT Markdown plug-in extends the DITA Open Toolkit with additional output formats _(transformation types)_ that can be used to publish DITA content as Markdown.
+The DITA-OT LwDITA plug-in extends the DITA Open Toolkit with additional output formats _(transformation types)_ that can be used to publish DITA content as Markdown.
 
 * To publish Markdown DITA files, use the `markdown` transtype.
 
@@ -42,7 +44,7 @@ The DITA-OT Markdown plug-in extends the DITA Open Toolkit with additional outpu
 Requirements
 ------------
 
-DITA-OT 2.1 is required. Earlier versions of DITA-OT do not have the
+DITA-OT 2.2 is required. Earlier versions of DITA-OT do not have the
 required extension points.
 
 Install
@@ -81,4 +83,4 @@ Support this project and others by [@jelovirt](https://github.com/jelovirt) via 
 License
 -------
 
-DITA-OT Markdown is licensed for use under the [Apache License 2.0](http://www.apache.org/licenses/LICENSE-2.0).
+DITA-OT LwDITA is licensed for use under the [Apache License 2.0](http://www.apache.org/licenses/LICENSE-2.0).
