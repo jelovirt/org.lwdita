@@ -34,8 +34,8 @@ public class AstToMarkdownTest {
 
     @Test
     public void testAst() throws Exception {
-        final String act = run("ast.xml");
-        final String exp = read("ast.md");
+        final String act = run("ast/ast.xml");
+        final String exp = read("markdown/ast.md");
         assertEquals(exp, act);
     }
 

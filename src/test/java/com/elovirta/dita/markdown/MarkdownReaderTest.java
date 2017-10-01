@@ -12,6 +12,16 @@ public class MarkdownReaderTest extends AbstractReaderTest {
         return new MarkdownReader();
     }
 
+    @Override
+    public String getExp() {
+        return "dita/";
+    }
+
+    @Override
+    public String getSrc() {
+        return "markdown/";
+    }
+
     @Test
     public void testComplex() throws Exception {
         run("test.md");

@@ -10,7 +10,7 @@ public class MDitaReaderTest extends MarkdownReaderTest {
     }
 
     @Override
-    public String getPrefix() {
+    public String getExp() {
         return "lwdita/";
     }
 

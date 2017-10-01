@@ -26,7 +26,11 @@ public abstract class AbstractReaderTest {
 
     public abstract XMLReader getReader();
 
-    public String getPrefix() {
+    public String getExp() {
+        return "";
+    }
+
+    public String getSrc() {
         return "";
     }
 
@@ -41,7 +45,7 @@ public abstract class AbstractReaderTest {
     }
 
     public void run(final String input) throws Exception {
-        run(input, getPrefix() + input.replaceAll("\\.(md|html)$", ".dita"));
+        run(getSrc() + input, getExp() + input.replaceAll("\\.(md|html)$", ".dita"));
     }
 
     void run(final String input, final String expFile) throws Exception {

@@ -11,7 +11,7 @@ public class HDitaReaderTest extends HtmlReaderTest {
     }
 
     @Override
-    public String getPrefix() {
+    public String getExp() {
         return "lwdita/";
     }
 

@@ -12,6 +12,17 @@ public class HtmlReaderTest extends AbstractReaderTest {
         return new HtmlReader();
     }
 
+    @Override
+    public String getSrc() {
+        return "html/";
+    }
+
+    @Override
+    public String getExp() {
+        return "dita/";
+    }
+
+
     @Ignore("non-LwDITA assumes nested topics which are not supported")
     @Test
     public void test() throws Exception {
