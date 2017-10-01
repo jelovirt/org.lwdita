@@ -40,7 +40,7 @@ task dist(type: Zip) {
         )
     }
     from("src/main") {
-        include "build_template.xml"
+        include "build-*_template.xml"
         include "conductor.xml"
         // Template generated files
         exclude "build.xml"

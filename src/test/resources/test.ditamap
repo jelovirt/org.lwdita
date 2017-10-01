@@ -21,4 +21,5 @@
   <topicref class="- map/topicref " format="markdown" href="nested.md"></topicref>
   <topicref class="- map/topicref " format="markdown" href="yaml.md"></topicref>
   <topicref class="- map/topicref " format="markdown" href="html.md"></topicref>
+  <topicref class="- map/topicref " format="hdita" href="test.html"></topicref>
 </map>
