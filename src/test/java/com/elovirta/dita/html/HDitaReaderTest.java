@@ -1,18 +1,20 @@
 package com.elovirta.dita.html;
 
-import com.elovirta.dita.utils.AbstractReaderTest;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.xml.sax.XMLReader;
 
-public class HtmlReaderTest extends AbstractReaderTest {
+public class HDitaReaderTest extends HtmlReaderTest {
 
     @Override
     public XMLReader getReader() {
-        return new HtmlReader();
+        return new HDitaReader();
     }
 
-    @Ignore("non-LwDITA assumes nested topics which are not supported")
+    @Override
+    public String getPrefix() {
+        return "lwdita/";
+    }
+
     @Test
     public void test() throws Exception {
         run("test.html");

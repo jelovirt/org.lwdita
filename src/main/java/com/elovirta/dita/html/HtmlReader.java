@@ -24,6 +24,10 @@ public class HtmlReader implements XMLReader {
     private final SAXResult result;
 
     public HtmlReader() {
+        this("html2dita.xsl");
+    }
+
+    public HtmlReader(final String stylesheet) {
         parser = new HtmlParser();
         parser.setDoctypeExpectation(DoctypeExpectation.AUTO);
         parser.setHeuristics(Heuristics.ICU);
@@ -31,8 +35,8 @@ public class HtmlReader implements XMLReader {
             result = new SAXResult();
             final TransformerFactory transformerFactory = TransformerFactory.newInstance();
             transformerFactory.setURIResolver(new ClasspathURIResolver());
-            final StreamSource src = new StreamSource(getClass().getResourceAsStream("/hdita2dita.xsl"),
-                    "classpath:///hdita2dita.xsl");
+            final StreamSource src = new StreamSource(getClass().getResourceAsStream("/" + stylesheet),
+                    "classpath:///" + stylesheet);
             transformerHandler = ((SAXTransformerFactory) transformerFactory).newTransformerHandler(src);
             transformerHandler.setResult(result);
             parser.setContentHandler(transformerHandler);

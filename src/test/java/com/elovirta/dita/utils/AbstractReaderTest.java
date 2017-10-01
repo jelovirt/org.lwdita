@@ -1,10 +1,8 @@
-package com.elovirta.dita.markdown;
+package com.elovirta.dita.utils;
 
 import junit.framework.AssertionFailedError;
+import org.custommonkey.xmlunit.XMLAssert;
 import org.custommonkey.xmlunit.XMLUnit;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -22,15 +20,13 @@ import javax.xml.transform.sax.SAXSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.InputStream;
 
-import static org.custommonkey.xmlunit.XMLAssert.assertXMLEqual;
-
 public abstract class AbstractReaderTest {
 
     private final DocumentBuilder db;
 
     public abstract XMLReader getReader();
 
-    String getPrefix() {
+    public String getPrefix() {
         return "";
     }
 
@@ -62,8 +58,10 @@ public abstract class AbstractReaderTest {
         try (final InputStream in = getClass().getResourceAsStream("/" + expFile)) {
             exp = db.parse(in);
         }
+
+        resetXMLUnit();
         try {
-            assertXMLEqual(clean(exp), clean(act));
+            XMLAssert.assertXMLEqual(clean(exp), clean(act));
         } catch (AssertionFailedError e) {
             TransformerFactory.newInstance().newTransformer().transform(new DOMSource(act), new StreamResult(System.out));
             throw e;

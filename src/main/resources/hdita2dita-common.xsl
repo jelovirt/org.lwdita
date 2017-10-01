@@ -2,11 +2,9 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:xs="http://www.w3.org/2001/XMLSchema"
                 xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/"
-                xmlns:html="http://www.w3.org/1999/xhtml"
-                exclude-result-prefixes="xs html"
+                exclude-result-prefixes="xs"
                 xpath-default-namespace="http://www.w3.org/1999/xhtml"
                 version="2.0">
-
 
   <!-- Topic -->
 
@@ -27,17 +25,18 @@
   <xsl:template match="head"/>
 
   <xsl:template match="body">
-    <xsl:apply-templates select="node()"/>
+    <xsl:apply-templates select="*"/>
   </xsl:template>
 
   <xsl:template match="article">
-    <xsl:variable name="name" select="if (@data-hd-class) then @data-hd-class else 'topic'"/>
+    <xsl:variable name="name" select="(:if (@data-hd-class) then @data-hd-class else :)'topic'"/>
     <xsl:element name="{$name}">
       <xsl:apply-templates select="." mode="class"/>
       <xsl:apply-templates select="." mode="topic"/>
       <xsl:attribute name="ditaarch:DITAArchVersion">1.3</xsl:attribute>
       <xsl:apply-templates select="ancestor::*/@xml:lang"/>
       <xsl:apply-templates select="@*"/>
+      <xsl:apply-templates select="h1/@id"/>
       <xsl:apply-templates select="h1"/>
       <xsl:variable name="contents" select="* except h1"/>
       <xsl:variable name="shortdesc" select="$contents[1]/self::p"/>
@@ -55,12 +54,15 @@
   <xsl:template match="article" mode="class">
     <xsl:attribute name="class">
       <xsl:text>- topic/topic </xsl:text>
+      <!--
       <xsl:if test="@data-hd-class">
         <xsl:value-of select="concat(@data-hd-class, '/', @data-hd-class)"/>
       </xsl:if>
+      -->
       <xsl:text> </xsl:text>
     </xsl:attribute>
   </xsl:template>
+  <!--
   <xsl:template match="article[@data-hd-class = 'concept']" mode="class">
     <xsl:attribute name="class">- topic/topic concept/concept </xsl:attribute>
   </xsl:template>
@@ -70,10 +72,12 @@
   <xsl:template match="article[@data-hd-class = 'reference']" mode="class">
     <xsl:attribute name="class">- topic/topic reference/reference </xsl:attribute>
   </xsl:template>
+  -->
 
   <xsl:template match="article" mode="topic">
     <xsl:attribute name="domains">(topic abbrev-d) a(props deliveryTarget) (topic equation-d) (topic hazard-d) (topic hi-d) (topic indexing-d) (topic markup-d) (topic mathml-d) (topic pr-d) (topic relmgmt-d) (topic sw-d) (topic svg-d) (topic ui-d) (topic ut-d) (topic markup-d xml-d)</xsl:attribute>
   </xsl:template>
+  <!--
   <xsl:template match="article[@data-hd-class = 'concept']" mode="topic">
     <xsl:attribute name="domains">(topic abbrev-d) a(props deliveryTarget) (topic equation-d) (topic hazard-d) (topic hi-d) (topic indexing-d) (topic markup-d) (topic mathml-d) (topic pr-d) (topic relmgmt-d) (topic sw-d) (topic svg-d) (topic ui-d) (topic ut-d) (topic markup-d xml-d)</xsl:attribute>
   </xsl:template>
@@ -83,9 +87,21 @@
   <xsl:template match="article[@data-hd-class = 'reference']" mode="topic">
     <xsl:attribute name="domains">(topic reference) (topic abbrev-d) a(props deliveryTarget) (topic equation-d) (topic hazard-d) (topic hi-d) (topic indexing-d) (topic markup-d) (topic mathml-d) (topic pr-d) (topic relmgmt-d) (topic sw-d) (topic svg-d) (topic ui-d) (topic ut-d) (topic markup-d xml-d)</xsl:attribute>
   </xsl:template>
+  -->
+  
+  <xsl:template match="section">
+    <xsl:variable name="name" select="(:if (@data-hd-class = 'topic/example') then 'example' else :)'section'"/>
+    <xsl:element name="{$name}">
+      <xsl:apply-templates select="." mode="class"/>
+      <xsl:apply-templates select="@*"/>
+      <xsl:apply-templates select="h2/@id"/>
+      <xsl:apply-templates select="*"/>
+    </xsl:element>
+  </xsl:template>
 
   <xsl:template match="section" mode="class">
     <xsl:attribute name="class">
+      <!--
       <xsl:choose>
         <xsl:when test="@data-hd-class = 'topic/example'">
           <xsl:text>- topic/example </xsl:text>
@@ -96,16 +112,19 @@
           <xsl:text> </xsl:text>
         </xsl:when>
         <xsl:otherwise>
+        -->
           <xsl:text>- topic/section </xsl:text>
+      <!--
         </xsl:otherwise>
       </xsl:choose>
+      -->
     </xsl:attribute>
   </xsl:template>
 
   <xsl:template match="h1 | h2">
     <title>
       <xsl:apply-templates select="." mode="class"/>
-      <xsl:apply-templates select="@* | node()"/>
+      <xsl:apply-templates select="@* except @id | node()"/>
     </title>
   </xsl:template>
   <xsl:template match="h1 | h2" mode="class">
@@ -140,6 +159,28 @@
     <xsl:attribute name="class">- topic/fig </xsl:attribute>
   </xsl:template>
 
+  <xsl:template match="pre">  
+    <pre>
+      <xsl:apply-templates select="." mode="class"/>
+      <xsl:attribute name="xml:space">preserve</xsl:attribute>
+      <xsl:apply-templates select="@* | node()"/>
+    </pre>
+  </xsl:template>
+  <xsl:template match="pre" mode="class">
+    <xsl:attribute name="class">- topic/pre </xsl:attribute>
+  </xsl:template>
+  
+  <xsl:template match="pre[code]">
+    <codeblock>
+      <xsl:apply-templates select="." mode="class"/>
+      <xsl:attribute name="xml:space">preserve</xsl:attribute>
+      <xsl:apply-templates select="@* | code/node()"/>
+    </codeblock>
+  </xsl:template>
+  <xsl:template match="pre[code]" mode="class">
+    <xsl:attribute name="class">+ topic/pre pr-d/codeblock </xsl:attribute>
+  </xsl:template>
+
   <xsl:template match="img">
     <image>
       <xsl:apply-templates select="." mode="class"/>
@@ -159,6 +200,9 @@
       <xsl:apply-templates select="." mode="class"/>
       <xsl:apply-templates select="@* | caption"/>
       <tgroup class="- topic/tgroup "  cols="{$cols}">
+        <xsl:for-each select="1 to $cols">
+          <colspec class="- topic/colspec " colname="col{.}"/>
+        </xsl:for-each>
         <xsl:choose>
           <xsl:when test="tr[1][th and empty(td)]">
             <thead class="- topic/thead ">
@@ -211,9 +255,11 @@
     <xsl:attribute name="morerows" select="xs:integer(.) - 1"/>
   </xsl:template>
 
+  <!--
   <xsl:template match="*[@data-hd-class = 'topic/example']" mode="class">
     <xsl:attribute name="class">- topic/example </xsl:attribute>
   </xsl:template>
+  -->
 
   <xsl:template match="b | strong" mode="class">
     <xsl:attribute name="class">+ topic/ph hi-d/b </xsl:attribute>
@@ -233,6 +279,18 @@
   <xsl:template match="span" mode="class">
     <xsl:attribute name="class">- topic/ph </xsl:attribute>
   </xsl:template>
+  <xsl:template match="span[@data-keyref]">
+    <xref>
+      <xsl:apply-templates select="." mode="class"/>
+      <xsl:apply-templates select="@* | node()"/>
+    </xref>
+  </xsl:template>
+  <xsl:template match="span[@data-keyref]" mode="class">
+    <xsl:attribute name="class">- topic/xref </xsl:attribute>
+  </xsl:template>
+  <xsl:template match="@data-keyref">
+    <xsl:attribute name="keyref" select="."/>
+  </xsl:template>
   <xsl:template match="strong">
     <b>
       <xsl:apply-templates select="." mode="class"/>
@@ -248,14 +306,46 @@
   <xsl:template match="a">
     <xref>
       <xsl:apply-templates select="." mode="class"/>
+      <xsl:choose>
+        <xsl:when test="@type">
+          <xsl:attribute name="format" select="@type"/>
+        </xsl:when>
+        <xsl:when test="ends-with(lower-case(@href), '.md')">
+          <xsl:attribute name="format">markdown</xsl:attribute>
+        </xsl:when>
+        <xsl:when test="ends-with(lower-case(@href), '.dita') or ends-with(lower-case(@href), '.xml')"/>
+        <xsl:otherwise>
+          <xsl:attribute name="format" select="replace(lower-case(@href), '^.+\.(.+?)$', '$1')"/>
+        </xsl:otherwise>
+      </xsl:choose>
+      <xsl:if test="matches(@href, '^https?://', 'i')">
+        <xsl:attribute name="scope">external</xsl:attribute>
+      </xsl:if>
       <xsl:apply-templates select="@* | node()"/>
     </xref>
   </xsl:template>
   <xsl:template match="a" mode="class">
     <xsl:attribute name="class">- topic/xref </xsl:attribute>
   </xsl:template>
-  <xsl:template match="a/@type">
-    <xsl:attribute name="format" select="."/>
+  <xsl:template match="a/@target"/>
+  <xsl:template match="del">
+    <ph>
+      <xsl:apply-templates select="." mode="class"/>
+      <xsl:attribute name="status">deleted</xsl:attribute>
+      <xsl:apply-templates select="@* | node()"/>
+    </ph>
+  </xsl:template>
+  <xsl:template match="del" mode="class">
+    <xsl:attribute name="class">- topic/ph </xsl:attribute>
+  </xsl:template>
+  <xsl:template match="code">
+    <codeph>
+      <xsl:apply-templates select="." mode="class"/>
+      <xsl:apply-templates select="@* | node()"/>
+    </codeph>
+  </xsl:template>
+  <xsl:template match="code" mode="class">
+    <xsl:attribute name="class">+ topic/ph pr-d/codeph </xsl:attribute>
   </xsl:template>
 
   <!-- HDITA -->
@@ -330,6 +420,7 @@
     <xsl:attribute name="outputclass" select="."/>
   </xsl:template>
 
+  <!--
   <xsl:template match="*[@data-hd-class]" mode="class" priority="-5">
     <xsl:attribute name="class">
       <xsl:text>- </xsl:text>
@@ -337,6 +428,7 @@
       <xsl:text> </xsl:text>
     </xsl:attribute>
   </xsl:template>
+  -->
 
   <xsl:template match="*" mode="class" priority="-10">
     <xsl:attribute name="class">
