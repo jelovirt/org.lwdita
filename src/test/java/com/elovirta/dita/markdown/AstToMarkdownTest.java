@@ -1,35 +1,28 @@
 package com.elovirta.dita.markdown;
 
+import com.elovirta.dita.utils.ClasspathURIResolver;
 import org.junit.Test;
 
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.URIResolver;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 import java.io.*;
-import java.net.URI;
 
 import static org.junit.Assert.assertEquals;
 
 public class AstToMarkdownTest {
 
     private String run(final String input) throws Exception {
-        InputStream ri = null;
-        try (InputStream style = getClass().getResourceAsStream("/ast.xsl")) {
-            final TransformerFactory transformerFactory = TransformerFactory.newInstance();
-            URIResolver classpathUriResolver = new ClasspathUriResolver(transformerFactory.getURIResolver());
-            transformerFactory.setURIResolver(classpathUriResolver);
-            final Transformer t = transformerFactory.newTransformer(new StreamSource(style, "/ast.xsl"));
-            ri = getClass().getResourceAsStream("/" + input);
-            final StringWriter o = new StringWriter();
+        final StringWriter o = new StringWriter();
+        try (InputStream style = getClass().getResourceAsStream("/ast.xsl");
+             InputStream ri = getClass().getResourceAsStream("/" + input);) {
+            final TransformerFactory tf = TransformerFactory.newInstance();
+            tf.setURIResolver(new ClasspathURIResolver(tf.getURIResolver()));
+            final Transformer t = tf.newTransformer(new StreamSource(style, "classpath:///ast.xsl"));
             t.transform(new StreamSource(ri), new StreamResult(o));
-            return o.toString();
-        } finally {
-            if (ri != null) {
-                ri.close();
-            }
         }
+        return o.toString();
     }
 
     @Test

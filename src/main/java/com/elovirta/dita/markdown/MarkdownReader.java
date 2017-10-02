@@ -1,5 +1,6 @@
 package com.elovirta.dita.markdown;
 
+import com.elovirta.dita.utils.ClasspathURIResolver;
 import com.vladsch.flexmark.ast.Document;
 import com.vladsch.flexmark.ext.abbreviation.AbbreviationExtension;
 import com.vladsch.flexmark.ext.anchorlink.AnchorLinkExtension;
@@ -93,11 +94,11 @@ public class MarkdownReader implements XMLReader {
     public MarkdownReader(final MutableDataSet options) {
         this.options = options;
         p = Parser.builder(options).build();
-        try {
-            final URI style = getClass().getResource("/specialize.xsl").toURI();
+        try (InputStream style = getClass().getResourceAsStream("/specialize.xsl")) {
             tf = (SAXTransformerFactory) TransformerFactory.newInstance();
-            t = tf.newTemplates(new StreamSource(style.toString()));
-        } catch (final URISyntaxException | TransformerConfigurationException e) {
+            tf.setURIResolver(new ClasspathURIResolver(tf.getURIResolver()));
+            t = tf.newTemplates(new StreamSource(style, "classpath:///specialize.xsl"));
+        } catch (final IOException | TransformerConfigurationException e) {
             throw new RuntimeException(e);
         }
     }

@@ -135,8 +135,8 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
 
         try (InputStream in = getClass().getResourceAsStream("/hdita2dita-markdown.xsl")) {
             tf = (SAXTransformerFactory) TransformerFactory.newInstance();
-            tf.setURIResolver(new ClasspathURIResolver());
-            t = tf.newTemplates(new StreamSource(in));
+            tf.setURIResolver(new ClasspathURIResolver(tf.getURIResolver()));
+            t = tf.newTemplates(new StreamSource(in, "classpath:///hdita2dita-markdown.xsl"));
         } catch (IOException | TransformerConfigurationException e) {
             throw new RuntimeException(e);
         }

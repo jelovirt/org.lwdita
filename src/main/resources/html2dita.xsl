@@ -28,4 +28,27 @@
     </xsl:choose>
   </xsl:template>
 
+  <xsl:template match="article">
+    <xsl:variable name="name" select="'topic'"/>
+    <xsl:element name="{$name}">
+      <xsl:apply-templates select="." mode="class"/>
+      <xsl:apply-templates select="." mode="topic"/>
+      <xsl:attribute name="ditaarch:DITAArchVersion">1.3</xsl:attribute>
+      <xsl:apply-templates select="ancestor::*/@xml:lang"/>
+      <xsl:apply-templates select="@*"/>
+      <xsl:choose>
+        <xsl:when test="@id">
+          <xsl:apply-templates select="@id"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:attribute name="id" select="translate(normalize-space(lower-case(h1)), ' ', '-')"/>
+        </xsl:otherwise>
+      </xsl:choose>
+      <xsl:apply-templates select="h1"/>
+      <body class="- topic/body ">
+        <xsl:apply-templates select="* except h1"/>
+      </body>
+    </xsl:element>
+  </xsl:template>
+
 </xsl:stylesheet>

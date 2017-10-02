@@ -6,12 +6,28 @@ import javax.xml.transform.URIResolver;
 import javax.xml.transform.stream.StreamSource;
 import java.io.InputStream;
 import java.net.URI;
+import java.net.URISyntaxException;
 
 public class ClasspathURIResolver implements URIResolver {
+
+    private final URIResolver uriResolver;
+
+    public ClasspathURIResolver(URIResolver uriResolver) {
+        this.uriResolver = uriResolver;
+    }
+
     @Override
     public Source resolve(String href, String base) throws TransformerException {
-        final URI file = URI.create(href);
-        final InputStream inputStream = getClass().getResourceAsStream(file.getPath());
-        return new StreamSource(inputStream, href);
+        try {
+            final URI res = new URI(base).resolve(href);
+            final InputStream in = this.getClass().getClassLoader().getResourceAsStream(res.getPath().substring(1));
+            if (in != null) {
+                return new StreamSource(in, res.toString());
+            } else {
+                return uriResolver.resolve(href, base);
+            }
+        } catch (URISyntaxException e) {
+            throw new TransformerException(e);
+        }
     }
 }

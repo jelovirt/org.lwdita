@@ -34,4 +34,25 @@ public class HtmlReaderTest extends AbstractReaderTest {
         run("hdita.html");
     }
 
+    @Test
+    public void testInline() throws Exception {
+        run("inline.html");
+    }
+
+    @Test
+    public void testLinebreak() throws Exception {
+        run("linebreak.html");
+    }
+
+    @Test
+    public void testCodeblock() throws Exception {
+        run("codeblock.html");
+    }
+
+    @Test
+    public void testDl() throws Exception {
+        run("dl.html");
+    }
+
+
 }

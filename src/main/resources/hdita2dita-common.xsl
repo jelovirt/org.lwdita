@@ -2,9 +2,12 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:xs="http://www.w3.org/2001/XMLSchema"
                 xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/"
-                exclude-result-prefixes="xs"
+                xmlns:x="https://github.com/jelovirt/dita-ot-markdown"
+                exclude-result-prefixes="xs x"
                 xpath-default-namespace="http://www.w3.org/1999/xhtml"
                 version="2.0">
+
+  <xsl:import href="classpath:///utils.xsl"/>
 
   <!-- Topic -->
 
@@ -36,10 +39,17 @@
       <xsl:attribute name="ditaarch:DITAArchVersion">1.3</xsl:attribute>
       <xsl:apply-templates select="ancestor::*/@xml:lang"/>
       <xsl:apply-templates select="@*"/>
-      <xsl:apply-templates select="h1/@id"/>
+      <xsl:choose>
+        <xsl:when test="@id">
+          <xsl:apply-templates select="@id"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:attribute name="id" select="translate(normalize-space(lower-case(h1)), ' ', '-')"/>
+        </xsl:otherwise>
+      </xsl:choose>
       <xsl:apply-templates select="h1"/>
-      <xsl:variable name="contents" select="* except h1"/>
-      <xsl:variable name="shortdesc" select="$contents[1]/self::p"/>
+      <xsl:variable name="contents" select="* except h1" as="element()*"/>
+      <xsl:variable name="shortdesc" select="$contents[1]/self::p" as="element()?"/>
       <xsl:if test="$shortdesc">
         <shortdesc class="- topic/shortdesc ">
           <xsl:apply-templates select="$shortdesc/node()"/>
@@ -56,10 +66,9 @@
       <xsl:text>- topic/topic </xsl:text>
       <!--
       <xsl:if test="@data-hd-class">
-        <xsl:value-of select="concat(@data-hd-class, '/', @data-hd-class)"/>
+        <xsl:value-of select="concat(@data-hd-class, '/', @data-hd-class, ' ')"/>
       </xsl:if>
       -->
-      <xsl:text> </xsl:text>
     </xsl:attribute>
   </xsl:template>
   <!--
@@ -142,6 +151,72 @@
       </xsl:for-each-group>
     </xsl:element>
   </xsl:template>
+  <xsl:template match="dd">
+    <dd>
+      <xsl:apply-templates select="." mode="class"/>
+      <xsl:apply-templates select="@*"/>
+      <xsl:variable name="first-block" select="(*[x:is-html-block(.)])[1]" as="element()?"/>
+      <xsl:choose>
+        <xsl:when test="empty($first-block)">
+          <p class="- topic/p ">
+            <xsl:apply-templates select="node()"/>
+          </p>
+        </xsl:when>
+        <xsl:when test="exists($first-block) and $first-block/preceding-sibling::node()[not(self::text()[not(normalize-space(.))])]">
+          <p class="- topic/p ">
+            <xsl:apply-templates select="$first-block/preceding-sibling::node()"/>
+          </p>
+          <xsl:apply-templates select="$first-block | $first-block/following-sibling::node()"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:apply-templates select="node()"/>    
+        </xsl:otherwise>
+      </xsl:choose>
+    </dd>
+  </xsl:template>
+  
+  <xsl:function name="x:is-html-block" as="xs:boolean">
+    <xsl:param name="node" as="node()?"/>
+    <xsl:sequence select="exists(
+      $node/self::address |
+      $node/self::article |
+      $node/self::aside |
+      $node/self::blockquote |
+      $node/self::canvas |
+      $node/self::dd |
+      $node/self::div |
+      $node/self::dl |
+      $node/self::dt |
+      $node/self::fieldset |
+      $node/self::figcaption |
+      $node/self::figure |
+      $node/self::figcaption |
+      $node/self::footer |
+      $node/self::form |
+      $node/self::h1 |
+      $node/self::h2 |
+      $node/self::h3 |
+      $node/self::h4 |
+      $node/self::h5 |
+      $node/self::h6 |
+      $node/self::header |
+      $node/self::hgroup |
+      $node/self::hr |
+      $node/self::li |
+      $node/self::main |
+      $node/self::nav |
+      $node/self::noscript |
+      $node/self::ol |
+      $node/self::output |
+      $node/self::p |
+      $node/self::pre |
+      $node/self::section |
+      $node/self::table |
+      $node/self::tfoot |
+      $node/self::ul |
+      $node/self::video
+      )"/>
+  </xsl:function>
 
   <xsl:template match="@xml:lang">
     <xsl:attribute name="lang" select="."/>
@@ -261,6 +336,9 @@
   </xsl:template>
   -->
 
+  <xsl:template match="br">
+    <xsl:processing-instruction name="linebreak"/>
+  </xsl:template>
   <xsl:template match="b | strong" mode="class">
     <xsl:attribute name="class">+ topic/ph hi-d/b </xsl:attribute>
   </xsl:template>

@@ -5,6 +5,8 @@
                 exclude-result-prefixes="xs x"
                 version="2.0">
 
+  <xsl:import href="classpath:///utils.xsl"/>
+
   <xsl:template match="/">
     <xsl:apply-templates mode="dispatch"/>
   </xsl:template>

@@ -34,7 +34,7 @@ public class HtmlReader implements XMLReader {
         try {
             result = new SAXResult();
             final TransformerFactory transformerFactory = TransformerFactory.newInstance();
-            transformerFactory.setURIResolver(new ClasspathURIResolver());
+            transformerFactory.setURIResolver(new ClasspathURIResolver(transformerFactory.getURIResolver()));
             final StreamSource src = new StreamSource(getClass().getResourceAsStream("/" + stylesheet),
                     "classpath:///" + stylesheet);
             transformerHandler = ((SAXTransformerFactory) transformerFactory).newTransformerHandler(src);
@@ -109,7 +109,25 @@ public class HtmlReader implements XMLReader {
 
     @Override
     public void setErrorHandler(final ErrorHandler handler) {
-        parser.setErrorHandler(handler);
+        parser.setErrorHandler(new ErrorHandler() {
+            @Override
+            public void warning(SAXParseException e) throws SAXException {
+                if (e instanceof SAXParseException
+                        && e.getMessage().equals("The character encoding of the document was not declared.")) {
+                    // Ignore character encoding warning
+                    return;
+                }
+                handler.warning(e);
+            }
+            @Override
+            public void error(SAXParseException e) throws SAXException {
+                handler.error(e);
+            }
+            @Override
+            public void fatalError(SAXParseException e) throws SAXException {
+                handler.fatalError(e);
+            }
+        });
     }
 
     @Override
