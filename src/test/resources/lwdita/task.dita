@@ -1,61 +1,63 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<task xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/"
-  class="- topic/topic task/task " ditaarch:DITAArchVersion="1.2"
-  domains="(topic task) (topic hi-d) (topic ut-d) (topic indexing-d) (topic hazard-d) (topic abbrev-d) (topic pr-d) (topic sw-d) (topic ui-d) (topic task strictTaskbody-c)"
-  id="task">
-  <title class="- topic/title ">Task </title>
+<topic xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/"
+       class="- topic/topic " ditaarch:DITAArchVersion="1.2"
+       domains="(topic) (topic hi-d) (topic ut-d) (topic indexing-d) (topic hazard-d) (topic abbrev-d) (topic pr-d) (topic sw-d) (topic ui-d) (topic task strictTaskbody-c)"
+       id="task" outputclass="task">
+  <title class="- topic/title ">Task</title>
   <shortdesc class="- topic/shortdesc ">Context</shortdesc>
-  <taskbody class="- topic/body task/taskbody ">
-    <steps class="- topic/ol task/steps ">
-      <step class="- topic/li task/step ">
-        <cmd class="- topic/ph task/cmd ">Command</cmd>
-        <info class="- topic/itemgroup task/info ">
-          <p class="- topic/p ">Info.</p>
-        </info>
-      </step>
-      <step class="- topic/li task/step ">
-        <cmd class="- topic/ph task/cmd ">
+  <body class="- topic/body ">
+    <ol class="- topic/ol ">
+      <li class="- topic/li ">
+        <p class="- topic/p">Command</p>
+        <p class="- topic/p ">Info.</p>
+      </li>
+      <li class="- topic/li ">
+        <p class="- topic/p ">
           <b class="+ topic/ph hi-d/b ">Command</b>
-        </cmd>
-        <info class="- topic/itemgroup task/info ">
-          <p class="- topic/p ">Info.</p>
-        </info>
-      </step>
-      <step class="- topic/li task/step ">
-        <cmd class="- topic/ph task/cmd "><b class="+ topic/ph hi-d/b ">Command</b> tail</cmd>
-        <info class="- topic/itemgroup task/info ">
-          <p class="- topic/p ">Info.</p>
-        </info>
-      </step>
-      <step class="- topic/li task/step ">
-        <cmd class="- topic/ph task/cmd ">head <b class="+ topic/ph hi-d/b ">Command</b></cmd>
-        <info class="- topic/itemgroup task/info ">
-          <p class="- topic/p ">Info.</p>
-        </info>
-      </step>
-      <step class="- topic/li task/step ">
-        <cmd class="- topic/ph task/cmd ">head <b class="+ topic/ph hi-d/b ">Command</b> tail</cmd>
-        <info class="- topic/itemgroup task/info ">
-          <p class="- topic/p ">Info.</p>
-        </info>
-      </step>
-      <step class="- topic/li task/step ">
-        <cmd class="- topic/ph task/cmd ">Command</cmd>
-      </step>
-      <step class="- topic/li task/step ">
-        <cmd class="- topic/ph task/cmd ">
+        </p>
+        <p class="- topic/p ">Info.</p>
+      </li>
+      <li class="- topic/li ">
+        <p class="- topic/p ">
           <b class="+ topic/ph hi-d/b ">Command</b>
-        </cmd>
-      </step>
-      <step class="- topic/li task/step ">
-        <cmd class="- topic/ph task/cmd "><b class="+ topic/ph hi-d/b ">Command</b> tail</cmd>
-      </step>
-      <step class="- topic/li task/step ">
-        <cmd class="- topic/ph task/cmd ">head <b class="+ topic/ph hi-d/b ">Command</b></cmd>
-      </step>
-      <step class="- topic/li task/step ">
-        <cmd class="- topic/ph task/cmd ">head <b class="+ topic/ph hi-d/b ">Command</b> tail</cmd>
-      </step>
-    </steps>
-  </taskbody>
-</task>
+          tail
+        </p>
+        <p class="- topic/p ">Info.</p>
+      </li>
+      <li class="- topic/li ">
+        <p class="- topic/p ">head
+          <b class="+ topic/ph hi-d/b ">Command</b>
+        </p>
+        <p class="- topic/p ">Info.</p>
+      </li>
+      <li class="- topic/li ">
+        <p class="- topic/p ">head <b class="+ topic/ph hi-d/b ">Command</b> tail
+        </p>
+        <p class="- topic/p ">Info.</p>
+      </li>
+      <li class="- topic/li ">
+        <p class="- topic/p ">Command</p>
+      </li>
+      <li class="- topic/li ">
+        <p class="- topic/p ">
+          <b class="+ topic/ph hi-d/b ">Command</b>
+        </p>
+      </li>
+      <li class="- topic/li ">
+        <p class="- topic/p ">
+          <b class="+ topic/ph hi-d/b ">Command</b>
+          tail
+        </p>
+      </li>
+      <li class="- topic/li ">
+        <p class="- topic/p ">head
+          <b class="+ topic/ph hi-d/b ">Command</b>
+        </p>
+      </li>
+      <li class="- topic/li ">
+        <p class="- topic/p ">head <b class="+ topic/ph hi-d/b ">Command</b> tail
+        </p>
+      </li>
+    </ol>
+  </body>
+</topic>

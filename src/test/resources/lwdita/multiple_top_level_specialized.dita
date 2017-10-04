@@ -1,44 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dita>
-  <concept xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/"
-    class="- topic/topic concept/concept " ditaarch:DITAArchVersion="1.2"
-    domains="(topic concept) (topic hi-d) (topic ut-d) (topic indexing-d) (topic hazard-d) (topic abbrev-d) (topic pr-d) (topic sw-d) (topic ui-d)"
-    id="concept">
+  <topic xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/"
+    class="- topic/topic " ditaarch:DITAArchVersion="1.2"
+    domains="(topic) (topic hi-d) (topic ut-d) (topic indexing-d) (topic hazard-d) (topic abbrev-d) (topic pr-d) (topic sw-d) (topic ui-d)"
+    id="concept" outputclass="concept">
     <title class="- topic/title ">Concept </title>
     <shortdesc class="- topic/shortdesc ">Content A.</shortdesc>
-    <conbody class="- topic/body concept/conbody ">
+    <body class="- topic/body ">
       <section class="- topic/section " id="heading-a1">
         <title class="- topic/title ">Heading A.1</title>
         <p class="- topic/p ">Content A.1.</p>
       </section>
-    </conbody>
-  </concept>
-  <task xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/"
-    class="- topic/topic task/task " ditaarch:DITAArchVersion="1.2"
-    domains="(topic task) (topic hi-d) (topic ut-d) (topic indexing-d) (topic hazard-d) (topic abbrev-d) (topic pr-d) (topic sw-d) (topic ui-d) (topic task strictTaskbody-c)"
-    id="task">
+    </body>
+  </topic>
+  <topic xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/"
+    class="- topic/topic " ditaarch:DITAArchVersion="1.2"
+    domains="(topic) (topic hi-d) (topic ut-d) (topic indexing-d) (topic hazard-d) (topic abbrev-d) (topic pr-d) (topic sw-d) (topic ui-d) (topic task strictTaskbody-c)"
+    id="task" outputclass="task">
     <title class="- topic/title ">Task </title>
     <shortdesc class="- topic/shortdesc ">Content B.</shortdesc>
-    <taskbody class="- topic/body task/taskbody ">
+    <body class="- topic/body ">
       <section class="- topic/section "  id="heading-b1">
         <title class="- topic/title ">Heading B.1</title>
         <p class="- topic/p ">Content B.1.</p>
       </section>
-    </taskbody>
-  </task>
-  <reference xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/"
-    class="- topic/topic reference/reference " ditaarch:DITAArchVersion="1.2"
-    domains="(topic reference) (topic hi-d) (topic ut-d) (topic indexing-d) (topic hazard-d) (topic abbrev-d) (topic pr-d) (topic sw-d) (topic ui-d)"
-    id="reference">
+    </body>
+  </topic>
+  <topic xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/"
+    class="- topic/topic " ditaarch:DITAArchVersion="1.2"
+    domains="(topic) (topic hi-d) (topic ut-d) (topic indexing-d) (topic hazard-d) (topic abbrev-d) (topic pr-d) (topic sw-d) (topic ui-d)"
+    id="reference" outputclass="reference">
     <title class="- topic/title ">Reference </title>
     <shortdesc class="- topic/shortdesc ">Content C.</shortdesc>
-    <refbody class="- topic/body reference/refbody ">
+    <body class="- topic/body ">
       <section class="- topic/section " id="heading-c1">
         <title class="- topic/title ">Heading C.1</title>
         <p class="- topic/p ">Content C.1.</p>
       </section>
-    </refbody>
-  </reference>
+    </body>
+  </topic>
   <topic xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/" class="- topic/topic "
     ditaarch:DITAArchVersion="1.2"
     domains="(topic hi-d) (topic ut-d) (topic indexing-d) (topic hazard-d) (topic abbrev-d) (topic pr-d) (topic sw-d) (topic ui-d)"

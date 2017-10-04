@@ -27,7 +27,7 @@
     <xsl:apply-templates select="." mode="reference"/>
   </xsl:template>
   <xsl:template match="*" mode="dispatch">
-    <xsl:apply-templates select="."/>
+    <xsl:apply-templates select="." mode="copy"/>
   </xsl:template>
 
   <!-- reference -->
@@ -71,6 +71,14 @@
       <xsl:apply-templates select="@* except @class" mode="#current"/>
       <xsl:for-each-group select="*" group-adjacent="contains(@class, ' topic/ol ') or contains(@class, ' topic/ul ') or contains(@class, ' topic/section ')">
         <xsl:choose>
+          <xsl:when test="current-grouping-key() and empty(preceding-sibling::*)">
+            <context class="- topic/section task/context ">
+              <xsl:apply-templates select="current-group()/*" mode="#current"/>
+            </context>
+            <!--
+            <xsl:apply-templates select="current-group()" mode="#current"/>
+            -->
+          </xsl:when>
           <xsl:when test="current-grouping-key()">
             <xsl:apply-templates select="current-group()" mode="#current"/>
           </xsl:when>
@@ -109,7 +117,7 @@
       <xsl:variable name="head" select="if (exists($first-block)) then node()[. &lt;&lt; $first-block] else node()" as="node()*"/>
       <xsl:variable name="tail" select="if (exists($first-block)) then ($first-block | node()[. &gt;&gt; $first-block]) else ()" as="node()*"/>
       <xsl:choose>
-        <xsl:when test="exists($head)">
+        <xsl:when test="$head[self::* or normalize-space()]">
           <cmd class="- topic/ph task/cmd ">
             <xsl:copy-of select="$head"/>
           </cmd>
@@ -125,7 +133,7 @@
               <xsl:apply-templates select="@* except @class | node()" mode="#current"/>
             </cmd>
           </xsl:for-each>
-          <xsl:if test="$tail[2]">
+          <xsl:if test="$tail[position() ge 2][self::* or normalize-space()]">
             <info class="- topic/itemgroup task/info ">
               <xsl:apply-templates select="$tail[position() gt 1]" mode="#current"/>
             </info>    
@@ -152,7 +160,7 @@
 
   <!-- common -->
   
-  <xsl:template match="topic/@outputclass" mode="#all">
+  <xsl:template match="topic/@outputclass" mode="concept task reference">
     <xsl:variable name="type" as="xs:string?" select="tokenize(., '\s+')[. = ('concept', 'task', 'reference')]"/>
     <xsl:choose>
       <xsl:when test="exists($type)">
@@ -169,7 +177,7 @@
     </xsl:choose>
   </xsl:template>
 
-  <xsl:template match="@* | node()" priority="-10" mode="#all">
+  <xsl:template match="@* | node()" priority="-10" mode="concept task reference copy">
     <xsl:copy>
       <xsl:apply-templates select="@* | node()" mode="#current"/>
     </xsl:copy>

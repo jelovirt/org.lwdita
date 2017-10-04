@@ -16,9 +16,9 @@
         <section class="- topic/section " id="a1ai">
           <title class="- topic/title ">A.1.a.I </title>
         </section>
-        <example class="- topic/example " id="example">
+        <section class="- topic/section " id="example">
           <title class="- topic/title ">A.1.a.II </title>
-        </example>
+        </section>
       </body>
       <topic class="- topic/topic "
         domains="(topic abbrev-d)                            a(props deliveryTarget)                            (topic equation-d)                            (topic hazard-d)                            (topic hi-d)                            (topic indexing-d)                            (topic markup-d)                            (topic mathml-d)                            (topic pr-d)                            (topic relmgmt-d)                            (topic sw-d)                            (topic svg-d)                            (topic ui-d)                            (topic ut-d)                            (topic markup-d xml-d)   "

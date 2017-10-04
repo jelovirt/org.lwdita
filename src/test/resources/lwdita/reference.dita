@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<reference xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/"
-  class="- topic/topic reference/reference " ditaarch:DITAArchVersion="1.2"
-  domains="(topic reference) (topic hi-d) (topic ut-d) (topic indexing-d) (topic hazard-d) (topic abbrev-d) (topic pr-d) (topic sw-d) (topic ui-d)"
-  id="reference">
+<topic xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/"
+  class="- topic/topic " ditaarch:DITAArchVersion="1.2"
+  domains="(topic) (topic hi-d) (topic ut-d) (topic indexing-d) (topic hazard-d) (topic abbrev-d) (topic pr-d) (topic sw-d) (topic ui-d)"
+  id="reference" outputclass="reference">
   <title class="- topic/title ">Reference </title>
   <shortdesc class="- topic/shortdesc ">This is reference.</shortdesc>
-  <refbody class="- topic/body reference/refbody "/>
-</reference>
+  <body class="- topic/body "/>
+</topic>

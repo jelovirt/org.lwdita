@@ -5,7 +5,7 @@
   id="foo">
   <title class="- topic/title ">My header </title>
   <body class="- topic/body ">
-    <section class="- topic/section " id="foo">
+    <section class="- topic/section " id="foo-section">
       <title class="- topic/title ">My header ## </title>
     </section>
     <section class="- topic/section " id="the-site" outputclass="main shine">

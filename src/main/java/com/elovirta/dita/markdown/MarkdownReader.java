@@ -47,8 +47,8 @@ import static org.apache.commons.io.IOUtils.copy;
 public class MarkdownReader implements XMLReader {
 
     final Parser p;
-    final SAXTransformerFactory tf;
-    final Templates t;
+    private SAXTransformerFactory tf;
+    private Templates t;
     private final MutableDataSet options;
 
     EntityResolver resolver;
@@ -89,11 +89,6 @@ public class MarkdownReader implements XMLReader {
                 .set(TablesExtension.HEADER_SEPARATOR_COLUMN_MATCH, true)
         );
 //        options.set(HtmlRenderer.SOFT_BREAK, "<br />\n");
-    }
-
-    public MarkdownReader(final MutableDataSet options) {
-        this.options = options;
-        p = Parser.builder(options).build();
         try (InputStream style = getClass().getResourceAsStream("/specialize.xsl")) {
             tf = (SAXTransformerFactory) TransformerFactory.newInstance();
             tf.setURIResolver(new ClasspathURIResolver(tf.getURIResolver()));
@@ -101,6 +96,12 @@ public class MarkdownReader implements XMLReader {
         } catch (final IOException | TransformerConfigurationException e) {
             throw new RuntimeException(e);
         }
+
+    }
+
+    public MarkdownReader(final MutableDataSet options) {
+        this.options = options;
+        this.p = Parser.builder(options).build();
     }
 
     @Override
@@ -256,16 +257,20 @@ public class MarkdownReader implements XMLReader {
     }
 
     private void parseAST(final Document root, final Map<String, List<String>> metadata) throws SAXException {
-        final TransformerHandler h;
-        try {
-            h = tf.newTransformerHandler(t);
-        } catch (final TransformerConfigurationException e) {
-            throw new SAXException(e);
+        ContentHandler res = contentHandler;
+        if (t != null) {
+            final TransformerHandler h;
+            try {
+                h = tf.newTransformerHandler(t);
+            } catch (final TransformerConfigurationException e) {
+                throw new SAXException(e);
+            }
+            h.setResult(new SAXResult(res));
+            res = h;
         }
-        h.setResult(new SAXResult(contentHandler));
         final Builder builder = new Builder(options);
         final DitaRenderer s = new DitaRenderer(builder, metadata);
-        s.render(root, h);
+        s.render(root, res);
     }
 
 }

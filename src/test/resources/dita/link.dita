@@ -20,7 +20,7 @@
       <xref class="- topic/xref " keyref="key"/>
     </p>
     <p class="- topic/p ">
-      <xref class="- topic/xref " format="com" href="mailto:address@example.com" scope="external"/>
+      <xref class="- topic/xref " format="email" href="mailto:address@example.com" scope="external"/>
     </p>
   </body>
 </topic>

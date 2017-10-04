@@ -6,7 +6,7 @@
 
 #### A.1.a.I {.section}
 
-#### A.1.a.II {.example #example}
+#### A.1.a.II {.section #example}
 
 #### A.1.a.III
 

@@ -1,6 +1,7 @@
 package com.elovirta.dita.html;
 
 import com.elovirta.dita.utils.ClasspathURIResolver;
+import com.google.common.collect.Lists;
 import nu.validator.htmlparser.common.DoctypeExpectation;
 import nu.validator.htmlparser.common.Heuristics;
 import nu.validator.htmlparser.sax.HtmlParser;
@@ -13,6 +14,7 @@ import javax.xml.transform.sax.SAXTransformerFactory;
 import javax.xml.transform.sax.TransformerHandler;
 import javax.xml.transform.stream.StreamSource;
 import java.io.IOException;
+import java.util.Arrays;
 
 /**
  * XMLReader implementation for HDITA.
@@ -20,25 +22,31 @@ import java.io.IOException;
 public class HtmlReader implements XMLReader {
 
     private final HtmlParser parser;
-    private final TransformerHandler transformerHandler;
     private final SAXResult result;
 
     public HtmlReader() {
         this("html2dita.xsl");
     }
 
-    public HtmlReader(final String stylesheet) {
+    public HtmlReader(final String... stylesheets) {
         parser = new HtmlParser();
         parser.setDoctypeExpectation(DoctypeExpectation.AUTO);
         parser.setHeuristics(Heuristics.ICU);
         try {
+            final SAXTransformerFactory tf = (SAXTransformerFactory) TransformerFactory.newInstance();
+            tf.setURIResolver(new ClasspathURIResolver(tf.getURIResolver()));
+
+            TransformerHandler transformerHandler = null;
             result = new SAXResult();
-            final TransformerFactory transformerFactory = TransformerFactory.newInstance();
-            transformerFactory.setURIResolver(new ClasspathURIResolver(transformerFactory.getURIResolver()));
-            final StreamSource src = new StreamSource(getClass().getResourceAsStream("/" + stylesheet),
-                    "classpath:///" + stylesheet);
-            transformerHandler = ((SAXTransformerFactory) transformerFactory).newTransformerHandler(src);
-            transformerHandler.setResult(result);
+            SAXResult res = result;
+            for (final String stylesheet : Lists.reverse(Arrays.asList(stylesheets))) {
+                final StreamSource src = new StreamSource(getClass().getResourceAsStream("/" + stylesheet),
+                        "classpath:///" + stylesheet);
+                transformerHandler = tf.newTransformerHandler(src);
+                transformerHandler.setResult(res);
+                res = new SAXResult(transformerHandler);
+            }
+
             parser.setContentHandler(transformerHandler);
             parser.setLexicalHandler(transformerHandler);
             parser.setDTDHandler(transformerHandler);

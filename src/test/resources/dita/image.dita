@@ -14,7 +14,7 @@
         <alt class="- topic/alt ">Alt</alt>
       </image>
     </fig>
-    <image class="- topic/image " keyref="image-key"/>
+    <image class="- topic/image " keyref="image-key" placement="break"/>
     <fig class="- topic/fig ">
       <title class="- topic/title ">Title</title>
       <image class="- topic/image " href="test.jpg" keyref="img_id">

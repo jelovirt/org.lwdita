@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<concept xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/"
-  class="- topic/topic concept/concept " ditaarch:DITAArchVersion="1.2"
-  domains="(topic concept) (topic hi-d) (topic ut-d) (topic indexing-d) (topic hazard-d) (topic abbrev-d) (topic pr-d) (topic sw-d) (topic ui-d)"
-  id="concept">
+<topic xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/"
+  class="- topic/topic " ditaarch:DITAArchVersion="1.2"
+  domains="(topic) (topic hi-d) (topic ut-d) (topic indexing-d) (topic hazard-d) (topic abbrev-d) (topic pr-d) (topic sw-d) (topic ui-d)"
+  id="concept" outputclass="concept">
   <title class="- topic/title ">Concept </title>
   <shortdesc class="- topic/shortdesc ">This is a concept.</shortdesc>
-  <conbody class="- topic/body concept/conbody "/>
-</concept>
+  <body class="- topic/body "/>
+</topic>

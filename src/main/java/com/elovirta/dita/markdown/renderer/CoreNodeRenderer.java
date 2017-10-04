@@ -423,20 +423,10 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
             }
             html.endElement();
             html.endElement();
-        } else if (onlyImageChild) {
-            atts.add("placement", "break");
-            html.startElement(TOPIC_IMAGE, atts.build());
-            if (hasChildren(node)) {
-                html.startElement(TOPIC_ALT, ALT_ATTS);
-                if (alt != null) {
-                    html.characters(alt);
-                } else {
-                    context.renderChildren(node);
-                }
-                html.endElement();
-            }
-            html.endElement();
         } else {
+            if (onlyImageChild) {
+                atts.add("placement", "break");
+            }
             html.startElement(TOPIC_IMAGE, atts.build());
             if (hasChildren(node)) {
                 html.startElement(TOPIC_ALT, ALT_ATTS);
@@ -474,20 +464,10 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
             }
             html.endElement(); // image
             html.endElement(); // fig
-        } else if (onlyImageChild) {
-            atts.add("placement", "break");
-            html.startElement(TOPIC_IMAGE, atts.build());
-            if (hasChildren(node)) {
-                html.startElement(TOPIC_ALT, ALT_ATTS);
-                if (alt != null) {
-                    html.characters(alt);
-                } else {
-                    context.renderChildren(node);
-                }
-                html.endElement();
-            }
-            html.endElement(); //image
         } else {
+            if (onlyImageChild) {
+                atts.add("placement", "break");
+            }
             html.startElement(TOPIC_IMAGE, atts.build());
             if (hasChildren(node)) {
                 html.startElement(TOPIC_ALT, ALT_ATTS);
@@ -498,7 +478,7 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
                 }
                 html.endElement();
             }
-            html.endElement();
+            html.endElement(); // image
         }
     }
 
@@ -736,6 +716,7 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
 
     private void render(final MailLink node, final NodeRendererContext context, final DitaWriter html) {
         final AttributesBuilder atts = getLinkAttributes("mailto:" + node.getText());
+        atts.add(ATTRIBUTE_NAME_FORMAT, "email");
 
         html.startElement(TOPIC_XREF, atts.build());
         context.renderChildren(node);
@@ -806,10 +787,12 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
         final String key = node.getReference() != null ? node.getReference().toString() : text;
         final Reference refNode = node.getReferenceNode(node.getDocument());
         if (refNode == null) { // "fake" reference image link
-            final Attributes atts = new AttributesBuilder(IMAGE_ATTS)
-                    .add(ATTRIBUTE_NAME_KEYREF, key)
-                    .build();
-            html.startElement(TOPIC_IMAGE, atts);
+            final AttributesBuilder atts = new AttributesBuilder(IMAGE_ATTS)
+                    .add(ATTRIBUTE_NAME_KEYREF, key);
+            if (onlyImageChild) {
+                atts.add("placement", "break");
+            }
+            html.startElement(TOPIC_IMAGE, atts.build());
 //            if (node.getReference() != null) {
 //                context.renderChildren(node);
 //            }
@@ -1311,6 +1294,7 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
         final AttributesBuilder atts = new AttributesBuilder(XREF_ATTS)
                 .add(ATTRIBUTE_NAME_HREF, href);
 
+        final URI uri = toURI(href);
         final String ext = FilenameUtils.getExtension(href).toLowerCase();
         String format;
         switch (ext) {
@@ -1327,11 +1311,13 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
                 format = !ext.isEmpty() ? ext : "html";
                 break;
         }
+        if (uri.getScheme() != null && uri.getScheme().equals("mailto")) {
+            atts.add(ATTRIBUTE_NAME_FORMAT, "email");
+        }
         if (format != null) {
             atts.add(ATTRIBUTE_NAME_FORMAT, format);
         }
 
-        final URI uri = toURI(href);
         if (uri != null && uri.isAbsolute()) {
             atts.add(ATTRIBUTE_NAME_SCOPE, ATTR_SCOPE_VALUE_EXTERNAL);
         }

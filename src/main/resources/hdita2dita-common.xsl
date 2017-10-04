@@ -39,27 +39,39 @@
       <xsl:attribute name="ditaarch:DITAArchVersion">1.3</xsl:attribute>
       <xsl:apply-templates select="ancestor::*/@xml:lang"/>
       <xsl:apply-templates select="@*"/>
+      <xsl:variable name="h" select="(h1, h2, h3, h4, h5, h6)[1]" as="element()?"/>
       <xsl:choose>
         <xsl:when test="@id">
           <xsl:apply-templates select="@id"/>
         </xsl:when>
         <xsl:otherwise>
-          <xsl:attribute name="id" select="translate(normalize-space(lower-case(h1)), ' ', '-')"/>
+          <xsl:sequence select="x:get-id(.)"/>
         </xsl:otherwise>
       </xsl:choose>
-      <xsl:apply-templates select="h1"/>
-      <xsl:variable name="contents" select="* except h1" as="element()*"/>
+      <xsl:apply-templates select="$h"/>
+      <xsl:variable name="contents" select="* except ($h, article)" as="element()*"/>
       <xsl:variable name="shortdesc" select="$contents[1]/self::p" as="element()?"/>
       <xsl:if test="$shortdesc">
         <shortdesc class="- topic/shortdesc ">
           <xsl:apply-templates select="$shortdesc/node()"/>
         </shortdesc>
       </xsl:if>
-      <body class="- topic/body ">
-        <xsl:apply-templates select="$contents except $shortdesc"/>
-      </body>
+      <!--xsl:if test="$contents except $shortdesc"-->
+        <body class="- topic/body ">
+          <xsl:apply-templates select="$contents except $shortdesc"/>
+        </body>
+      <!--/xsl:if-->
+      <xsl:apply-templates select="article"/>
     </xsl:element>
   </xsl:template>
+  
+  <xsl:function name="x:get-id" as="attribute()?">
+    <xsl:param name="topic" as="element()"/>
+    <xsl:variable name="title" select="($topic/h1 | $topic/h2 | $topic/h3 | $topic/h4 | $topic/h5 | $topic/h6)[1]" as="element()?"/>
+    <xsl:if test="$title">
+      <xsl:attribute name="id" select="translate(normalize-space(lower-case($title)), ' .', '-')"/>
+    </xsl:if>
+  </xsl:function>
 
   <xsl:template match="article" mode="class">
     <xsl:attribute name="class">
@@ -103,7 +115,9 @@
     <xsl:element name="{$name}">
       <xsl:apply-templates select="." mode="class"/>
       <xsl:apply-templates select="@*"/>
-      <xsl:apply-templates select="h2/@id"/>
+      <xsl:if test="empty(@id)">
+        <xsl:sequence select="x:get-id(.)"/>
+      </xsl:if>
       <xsl:apply-templates select="*"/>
     </xsl:element>
   </xsl:template>
@@ -130,13 +144,13 @@
     </xsl:attribute>
   </xsl:template>
 
-  <xsl:template match="h1 | h2">
+  <xsl:template match="h1 | h2 | h3 | h4 | h5 | h6">
     <title>
       <xsl:apply-templates select="." mode="class"/>
       <xsl:apply-templates select="@* except @id | node()"/>
     </title>
   </xsl:template>
-  <xsl:template match="h1 | h2" mode="class">
+  <xsl:template match="h1 | h2 | h3 | h4 | h5 | h6" mode="class">
     <xsl:attribute name="class">- topic/title </xsl:attribute>
   </xsl:template>
 
@@ -259,9 +273,19 @@
   <xsl:template match="img">
     <image>
       <xsl:apply-templates select="." mode="class"/>
-      <xsl:apply-templates select="@* | node()"/>
+      <xsl:apply-templates select="@* except @alt"/>
+      <xsl:apply-templates select="." mode="image-placement"/>
+      <xsl:if test="@alt">
+        <alt class="- topic/alt ">
+          <xsl:value-of select="@alt"/>
+        </alt>
+      </xsl:if>
     </image>
   </xsl:template>
+  <xsl:template match="article/img | section/img" mode="image-placement">
+    <xsl:attribute name="placement">break</xsl:attribute>
+  </xsl:template>
+  <xsl:template match="node()" mode="image-placement" priority="-10"/>
   <xsl:template match="img" mode="class">
     <xsl:attribute name="class">- topic/image </xsl:attribute>
   </xsl:template>
@@ -385,6 +409,10 @@
     <xref>
       <xsl:apply-templates select="." mode="class"/>
       <xsl:choose>
+        <xsl:when test="starts-with(@href, 'mailto')">
+          <xsl:attribute name="format">email</xsl:attribute>
+          <xsl:attribute name="scope">external</xsl:attribute>
+        </xsl:when>
         <xsl:when test="@type">
           <xsl:attribute name="format" select="@type"/>
         </xsl:when>
@@ -392,9 +420,9 @@
           <xsl:attribute name="format">markdown</xsl:attribute>
         </xsl:when>
         <xsl:when test="ends-with(lower-case(@href), '.dita') or ends-with(lower-case(@href), '.xml')"/>
-        <xsl:otherwise>
+        <xsl:when test="@href">
           <xsl:attribute name="format" select="replace(lower-case(@href), '^.+\.(.+?)$', '$1')"/>
-        </xsl:otherwise>
+        </xsl:when>
       </xsl:choose>
       <xsl:if test="matches(@href, '^https?://', 'i')">
         <xsl:attribute name="scope">external</xsl:attribute>

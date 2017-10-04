@@ -1,18 +1,16 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<task xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/"
-  class="- topic/topic task/task " ditaarch:DITAArchVersion="1.2"
-  domains="(topic task) (topic hi-d) (topic ut-d) (topic indexing-d) (topic hazard-d) (topic abbrev-d) (topic pr-d) (topic sw-d) (topic ui-d) (topic task strictTaskbody-c)"
-  id="task">
+<topic xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/"
+  class="- topic/topic " ditaarch:DITAArchVersion="1.2"
+  domains="(topic) (topic hi-d) (topic ut-d) (topic indexing-d) (topic hazard-d) (topic abbrev-d) (topic pr-d) (topic sw-d) (topic ui-d) (topic task strictTaskbody-c)"
+  id="task" outputclass="task">
   <title class="- topic/title ">Task </title>
   <shortdesc class="- topic/shortdesc ">Context</shortdesc>
-  <taskbody class="- topic/body task/taskbody ">
-    <steps class="- topic/ol task/steps ">
-      <step class="- topic/li task/step ">
-        <cmd class="- topic/ph task/cmd ">Command</cmd>
-        <info class="- topic/itemgroup task/info ">
-          <p class="- topic/p ">Info.</p>
-        </info>
-      </step>
-    </steps>
-  </taskbody>
-</task>
+  <body class="- topic/body ">
+    <ol class="- topic/ol ">
+      <li class="- topic/li ">
+        <p class="- topic/p ">Command</p>
+        <p class="- topic/p ">Info.</p>
+      </li>
+    </ol>
+  </body>
+</topic>

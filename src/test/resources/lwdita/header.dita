@@ -18,9 +18,9 @@
         <section class="- topic/section " id="a1ai">
           <title class="- topic/title ">A.1.a.I </title>
         </section>
-        <example class="- topic/example " id="example">
+        <section class="- topic/section " id="example" outputclass="example">
           <title class="- topic/title ">A.1.a.II </title>
-        </example>
+        </section>
       </body>
       <topic class="- topic/topic " ditaarch:DITAArchVersion="1.2"
         domains="(topic hi-d) (topic ut-d) (topic indexing-d) (topic hazard-d) (topic abbrev-d) (topic pr-d) (topic sw-d) (topic ui-d)"
