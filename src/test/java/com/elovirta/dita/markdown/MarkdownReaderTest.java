@@ -31,12 +31,11 @@ public class MarkdownReaderTest extends AbstractReaderTest {
     public void testHeader() throws Exception {
         run("header.md");
     }
-
-//    @Test
-//    public void testPandocHeader() throws Exception {
-//        run("pandoc_header.md");
-//    }
-
+    @Ignore
+    @Test
+    public void testPandocHeader() throws Exception {
+        run("pandoc_header.md");
+    }
     @Test(expected = RuntimeException.class)
     public void testInvalidHeader() throws Exception {
         run("invalid_header.md");
@@ -176,10 +175,10 @@ public class MarkdownReaderTest extends AbstractReaderTest {
     public void testComment() throws Exception {
         run("comment.md");
     }
-
-//    @Test
-//    public void testHtml() throws Exception {
-//        run("html.md");
-//    }
+    @Ignore
+    @Test
+    public void testHtml() throws Exception {
+        run("html.md");
+    }
 
 }
