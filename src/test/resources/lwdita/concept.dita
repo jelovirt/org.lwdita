@@ -2,8 +2,8 @@
 <topic xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/"
   class="- topic/topic " ditaarch:DITAArchVersion="1.2"
   domains="(topic) (topic hi-d) (topic ut-d) (topic indexing-d) (topic hazard-d) (topic abbrev-d) (topic pr-d) (topic sw-d) (topic ui-d)"
-  id="concept" outputclass="concept">
-  <title class="- topic/title ">Concept </title>
+  id="concept-concept">
+  <title class="- topic/title ">Concept {.concept}</title>
   <shortdesc class="- topic/shortdesc ">This is a concept.</shortdesc>
   <body class="- topic/body "/>
 </topic>

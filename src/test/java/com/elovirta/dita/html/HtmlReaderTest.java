@@ -138,10 +138,11 @@ public class HtmlReaderTest extends AbstractReaderTest {
     public void testTaskOneStep() throws Exception {
         run("taskOneStep.html");
     }
-//    @Test
-//    public void testtopic() throws Exception {
-//        run("topic.html");
-//    }
+    @Ignore
+    @Test
+    public void testtopic() throws Exception {
+        run("topic.html");
+    }
     @Test
     public void testul() throws Exception {
         run("ul.html");

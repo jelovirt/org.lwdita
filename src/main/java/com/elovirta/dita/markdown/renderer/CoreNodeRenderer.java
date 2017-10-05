@@ -530,8 +530,11 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
         }
         final StringBuilder buf = new StringBuilder();
         node.getAstExtra(buf);
-        final Title header = new Title(node);
-        stripHeaderAttributes(node, header);
+        Title header = null;
+        if (!lwDita) {
+            header = new Title(node);
+            stripHeaderAttributes(node, header);
+        }
 
         if (inSection) {
             html.endElement(); // section or example
@@ -542,7 +545,7 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
         if (lwDita && node.getLevel() == 2) {
             isSection = true;
             cls = TOPIC_SECTION;
-        } else {
+        } else if (!lwDita) {
             final String sectionClassName = containsSome(header.classes, sections.keySet());
             if (sectionClassName != null) {
                 isSection = true;
@@ -551,6 +554,9 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
                 isSection = false;
                 cls = null;
             }
+        } else {
+            isSection = false;
+            cls = null;
         }
         if (isSection) {
             if (node.getLevel() <= headerLevel) {
@@ -561,10 +567,12 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
             if (id != null) {
                 atts.add(ATTRIBUTE_NAME_ID, id);
             }
-            final Collection<String> classes = new ArrayList<>(header.classes);
-            classes.removeAll(sections.keySet());
-            if (!classes.isEmpty()) {
-                atts.add("outputclass", String.join(" ", classes));
+            if (!lwDita) {
+                final Collection<String> classes = new ArrayList<>(header.classes);
+                classes.removeAll(sections.keySet());
+                if (!classes.isEmpty()) {
+                    atts.add("outputclass", String.join(" ", classes));
+                }
             }
             html.startElement(cls, atts.build());
             inSection = true;
@@ -585,7 +593,7 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
             if (id != null) {
                 atts.add(ATTRIBUTE_NAME_ID, id);
             }
-            if (!header.classes.isEmpty()) {
+            if (!lwDita && !header.classes.isEmpty()) {
                 atts.add("outputclass", String.join(" ", header.classes));
             }
             html.startElement(TOPIC_TOPIC, atts.build());
@@ -626,12 +634,20 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
     }
 
     private String getSectionId(Heading node, Title header) {
-        if (header.id != null) {
-            return header.id;
-        } else if (node.getAnchorRefId() != null) {
-            return node.getAnchorRefId();
+        if (header != null) {
+            if (header.id != null) {
+                return header.id;
+            } else if (node.getAnchorRefId() != null) {
+                return node.getAnchorRefId();
+            } else {
+                return getId(header.title);
+            }
         } else {
-            return getId(header.title);
+            if (node.getAnchorRefId() != null) {
+                return node.getAnchorRefId();
+            } else {
+                return getId(node.getText().toString());
+            }
         }
     }
 

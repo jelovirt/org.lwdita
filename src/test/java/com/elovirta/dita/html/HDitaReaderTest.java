@@ -34,7 +34,7 @@ public class HDitaReaderTest extends HtmlReaderTest {
     public void testheader_attributes() throws Exception {
         run("header_attributes.html");
     }
-    @Ignore()
+    @Ignore("specialization not supported by LwDITA")
     @Test
     public void testMultipleTopLevelSpecialized() throws Exception {
         run("multiple_top_level_specialized.html");
@@ -43,5 +43,25 @@ public class HDitaReaderTest extends HtmlReaderTest {
     @Test
     public void testheader() throws Exception {
         run("header.html");
+    }
+    @Ignore("specialization not supported by LwDITA")
+    @Test
+    public void testreference() throws Exception {
+        run("reference.html");
+    }
+    @Ignore("specialization not supported by LwDITA")
+    @Test
+    public void testconcept() throws Exception {
+        run("concept.html");
+    }
+    @Ignore("specialization not supported by LwDITA")
+    @Test
+    public void testTask() throws Exception {
+        run("task.html");
+    }
+    @Ignore("specialization not supported by LwDITA")
+    @Test
+    public void testTaskOneStep() throws Exception {
+        run("taskOneStep.html");
     }
 }

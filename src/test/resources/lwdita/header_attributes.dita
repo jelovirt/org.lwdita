@@ -2,14 +2,14 @@
 <topic xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/" class="- topic/topic "
   ditaarch:DITAArchVersion="1.2"
   domains="(topic hi-d) (topic ut-d) (topic indexing-d) (topic hazard-d) (topic abbrev-d) (topic pr-d) (topic sw-d) (topic ui-d)"
-  id="foo">
-  <title class="- topic/title ">My header </title>
+  id="my-header-foo">
+  <title class="- topic/title ">My header {#foo}</title>
   <body class="- topic/body ">
-    <section class="- topic/section " id="foo-section">
-      <title class="- topic/title ">My header ## </title>
+    <section class="- topic/section " id="my-header-----foo-section">
+      <title class="- topic/title ">My header ## {#foo-section}</title>
     </section>
-    <section class="- topic/section " id="the-site" outputclass="main shine">
-      <title class="- topic/title ">My other header </title>
+    <section class="- topic/section " id="my-other-header---main-shine-the-site">
+      <title class="- topic/title ">My other header {.main .shine #the-site}</title>
     </section>
   </body>
 </topic>

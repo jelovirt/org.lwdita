@@ -2,13 +2,13 @@
 <topic xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/"
        class="- topic/topic " ditaarch:DITAArchVersion="1.2"
        domains="(topic) (topic hi-d) (topic ut-d) (topic indexing-d) (topic hazard-d) (topic abbrev-d) (topic pr-d) (topic sw-d) (topic ui-d) (topic task strictTaskbody-c)"
-       id="task" outputclass="task">
-  <title class="- topic/title ">Task</title>
+       id="task-task">
+  <title class="- topic/title ">Task {.task}</title>
   <shortdesc class="- topic/shortdesc ">Context</shortdesc>
   <body class="- topic/body ">
     <ol class="- topic/ol ">
       <li class="- topic/li ">
-        <p class="- topic/p">Command</p>
+        <p class="- topic/p ">Command</p>
         <p class="- topic/p ">Info.</p>
       </li>
       <li class="- topic/li ">
