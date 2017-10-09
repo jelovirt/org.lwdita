@@ -723,7 +723,23 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
     }
 
     private void render(final HtmlInline node, final NodeRendererContext context, final DitaWriter html) {
-        html.characters(node.getChars().toString());
+        final String text = node.getChars().toString();
+        final FragmentContentHandler fragmentFilter = new FragmentContentHandler();
+        fragmentFilter.setContentHandler(html.contentHandler);
+        final TransformerHandler h;
+        try {
+            h = tf.newTransformerHandler(t);
+        } catch (final TransformerConfigurationException e) {
+            throw new RuntimeException(e);
+        }
+        h.setResult(new SAXResult(fragmentFilter));
+        final HtmlParser parser = new HtmlParser();
+        parser.setContentHandler(h);
+        try {
+            parser.parse(new InputSource(new StringReader(text)));
+        } catch (IOException|SAXException e) {
+            throw new ParseException("Failed to parse HTML: " + e.getMessage(), e);
+        }
     }
 
     private void render(final ListItem node, final NodeRendererContext context, final DitaWriter html) {

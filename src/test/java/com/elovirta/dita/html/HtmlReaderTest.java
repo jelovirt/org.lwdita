@@ -153,4 +153,19 @@ public class HtmlReaderTest extends AbstractReaderTest {
         run("yaml.html");
     }
 
+    @Test
+    public void testKeyref() throws Exception {
+        run("keyref.html");
+    }
+
+    @Test
+    public void testConref() throws Exception {
+        run("conref.html");
+    }
+
+    @Test
+    public void testConkeyref() throws Exception {
+        run("conkeyref.html");
+    }
+
 }

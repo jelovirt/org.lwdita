@@ -381,15 +381,6 @@
   <xsl:template match="span" mode="class">
     <xsl:attribute name="class">- topic/ph </xsl:attribute>
   </xsl:template>
-  <xsl:template match="span[@data-keyref]">
-    <xref>
-      <xsl:apply-templates select="." mode="class"/>
-      <xsl:apply-templates select="@* | node()"/>
-    </xref>
-  </xsl:template>
-  <xsl:template match="span[@data-keyref]" mode="class">
-    <xsl:attribute name="class">- topic/xref </xsl:attribute>
-  </xsl:template>
   <xsl:template match="@data-keyref">
     <xsl:attribute name="keyref" select="."/>
   </xsl:template>
@@ -408,6 +399,9 @@
   <xsl:template match="a">
     <xref>
       <xsl:apply-templates select="." mode="class"/>
+      <xsl:if test="@data-keyref">
+        <xsl:attribute name="keyref" select="@data-keyref"/>
+      </xsl:if>
       <xsl:choose>
         <xsl:when test="starts-with(@href, 'mailto')">
           <xsl:attribute name="format">email</xsl:attribute>
@@ -560,5 +554,13 @@
   </xsl:template>
 
   <xsl:template match="@data-hd-class" priority="10"/>
+
+  <xsl:template match="@data-conref" priority="10">
+    <xsl:attribute name="conref" select="."/>
+  </xsl:template>
+
+  <xsl:template match="@data-conkeyref" priority="10">
+    <xsl:attribute name="conkeyref" select="."/>
+  </xsl:template>
 
 </xsl:stylesheet>

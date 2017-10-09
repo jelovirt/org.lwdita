@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<topic class="- topic/topic " id="conref">
+  <title class="- topic/title ">Conref</title>
+  <shortdesc class="- topic/shortdesc ">shortdesc</shortdesc>
+  <body class="- topic/body ">
+    <p class="- topic/p " conref="common.md#foo/bar">
+    </p>
+  </body>
+</topic>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<topic class="- topic/topic " id="keyref">
+  <title class="- topic/title ">Keyref</title>
+  <body class="- topic/body ">
+    <p class="- topic/p ">Foo <ph class="- topic/ph " keyref="bar"/> baz.</p>
+  </body>
+</topic>

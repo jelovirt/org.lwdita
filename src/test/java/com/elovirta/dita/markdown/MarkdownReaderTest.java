@@ -181,4 +181,20 @@ public class MarkdownReaderTest extends AbstractReaderTest {
         run("html.md");
     }
 
+    @Test
+    public void testConref() throws Exception {
+        run("conref.md");
+    }
+
+    @Test
+    public void testKeyref() throws Exception {
+        run("keyref.md");
+    }
+
+    @Test
+    public void testConkeyref() throws Exception {
+        run("conkeyref.md");
+    }
+
+
 }
