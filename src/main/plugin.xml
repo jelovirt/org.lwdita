@@ -6,13 +6,13 @@
   <transtype name="markdown_gitbook" desc="GitBook"/>
   <feature extension="dita.conductor.target.relative" file="conductor.xml"/>
   <!-- common -->
+  <feature extension="dita.conductor.lib.import" file="lib/${id}-${version}.jar"/>
   <feature extension="dita.conductor.lib.import" file="lib/htmlparser-1.4.jar"/>
   <!-- Markdown to DITA -->
   <template file="build-markdown_template.xml"/>
   <template file="xsl/dita2markdown_template.xsl"/>
   <!--template file="xsl/map2markdown-toc_template.xsl"/-->
   <template file="xsl/map2markdown-cover_template.xsl"/>
-  <feature extension="dita.conductor.lib.import" file="lib/markdown-${version}.jar"/>
   <feature extension="dita.conductor.lib.import" file="lib/flexmark-all-0.26.4.jar"/>
   <feature extension="dita.conductor.lib.import" file="lib/flexmark-profile-pegdown-0.26.4.jar"/>
   <feature extension="dita.conductor.lib.import" file="lib/flexmark-ext-abbreviation-0.26.4.jar"/>
@@ -52,7 +52,6 @@
   </feature>
   <!-- HTML to DITA -->
   <template file="build-html_template.xml"/>
-  <feature extension="dita.conductor.lib.import" file="html-${version}.jar"/>
   <feature extension="dita.parser">
     <parser format="html" class="com.elovirta.dita.html.HtmlReader"/>
     <parser format="hdita" class="com.elovirta.dita.html.HtmlReader"/>
