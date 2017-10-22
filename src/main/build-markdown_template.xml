@@ -10,7 +10,7 @@
     <condition property="markdown.type.prefix" value="_${markdown.type}" else="">
       <isset property="markdown.type"/>
     </condition>
-    <condition property="args.xsl" value="${dita.plugin.com.elovirta.dita.markdown.dir}/xsl/dita2markdown${markdown.type.prefix}.xsl">
+    <condition property="args.xsl" value="${dita.plugin.org.lwdita.dir}/xsl/dita2markdown${markdown.type.prefix}.xsl">
       <not>
         <isset property="args.xsl" />
       </not>
@@ -28,7 +28,7 @@
   </target>
 
   <target name="markdown_gitbook.init" depends="markdown_github.init">
-    <condition property="args.markdown.toc.xsl" value="${dita.plugin.com.elovirta.dita.markdown.dir}/xsl/map2markdown-cover_gitbook.xsl">
+    <condition property="args.markdown.toc.xsl" value="${dita.plugin.org.lwdita.dir}/xsl/map2markdown-cover_gitbook.xsl">
       <not>
         <isset property="args.markdown.toc.xsl" />
       </not>
@@ -60,7 +60,7 @@
   <target name="dita2markdown_gitbook" depends="markdown_gitbook.init, dita2markdown"/>
 
   <target name="dita.map.markdown.init" unless="noMap">
-    <condition property="args.markdown.toc.xsl" value="${dita.plugin.com.elovirta.dita.markdown.dir}/xsl/map2markdown-cover.xsl">
+    <condition property="args.markdown.toc.xsl" value="${dita.plugin.org.lwdita.dir}/xsl/map2markdown-cover.xsl">
       <not>
         <isset property="args.markdown.toc.xsl" />
       </not>

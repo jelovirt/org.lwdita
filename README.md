@@ -1,7 +1,9 @@
 Lightweight DITA for DITA-OT
 ============================
 
-DITA-OT LwDITA plug-in contains
+The DITA-OT LwDITA plug-in supersedes the previously released [Markdown plug-in for DITA-OT](https://github.com/jelovirt/dita-ot-markdown) and adds additional features to support Lightweight DITA. 
+
+It contains:
 
 -   a custom parser for Markdown and HTML to allow using
     MDITA and HDITA as a source document format,
@@ -58,7 +60,7 @@ Install
 
 The `dita` command line tool requires no additional configuration;
 running DITA-OT using Ant requires adding plug-in contributed JAR files
-to `CLASSPATH` with e.g. `-lib plugins/com.elovirta.dita.markdown`.
+to the `CLASSPATH` with e.g. `-lib plugins/org.lwdita`.
 
 Build
 -----
