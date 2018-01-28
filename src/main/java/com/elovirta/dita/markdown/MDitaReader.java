@@ -40,7 +40,7 @@ public class MDitaReader extends MarkdownReader {
                         SuperscriptExtension.create(),
                         //                SubscriptExtension.create(),
                         TablesExtension.create(),
-                        TypographicExtension.create(),
+//                        TypographicExtension.create(),
                         //                WikiLinkExtension.create(),
                         AutolinkExtension.create(),
                         YamlFrontMatterExtension.create(),
