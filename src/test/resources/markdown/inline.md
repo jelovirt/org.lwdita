@@ -10,3 +10,7 @@ here is a **bold** (**bold**) claim
 here is an *italics* (*italics*) claim
 
 here is a `code` (`code`) claim
+
+here --- mdash --- dash
+
+here -- ndash -- dash

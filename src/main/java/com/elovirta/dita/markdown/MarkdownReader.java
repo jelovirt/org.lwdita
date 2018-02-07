@@ -75,7 +75,7 @@ public class MarkdownReader implements XMLReader {
                         SuperscriptExtension.create(),
         //                SubscriptExtension.create(),
                         TablesExtension.create(),
-                        TypographicExtension.create(),
+//                        TypographicExtension.create(),
         //                WikiLinkExtension.create(),
                         AutolinkExtension.create(),
                         YamlFrontMatterExtension.create(),
