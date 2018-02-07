@@ -332,14 +332,18 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
     private void render(AnchorLink node, final NodeRendererContext context, final DitaWriter html) {
         context.renderChildren(node);
     }
-//
-//    private void render(final AutoLinkNode node, final NodeRendererContext context, final DitaWriter html) {
+
+    private void render(final AutoLink node, final NodeRendererContext context, final DitaWriter html) {
 //        final AttributesBuilder atts = getLinkAttributes(node.getChars().toString());
 //
 //        html.startElement(TOPIC_XREF, atts.build());
-//        context.renderChildren(node);
+        context.renderChildren(node);
 //        html.endElement();
-//    }
+    }
+
+    private void render(final TextBase node, final NodeRendererContext context, final DitaWriter html) {
+        context.renderChildren(node);
+    }
 
     private void render(final BlockQuote node, final NodeRendererContext context, final DitaWriter html) {
         printTag(node, context, html, TOPIC_LQ, BLOCKQUOTE_ATTS);

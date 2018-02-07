@@ -12,3 +12,7 @@ Links
 [key]
 
 <address@example.com>
+
+<http://www.example.com/>
+
+http://www.example.com/
