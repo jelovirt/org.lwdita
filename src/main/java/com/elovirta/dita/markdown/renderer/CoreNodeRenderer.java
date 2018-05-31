@@ -527,10 +527,11 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
     }
 
     private void render(final Heading node, final NodeRendererContext context, final DitaWriter html) {
+        if (lwDita && node.getLevel() > 2) {
+            throw new ParseException("LwDITA does not support level " + node.getLevel() + " header: " + node.getText());
+        }
         if (node.getLevel() > headerLevel + 1) {
             throw new ParseException("Header level raised from " + headerLevel + " to " + node.getLevel() + " without intermediate header level");
-        } else if (lwDita && node.getLevel() > 2) {
-            throw new ParseException("LwDITA does not support level " + node.getLevel() + " header: " + node.getText());
         }
         final StringBuilder buf = new StringBuilder();
         node.getAstExtra(buf);
