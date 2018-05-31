@@ -416,7 +416,15 @@
         </xsl:when>
         <xsl:when test="ends-with($href, '.dita') or ends-with($href, '.xml')"/>
         <xsl:when test="@href">
-          <xsl:attribute name="format" select="replace($href, '^.+\.(.+?)$', '$1')"/>
+          <xsl:attribute name="format">
+            <xsl:variable name="path" select="if (contains($href, '://'))
+                                              then tokenize(substring-after($href, '://'), '/')[position() gt 1]
+                                              else tokenize($href, '/')"/>
+            <xsl:variable name="file" select="$path[position() eq last()]"/>
+            <xsl:value-of select="if (matches($file, '^.+\.(\w+?)$'))
+                                  then replace($file, '^.+\.(\w+?)$', '$1')
+                                  else 'html'"/>
+          </xsl:attribute>
         </xsl:when>
       </xsl:choose>
       <xsl:if test="matches(@href, '^https?://', 'i')">

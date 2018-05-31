@@ -27,7 +27,9 @@
     <p class="- topic/p ">
       <xref class="- topic/xref " format="email" href="mailto:address@example.com" scope="external"/>
     </p>
-    <p class="- topic/p "/>
+    <p class="- topic/p ">
+      <xref class="- topic/xref " format="html" href="http://www.example.com/" scope="external">http://www.example.com/</xref>
+    </p>
     <p class="- topic/p ">http://www.example.com/</p>
   </body>
 </topic>

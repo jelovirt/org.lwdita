@@ -334,11 +334,15 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
     }
 
     private void render(final AutoLink node, final NodeRendererContext context, final DitaWriter html) {
-//        final AttributesBuilder atts = getLinkAttributes(node.getChars().toString());
-//
-//        html.startElement(TOPIC_XREF, atts.build());
-        context.renderChildren(node);
-//        html.endElement();
+        if (node.getChars().charAt(0) == '<') {
+            final AttributesBuilder atts = getLinkAttributes(node.getText().toString());
+
+            html.startElement(TOPIC_XREF, atts.build());
+            html.characters(node.getText().toString());
+            html.endElement();
+        } else {
+            context.renderChildren(node);
+        }
     }
 
     private void render(final TextBase node, final NodeRendererContext context, final DitaWriter html) {
