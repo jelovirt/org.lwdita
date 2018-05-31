@@ -27,6 +27,11 @@ task dist(type: Zip) {
     }
     from(configurations.runtime) {
         include { details -> details.file.name.contains('flexmark') }
+        exclude { details -> details.file.name.contains('flexmark-all') }
+        exclude { details -> details.file.name.contains('flexmark-ext-emoji') }
+        exclude { details -> details.file.name.contains('flexmark-ext-gfm-issues') }
+        exclude { details -> details.file.name.contains('flexmark-ext-gfm-users') }
+        exclude { details -> details.file.name.contains('flexmark-ext-xwiki-macros') }
         exclude { details -> details.file.name.contains('flexmark-pdf') }
         include { details -> details.file.name.contains('autolink') }
         include { details -> details.file.name.contains('htmlparser') }
