@@ -13,32 +13,32 @@
   <template file="xsl/dita2markdown_template.xsl"/>
   <!--template file="xsl/map2markdown-toc_template.xsl"/-->
   <template file="xsl/map2markdown-cover_template.xsl"/>
-  <feature extension="dita.conductor.lib.import" file="lib/flexmark-profile-pegdown-0.26.4.jar"/>
-  <feature extension="dita.conductor.lib.import" file="lib/flexmark-ext-abbreviation-0.26.4.jar"/>
-  <feature extension="dita.conductor.lib.import" file="lib/flexmark-ext-anchorlink-0.26.4.jar"/>
-  <feature extension="dita.conductor.lib.import" file="lib/flexmark-ext-aside-0.26.4.jar"/>
-  <feature extension="dita.conductor.lib.import" file="lib/flexmark-ext-autolink-0.26.4.jar"/>
-  <feature extension="dita.conductor.lib.import" file="lib/flexmark-ext-definition-0.26.4.jar"/>
-  <feature extension="dita.conductor.lib.import" file="lib/flexmark-html-parser-0.26.4.jar"/>
-  <feature extension="dita.conductor.lib.import" file="lib/flexmark-ext-escaped-character-0.26.4.jar"/>
-  <feature extension="dita.conductor.lib.import" file="lib/flexmark-ext-footnotes-0.26.4.jar"/>
-  <feature extension="dita.conductor.lib.import" file="lib/flexmark-jira-converter-0.26.4.jar"/>
-  <feature extension="dita.conductor.lib.import" file="lib/flexmark-youtrack-converter-0.26.4.jar"/>
-  <feature extension="dita.conductor.lib.import" file="lib/flexmark-ext-gfm-strikethrough-0.26.4.jar"/>
-  <feature extension="dita.conductor.lib.import" file="lib/flexmark-ext-gfm-tables-0.26.4.jar"/>
-  <feature extension="dita.conductor.lib.import" file="lib/flexmark-ext-gfm-tasklist-0.26.4.jar"/>
-  <feature extension="dita.conductor.lib.import" file="lib/flexmark-ext-jekyll-front-matter-0.26.4.jar"/>
-  <feature extension="dita.conductor.lib.import" file="lib/flexmark-ext-jekyll-tag-0.26.4.jar"/>
-  <feature extension="dita.conductor.lib.import" file="lib/flexmark-ext-ins-0.26.4.jar"/>
-  <feature extension="dita.conductor.lib.import" file="lib/flexmark-ext-superscript-0.26.4.jar"/>
-  <feature extension="dita.conductor.lib.import" file="lib/flexmark-ext-tables-0.26.4.jar"/>
-  <feature extension="dita.conductor.lib.import" file="lib/flexmark-ext-toc-0.26.4.jar"/>
-  <feature extension="dita.conductor.lib.import" file="lib/flexmark-ext-typographic-0.26.4.jar"/>
-  <feature extension="dita.conductor.lib.import" file="lib/flexmark-ext-wikilink-0.26.4.jar"/>
-  <feature extension="dita.conductor.lib.import" file="lib/flexmark-ext-yaml-front-matter-0.26.4.jar"/>
-  <feature extension="dita.conductor.lib.import" file="lib/flexmark-formatter-0.26.4.jar"/>
-  <feature extension="dita.conductor.lib.import" file="lib/flexmark-0.26.4.jar"/>
-  <feature extension="dita.conductor.lib.import" file="lib/flexmark-util-0.26.4.jar"/>
+  <feature extension="dita.conductor.lib.import" file="lib/flexmark-profile-pegdown-0.32.24.jar"/>
+  <feature extension="dita.conductor.lib.import" file="lib/flexmark-ext-abbreviation-0.32.24.jar"/>
+  <feature extension="dita.conductor.lib.import" file="lib/flexmark-ext-anchorlink-0.32.24.jar"/>
+  <feature extension="dita.conductor.lib.import" file="lib/flexmark-ext-aside-0.32.24.jar"/>
+  <feature extension="dita.conductor.lib.import" file="lib/flexmark-ext-autolink-0.32.24.jar"/>
+  <feature extension="dita.conductor.lib.import" file="lib/flexmark-ext-definition-0.32.24.jar"/>
+  <feature extension="dita.conductor.lib.import" file="lib/flexmark-html-parser-0.32.24.jar"/>
+  <feature extension="dita.conductor.lib.import" file="lib/flexmark-ext-escaped-character-0.32.24.jar"/>
+  <feature extension="dita.conductor.lib.import" file="lib/flexmark-ext-footnotes-0.32.24.jar"/>
+  <feature extension="dita.conductor.lib.import" file="lib/flexmark-jira-converter-0.32.24.jar"/>
+  <feature extension="dita.conductor.lib.import" file="lib/flexmark-youtrack-converter-0.32.24.jar"/>
+  <feature extension="dita.conductor.lib.import" file="lib/flexmark-ext-gfm-strikethrough-0.32.24.jar"/>
+  <feature extension="dita.conductor.lib.import" file="lib/flexmark-ext-gfm-tables-0.32.24.jar"/>
+  <feature extension="dita.conductor.lib.import" file="lib/flexmark-ext-gfm-tasklist-0.32.24.jar"/>
+  <feature extension="dita.conductor.lib.import" file="lib/flexmark-ext-jekyll-front-matter-0.32.24.jar"/>
+  <feature extension="dita.conductor.lib.import" file="lib/flexmark-ext-jekyll-tag-0.32.24.jar"/>
+  <feature extension="dita.conductor.lib.import" file="lib/flexmark-ext-ins-0.32.24.jar"/>
+  <feature extension="dita.conductor.lib.import" file="lib/flexmark-ext-superscript-0.32.24.jar"/>
+  <feature extension="dita.conductor.lib.import" file="lib/flexmark-ext-tables-0.32.24.jar"/>
+  <feature extension="dita.conductor.lib.import" file="lib/flexmark-ext-toc-0.32.24.jar"/>
+  <feature extension="dita.conductor.lib.import" file="lib/flexmark-ext-typographic-0.32.24.jar"/>
+  <feature extension="dita.conductor.lib.import" file="lib/flexmark-ext-wikilink-0.32.24.jar"/>
+  <feature extension="dita.conductor.lib.import" file="lib/flexmark-ext-yaml-front-matter-0.32.24.jar"/>
+  <feature extension="dita.conductor.lib.import" file="lib/flexmark-formatter-0.32.24.jar"/>
+  <feature extension="dita.conductor.lib.import" file="lib/flexmark-0.32.24.jar"/>
+  <feature extension="dita.conductor.lib.import" file="lib/flexmark-util-0.32.24.jar"/>
   <feature extension="dita.conductor.lib.import" file="lib/autolink-0.6.0.jar"/>
   <feature extension="dita.parser">
     <parser format="markdown" class="com.elovirta.dita.markdown.MarkdownReader"/>
