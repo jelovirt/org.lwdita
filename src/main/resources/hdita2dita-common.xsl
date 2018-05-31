@@ -397,6 +397,7 @@
     </i>
   </xsl:template>
   <xsl:template match="a">
+    <xsl:variable name="href" select="lower-case(if (contains(@href, '#')) then substring-before(@href, '#') else @href)"/>
     <xref>
       <xsl:apply-templates select="." mode="class"/>
       <xsl:if test="@data-keyref">
@@ -410,12 +411,12 @@
         <xsl:when test="@type">
           <xsl:attribute name="format" select="@type"/>
         </xsl:when>
-        <xsl:when test="ends-with(lower-case(@href), '.md')">
+        <xsl:when test="ends-with($href, '.md')">
           <xsl:attribute name="format">markdown</xsl:attribute>
         </xsl:when>
-        <xsl:when test="ends-with(lower-case(@href), '.dita') or ends-with(lower-case(@href), '.xml')"/>
+        <xsl:when test="ends-with($href, '.dita') or ends-with($href, '.xml')"/>
         <xsl:when test="@href">
-          <xsl:attribute name="format" select="replace(lower-case(@href), '^.+\.(.+?)$', '$1')"/>
+          <xsl:attribute name="format" select="replace($href, '^.+\.(.+?)$', '$1')"/>
         </xsl:when>
       </xsl:choose>
       <xsl:if test="matches(@href, '^https?://', 'i')">

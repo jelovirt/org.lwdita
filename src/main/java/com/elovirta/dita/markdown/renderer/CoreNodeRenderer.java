@@ -1332,21 +1332,23 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
                 .add(ATTRIBUTE_NAME_HREF, href);
 
         final URI uri = toURI(href);
-        final String ext = FilenameUtils.getExtension(href).toLowerCase();
-        String format;
-        switch (ext) {
-            case ATTR_FORMAT_VALUE_DITA:
-            case "xml":
-                format = null;
-                break;
-            // Markdown is converted to DITA
-            case "md":
-            case "markdown":
-                format = "markdown";
-                break;
-            default:
-                format = !ext.isEmpty() ? ext : "html";
-                break;
+        String format = null;
+        if (uri.getPath() != null) {
+            final String ext = FilenameUtils.getExtension(uri.getPath()).toLowerCase();
+            switch (ext) {
+                case ATTR_FORMAT_VALUE_DITA:
+                case "xml":
+                    format = null;
+                    break;
+                // Markdown is converted to DITA
+                case "md":
+                case "markdown":
+                    format = "markdown";
+                    break;
+                default:
+                    format = !ext.isEmpty() ? ext : "html";
+                    break;
+            }
         }
         if (uri.getScheme() != null && uri.getScheme().equals("mailto")) {
             atts.add(ATTRIBUTE_NAME_FORMAT, "email");

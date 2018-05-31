@@ -3,6 +3,8 @@ Links
 
 [Markdown](concept.md)
 
+[Markdown with fragment](concept.md#id)
+
 [DITA](topic.dita)
 
 [HTML](test.html)
