@@ -55,7 +55,7 @@ Install
 1.  Run the plug-in installation command:
 
     ~~~~ {.sh}
-    dita -install https://github.com/jelovirt/org.lwdita/releases/download/2.0.2/org.lwdita-2.0.2.zip
+    dita -install https://github.com/jelovirt/org.lwdita/releases/download/2.0.4/org.lwdita-2.0.4.zip
     ~~~~
 
 The `dita` command line tool requires no additional configuration;
