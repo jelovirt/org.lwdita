@@ -9,7 +9,7 @@
 
 <xsl:template name="getMeta">
   <xsl:variable name="fields" as="element()*">
-    <xsl:for-each select="*[contains(@class, ' topic/prolog ')]">
+    <xsl:for-each select="*[contains(@class, ' topic/prolog ')] | /dita/*[1]/*[contains(@class, ' topic/prolog ')]">
       <xsl:call-template name="get-value">
         <xsl:with-param name="values" select="*[contains(@class, ' topic/author ')]"/>
       </xsl:call-template>
