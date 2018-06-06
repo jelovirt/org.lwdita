@@ -7,8 +7,6 @@
                 xpath-default-namespace="http://www.w3.org/1999/xhtml"
                 version="2.0">
 
-  <xsl:import href="classpath:///utils.xsl"/>
-
   <!-- Topic -->
 
   <xsl:template match="html">
