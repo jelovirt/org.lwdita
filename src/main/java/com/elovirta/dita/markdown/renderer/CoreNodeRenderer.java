@@ -377,7 +377,7 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
             context.renderChildren(node);
 //            previous = (child instanceof DefinitionTermNode) ? TOPIC_DT : TOPIC_DD;
 //        }
-        html.endElement(); // dlentry
+//        html.endElement(); // dlentry
         html.endElement(); // dl
     }
 
