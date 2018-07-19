@@ -14,3 +14,15 @@ here is a `code` (`code`) claim
 here --- mdash --- dash
 
 here -- ndash -- dash
+
+HTML <b>bold</b> element
+
+HTML <i>italic</i> element
+
+HTML <em>emphasis</em> element
+
+HTML <strong>strong</strong> element
+
+HTML <sup>superscript</sup> element
+
+HTML <sub>subscript</sub> element

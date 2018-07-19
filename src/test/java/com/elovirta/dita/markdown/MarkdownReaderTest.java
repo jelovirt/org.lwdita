@@ -175,7 +175,7 @@ public class MarkdownReaderTest extends AbstractReaderTest {
     public void testComment() throws Exception {
         run("comment.md");
     }
-    @Ignore
+
     @Test
     public void testHtml() throws Exception {
         run("html.md");

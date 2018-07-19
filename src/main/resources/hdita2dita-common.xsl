@@ -394,6 +394,24 @@
       <xsl:apply-templates select="@* | node()"/>
     </i>
   </xsl:template>
+  <xsl:template match="sup">
+    <sup>
+      <xsl:apply-templates select="." mode="class"/>
+      <xsl:apply-templates select="@* | node()"/>
+    </sup>
+  </xsl:template>
+  <xsl:template match="sup" mode="class">
+    <xsl:attribute name="class">+ topic/ph hi-d/sup </xsl:attribute>
+  </xsl:template>
+  <xsl:template match="sub">
+    <sub>
+      <xsl:apply-templates select="." mode="class"/>
+      <xsl:apply-templates select="@* | node()"/>
+    </sub>
+  </xsl:template>
+  <xsl:template match="sub" mode="class">
+    <xsl:attribute name="class">+ topic/ph hi-d/sub </xsl:attribute>
+  </xsl:template>
   <xsl:template match="a">
     <xsl:variable name="href" select="lower-case(if (contains(@href, '#')) then substring-before(@href, '#') else @href)"/>
     <xref>
