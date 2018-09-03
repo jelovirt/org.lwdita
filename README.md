@@ -3,6 +3,8 @@ Lightweight DITA for DITA-OT
 
 The DITA-OT LwDITA plug-in supersedes the previously released [Markdown plug-in for DITA-OT](https://github.com/jelovirt/dita-ot-markdown) and adds additional features to support Lightweight DITA. 
 
+**Note:** The LwDITA plug-in is included in DITA Open Toolkit 3.0 and newer.
+
 It contains:
 
 -   a custom parser for Markdown and HTML to allow using
