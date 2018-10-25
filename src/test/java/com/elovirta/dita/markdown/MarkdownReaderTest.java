@@ -196,5 +196,9 @@ public class MarkdownReaderTest extends AbstractReaderTest {
         run("conkeyref.md");
     }
 
+    @Test
+    public void testFootnote() throws Exception {
+        run("footnote.md");
+    }
 
 }
