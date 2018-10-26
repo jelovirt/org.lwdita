@@ -5,6 +5,6 @@
   id="footnote">
   <title class="- topic/title ">Footnote</title>
   <body class="- topic/body ">
-    <p class="- topic/p ">Press and hold for 10 seconds to reset the remote control and all lighting group programming on it<fn class="- topic/fn " callout="1">If you reset the remote control, you must reprogram all lighting groups on it.</fn>.</p>
+    <p class="- topic/p ">Press<fn class="- topic/fn " callout="1">If you reset the remote control, you must reprogram all lighting groups on it.</fn> and hold for 10 seconds<fn callout="2" class="- topic/fn ">Second footnote</fn> to reset the remote control and all lighting group programming on it<fn class="- topic/fn " callout="1">If you reset the remote control, you must reprogram all lighting groups on it.</fn>.</p>
   </body>
 </topic>
