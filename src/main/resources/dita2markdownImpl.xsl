@@ -587,14 +587,14 @@
   <!-- handle all levels thru browser processing -->
   <xsl:template match="*[contains(@class, ' topic/sl ')]" name="topic.sl">
     <xsl:apply-templates select="*[contains(@class, ' ditaot-d/ditaval-startprop ')]" mode="out-of-line"/>
-    <ul class="simple">
+    <bulletlist class="simple">
       <xsl:call-template name="commonattributes">
         <xsl:with-param name="default-output-class" select="'simple'"/>
       </xsl:call-template>
       <xsl:apply-templates select="@compact"/>
       <xsl:call-template name="setid"/>
       <xsl:apply-templates/>
-    </ul>
+    </bulletlist>
     <xsl:apply-templates select="*[contains(@class, ' ditaot-d/ditaval-endprop ')]" mode="out-of-line"/>
   </xsl:template>
 
@@ -860,48 +860,55 @@
   <!-- process the TM tag -->
   <!-- removed priority 1 : should not be needed -->
   <xsl:template match="*[contains(@class, ' topic/tm ')]" name="topic.tm">
+    <xsl:param name="root" select="root()" as="document-node()" tunnel="yes"/>
+
     <xsl:apply-templates select="*[contains(@class, ' ditaot-d/ditaval-startprop ')]" mode="out-of-line"/>
     <xsl:apply-templates/> <!-- output the TM content -->
 
     <!-- Test for TM area's language -->
     <xsl:variable name="tmtest">
-      <xsl:call-template name="tm-area"/>
+      <xsl:apply-templates select="." mode="mark-tm-in-this-area"/>
     </xsl:variable>
+
     <!-- If this language should get trademark markers, continue... -->
     <xsl:if test="$tmtest = 'tm'">
       <xsl:variable name="tmvalue" select="@trademark"/>
+
       <!-- Determine if this is in a title, and should be marked -->
+      <!-- TODO: should return boolean -->
       <xsl:variable name="usetitle">
         <xsl:if test="ancestor::*[contains(@class, ' topic/title ')]/parent::*[contains(@class, ' topic/topic ')]">
           <xsl:choose>
             <!-- Not the first one in a title -->
-            <xsl:when test="generate-id(.) != generate-id(key('tm', .)[1])">skip</xsl:when>
+            <xsl:when test="generate-id(.) != generate-id($root/key('tm', .)[1])">skip</xsl:when>
             <!-- First one in the topic, BUT it appears in a shortdesc or body -->
             <xsl:when test="//*[contains(@class, ' topic/shortdesc ') or contains(@class, ' topic/body ')]//*[contains(@class, ' topic/tm ')][@trademark = $tmvalue]">skip</xsl:when>
             <xsl:otherwise>use</xsl:otherwise>
           </xsl:choose>
         </xsl:if>
       </xsl:variable>
+
       <!-- Determine if this is in a body, and should be marked -->
+      <!-- TODO: should return boolean -->
       <xsl:variable name="usebody">
         <xsl:choose>
           <!-- If in a title or prolog, skip -->
           <xsl:when test="ancestor::*[contains(@class, ' topic/title ') or contains(@class, ' topic/prolog ')]/parent::*[contains(@class, ' topic/topic ')]">skip</xsl:when>
           <!-- If first in the document, use it -->
-          <xsl:when test="generate-id(.) = generate-id(key('tm', .)[1])">use</xsl:when>
+          <xsl:when test="generate-id(.) = generate-id($root/key('tm', .)[1])">use</xsl:when>
           <!-- If there is another before this that is in the body or shortdesc, skip -->
           <xsl:when test="preceding::*[contains(@class, ' topic/tm ')][@trademark = $tmvalue][ancestor::*[contains(@class, ' topic/body ') or contains(@class, ' topic/shortdesc ')]]">skip</xsl:when>
           <!-- Otherwise, any before this must be in a title or ignored section -->
           <xsl:otherwise>use</xsl:otherwise>
         </xsl:choose>
       </xsl:variable>
+
       <!-- If it should be used in a title or used in the body, output your favorite TM marker based on the attributes -->
       <xsl:if test="$usetitle = 'use' or $usebody = 'use'">
         <xsl:choose>  <!-- ignore @tmtype=service or anything else -->
           <xsl:when test="@tmtype = 'tm'">&#x2122;</xsl:when>
-          <xsl:when test="@tmtype = 'reg'">
-            <superscript>&#xAE;</superscript>
-          </xsl:when>
+          <xsl:when test="@tmtype = 'reg'">&#174;</xsl:when>
+          <xsl:when test="@tmtype = 'service'">&#8480;</xsl:when>
           <xsl:otherwise/>
         </xsl:choose>
       </xsl:if>
@@ -909,28 +916,10 @@
     <xsl:apply-templates select="*[contains(@class, ' ditaot-d/ditaval-endprop ')]" mode="out-of-line"/>
   </xsl:template>
 
-  <!-- Test for in TM area: returns "tm" when parent's @xml:lang needs a trademark language;
-       Otherwise, leave blank.
-       Use the TM for US English and the AP languages (Japanese, Korean, and both Chinese).
-       Ignore the TM for all other languages. -->
-  <xsl:template name="tm-area">
-    <xsl:apply-templates select="." mode="mark-tm-in-this-area"/>
+  <!-- TODO: this should return boolean, not "tm" or something else -->
+  <xsl:template match="*" mode="mark-tm-in-this-area" as="xs:string">
+    <xsl:text>tm</xsl:text>
   </xsl:template>
-  
-  <xsl:template match="*" mode="mark-tm-in-this-area" as="xs:string?">
-   <xsl:variable name="parentlang">
-    <xsl:call-template name="getLowerCaseLang"/>
-   </xsl:variable>
-   <xsl:choose>
-    <xsl:when test="$parentlang = 'en-us' or $parentlang = 'en'">tm</xsl:when>
-    <xsl:when test="$parentlang = 'ja-jp' or $parentlang = 'ja'">tm</xsl:when>
-    <xsl:when test="$parentlang = 'ko-kr' or $parentlang = 'ko'">tm</xsl:when>
-    <xsl:when test="$parentlang = 'zh-cn' or $parentlang = 'zh'">tm</xsl:when>
-    <xsl:when test="$parentlang = 'zh-tw' or $parentlang = 'zh'">tm</xsl:when>
-    <xsl:otherwise/>
-   </xsl:choose>
-  </xsl:template>
-
 
   <!-- phrase "semantic" classes -->
   <!-- citations -->
