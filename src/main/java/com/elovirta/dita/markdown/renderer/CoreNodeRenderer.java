@@ -119,6 +119,9 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
     private int currentTableColumn;
     private boolean inSection = false;
 
+    private final Set<String> footnotes = new HashSet<>();
+    private String lastId;
+
     /**
      * Current header level.
      */
@@ -360,16 +363,29 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
     }
 
     private void render(final Footnote node, final NodeRendererContext context, final DitaWriter html) {
-        final Attributes atts = new AttributesBuilder(FN_ATTS)
-                .add("callout", node.getText().toString())
-                .build();
-        html.startElement(TOPIC_FN, atts);
-        Node child = node.getFootnoteBlock().getFirstChild();
-        while (child != null) {
-            context.renderChildren(child);
-            child = child.getNext();
+        final String callout = node.getText().toString().trim();
+        final String id = getId("fn_" + callout);
+        if (footnotes.contains(id)) {
+            final Attributes atts = new AttributesBuilder(XREF_ATTS)
+                    .add(ATTRIBUTE_NAME_TYPE, "fn")
+                    .add(ATTRIBUTE_NAME_HREF, String.format("#%s/%s", lastId, id))
+                    .build();
+            html.startElement(TOPIC_XREF, atts);
+            html.endElement();
+        } else {
+            footnotes.add(id);
+            final Attributes atts = new AttributesBuilder(FN_ATTS)
+                    .add("callout", callout)
+                    .add(ATTRIBUTE_NAME_ID, id)
+                    .build();
+            html.startElement(TOPIC_FN, atts);
+            Node child = node.getFootnoteBlock().getFirstChild();
+            while (child != null) {
+                context.renderChildren(child);
+                child = child.getNext();
+            }
+            html.endElement();
         }
-        html.endElement();
     }
 
     private void render(final FootnoteBlock node, final NodeRendererContext context, final DitaWriter html) {
@@ -627,6 +643,7 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
             final AttributesBuilder atts = new AttributesBuilder(TOPIC_ATTS);
             final String id = getTopicId(node, header);
             if (id != null) {
+                lastId = id;
                 atts.add(ATTRIBUTE_NAME_ID, id);
             }
             if (!lwDita && !header.classes.isEmpty()) {

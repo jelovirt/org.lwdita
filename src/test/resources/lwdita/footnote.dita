@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <topic xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/" class="- topic/topic "
-  ditaarch:DITAArchVersion="1.2"
-  domains="(topic hi-d) (topic ut-d) (topic indexing-d) (topic hazard-d) (topic abbrev-d) (topic pr-d) (topic sw-d) (topic ui-d)"
-  id="footnote">
+       ditaarch:DITAArchVersion="1.2"
+       domains="(topic hi-d) (topic ut-d) (topic indexing-d) (topic hazard-d) (topic abbrev-d) (topic pr-d) (topic sw-d) (topic ui-d)"
+       id="footnote">
   <title class="- topic/title ">Footnote</title>
   <shortdesc class="- topic/shortdesc ">
-    Press<fn class="- topic/fn " callout="1">If you reset the remote control, you must reprogram all lighting groups on it.</fn> and hold for 10 seconds<fn class="- topic/fn " callout="2">Second footnote</fn> to reset the remote control and all lighting group programming on it<fn class="- topic/fn " callout="1">If you reset the remote control, you must reprogram all lighting groups on it.</fn>.
+    Press<fn class="- topic/fn " callout="1" id="fn_1">If you reset the remote control, you must reprogram all lighting
+    groups on it.
+  </fn> and hold for 10 seconds<fn callout="2" class="- topic/fn " id="fn_2">Second footnote</fn> to reset the remote
+    control and all lighting group programming on it<xref class="- topic/xref " type="fn" href="#footnote/fn_1"/>.
   </shortdesc>
   <body class="- topic/body "/>
 </topic>
