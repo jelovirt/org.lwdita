@@ -226,6 +226,12 @@
     <xsl:text>*</xsl:text>
   </xsl:template>
 
+  <xsl:template match="cite" mode="ast">
+    <xsl:text>*</xsl:text>
+    <xsl:apply-templates mode="ast"/>
+    <xsl:text>*</xsl:text>
+  </xsl:template>
+
   <xsl:template match="code" mode="ast">
     <xsl:text>`</xsl:text>
     <xsl:apply-templates mode="ast"/>
