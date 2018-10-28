@@ -238,6 +238,10 @@
     <xsl:text>`</xsl:text>
   </xsl:template>
 
+  <xsl:template match="link[empty(@href | @keyref)]" mode="ast">
+    <xsl:apply-templates mode="ast"/>
+  </xsl:template>
+
   <xsl:template match="link[@href]" mode="ast">
     <xsl:text>[</xsl:text>
     <xsl:apply-templates mode="ast"/>
