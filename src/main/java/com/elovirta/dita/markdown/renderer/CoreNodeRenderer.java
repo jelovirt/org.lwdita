@@ -12,6 +12,8 @@ import com.vladsch.flexmark.ext.anchorlink.AnchorLink;
 import com.vladsch.flexmark.ext.definition.DefinitionItem;
 import com.vladsch.flexmark.ext.definition.DefinitionList;
 import com.vladsch.flexmark.ext.definition.DefinitionTerm;
+import com.vladsch.flexmark.ext.footnotes.Footnote;
+import com.vladsch.flexmark.ext.footnotes.FootnoteBlock;
 import com.vladsch.flexmark.ext.gfm.strikethrough.Strikethrough;
 import com.vladsch.flexmark.ext.tables.*;
 import com.vladsch.flexmark.ext.typographic.TypographicQuotes;
@@ -63,6 +65,7 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
     private static final Attributes BODY_ATTS = buildAtts(TOPIC_BODY);
     private static final Attributes SECTION_ATTS = buildAtts(TOPIC_SECTION);
     private static final Attributes EXAMPLE_ATTS = buildAtts(TOPIC_EXAMPLE);
+    private static final Attributes FN_ATTS = buildAtts(TOPIC_FN);
     private static final Attributes LI_ATTS = buildAtts(TOPIC_LI);
     private static final Attributes P_ATTS = buildAtts(TOPIC_P);
     private static final Attributes I_ATTS = buildAtts(HI_D_I);
@@ -116,6 +119,9 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
     private int currentTableColumn;
     private boolean inSection = false;
 
+    private final Set<String> footnotes = new HashSet<>();
+    private String lastId;
+
     /**
      * Current header level.
      */
@@ -158,6 +164,8 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
     public Set<NodeRenderingHandler<?>> getNodeRenderingHandlers() {
         return new HashSet<>(Arrays.asList(
                 new NodeRenderingHandler<YamlFrontMatterBlock>(YamlFrontMatterBlock.class, (node, context, html) -> render(node, context, html)),
+                new NodeRenderingHandler<Footnote>(Footnote.class, (node, context, html) -> render(node, context, html)),
+                new NodeRenderingHandler<FootnoteBlock>(FootnoteBlock.class, (node, context, html) -> render(node, context, html)),
                 new NodeRenderingHandler<AutoLink>(AutoLink.class, (node, context, html) -> render(node, context, html)),
                 new NodeRenderingHandler<BlockQuote>(BlockQuote.class, (node, context, html) -> render(node, context, html)),
                 new NodeRenderingHandler<BulletList>(BulletList.class, (node, context, html) -> render(node, context, html)),
@@ -352,6 +360,36 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
 
     private void render(final TextBase node, final NodeRendererContext context, final DitaWriter html) {
         context.renderChildren(node);
+    }
+
+    private void render(final Footnote node, final NodeRendererContext context, final DitaWriter html) {
+        final String callout = node.getText().toString().trim();
+        final String id = getId("fn_" + callout);
+        if (footnotes.contains(id)) {
+            final Attributes atts = new AttributesBuilder(XREF_ATTS)
+                    .add(ATTRIBUTE_NAME_TYPE, "fn")
+                    .add(ATTRIBUTE_NAME_HREF, String.format("#%s/%s", lastId, id))
+                    .build();
+            html.startElement(TOPIC_XREF, atts);
+            html.endElement();
+        } else {
+            footnotes.add(id);
+            final Attributes atts = new AttributesBuilder(FN_ATTS)
+                    .add("callout", callout)
+                    .add(ATTRIBUTE_NAME_ID, id)
+                    .build();
+            html.startElement(TOPIC_FN, atts);
+            Node child = node.getFootnoteBlock().getFirstChild();
+            while (child != null) {
+                context.renderChildren(child);
+                child = child.getNext();
+            }
+            html.endElement();
+        }
+    }
+
+    private void render(final FootnoteBlock node, final NodeRendererContext context, final DitaWriter html) {
+        // Ignore
     }
 
     private void render(final BlockQuote node, final NodeRendererContext context, final DitaWriter html) {
@@ -605,6 +643,7 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
             final AttributesBuilder atts = new AttributesBuilder(TOPIC_ATTS);
             final String id = getTopicId(node, header);
             if (id != null) {
+                lastId = id;
                 atts.add(ATTRIBUTE_NAME_ID, id);
             }
             if (!lwDita && !header.classes.isEmpty()) {
