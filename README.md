@@ -33,7 +33,7 @@ The `format` attribute value must be set to `mdita` or `hdita` in order to
 recognize files as Markdown DITA or HTML DITA, respectively; the file extension is not used to
 recognize format.
 
-See [Syntax reference](https://github.com/jelovirt/dita-ot-markdown/wiki/Syntax-reference) for XML and Markdown DITA correspondence.
+See the [syntax reference](https://github.com/jelovirt/org.lwdita/wiki/Syntax-reference) for XML and Markdown DITA correspondence.
 
 ### Generating Markdown output
 
