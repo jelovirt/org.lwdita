@@ -43,11 +43,11 @@
         </li>
       </ul>
       <p class="- topic/p ">{{ 'xYGuJhKiOZw' | youtube }}</p>
-      <p class="- topic/p ">{% include link-to-more-videos.md %}</p>
+      <required-cleanup class="- topic/required-cleanup " conref="link-to-more-videos.md"/>
     </section>
     <section class="- topic/section " id="steps">
       <title class="- topic/title ">Steps:</title>
-      <p class="- topic/p ">{% include admin_sidebar/online-navigation.md %}</p>
+      <required-cleanup class="- topic/required-cleanup " conref="admin_sidebar/online-navigation.md"/>
       <ol class="- topic/ol ">
         <li class="- topic/li ">
           <p class="- topic/p ">On the <b class="+ topic/ph hi-d/b ">Navigation</b> page, click the title of the menu
@@ -140,7 +140,7 @@
     </section>
     <section class="- topic/section " id="steps-1">
       <title class="- topic/title ">Steps:</title>
-      <p class="- topic/p ">{% include admin_sidebar/online-navigation.md %}</p>
+      <required-cleanup class="- topic/required-cleanup " conref="admin_sidebar/online-navigation.md"/>
       <ol class="- topic/ol ">
         <li class="- topic/li ">
           <p class="- topic/p ">Click the title of the menu that includes the item.</p>
@@ -189,7 +189,7 @@
     </section>
     <section class="- topic/section " id="steps-2">
       <title class="- topic/title ">Steps:</title>
-      <p class="- topic/p ">{% include admin_sidebar/online-navigation.md %}</p>
+      <required-cleanup class="- topic/required-cleanup " conref="admin_sidebar/online-navigation.md"/>
       <ol class="- topic/ol ">
         <li class="- topic/li ">
           <p class="- topic/p ">Click the title of the menu that you want to reorder.</p>
@@ -217,7 +217,7 @@
     </section>
     <section class="- topic/section " id="steps-3">
       <title class="- topic/title ">Steps:</title>
-      <p class="- topic/p ">{% include admin_sidebar/online-navigation.md %}</p>
+      <required-cleanup class="- topic/required-cleanup " conref="admin_sidebar/online-navigation.md"/>
       <ol class="- topic/ol ">
         <li class="- topic/li ">
           <p class="- topic/p ">Click the title of the menu that you want to reorder.</p>
