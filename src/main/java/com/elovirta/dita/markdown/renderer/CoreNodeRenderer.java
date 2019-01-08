@@ -15,6 +15,8 @@ import com.vladsch.flexmark.ext.definition.DefinitionTerm;
 import com.vladsch.flexmark.ext.footnotes.Footnote;
 import com.vladsch.flexmark.ext.footnotes.FootnoteBlock;
 import com.vladsch.flexmark.ext.gfm.strikethrough.Strikethrough;
+import com.vladsch.flexmark.ext.jekyll.tag.JekyllTag;
+import com.vladsch.flexmark.ext.jekyll.tag.JekyllTagBlock;
 import com.vladsch.flexmark.ext.tables.*;
 import com.vladsch.flexmark.ext.typographic.TypographicQuotes;
 import com.vladsch.flexmark.ext.yaml.front.matter.AbstractYamlFrontMatterVisitor;
@@ -95,6 +97,7 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
     private static final Attributes PH_ATTS = buildAtts(TOPIC_PH);
     private static final Attributes ENTRY_ATTS = buildAtts(TOPIC_ENTRY);
     private static final Attributes FIG_ATTS = buildAtts(TOPIC_FIG);
+    private static final Attributes REQUIRED_CLEANUP_ATTS = buildAtts(TOPIC_REQUIRED_CLEANUP);
     private static final Attributes EMPTY_ATTS = new AttributesImpl();
 
     private static final Map<String, DitaClass> sections = new HashMap<>();
@@ -210,7 +213,9 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
                 new NodeRenderingHandler<Text>(Text.class, (node, context, html) -> render(node, context, html)),
                 new NodeRenderingHandler<TextBase>(TextBase.class, (node, context, html) -> render(node, context, html)),
                 new NodeRenderingHandler<ThematicBreak>(ThematicBreak.class, (node, context, html) -> render(node, context, html)),
-                new NodeRenderingHandler<AnchorLink>(AnchorLink.class, (node, context, html) -> render(node, context, html))
+                new NodeRenderingHandler<AnchorLink>(AnchorLink.class, (node, context, html) -> render(node, context, html)),
+                new NodeRenderingHandler<JekyllTagBlock>(JekyllTagBlock.class, (node, context, html) -> render(node, context, html)),
+                new NodeRenderingHandler<JekyllTag>(JekyllTag.class, (node, context, html) -> render(node, context, html))
         ));
     }
 
@@ -344,6 +349,19 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
 
     private void render(AnchorLink node, final NodeRendererContext context, final DitaWriter html) {
         context.renderChildren(node);
+    }
+
+    private void render(JekyllTagBlock node, final NodeRendererContext context, final DitaWriter html) {
+        context.renderChildren(node);
+    }
+
+    private void render(JekyllTag node, final NodeRendererContext context, final DitaWriter html) {
+        if (node.getTag().toString().equals("include")) {
+            final AttributesBuilder atts = new AttributesBuilder(REQUIRED_CLEANUP_ATTS)
+                    .add(ATTRIBUTE_NAME_CONREF, node.getParameters().toString());
+            html.startElement(TOPIC_REQUIRED_CLEANUP, atts.build());
+            html.endElement();
+        }
     }
 
     private void render(final AutoLink node, final NodeRendererContext context, final DitaWriter html) {

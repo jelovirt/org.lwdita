@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<topic class="- topic/topic " id="add-remove-or-edit-menu-items-in-your-online-store">
+  <title class="- topic/title ">Add, remove, or edit menu items in your online store</title>
+  <body class="- topic/body ">
+    <p class="- topic/p ">============================
+      You can add menu items to your online store menus to build your store's navigation. Menu items are links to
+      products, collections, webpages, blog posts, policies, or other websites. You can also remove or edit menu items.
+    </p>
+    <p class="- topic/p ">In most cases, you need to create an item before you can link to it. For example, you need to <xref
+        class="- topic/xref " format="html" href="manual/products/collections">create a collection
+    </xref> before you can add it to a menu.
+    </p>
+    <p class="- topic/p ">You can view and change your online store navigation from the
+      <xref class="- topic/xref " format="html" href="/www.shopify.com/admin/menus">
+        <b class="+ topic/ph hi-d/b ">Navigation</b>
+      </xref>
+      page in your Shopify admin.
+    </p>
+  </body>
+  <topic class="- topic/topic " id="add-a-menu-item">
+    <title class="- topic/title ">Add a menu item</title>
+    <body class="- topic/body ">
+      <p class="- topic/p ">You can add menu items to link to:</p>
+      <ul class="- topic/ul ">
+        <li class="- topic/li ">
+          <p class="- topic/p ">webpages</p>
+        </li>
+        <li class="- topic/li ">
+          <p class="- topic/p ">collections</p>
+        </li>
+        <li class="- topic/li ">
+          <p class="- topic/p ">products</p>
+        </li>
+        <li class="- topic/li ">
+          <p class="- topic/p ">blogs or blog posts</p>
+        </li>
+        <li class="- topic/li ">
+          <p class="- topic/p ">store policies</p>
+        </li>
+        <li class="- topic/li ">
+          <p class="- topic/p ">external websites</p>
+        </li>
+        <li class="- topic/li ">
+          <p class="- topic/p ">email links</p>
+        </li>
+      </ul>
+      <p class="- topic/p ">{{ 'xYGuJhKiOZw' | youtube }}</p>
+      <required-cleanup class="- topic/required-cleanup " conref="link-to-more-videos.md"/>
+    </body>
+  </topic>
+  <topic class="- topic/topic " id="steps">
+    <title class="- topic/title ">Steps:</title>
+    <body class="- topic/body ">
+      <required-cleanup class="- topic/required-cleanup " conref="admin_sidebar/online-navigation.md"/>
+      <ol class="- topic/ol ">
+        <li class="- topic/li ">
+          <p class="- topic/p ">On the <b class="+ topic/ph hi-d/b ">Navigation</b> page, click the title of the menu
+            that you want to edit.
+          </p>
+        </li>
+        <li class="- topic/li ">
+          <p class="- topic/p ">Click <b class="+ topic/ph hi-d/b ">Add menu item</b>.
+          </p>
+        </li>
+        <li class="- topic/li ">
+          <p class="- topic/p ">Enter a title for the menu item. This title displays in the menu, and can include
+            special characters or emoji.
+          </p>
+        </li>
+        <li class="- topic/li ">
+          <p class="- topic/p ">Click the <b class="+ topic/ph hi-d/b ">Link</b> field, and then select a link type or
+            enter a website address for an external website:
+          </p>
+          <ul class="- topic/ul ">
+            <li class="- topic/li ">
+              <p class="- topic/p ">
+                <b class="+ topic/ph hi-d/b ">Home</b>
+                - your online store's home page
+              </p>
+            </li>
+            <li class="- topic/li ">
+              <p class="- topic/p ">
+                <b class="+ topic/ph hi-d/b ">Collections</b>
+                - a specific collection or all collections
+              </p>
+            </li>
+            <li class="- topic/li ">
+              <p class="- topic/p ">
+                <b class="+ topic/ph hi-d/b ">Products</b>
+                - a specific product or all products
+              </p>
+            </li>
+            <li class="- topic/li ">
+              <p class="- topic/p ">
+                <b class="+ topic/ph hi-d/b ">Pages</b>
+                - a webpage on your online store
+              </p>
+            </li>
+            <li class="- topic/li ">
+              <p class="- topic/p ">
+                <b class="+ topic/ph hi-d/b ">Blogs</b>
+                - a blog on your online store
+              </p>
+            </li>
+            <li class="- topic/li ">
+              <p class="- topic/p ">
+                <b class="+ topic/ph hi-d/b ">Blog posts</b>
+                - a blog post on your online store
+              </p>
+            </li>
+            <li class="- topic/li ">
+              <p class="- topic/p ">
+                <b class="+ topic/ph hi-d/b ">Policies</b>
+                - one of your
+                <xref class="- topic/xref " format="html"
+                      href="/manual/sell-online/checkout-settings/refund-privacy-tos">store policies
+                </xref>
+              </p>
+            </li>
+          </ul>
+          <p class="- topic/p ">To create an email link, use the format
+            <codeph class="+ topic/ph pr-d/codeph ">mailto:
+              <xref class="- topic/xref " format="email" href="mailto:youremail@example.com" scope="external">
+                youremail@example.com
+              </xref>
+            </codeph>
+            .
+          </p>
+        </li>
+        <li class="- topic/li ">
+          <p class="- topic/p ">If you selected a link type, then select a specific destination. When you select <b
+              class="+ topic/ph hi-d/b ">Home</b>, the destination is automatically set to your online store's home
+            page.
+          </p>
+        </li>
+        <li class="- topic/li ">
+          <p class="- topic/p ">Click <b class="+ topic/ph hi-d/b ">Save menu</b>.
+          </p>
+        </li>
+      </ol>
+    </body>
+  </topic>
+  <topic class="- topic/topic " id="edit-a-menu-item">
+    <title class="- topic/title ">Edit a menu item</title>
+    <body class="- topic/body "/>
+  </topic>
+  <topic class="- topic/topic " id="steps-1">
+    <title class="- topic/title ">Steps:</title>
+    <body class="- topic/body ">
+      <required-cleanup class="- topic/required-cleanup " conref="admin_sidebar/online-navigation.md"/>
+      <ol class="- topic/ol ">
+        <li class="- topic/li ">
+          <p class="- topic/p ">Click the title of the menu that includes the item.</p>
+        </li>
+        <li class="- topic/li ">
+          <p class="- topic/p ">In the <b class="+ topic/ph hi-d/b ">Menu items</b> section, click <b
+              class="+ topic/ph hi-d/b ">Edit
+          </b> beside the name of the item.
+          </p>
+        </li>
+        <li class="- topic/li ">
+          <p class="- topic/p ">Make any changes:</p>
+          <ul class="- topic/ul ">
+            <li class="- topic/li ">
+              <p class="- topic/p ">To change the name of the menu item, enter text in the <b
+                  class="+ topic/ph hi-d/b ">Name
+              </b> field.
+              </p>
+            </li>
+            <li class="- topic/li ">
+              <p class="- topic/p ">To change the destination of the menu item, click the <codeph
+                  class="+ topic/ph pr-d/codeph ">x
+              </codeph> in the <b class="+ topic/ph hi-d/b ">Link</b> field, and then enter or select a new destination.
+              </p>
+            </li>
+          </ul>
+        </li>
+        <li class="- topic/li ">
+          <p class="- topic/p ">Click <b class="+ topic/ph hi-d/b ">Apply changes</b>.
+          </p>
+        </li>
+        <li class="- topic/li ">
+          <p class="- topic/p ">Click <b class="+ topic/ph hi-d/b ">Save menu</b>.
+          </p>
+        </li>
+      </ol>
+    </body>
+  </topic>
+  <topic class="- topic/topic " id="change-the-display-order-of-menu-items">
+    <title class="- topic/title ">Change the display order of menu items</title>
+    <body class="- topic/body ">
+      <p class="- topic/p ">You can view the display order of menu items on the
+        <xref class="- topic/xref " format="html" href="/www.shopify.com/admin/menus">
+          <b class="+ topic/ph hi-d/b ">Navigation</b>
+        </xref>
+        page. The menu items display on your online store in the order that they are listed.
+      </p>
+    </body>
+  </topic>
+  <topic class="- topic/topic " id="steps-2">
+    <title class="- topic/title ">Steps:</title>
+    <body class="- topic/body ">
+      <required-cleanup class="- topic/required-cleanup " conref="admin_sidebar/online-navigation.md"/>
+      <ol class="- topic/ol ">
+        <li class="- topic/li ">
+          <p class="- topic/p ">Click the title of the menu that you want to reorder.</p>
+        </li>
+        <li class="- topic/li ">
+          <p class="- topic/p ">Click and hold the handle icon beside the menu item, and then drag the menu item to
+            another position:
+            <image class="- topic/image " href="/manual/links/handle-icon.png">
+              <alt class="- topic/alt ">Menu items section with handle icon highlighted</alt>
+            </image>
+          </p>
+        </li>
+        <li class="- topic/li ">
+          <p class="- topic/p ">Click <b class="+ topic/ph hi-d/b ">Save menu</b>.
+          </p>
+        </li>
+      </ol>
+    </body>
+  </topic>
+  <topic class="- topic/topic " id="remove-a-menu-item">
+    <title class="- topic/title ">Remove a menu item</title>
+    <body class="- topic/body ">
+      <p class="- topic/p ">You can remove a menu item to delete it from your online store navigation. When you remove a
+        menu item that has items nested below it in a drop-down menu, the nested menu items are also removed and the
+        drop-down menu is removed from your online store navigation.
+      </p>
+    </body>
+  </topic>
+  <topic class="- topic/topic " id="steps-3">
+    <title class="- topic/title ">Steps:</title>
+    <body class="- topic/body ">
+      <required-cleanup class="- topic/required-cleanup " conref="admin_sidebar/online-navigation.md"/>
+      <ol class="- topic/ol ">
+        <li class="- topic/li ">
+          <p class="- topic/p ">Click the title of the menu that you want to reorder.</p>
+        </li>
+        <li class="- topic/li ">
+          <p class="- topic/p ">Click the trash can beside the menu item that you want to remove.</p>
+        </li>
+        <li class="- topic/li ">
+          <p class="- topic/p ">Click <b class="+ topic/ph hi-d/b ">Remove</b> to confirm.
+          </p>
+        </li>
+      </ol>
+    </body>
+  </topic>
+</topic>

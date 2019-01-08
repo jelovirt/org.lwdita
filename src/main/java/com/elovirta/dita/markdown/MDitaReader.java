@@ -34,7 +34,7 @@ public class MDitaReader extends MarkdownReader {
                         //                GfmUsersExtension.create(),
                         //                TaskListExtension.create(),
                         InsExtension.create(),
-                        JekyllTagExtension.create(),
+//                        JekyllTagExtension.create(),
                         //                JiraConverterExtension.create(),
                         //                StrikethroughSubscriptExtension.create(),
                         SuperscriptExtension.create(),

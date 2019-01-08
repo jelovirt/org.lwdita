@@ -201,4 +201,9 @@ public class MarkdownReaderTest extends AbstractReaderTest {
         run("footnote.md");
     }
 
+    @Test
+    public void testJekyll() throws Exception {
+        run("jekyll.md");
+    }
+
 }

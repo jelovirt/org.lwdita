@@ -60,6 +60,7 @@ public abstract class AbstractReaderTest {
         }
 
         final Document exp;
+        System.err.println("/" + expFile);
         try (final InputStream in = getClass().getResourceAsStream("/" + expFile)) {
             exp = db.parse(in);
         }
