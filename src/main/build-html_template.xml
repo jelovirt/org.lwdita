@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:dita="http://dita-ot.sourceforge.net">
+<project xmlns:dita="http://dita-ot.sourceforge.net"
+         xmlns:if="ant:if">
 
   <target name="hdita.init">
     <condition property="out.ext" value=".md">
@@ -54,8 +55,8 @@
           includesfile="${dita.temp.dir}${file.separator}${user.input.file.listfile}"
           classpathref="dost.class.path"
           style="${args.hdita.toc.xsl}">
-      <excludesfile name="${dita.temp.dir}${file.separator}${resourceonlyfile}" if="resourceonlyfile"/>
-      <param name="OUTEXT" expression="${out.ext}" if="out.ext" />
+      <excludesfile name="${dita.temp.dir}${file.separator}${resourceonlyfile}" if:set="resourceonlyfile"/>
+      <param name="OUTEXT" expression="${out.ext}" if:set="out.ext" />
       <dita:extension id="dita.conductor.hdita.toc.param" behavior="org.dita.dost.platform.InsertAction"/>
       <mapper type="glob"
               from="*${dita.input.filename}"
@@ -72,8 +73,8 @@
           includesfile="${dita.temp.dir}${file.separator}${user.input.file.listfile}"
           classpathref="dost.class.path"
           style="${args.hdita.toc.xsl}">
-      <excludesfile name="${dita.temp.dir}${file.separator}${resourceonlyfile}" if="resourceonlyfile"/>
-      <param name="OUTEXT" expression="${out.ext}" if="out.ext" />
+      <excludesfile name="${dita.temp.dir}${file.separator}${resourceonlyfile}" if:set="resourceonlyfile"/>
+      <param name="OUTEXT" expression="${out.ext}" if:set="out.ext" />
       <dita:extension id="dita.conductor.hdita.toc.param" behavior="org.dita.dost.platform.InsertAction"/>
       <mapper type="glob"
               from="${user.input.file}"
@@ -92,22 +93,22 @@
           extension="${out.ext}" style="${args.xsl}"
           filenameparameter="FILENAME"
           filedirparameter="FILEDIR">
-      <excludesfile name="${dita.temp.dir}${file.separator}${resourceonlyfile}" if="resourceonlyfile"/>
+      <excludesfile name="${dita.temp.dir}${file.separator}${resourceonlyfile}" if:set="resourceonlyfile"/>
       <param name="TRANSTYPE" expression="${transtype}" />
-      <param name="FILTERFILE" expression="${dita.input.valfile.url}" if="dita.input.valfile" />
-      <param name="DRAFT" expression="${args.draft}" if="args.draft" />
-      <param name="ARTLBL" expression="${args.artlbl}" if="args.artlbl" />
-      <param name="GENERATE-TASK-LABELS" expression="${args.gen.task.lbl}" if="args.gen.task.lbl" />
-      <param name="PRESERVE-DITA-CLASS" expression="${args.hdita.classattr}" if="args.hdita.classattr"/>
-      <param name="NOPARENTLINK" expression="${args.hide.parent.link}" if="args.hide.parent.link"/>
+      <param name="FILTERFILE" expression="${dita.input.valfile.url}" if:set="dita.input.valfile" />
+      <param name="DRAFT" expression="${args.draft}" if:set="args.draft" />
+      <param name="ARTLBL" expression="${args.artlbl}" if:set="args.artlbl" />
+      <param name="GENERATE-TASK-LABELS" expression="${args.gen.task.lbl}" if:set="args.gen.task.lbl" />
+      <param name="PRESERVE-DITA-CLASS" expression="${args.hdita.classattr}" if:set="args.hdita.classattr"/>
+      <param name="NOPARENTLINK" expression="${args.hide.parent.link}" if:set="args.hide.parent.link"/>
   	  <param name="include.rellinks" expression="${include.rellinks}"/>
-      <param name="BREADCRUMBS" expression="${args.breadcrumbs}" if="args.breadcrumbs"/>
-      <param name="INDEXSHOW" expression="${args.indexshow}" if="args.indexshow" />
-      <param name="genDefMeta" expression="${args.gen.default.meta}" if="args.gen.default.meta" />
-      <param name="OUTEXT" expression="${out.ext}" if="out.ext" />
+      <param name="BREADCRUMBS" expression="${args.breadcrumbs}" if:set="args.breadcrumbs"/>
+      <param name="INDEXSHOW" expression="${args.indexshow}" if:set="args.indexshow" />
+      <param name="genDefMeta" expression="${args.gen.default.meta}" if:set="args.gen.default.meta" />
+      <param name="OUTEXT" expression="${out.ext}" if:set="out.ext" />
       <param name="BASEDIR" expression="${basedir}"/>
       <param name="OUTPUTDIR" expression="${output.dir}"/>
-      <param name="DBG" expression="${args.debug}" if="args.debug"/>
+      <param name="DBG" expression="${args.debug}" if:set="args.debug"/>
       <!--dita:extension id="dita.conductor.hdita.param" behavior="org.dita.dost.platform.InsertAction"/-->
   	  <xmlcatalog refid="dita.catalog"/>
     </xslt>
@@ -124,22 +125,22 @@
           extension="${out.ext}" style="${args.xsl}"
           filenameparameter="FILENAME"
           filedirparameter="FILEDIR">
-    	<excludesfile name="${dita.temp.dir}${file.separator}${resourceonlyfile}" if="resourceonlyfile"/>
+    	<excludesfile name="${dita.temp.dir}${file.separator}${resourceonlyfile}" if:set="resourceonlyfile"/>
       <param name="TRANSTYPE" expression="${transtype}" />
-      <param name="FILTERFILE" expression="${dita.input.valfile.url}" if="dita.input.valfile" />
-      <param name="DRAFT" expression="${args.draft}" if="args.draft" />
-      <param name="ARTLBL" expression="${args.artlbl}" if="args.artlbl" />
-      <param name="GENERATE-TASK-LABELS" expression="${args.gen.task.lbl}" if="args.gen.task.lbl" />
-      <param name="PRESERVE-DITA-CLASS" expression="${args.hdita.classattr}" if="args.hdita.classattr"/>
-      <param name="NOPARENTLINK" expression="${args.hide.parent.link}" if="args.hide.parent.link"/>
+      <param name="FILTERFILE" expression="${dita.input.valfile.url}" if:set="dita.input.valfile" />
+      <param name="DRAFT" expression="${args.draft}" if:set="args.draft" />
+      <param name="ARTLBL" expression="${args.artlbl}" if:set="args.artlbl" />
+      <param name="GENERATE-TASK-LABELS" expression="${args.gen.task.lbl}" if:set="args.gen.task.lbl" />
+      <param name="PRESERVE-DITA-CLASS" expression="${args.hdita.classattr}" if:set="args.hdita.classattr"/>
+      <param name="NOPARENTLINK" expression="${args.hide.parent.link}" if:set="args.hide.parent.link"/>
       <param name="include.rellinks" expression="${include.rellinks}"/>
-      <param name="BREADCRUMBS" expression="${args.breadcrumbs}" if="args.breadcrumbs"/>
-      <param name="INDEXSHOW" expression="${args.indexshow}" if="args.indexshow" />
-      <param name="genDefMeta" expression="${args.gen.default.meta}" if="args.gen.default.meta" />
-      <param name="OUTEXT" expression="${out.ext}" if="out.ext" />
+      <param name="BREADCRUMBS" expression="${args.breadcrumbs}" if:set="args.breadcrumbs"/>
+      <param name="INDEXSHOW" expression="${args.indexshow}" if:set="args.indexshow" />
+      <param name="genDefMeta" expression="${args.gen.default.meta}" if:set="args.gen.default.meta" />
+      <param name="OUTEXT" expression="${out.ext}" if:set="out.ext" />
       <param name="BASEDIR" expression="${basedir}"/>
       <param name="OUTPUTDIR" expression="${output.dir}"/>
-      <param name="DBG" expression="${args.debug}" if="args.debug"/>
+      <param name="DBG" expression="${args.debug}" if:set="args.debug"/>
       <!--dita:extension id="dita.conductor.hdita.param" behavior="org.dita.dost.platform.InsertAction"/-->
       <!--New,To generate&copy all dita files in the inputmap.dir, not all files in dita.temp.dir -->
       <mapper type="regexp"
