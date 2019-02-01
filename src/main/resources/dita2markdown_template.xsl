@@ -9,6 +9,7 @@
   <xsl:import href="glossdisplay.xsl"/>
   <xsl:import href="taskdisplay.xsl"/>
   <xsl:import href="refdisplay.xsl"/-->
+  <xsl:import href="task.xsl"/>
   <xsl:import href="ut-d.xsl"/>
   <xsl:import href="sw-d.xsl"/>
   <xsl:import href="pr-d.xsl"/>
