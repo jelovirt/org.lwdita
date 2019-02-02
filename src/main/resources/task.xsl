@@ -14,6 +14,14 @@ See the accompanying LICENSE file for applicable license.
   
   <xsl:param name="GENERATE-TASK-LABELS" select="'NO'"/>
 
+  <xsl:template match="*[contains(@class, ' task/cmd ')]" name="task.cmd">
+    <para>
+      <xsl:call-template name="commonattributes"/>
+      <xsl:call-template name="setidaname"/>
+      <xsl:apply-templates/>
+    </para>
+  </xsl:template>
+
   <xsl:template match="*[contains(@class, ' task/steps ')]" name="task.steps">
     <xsl:apply-templates select="." mode="generate-task-label">
       <xsl:with-param name="use-label">
