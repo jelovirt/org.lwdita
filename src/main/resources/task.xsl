@@ -22,6 +22,18 @@ See the accompanying LICENSE file for applicable license.
     </para>
   </xsl:template>
 
+  <xsl:template match="*[contains(@class, ' task/info ')] |
+                       *[contains(@class, ' task/stepresult ')] |
+                       *[contains(@class, ' task/stepxmp ')] |
+                       *[contains(@class, ' task/tutorialinfo ')] |
+                       *[contains(@class, ' task/steptroubleshooting ')]">
+    <div>
+      <xsl:call-template name="commonattributes"/>
+      <xsl:call-template name="setidaname"/>
+      <xsl:apply-templates/>
+    </div>
+  </xsl:template>
+
   <xsl:template match="*[contains(@class, ' task/steps ')]" name="task.steps">
     <xsl:apply-templates select="." mode="generate-task-label">
       <xsl:with-param name="use-label">
