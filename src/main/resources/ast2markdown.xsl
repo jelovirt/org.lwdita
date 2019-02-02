@@ -295,7 +295,7 @@
                 name="text">
     <xsl:param name="text" select="." as="xs:string"/>
     <xsl:variable name="head" select="substring($text, 1, 1)" as="xs:string"/>
-    <xsl:if test="contains('\`*_{}[]()>#', $head)"><!--{}+-.!-->
+    <xsl:if test="contains('\`*_{}[]()>#|', $head)"><!--{}+-.!-->
       <xsl:text>\</xsl:text>
     </xsl:if>
     <xsl:value-of select="$head"/>
