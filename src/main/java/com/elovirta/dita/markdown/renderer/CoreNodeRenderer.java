@@ -1280,7 +1280,7 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
 //            }
 //        }
         html.startElement(PR_D_CODEBLOCK, atts.build());
-        String text = node.getChars().toString();
+        String text = node.getContentChars().toString();
         if (text.endsWith("\n")) {
             text = text.substring(0, text.length() - 1);
         }
