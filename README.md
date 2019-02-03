@@ -57,7 +57,13 @@ Install
 1.  Run the plug-in installation command:
 
     ~~~~ {.sh}
-    dita -install https://github.com/jelovirt/org.lwdita/releases/download/2.1.0/org.lwdita-2.1.0.zip
+    $ dita --install org.lwdita
+    ~~~~
+
+    On DITA-OT version 3.0 and older:
+
+    ~~~~ {.sh}
+    $ dita --install https://github.com/jelovirt/org.lwdita/releases/download/2.2.0/org.lwdita-2.2.0.zip
     ~~~~
 
 The `dita` command line tool requires no additional configuration;
@@ -69,9 +75,8 @@ Build
 
 To build the DITA-OT Markdown plug-in from source:
 
-1.  Install the DITA-OT distribution JAR file dependencies by running `gradle install` from your clone of the [DITA-OT repository](https://github.com/dita-ot/dita-ot).
-    The required dependencies are installed to a local Maven repository in your home directory under `.m2/repository/org/dita-ot/dost/`. 
-2.  Run the Gradle distribution task to generate the plug-in distribution package:
+ 
+1.  Run the Gradle distribution task to generate the plug-in distribution package:
 
     ~~~~ {.sh}
     ./gradlew dist
