@@ -334,8 +334,15 @@ Each child is indented, the linktext is bold, and the shortdesc appears in norma
       </xsl:when>
       <!-- For DITA - process the internal href -->
       <xsl:when test="starts-with(@href, '#')">
-        <xsl:text>#</xsl:text>
-        <xsl:value-of select="dita-ot:get-element-id(@href)"/>
+        <xsl:choose>
+          <xsl:when test="contains(@href, '/')">
+            <xsl:text>#</xsl:text>
+            <xsl:value-of select="dita-ot:get-element-id(@href)"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="@href"/>
+          </xsl:otherwise>
+        </xsl:choose>
       </xsl:when>
       <!-- It's to a DITA file - process the file name (adding the html extension)
     and process the rest of the href -->
