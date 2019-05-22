@@ -74,15 +74,28 @@
 
   <xsl:template match="li" mode="ast">
     <xsl:param name="indent" tunnel="yes" as="xs:string" select="''"/>
+    <xsl:variable name="leadingBlank" select="*[1][starts-with(.,' ')]"/>
     <xsl:value-of select="$indent"/>
     <xsl:choose>
       <xsl:when test="parent::bulletlist">
-        <xsl:text>-   </xsl:text>
+        <xsl:if test="not($leadingBlank)">
+          <xsl:text>- </xsl:text>		  
+        </xsl:if>
+        <xsl:if test="$leadingBlank">
+          <xsl:text>-</xsl:text>		  
+        </xsl:if>       
       </xsl:when>
       <xsl:otherwise>
-        <xsl:variable name="label" select="concat(position(), '.')" as="xs:string"/>
+        <xsl:variable name="label">
+          <xsl:if test="$leadingBlank">
+            <xsl:value-of select="concat(position(), '.')"/>
+          </xsl:if>
+          <xsl:if test="not($leadingBlank)">
+            <xsl:value-of select="concat(position(), '. ')"/>
+          </xsl:if>
+        </xsl:variable>
         <xsl:value-of select="$label"/>
-        <xsl:value-of select="substring($default-indent, string-length($label) + 1)"/>
+      <!-- <xsl:value-of select="substring($default-indent, string-length($label) + 1)"/> -->
       </xsl:otherwise>
     </xsl:choose>
     <xsl:apply-templates select="*[1]" mode="ast">
@@ -123,6 +136,10 @@
 
   <xsl:template match="codeblock" mode="ast">
     <xsl:param name="indent" tunnel="yes" as="xs:string" select="''"/>
+    <xsl:variable name="nested" select="ancestor::bulletlist or ancestor::orderedlist"/>
+    <xsl:if test="$nested">
+      <xsl:value-of select="$linefeed"/>
+    </xsl:if>
     <xsl:value-of select="$indent"/>
     <xsl:text>```</xsl:text>
     <xsl:choose>
