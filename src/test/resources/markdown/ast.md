@@ -19,29 +19,30 @@ Asterisk \* bracket \[foo\].
 
 Hyphen:
 
--   hyphen list list list list list list list list list list list list list list list list list list list list list list list
--   list
-    -   item
-        -   four
-    -   fifth
-        -   sixth
+- hyphen list list list list list list list list list list list list list list list list list list list list list list list
+- list
+    - item
+        - four
+    - fifth
+        - sixth
 
 Asterix:
 
--   inline *bold* normal
-    -   inline
--   para
+- inline *bold* normal
+    - inline
+- para
 
-    -   inline
--   para
-
-    para
-
--   para
+    - inline
+- para
 
     para
 
--   para
+- para
+
+    para
+
+- para
+
 
     ```
     codeblock
@@ -49,21 +50,21 @@ Asterix:
     
     ```
 
-    -   para
+    - para
 
 Ordered:
 
-1.  ordered
-2.  list
-3.  item
-    1.  nested
-    2.  list
-4.  foo
-5.  foo
-6.  foo
-7.  foo
-8.  foo
-9.  foo
+1. ordered
+2. list
+3. item
+    1. nested
+    2. list
+4. foo
+5. foo
+6. foo
+7. foo
+8. foo
+9. foo
 10. foo
 11. foo
 12. foo
@@ -102,11 +103,11 @@ An inline ![Alt](test.jpg).
 
 ## Links {#links}
 
--   [Markdown](test.md.xml)
--   [DITA](topic.md.xml)
--   [HTML](test.html)
--   [External](http://www.example.com/test.html)
--   
+- [Markdown](test.md.xml)
+- [DITA](topic.md.xml)
+- [HTML](test.html)
+- [External](http://www.example.com/test.html)
+- 
 
 ## Tables {#tables}
 
@@ -136,10 +137,10 @@ Orange
 
 > This is email And so it this Again.
 
--   List
+- List
 
     > Quote in list
 
--   Second list
+- Second list
 
 
