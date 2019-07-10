@@ -45,6 +45,14 @@ Asterix:
 
     para
 
+-   mixed codeblock
+
+    ```
+    codeblock
+    codeblock
+    
+    ```
+
 -   para
 
     ```

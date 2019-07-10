@@ -94,6 +94,11 @@
           <para>para</para>
         </li>
         <li>
+          <para>mixed codeblock <codeblock xml:space="preserve">codeblock
+codeblock
+</codeblock></para>
+        </li>
+        <li>
           <para>para</para>
           <codeblock xml:space="preserve">codeblock
 codeblock
