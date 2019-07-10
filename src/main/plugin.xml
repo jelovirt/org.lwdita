@@ -48,7 +48,6 @@
   <!-- HTML to DITA -->
   <template file="build-html_template.xml"/>
   <feature extension="dita.parser">
-    <parser format="html" class="com.elovirta.dita.html.HtmlReader"/>
     <parser format="hdita" class="com.elovirta.dita.html.HtmlReader"/>
   </feature>
 </plugin>
