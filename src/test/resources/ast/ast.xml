@@ -42,6 +42,10 @@
           <plain>   hyphen list list list list list list list list list list list list list list list list list list list list list list list</plain>
         </li>
         <li>
+          <strong>start</strong> with <emph>inline</emph> <strong>elements</strong>
+          <para>para</para>
+        </li>
+        <li>
           <plain>  list</plain>
           <bulletlist>
             <li>

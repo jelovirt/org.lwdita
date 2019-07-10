@@ -322,21 +322,23 @@
   
   <xsl:template match="text()"
                 mode="ast-clean">
-    <xsl:variable name="normalized" select="normalize-space(.)" as="xs:string"></xsl:variable>
-    <xsl:if test="preceding-sibling::node() and matches(., '^\s') and $normalized">
-      <xsl:text> </xsl:text>
-    </xsl:if>
+    <xsl:variable name="normalized" select="normalize-space(.)" as="xs:string"/>
     <xsl:choose>
-      <xsl:when test="string-length(.) gt 0 and string-length($normalized) eq 0">
-        <xsl:text> </xsl:text>
+      <xsl:when test="$normalized">
+        <xsl:if test="preceding-sibling::node() and matches(., '^\s') and $normalized">
+          <xsl:text> </xsl:text>
+        </xsl:if>
+        <xsl:value-of select="$normalized"/>
+        <xsl:if test="following-sibling::node() and matches(., '\s$') and $normalized">
+          <xsl:text> </xsl:text>
+        </xsl:if>
       </xsl:when>
       <xsl:otherwise>
-        <xsl:value-of select="$normalized"/>
+        <xsl:if test="preceding-sibling::node() and following-sibling::node()">
+          <xsl:text> </xsl:text>
+        </xsl:if>
       </xsl:otherwise>
     </xsl:choose>
-    <xsl:if test="following-sibling::node() and matches(., '\s$') and $normalized">
-      <xsl:text> </xsl:text>
-    </xsl:if>
   </xsl:template>
   
   <xsl:template match="pandoc/text() |
@@ -344,6 +346,7 @@
                        bulletlist/text() |
                        orderedlist/text() |
                        definitionlist/text() |
+                       dlentry/text() |
                        table/text() |
                        thead/text() |
                        tbody/text() |
