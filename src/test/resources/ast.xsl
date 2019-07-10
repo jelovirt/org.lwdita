@@ -5,10 +5,7 @@
                 version="2.0">
   
   <xsl:import href="ast2markdown.xsl"/>
-  
-  <xsl:strip-space elements="*"/>
-  <xsl:preserve-space elements="codeblock"/>
-  
+
   <xsl:output method="text"/>
   
   <xsl:template match="/">

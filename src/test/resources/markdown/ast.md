@@ -20,6 +20,10 @@ Asterisk \* bracket \[foo\].
 Hyphen:
 
 -   hyphen list list list list list list list list list list list list list list list list list list list list list list list
+-   **start** with *inline* **elements**
+
+    para
+
 -   list
     -   item
         -   four
