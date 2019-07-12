@@ -1,7 +1,7 @@
 package com.elovirta.dita.markdown;
 
 import com.vladsch.flexmark.util.Utils;
-import com.vladsch.flexmark.util.options.DataHolder;
+import com.vladsch.flexmark.util.data.DataHolder;
 
 public class DitaRendererOptions {
     public final String softBreak;

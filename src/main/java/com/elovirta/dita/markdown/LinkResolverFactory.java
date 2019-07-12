@@ -1,12 +1,13 @@
 package com.elovirta.dita.markdown;
 
-import com.elovirta.dita.markdown.renderer.NodeRendererContext;
-import com.vladsch.flexmark.util.ComputableFactory;
+import com.elovirta.dita.markdown.renderer.LinkResolverContext;
+//import com.elovirta.dita.markdown.renderer.NodeRendererContext;
 import com.vladsch.flexmark.util.dependency.Dependent;
 
 import java.util.Set;
+import java.util.function.Function;
 
-public interface LinkResolverFactory extends ComputableFactory<LinkResolver, NodeRendererContext>, Dependent<LinkResolverFactory> {
+public interface LinkResolverFactory extends Function<LinkResolverContext, LinkResolver>, Dependent<LinkResolverFactory> {
     @Override
     Set<Class<? extends LinkResolverFactory>> getAfterDependents();
     
@@ -17,5 +18,5 @@ public interface LinkResolverFactory extends ComputableFactory<LinkResolver, Nod
     boolean affectsGlobalScope();
 
     @Override
-    LinkResolver create(NodeRendererContext context);
+    LinkResolver apply(LinkResolverContext context);
 }

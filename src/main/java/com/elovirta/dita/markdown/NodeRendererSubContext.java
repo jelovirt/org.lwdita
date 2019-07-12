@@ -1,7 +1,7 @@
 package com.elovirta.dita.markdown;
 
 import com.elovirta.dita.markdown.renderer.NodeRendererContext;
-import com.vladsch.flexmark.ast.Node;
+import com.vladsch.flexmark.util.ast.Node;
 
 public abstract class NodeRendererSubContext implements NodeRendererContext {
     final DitaWriter ditaWriter;

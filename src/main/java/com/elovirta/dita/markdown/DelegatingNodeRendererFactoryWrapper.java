@@ -3,18 +3,18 @@ package com.elovirta.dita.markdown;
 import com.elovirta.dita.markdown.renderer.DelegatingNodeRendererFactory;
 import com.elovirta.dita.markdown.renderer.NodeRenderer;
 import com.elovirta.dita.markdown.renderer.NodeRendererFactory;
-import com.vladsch.flexmark.util.ComputableFactory;
+import com.vladsch.flexmark.util.data.DataHolder;
 import com.vladsch.flexmark.util.dependency.Dependent;
-import com.vladsch.flexmark.util.options.DataHolder;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Function;
 
 /**
  * Factory for instantiating new node renderers with dependencies
  */
-class DelegatingNodeRendererFactoryWrapper implements ComputableFactory<NodeRenderer, DataHolder>, Dependent<DelegatingNodeRendererFactoryWrapper>, DelegatingNodeRendererFactory {
+class DelegatingNodeRendererFactoryWrapper implements Function<DataHolder, NodeRenderer>, Dependent<DelegatingNodeRendererFactoryWrapper>, DelegatingNodeRendererFactory {
     private final NodeRendererFactory nodeRendererFactory;
     private List<DelegatingNodeRendererFactoryWrapper> nodeRenderers;
     private Set<Class> myDelegates = null;
@@ -25,8 +25,8 @@ class DelegatingNodeRendererFactoryWrapper implements ComputableFactory<NodeRend
     }
 
     @Override
-    public NodeRenderer create(final DataHolder options) {
-        return nodeRendererFactory.create(options);
+    public NodeRenderer apply(DataHolder options) {
+        return nodeRendererFactory.apply(options);
     }
 
     public NodeRendererFactory getFactory() {

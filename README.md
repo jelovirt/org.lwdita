@@ -63,7 +63,7 @@ Install
     On DITA-OT version 3.0 and older:
 
     ~~~~ {.sh}
-    $ dita --install https://github.com/jelovirt/org.lwdita/releases/download/2.2.1/org.lwdita-2.2.1.zip
+    $ dita --install https://github.com/jelovirt/org.lwdita/releases/download/2.3.0/org.lwdita-2.3.0.zip
     ~~~~
 
 The `dita` command line tool requires no additional configuration;

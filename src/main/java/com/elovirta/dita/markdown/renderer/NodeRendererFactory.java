@@ -1,11 +1,14 @@
 package com.elovirta.dita.markdown.renderer;
 
-import com.vladsch.flexmark.util.options.DataHolder;
+
+import com.vladsch.flexmark.util.data.DataHolder;
+
+import java.util.function.Function;
 
 /**
  * Factory for instantiating new node renderers when rendering is done.
  */
-public interface NodeRendererFactory {
+public interface NodeRendererFactory extends Function<DataHolder, NodeRenderer> {
 
     /**
      * Create a new node renderer for the specified rendering context.
@@ -13,5 +16,5 @@ public interface NodeRendererFactory {
      * @param options the context for rendering (normally passed on to the node renderer)
      * @return a node renderer
      */
-    NodeRenderer create(DataHolder options);
+    NodeRenderer apply(DataHolder options);
 }

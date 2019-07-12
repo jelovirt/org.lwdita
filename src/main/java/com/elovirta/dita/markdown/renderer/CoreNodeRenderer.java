@@ -21,22 +21,28 @@ import com.vladsch.flexmark.ext.tables.*;
 import com.vladsch.flexmark.ext.typographic.TypographicQuotes;
 import com.vladsch.flexmark.ext.yaml.front.matter.AbstractYamlFrontMatterVisitor;
 import com.vladsch.flexmark.ext.yaml.front.matter.YamlFrontMatterBlock;
-import com.vladsch.flexmark.util.options.DataHolder;
+import com.vladsch.flexmark.util.ast.ContentNode;
+import com.vladsch.flexmark.util.ast.Document;
+import com.vladsch.flexmark.util.ast.Node;
+import com.vladsch.flexmark.util.ast.ReferenceNode;
+import com.vladsch.flexmark.util.data.DataHolder;
 import com.vladsch.flexmark.util.sequence.BasedSequence;
 import nu.validator.htmlparser.common.XmlViolationPolicy;
 import nu.validator.htmlparser.sax.HtmlParser;
 import org.apache.commons.io.FilenameUtils;
 import org.dita.dost.util.DitaClass;
+import org.dita.dost.util.SaxCache.EndElementEvent;
 import org.dita.dost.util.SaxCache.SaxEvent;
 import org.dita.dost.util.SaxCache.StartElementEvent;
-import org.dita.dost.util.SaxCache.EndElementEvent;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.AttributesImpl;
 import org.xml.sax.helpers.XMLFilterImpl;
 
-import javax.xml.transform.*;
+import javax.xml.transform.Templates;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.sax.SAXResult;
 import javax.xml.transform.sax.SAXTransformerFactory;
 import javax.xml.transform.sax.TransformerHandler;
@@ -101,6 +107,7 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
     private static final Attributes EMPTY_ATTS = new AttributesImpl();
 
     private static final Map<String, DitaClass> sections = new HashMap<>();
+
     static {
         sections.put(TOPIC_SECTION.localName, TOPIC_SECTION);
         sections.put(TOPIC_EXAMPLE.localName, TOPIC_EXAMPLE);
@@ -435,7 +442,7 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
 //                    html.startElement(TOPIC_DLENTRY, DLENTRY_ATTS);
 //                }
 //            }
-            context.renderChildren(node);
+        context.renderChildren(node);
 //            previous = (child instanceof DefinitionTermNode) ? TOPIC_DT : TOPIC_DD;
 //        }
 //        html.endElement(); // dlentry
@@ -788,7 +795,7 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
         parser.setContentHandler(h);
         try {
             parser.parse(new InputSource(new StringReader(text)));
-        } catch (IOException|SAXException e) {
+        } catch (IOException | SAXException e) {
             throw new ParseException("Failed to parse HTML: " + e.getMessage(), e);
         }
     }
@@ -814,7 +821,7 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
                         event.write(html.contentHandler);
                     }
                 }
-            } catch (IOException|SAXException e) {
+            } catch (IOException | SAXException e) {
                 throw new ParseException("Failed to parse HTML: " + e.getMessage(), e);
             }
         } else {
@@ -825,7 +832,7 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
                         event.write(html.contentHandler);
                     }
                 }
-            } catch (IOException|SAXException e) {
+            } catch (IOException | SAXException e) {
                 throw new ParseException("Failed to parse HTML: " + e.getMessage(), e);
             }
         }
@@ -851,13 +858,13 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
         final HtmlParser parser = new HtmlParser(XmlViolationPolicy.ALLOW);
         parser.setContentHandler(new XMLFilterImpl() {
             @Override
-            public void startElement (String uri, String localName, String qName, Attributes atts) throws SAXException {
+            public void startElement(String uri, String localName, String qName, Attributes atts) throws SAXException {
                 events.add(new StartElementEvent(uri, localName, qName, atts));
             }
         });
         try (final StringReader in = new StringReader(node.getChars().toString())) {
             parser.parse(new InputSource(in));
-        } catch (IOException|SAXException e) {
+        } catch (IOException | SAXException e) {
             throw new ParseException("Failed to parse HTML: " + e.getMessage(), e);
         }
         if (events.isEmpty()) {
@@ -995,14 +1002,14 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
 //            }
 //            html.endElement();
 //        } else {
-            final AttributesBuilder atts = getLinkAttributes(node.getUrl().toString());
-            html.startElement(TOPIC_XREF, atts.build());
+        final AttributesBuilder atts = getLinkAttributes(node.getUrl().toString());
+        html.startElement(TOPIC_XREF, atts.build());
 //            if (!refNode.getTitle().toString().isEmpty()) {
 //                html.characters(refNode.toString());
 //            } else {
-                context.renderChildren(node);
+        context.renderChildren(node);
 //            }
-            html.endElement();
+        html.endElement();
 //        }
     }
 
@@ -1223,7 +1230,7 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
             }
         }
         return max;
-}
+    }
 
     private void render(TableSeparator node, NodeRendererContext context, DitaWriter html) {
         // Ignore
@@ -1574,7 +1581,7 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
 
     public static class Factory implements NodeRendererFactory {
         @Override
-        public NodeRenderer create(final DataHolder options) {
+        public NodeRenderer apply(final DataHolder options) {
             return new CoreNodeRenderer(options);
         }
     }

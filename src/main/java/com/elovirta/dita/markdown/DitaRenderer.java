@@ -4,26 +4,27 @@
 package com.elovirta.dita.markdown;
 
 import com.elovirta.dita.markdown.renderer.*;
-import com.vladsch.flexmark.Extension;
-import com.vladsch.flexmark.IRender;
-import com.vladsch.flexmark.ast.Document;
-import com.vladsch.flexmark.ast.Node;
-import com.vladsch.flexmark.util.collection.DynamicDefaultKey;
+import com.vladsch.flexmark.html.Disposable;
+import com.vladsch.flexmark.util.ast.Document;
+import com.vladsch.flexmark.util.ast.IRender;
+import com.vladsch.flexmark.util.ast.Node;
+import com.vladsch.flexmark.util.builder.Extension;
+import com.vladsch.flexmark.util.data.*;
 import com.vladsch.flexmark.util.dependency.DependencyHandler;
 import com.vladsch.flexmark.util.dependency.FlatDependencyHandler;
 import com.vladsch.flexmark.util.dependency.ResolvedDependencies;
 import com.vladsch.flexmark.util.html.Attributes;
 import com.vladsch.flexmark.util.html.Escaping;
-import com.vladsch.flexmark.util.options.*;
 import com.vladsch.flexmark.util.sequence.TagRange;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 
 import java.util.*;
 
-//import static javax.xml.XMLConstants.NULL_NS_URI;
 import static org.dita.dost.util.Constants.ATTRIBUTE_PREFIX_DITAARCHVERSION;
 import static org.dita.dost.util.Constants.DITA_NAMESPACE;
+
+//import static javax.xml.XMLConstants.NULL_NS_URI;
 //import static org.dita.dost.util.Constants.ELEMENT_NAME_DITA;
 //import static org.dita.dost.util.XMLSerializer.EMPTY_ATTS;
 
@@ -44,18 +45,18 @@ public class DitaRenderer implements IRender {
     public static final DataKey<Boolean> PERCENT_ENCODE_URLS = new DataKey<Boolean>("ESCAPE_HTML", false);
     public static final DataKey<Integer> INDENT_SIZE = new DataKey<Integer>("INDENT", 0);
     public static final DataKey<Boolean> ESCAPE_HTML = new DataKey<Boolean>("ESCAPE_HTML", false);
-    public static final DataKey<Boolean> ESCAPE_HTML_BLOCKS = new DynamicDefaultKey<Boolean>("ESCAPE_HTML_BLOCKS", holder -> ESCAPE_HTML.getFrom(holder));
-    public static final DataKey<Boolean> ESCAPE_HTML_COMMENT_BLOCKS = new DynamicDefaultKey<Boolean>("ESCAPE_HTML_COMMENT_BLOCKS", holder -> ESCAPE_HTML_BLOCKS.getFrom(holder));
-    public static final DataKey<Boolean> ESCAPE_INLINE_HTML = new DynamicDefaultKey<Boolean>("ESCAPE_HTML_BLOCKS", holder -> ESCAPE_HTML.getFrom(holder));
-    public static final DataKey<Boolean> ESCAPE_INLINE_HTML_COMMENTS = new DynamicDefaultKey<Boolean>("ESCAPE_INLINE_HTML_COMMENTS", holder -> ESCAPE_INLINE_HTML.getFrom(holder));
+    public static final DataKey<Boolean> ESCAPE_HTML_BLOCKS = new DataKey<Boolean>("ESCAPE_HTML_BLOCKS", holder -> ESCAPE_HTML.getFrom(holder));
+    public static final DataKey<Boolean> ESCAPE_HTML_COMMENT_BLOCKS = new DataKey<Boolean>("ESCAPE_HTML_COMMENT_BLOCKS", holder -> ESCAPE_HTML_BLOCKS.getFrom(holder));
+    public static final DataKey<Boolean> ESCAPE_INLINE_HTML = new DataKey<Boolean>("ESCAPE_HTML_BLOCKS", holder -> ESCAPE_HTML.getFrom(holder));
+    public static final DataKey<Boolean> ESCAPE_INLINE_HTML_COMMENTS = new DataKey<Boolean>("ESCAPE_INLINE_HTML_COMMENTS", holder -> ESCAPE_INLINE_HTML.getFrom(holder));
     public static final DataKey<Boolean> SUPPRESS_HTML = new DataKey<Boolean>("SUPPRESS_HTML", false);
-    public static final DataKey<Boolean> SUPPRESS_HTML_BLOCKS = new DynamicDefaultKey<Boolean>("SUPPRESS_HTML_BLOCKS", holder -> SUPPRESS_HTML.getFrom(holder));
-    public static final DataKey<Boolean> SUPPRESS_HTML_COMMENT_BLOCKS = new DynamicDefaultKey<Boolean>("SUPPRESS_HTML_COMMENT_BLOCKS", holder -> SUPPRESS_HTML_BLOCKS.getFrom(holder));
-    public static final DataKey<Boolean> SUPPRESS_INLINE_HTML = new DynamicDefaultKey<Boolean>("SUPPRESS_INLINE_HTML", holder -> SUPPRESS_HTML.getFrom(holder));
-    public static final DataKey<Boolean> SUPPRESS_INLINE_HTML_COMMENTS = new DynamicDefaultKey<Boolean>("SUPPRESS_INLINE_HTML_COMMENTS", holder -> SUPPRESS_INLINE_HTML.getFrom(holder));
+    public static final DataKey<Boolean> SUPPRESS_HTML_BLOCKS = new DataKey<Boolean>("SUPPRESS_HTML_BLOCKS", holder -> SUPPRESS_HTML.getFrom(holder));
+    public static final DataKey<Boolean> SUPPRESS_HTML_COMMENT_BLOCKS = new DataKey<Boolean>("SUPPRESS_HTML_COMMENT_BLOCKS", holder -> SUPPRESS_HTML_BLOCKS.getFrom(holder));
+    public static final DataKey<Boolean> SUPPRESS_INLINE_HTML = new DataKey<Boolean>("SUPPRESS_INLINE_HTML", holder -> SUPPRESS_HTML.getFrom(holder));
+    public static final DataKey<Boolean> SUPPRESS_INLINE_HTML_COMMENTS = new DataKey<Boolean>("SUPPRESS_INLINE_HTML_COMMENTS", holder -> SUPPRESS_INLINE_HTML.getFrom(holder));
     public static final DataKey<Boolean> SOURCE_WRAP_HTML = new DataKey<Boolean>("SOURCE_WRAP_HTML", false);
-    public static final DataKey<Boolean> SOURCE_WRAP_HTML_BLOCKS = new DynamicDefaultKey<Boolean>("SOURCE_WRAP_HTML_BLOCKS", holder -> SOURCE_WRAP_HTML.getFrom(holder));
-    //public static final DataKey<Boolean> SOURCE_WRAP_INLINE_HTML = new DynamicDefaultKey<>("SOURCE_WRAP_INLINE_HTML", SOURCE_WRAP_HTML::getFrom);
+    public static final DataKey<Boolean> SOURCE_WRAP_HTML_BLOCKS = new DataKey<Boolean>("SOURCE_WRAP_HTML_BLOCKS", holder -> SOURCE_WRAP_HTML.getFrom(holder));
+    //public static final DataKey<Boolean> SOURCE_WRAP_INLINE_HTML = new DataKey<>("SOURCE_WRAP_INLINE_HTML", SOURCE_WRAP_HTML::getFrom);
     public static final DataKey<Boolean> HEADER_ID_GENERATOR_RESOLVE_DUPES = new DataKey<Boolean>("HEADER_ID_GENERATOR_RESOLVE_DUPES", true);
     public static final DataKey<String> HEADER_ID_GENERATOR_TO_DASH_CHARS = new DataKey<String>("HEADER_ID_GENERATOR_TO_DASH_CHARS", " -_");
     public static final DataKey<Boolean> HEADER_ID_GENERATOR_NO_DUPED_DASHES = new DataKey<Boolean>("HEADER_ID_GENERATOR_NO_DUPED_DASHES", false);
@@ -108,7 +109,7 @@ public class DitaRenderer implements IRender {
 
         for (int i = builder.nodeRendererFactories.size() - 1; i >= 0; i--) {
             final NodeRendererFactory nodeRendererFactory = builder.nodeRendererFactories.get(i);
-            final Set<Class<? extends DelegatingNodeRendererFactoryWrapper>>[] myDelegates = new Set[] { null };
+            final Set<Class<? extends DelegatingNodeRendererFactoryWrapper>>[] myDelegates = new Set[]{null};
 
             nodeRenderers.add(new DelegatingNodeRendererFactoryWrapper(nodeRenderers, nodeRendererFactory));
         }
@@ -122,6 +123,11 @@ public class DitaRenderer implements IRender {
 
         this.attributeProviderFactories = FlatDependencyHandler.computeDependencies(builder.attributeProviderFactories);
         this.linkResolverFactories = FlatDependencyHandler.computeDependencies(builder.linkResolverFactories);
+    }
+
+    @Override
+    public DataHolder getOptions() {
+        return new DataSet(builder);
     }
 
     @Override
@@ -224,7 +230,7 @@ public class DitaRenderer implements IRender {
     }
 
 
-    private class MainNodeRenderer extends NodeRendererSubContext implements NodeRendererContext {
+    private class MainNodeRenderer extends NodeRendererSubContext implements NodeRendererContext, Disposable {
         private final Document document;
         private final Map<Class<?>, NodeRenderingHandlerWrapper> renderers;
 
@@ -236,6 +242,30 @@ public class DitaRenderer implements IRender {
         private final DitaIdGenerator ditaIdGenerator;
         private final HashMap<LinkType, HashMap<String, ResolvedLink>> resolvedLinkMap = new HashMap<LinkType, HashMap<String, ResolvedLink>>();
         private final AttributeProvider[] attributeProviders;
+
+        @Override
+        public void dispose() {
+//            document = null;
+//            renderers = null;
+//            phasedRenderers = null;
+
+            for (LinkResolver linkResolver : myLinkResolvers) {
+                if (linkResolver instanceof Disposable) ((Disposable) linkResolver).dispose();
+            }
+//            myLinkResolvers = null;
+
+//            renderingPhases = null;
+//            options = null;
+
+            if (ditaIdGenerator instanceof Disposable) ((Disposable) ditaIdGenerator).dispose();
+//            ditaIdGenerator = null;
+//            resolvedLinkMap = null;
+
+            for (AttributeProvider attributeProvider : attributeProviders) {
+                if (attributeProvider instanceof Disposable) ((Disposable) attributeProvider).dispose();
+            }
+//            attributeProviders = null;
+        }
 
         MainNodeRenderer(DataHolder options, DitaWriter ditaWriter, Document document) {
             super(ditaWriter);
@@ -253,7 +283,7 @@ public class DitaRenderer implements IRender {
 
             for (int i = nodeRendererFactories.size() - 1; i >= 0; i--) {
                 NodeRendererFactory nodeRendererFactory = nodeRendererFactories.get(i);
-                NodeRenderer nodeRenderer = nodeRendererFactory.create(this.getOptions());
+                NodeRenderer nodeRenderer = nodeRendererFactory.apply(this.getOptions());
                 for (NodeRenderingHandler nodeType : nodeRenderer.getNodeRenderingHandlers()) {
                     // Overwrite existing renderer
                     NodeRenderingHandlerWrapper handlerWrapper = new NodeRenderingHandlerWrapper(nodeType, renderers.get(nodeType.getNodeType()));
@@ -267,12 +297,12 @@ public class DitaRenderer implements IRender {
             }
 
             for (int i = 0; i < linkResolverFactories.size(); i++) {
-                myLinkResolvers[i] = linkResolverFactories.get(i).create(this);
+                myLinkResolvers[i] = linkResolverFactories.get(i).apply(this);
             }
 
             this.attributeProviders = new AttributeProvider[attributeProviderFactories.size()];
             for (int i = 0; i < attributeProviderFactories.size(); i++) {
-                attributeProviders[i] = attributeProviderFactories.get(i).create(this);
+                attributeProviders[i] = attributeProviderFactories.get(i).apply(this);
             }
         }
 
@@ -447,7 +477,9 @@ public class DitaRenderer implements IRender {
                 this.ditaIdGenerator.generateIds(document);
 
                 for (RenderingPhase phase : RenderingPhase.values()) {
-                    if (phase != RenderingPhase.BODY && !renderingPhases.contains(phase)) { continue; }
+                    if (phase != RenderingPhase.BODY && !renderingPhases.contains(phase)) {
+                        continue;
+                    }
                     this.phase = phase;
                     // here we render multiple phases
 
@@ -529,22 +561,34 @@ public class DitaRenderer implements IRender {
             }
 
             @Override
-            public String getNodeId(Node node) {return myMainNodeRenderer.getNodeId(node);}
+            public String getNodeId(Node node) {
+                return myMainNodeRenderer.getNodeId(node);
+            }
 
             @Override
-            public DataHolder getOptions() {return myMainNodeRenderer.getOptions();}
+            public DataHolder getOptions() {
+                return myMainNodeRenderer.getOptions();
+            }
 
             @Override
-            public DitaRendererOptions getDitaOptions() {return myMainNodeRenderer.getDitaOptions();}
+            public DitaRendererOptions getDitaOptions() {
+                return myMainNodeRenderer.getDitaOptions();
+            }
 
             @Override
-            public Document getDocument() {return myMainNodeRenderer.getDocument();}
+            public Document getDocument() {
+                return myMainNodeRenderer.getDocument();
+            }
 
             @Override
-            public RenderingPhase getRenderingPhase() {return myMainNodeRenderer.getRenderingPhase();}
+            public RenderingPhase getRenderingPhase() {
+                return myMainNodeRenderer.getRenderingPhase();
+            }
 
             @Override
-            public String encodeUrl(CharSequence url) {return myMainNodeRenderer.encodeUrl(url);}
+            public String encodeUrl(CharSequence url) {
+                return myMainNodeRenderer.encodeUrl(url);
+            }
 
             @Override
             public Attributes extendRenderingNodeAttributes(AttributablePart part, Attributes attributes) {
@@ -603,21 +647,33 @@ public class DitaRenderer implements IRender {
             }
 
             @Override
-            public DitaWriter getDitaWriter() { return ditaWriter; }
+            public DitaWriter getDitaWriter() {
+                return ditaWriter;
+            }
 
-            protected int getDoNotRenderLinksNesting() {return super.getDoNotRenderLinksNesting();}
-
-            @Override
-            public boolean isDoNotRenderLinks() {return super.isDoNotRenderLinks();}
-
-            @Override
-            public void doNotRenderLinks(boolean doNotRenderLinks) {super.doNotRenderLinks(doNotRenderLinks);}
+            protected int getDoNotRenderLinksNesting() {
+                return super.getDoNotRenderLinksNesting();
+            }
 
             @Override
-            public void doNotRenderLinks() {super.doNotRenderLinks();}
+            public boolean isDoNotRenderLinks() {
+                return super.isDoNotRenderLinks();
+            }
 
             @Override
-            public void doRenderLinks() {super.doRenderLinks();}
+            public void doNotRenderLinks(boolean doNotRenderLinks) {
+                super.doNotRenderLinks(doNotRenderLinks);
+            }
+
+            @Override
+            public void doNotRenderLinks() {
+                super.doNotRenderLinks();
+            }
+
+            @Override
+            public void doRenderLinks() {
+                super.doRenderLinks();
+            }
         }
     }
 

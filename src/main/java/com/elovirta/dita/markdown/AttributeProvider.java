@@ -1,7 +1,7 @@
 package com.elovirta.dita.markdown;
 
 import com.elovirta.dita.markdown.renderer.AttributablePart;
-import com.vladsch.flexmark.ast.Node;
+import com.vladsch.flexmark.util.ast.Node;
 import com.vladsch.flexmark.util.html.Attributes;
 
 /**

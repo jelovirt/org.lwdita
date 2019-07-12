@@ -114,14 +114,8 @@
               </p>
             </li>
           </ul>
-          <p class="- topic/p ">To create an email link, use the format
-            <codeph class="+ topic/ph pr-d/codeph ">mailto:
-              <xref class="- topic/xref " format="email" href="mailto:youremail@example.com" scope="external">
-                youremail@example.com
-              </xref>
-            </codeph>
-            .
-          </p>
+          <p class="- topic/p ">To create an email link, use the format <codeph class="+ topic/ph pr-d/codeph "
+          >mailto:youremail@example.com</codeph>.</p>
         </li>
         <li class="- topic/li ">
           <p class="- topic/p ">If you selected a link type, then select a specific destination. When you select <b

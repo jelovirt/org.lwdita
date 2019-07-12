@@ -1,12 +1,12 @@
 package com.elovirta.dita.markdown;
 
 import com.elovirta.dita.markdown.renderer.NodeRendererFactory;
-import com.vladsch.flexmark.Extension;
 import com.elovirta.dita.markdown.renderer.HeaderIdGeneratorFactory;
 import com.vladsch.flexmark.parser.Parser;
-import com.vladsch.flexmark.util.options.DataHolder;
-import com.vladsch.flexmark.util.options.DataKey;
-import com.vladsch.flexmark.util.options.MutableDataSet;
+import com.vladsch.flexmark.util.builder.Extension;
+import com.vladsch.flexmark.util.data.DataHolder;
+import com.vladsch.flexmark.util.data.DataKey;
+import com.vladsch.flexmark.util.data.MutableDataSet;
 
 import java.util.ArrayList;
 import java.util.HashSet;

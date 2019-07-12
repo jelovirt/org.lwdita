@@ -2,15 +2,15 @@ package com.elovirta.dita.markdown.renderer;
 
 import com.elovirta.dita.markdown.DitaRendererOptions;
 import com.elovirta.dita.markdown.DitaWriter;
-import com.vladsch.flexmark.ast.Document;
-import com.vladsch.flexmark.ast.Node;
+import com.vladsch.flexmark.util.ast.Document;
+import com.vladsch.flexmark.util.ast.Node;
+import com.vladsch.flexmark.util.data.DataHolder;
 import com.vladsch.flexmark.util.html.Attributes;
-import com.vladsch.flexmark.util.options.DataHolder;
 
 /**
  * The context for node rendering, including configuration and functionality for the node renderer to use.
  */
-public interface NodeRendererContext {
+public interface NodeRendererContext extends LinkResolverContext  {
 
     /**
      * @param url to be encoded
