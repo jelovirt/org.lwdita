@@ -94,4 +94,4 @@ License
 
 DITA-OT LwDITA is licensed for use under the [Apache License 2.0](http://www.apache.org/licenses/LICENSE-2.0).
 
-[build]: https://travis-ci.org/dita-ot/dita-ot.svg?branch=develop
+[build]: https://api.travis-ci.org/jelovirt/org.lwdita.svg?branch=master
