@@ -443,7 +443,7 @@
           </xsl:attribute>
         </xsl:when>
       </xsl:choose>
-      <xsl:if test="matches(@href, '^https?://', 'i')">
+      <xsl:if test="matches(@href, '^https?://', 'i') or starts-with(@href, '/')">
         <xsl:attribute name="scope">external</xsl:attribute>
       </xsl:if>
       <xsl:apply-templates select="@* | node()"/>

@@ -11,7 +11,7 @@
     </xref> before you can add it to a menu.
     </p>
     <p class="- topic/p ">You can view and change your online store navigation from the
-      <xref class="- topic/xref " format="html" href="/www.shopify.com/admin/menus">
+      <xref class="- topic/xref " format="html" scope="external" href="/www.shopify.com/admin/menus">
         <b class="+ topic/ph hi-d/b ">Navigation</b>
       </xref>
       page in your Shopify admin.
@@ -108,7 +108,7 @@
               <p class="- topic/p ">
                 <b class="+ topic/ph hi-d/b ">Policies</b>
                 - one of your
-                <xref class="- topic/xref " format="html"
+                <xref class="- topic/xref " format="html" scope="external"
                       href="/manual/sell-online/checkout-settings/refund-privacy-tos">store policies
                 </xref>
               </p>
@@ -175,7 +175,7 @@
     <section class="- topic/section " id="change-the-display-order-of-menu-items">
       <title class="- topic/title ">Change the display order of menu items</title>
       <p class="- topic/p ">You can view the display order of menu items on the
-        <xref class="- topic/xref " format="html" href="/www.shopify.com/admin/menus">
+        <xref class="- topic/xref " format="html"  scope="external" href="/www.shopify.com/admin/menus">
           <b class="+ topic/ph hi-d/b ">Navigation</b>
         </xref>
         page. The menu items display on your online store in the order that they are listed.

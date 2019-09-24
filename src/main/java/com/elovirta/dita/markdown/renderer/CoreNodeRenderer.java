@@ -1483,7 +1483,7 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
             atts.add(ATTRIBUTE_NAME_FORMAT, format);
         }
 
-        if (uri != null && uri.isAbsolute()) {
+        if (uri != null && (uri.isAbsolute() || !uri.isAbsolute() && uri.getPath() != null && uri.getPath().startsWith("/"))) {
             atts.add(ATTRIBUTE_NAME_SCOPE, ATTR_SCOPE_VALUE_EXTERNAL);
         }
 
