@@ -4,8 +4,8 @@
   domains="(topic hi-d) (topic ut-d) (topic indexing-d) (topic hazard-d) (topic abbrev-d) (topic pr-d) (topic sw-d) (topic ui-d)"
   id="escape">
   <title class="- topic/title ">Escape</title>
-  <shortdesc class="- topic/shortdesc ">Asterisk \* bracket \[foo\].</shortdesc>
+  <shortdesc class="- topic/shortdesc ">Asterisk * bracket [foo].</shortdesc>
   <body class="- topic/body ">
-    <p class="- topic/p ">\\\`\*\_\{\}\[\]\(\)\&gt;\#\+\-\.\!</p>
+    <p class="- topic/p ">\`*_{}[]()&gt;#+-.!</p>
   </body>
 </topic>

@@ -3,7 +3,7 @@
   id="escape" ditaarch:DITAArchVersion="1.3">
   <title class="- topic/title ">Escape</title>
   <body class="- topic/body ">
-    <p class="- topic/p ">Asterisk \* bracket \[foo\].</p>
-    <p class="- topic/p ">\\\`\*\_\{\}\[\]\(\)\&gt;\#\+\-\.\!</p>
+    <p class="- topic/p ">Asterisk * bracket [foo].</p>
+    <p class="- topic/p ">\`*_{}[]()&gt;#+-.!</p>
   </body>
 </topic>

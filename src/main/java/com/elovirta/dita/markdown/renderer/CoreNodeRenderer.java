@@ -1367,7 +1367,7 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
 
     private void render(final Text node, final NodeRendererContext context, final DitaWriter html) {
         if (abbreviations.isEmpty()) {
-            html.characters(node.getChars().toString());
+            html.characters(node.getChars().unescapeNoEntities());
         } else {
             printWithAbbreviations(node.getChars().toString(), html);
         }
