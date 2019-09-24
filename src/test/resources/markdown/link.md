@@ -9,6 +9,8 @@ Links
 
 [HTML](test.html)
 
+[Relative](/api)
+
 [External](http://www.example.com/test.html)
 
 [key]

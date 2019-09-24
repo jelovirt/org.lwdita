@@ -16,6 +16,9 @@
       <xref class="- topic/xref " format="html" href="test.html">HTML</xref>
     </p>
     <p class="- topic/p ">
+      <xref class="- topic/xref " format="html" href="/api">Relative</xref>
+    </p>
+    <p class="- topic/p ">
       <xref class="- topic/xref " format="html" href="http://www.example.com/test.html"
         scope="external">External</xref>
     </p>
