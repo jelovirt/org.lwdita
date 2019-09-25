@@ -360,6 +360,19 @@
     <xsl:value-of select="."/>
   </xsl:template>
   
+  <xsl:template match="div[@class = 'p']" mode="ast-clean">
+    <xsl:choose>
+      <xsl:when test="every $i in node() satisfies ast:is-block($i) and $i/self::*">
+        <xsl:apply-templates select="node()" mode="#current"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:copy>
+          <xsl:apply-templates select="@* | node()" mode="ast-clean"/>
+        </xsl:copy>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+ 
   <xsl:template match="@* | node()"
                 mode="ast-clean" priority="-10">
     <xsl:copy>
