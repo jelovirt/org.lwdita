@@ -20,7 +20,10 @@ public class ClasspathURIResolver implements URIResolver {
     public Source resolve(String href, String base) throws TransformerException {
         try {
             final URI res = new URI(base).resolve(href);
-            final InputStream in = this.getClass().getClassLoader().getResourceAsStream(res.getPath().substring(1));
+            final String resource = res.getScheme().equals("plugin")
+                    ? res.toString().substring(7).replace(':', '/')
+                    : res.getPath().substring(1);
+            final InputStream in = this.getClass().getClassLoader().getResourceAsStream(resource);
             if (in != null) {
                 return new StreamSource(in, res.toString());
             } else {

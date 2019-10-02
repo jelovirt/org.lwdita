@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<topic xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/" class="- topic/topic " domains="(topic abbrev-d)                            a(props deliveryTarget)                            (topic equation-d)                            (topic hazard-d)                            (topic hi-d)                            (topic indexing-d)                            (topic markup-d)                            (topic mathml-d)                            (topic pr-d)                            (topic relmgmt-d)                            (topic sw-d)                            (topic svg-d)                            (topic ui-d)                            (topic ut-d)                            (topic markup-d xml-d)   " id="test" ditaarch:DITAArchVersion="1.3">
+  <title class="- topic/title ">Test </title>
+  <prolog class="- topic/prolog ">
+    <author class="- topic/author ">Author One</author>
+    <author class="- topic/author ">Author Two</author>
+    <source class="- topic/source ">Source</source>
+    <publisher class="- topic/publisher ">Publisher</publisher>
+    <permissions class="- topic/permissions " view="Permissions"/>
+    <metadata class="- topic/metadata ">
+      <audience class="- topic/audience " audience="Audience"/>
+      <category class="- topic/category ">Category</category>
+      <keywords class="- topic/keywords ">
+        <keyword class="- topic/keyword ">Keyword1</keyword>
+        <keyword class="- topic/keyword ">Keyword2</keyword>
+      </keywords>
+    </metadata>
+    <resourceid class="- topic/resourceid " appid="Resourceid1"/>
+    <resourceid class="- topic/resourceid " appid="Resourceid2"/>
+  </prolog>
+  <body class="- topic/body ">
+    <p class="- topic/p ">Paragraph <i class="+ topic/ph hi-d/i ">test</i> and <b class="+ topic/ph hi-d/b ">list list list list list list list list list list list list list list list list list
+        list list list list list list</b> or <codeph class="+ topic/ph pr-d/codeph ">code</codeph>. This is a very long line. This is a very long line.
+      This is a very long line. This is a very long line. This is a very long line. This is a very long line. This is a
+      very long line. This is a very long line. This is a very long line. This is a very long line. This is a very long
+      line.</p>
+    <p class="- topic/p ">Paragraph with block content 
+      <codeblock class="+ topic/pre pr-d/codeblock " xml:space="preserve">codeblock
+  codeblock
+codeblock</codeblock>
+      nested with block content
+      <ol class="- topic/ol ">
+        <li class="- topic/li ">List item</li>
+      </ol>
+    </p>
+    <p class="- topic/p ">Asterisk \* bracket \[foo\].</p>
+    <p class="- topic/p ">\\\`\*\_\{\}\[\]\(\)\&gt;\#+-.!</p>
+    <p class="- topic/p ">Hyphen:</p>
+    <ul class="- topic/ul ">
+      <li class="- topic/li "><p class="- topic/p ">hyphen list list list list list list list list list list list list list list list list list list list list
+          list list list</p></li>
+      <li class="- topic/li "><p class="- topic/p "><b class="+ topic/ph hi-d/b ">start</b> with <i class="+ topic/ph hi-d/i ">inline</i>
+          <b class="+ topic/ph hi-d/b ">elements</b></p><p class="- topic/p ">para</p></li>
+      <li class="- topic/li "><p class="- topic/p ">list</p><ul class="- topic/ul ">
+          <li class="- topic/li "><p class="- topic/p ">item</p><ul class="- topic/ul ">
+              <li class="- topic/li "><p class="- topic/p ">four</p></li>
+            </ul></li>
+          <li class="- topic/li "><p class="- topic/p ">fifth</p><ul class="- topic/ul ">
+              <li class="- topic/li "><p class="- topic/p ">sixth</p></li>
+            </ul></li>
+        </ul></li>
+    </ul>
+    <p class="- topic/p ">Asterix:</p>
+    <ul class="- topic/ul ">
+      <li class="- topic/li "><p class="- topic/p ">inline <i class="+ topic/ph hi-d/i ">bold</i> normal</p><ul class="- topic/ul ">
+          <li class="- topic/li "><p class="- topic/p ">inline</p></li>
+        </ul></li>
+      <li class="- topic/li "><p class="- topic/p ">para</p><ul class="- topic/ul ">
+          <li class="- topic/li "><p class="- topic/p ">inline</p></li>
+        </ul></li>
+      <li class="- topic/li "><p class="- topic/p ">para</p><p class="- topic/p ">para</p></li>
+      <li class="- topic/li "><p class="- topic/p ">para</p><p class="- topic/p ">para</p></li>
+      <li class="- topic/li "><p class="- topic/p ">mixed codeblock</p><codeblock class="+ topic/pre pr-d/codeblock " xml:space="preserve">codeblock
+codeblock
+</codeblock></li>
+      <li class="- topic/li "><p class="- topic/p ">para</p><codeblock class="+ topic/pre pr-d/codeblock " xml:space="preserve">codeblock
+codeblock
+</codeblock><ul class="- topic/ul ">
+          <li class="- topic/li "><p class="- topic/p ">para</p></li>
+        </ul></li>
+    </ul>
+    <p class="- topic/p ">Ordered:</p>
+    <ol class="- topic/ol ">
+      <li class="- topic/li "><p class="- topic/p ">ordered</p></li>
+      <li class="- topic/li "><p class="- topic/p ">list</p></li>
+      <li class="- topic/li "><p class="- topic/p ">item</p><ol class="- topic/ol ">
+          <li class="- topic/li "><p class="- topic/p ">nested</p></li>
+          <li class="- topic/li "><p class="- topic/p ">list</p></li>
+        </ol></li>
+      <li class="- topic/li "><p class="- topic/p ">foo</p></li>
+      <li class="- topic/li "><p class="- topic/p ">foo</p></li>
+      <li class="- topic/li "><p class="- topic/p ">foo</p></li>
+      <li class="- topic/li "><p class="- topic/p ">foo</p></li>
+      <li class="- topic/li "><p class="- topic/p ">foo</p></li>
+      <li class="- topic/li "><p class="- topic/p ">foo</p></li>
+      <li class="- topic/li "><p class="- topic/p ">foo</p></li>
+      <li class="- topic/li "><p class="- topic/p ">foo</p></li>
+      <li class="- topic/li "><p class="- topic/p ">foo</p></li>
+      <li class="- topic/li "><p class="- topic/p ">foo</p></li>
+      <li class="- topic/li "><p class="- topic/p ">foo</p></li>
+      <li class="- topic/li "><p class="- topic/p ">foo</p></li>
+    </ol>
+    <section class="- topic/section " id="example"><title class="- topic/title ">Example </title><p class="- topic/p ">Code example on <codeph class="+ topic/ph pr-d/codeph ">for</codeph>
+        loop:</p><codeblock class="+ topic/pre pr-d/codeblock " xml:space="preserve">for i in items:
+    println(i)
+</codeblock><p class="- topic/p ">Fenced:</p><codeblock class="+ topic/pre pr-d/codeblock " id="test__scala-example" outputclass="scala" xml:space="preserve">items.foreach(println)
+</codeblock></section>
+  </body>
+  <topic class="- topic/topic " domains="(topic abbrev-d)                            a(props deliveryTarget)                            (topic equation-d)                            (topic hazard-d)                            (topic hi-d)                            (topic indexing-d)                            (topic markup-d)                            (topic mathml-d)                            (topic pr-d)                            (topic relmgmt-d)                            (topic sw-d)                            (topic svg-d)                            (topic ui-d)                            (topic ut-d)                            (topic markup-d xml-d)   " id="images" ditaarch:DITAArchVersion="1.3">
+    <title class="- topic/title ">Images </title>
+    <body class="- topic/body ">
+      <p class="- topic/p ">An inline <image class="- topic/image " href="test.jpg" placement="inline">
+          <alt class="- topic/alt ">Alt</alt>
+        </image>.</p>
+      <image class="- topic/image " href="test.jpg" placement="break">
+        <alt class="- topic/alt ">Alt</alt>
+      </image>
+      <fig class="- topic/fig ">
+        <title class="- topic/title ">Title</title>
+        <image class="- topic/image " href="test.jpg" placement="inline">
+          <alt class="- topic/alt ">Alt</alt>
+        </image>
+      </fig>
+    </body>
+    <topic class="- topic/topic " domains="(topic abbrev-d)                            a(props deliveryTarget)                            (topic equation-d)                            (topic hazard-d)                            (topic hi-d)                            (topic indexing-d)                            (topic markup-d)                            (topic mathml-d)                            (topic pr-d)                            (topic relmgmt-d)                            (topic sw-d)                            (topic svg-d)                            (topic ui-d)                            (topic ut-d)                            (topic markup-d xml-d)   " id="key_references" ditaarch:DITAArchVersion="1.3">
+      <title class="- topic/title ">Key references </title>
+      <body class="- topic/body ">
+        <image class="- topic/image " href="" placement="break"></image>
+      </body>
+    </topic>
+  </topic>
+  <topic class="- topic/topic " domains="(topic abbrev-d)                            a(props deliveryTarget)                            (topic equation-d)                            (topic hazard-d)                            (topic hi-d)                            (topic indexing-d)                            (topic markup-d)                            (topic mathml-d)                            (topic pr-d)                            (topic relmgmt-d)                            (topic sw-d)                            (topic svg-d)                            (topic ui-d)                            (topic ut-d)                            (topic markup-d xml-d)   " id="links" ditaarch:DITAArchVersion="1.3">
+    <title class="- topic/title ">Links </title>
+    <body class="- topic/body ">
+      <ul class="- topic/ul ">
+        <li class="- topic/li "><p class="- topic/p "><xref class="- topic/xref " href="test.md.xml">Markdown</xref></p></li>
+        <li class="- topic/li "><p class="- topic/p "><xref class="- topic/xref " href="topic.md.xml">DITA</xref></p></li>
+        <li class="- topic/li "><p class="- topic/p "><xref class="- topic/xref " format="html" href="test.html">HTML</xref></p></li>
+        <li class="- topic/li "><p class="- topic/p "><xref class="- topic/xref " format="html" href="http://www.example.com/test.html" scope="external">External</xref></p></li>
+        <li class="- topic/li "></li>
+      </ul>
+    </body>
+  </topic>
+  <topic class="- topic/topic " domains="(topic abbrev-d)                            a(props deliveryTarget)                            (topic equation-d)                            (topic hazard-d)                            (topic hi-d)                            (topic indexing-d)                            (topic markup-d)                            (topic mathml-d)                            (topic pr-d)                            (topic relmgmt-d)                            (topic sw-d)                            (topic svg-d)                            (topic ui-d)                            (topic ut-d)                            (topic markup-d xml-d)   " id="tables" ditaarch:DITAArchVersion="1.3">
+    <title class="- topic/title ">Tables </title>
+    <body class="- topic/body ">
+      <table class="- topic/table ">
+        <tgroup class="- topic/tgroup " cols="4">
+          <colspec class="- topic/colspec " colname="col1"></colspec>
+          <colspec class="- topic/colspec " colname="col2"></colspec>
+          <colspec class="- topic/colspec " colname="col3"></colspec>
+          <colspec class="- topic/colspec " colname="col4"></colspec>
+          <thead class="- topic/thead ">
+            <row class="- topic/row ">
+              <entry align="right" class="- topic/entry ">Right</entry>
+              <entry align="left" class="- topic/entry ">Left</entry>
+              <entry class="- topic/entry ">Default</entry>
+              <entry align="center" class="- topic/entry ">Center</entry>
+            </row>
+          </thead>
+          <tbody class="- topic/tbody ">
+            <row class="- topic/row ">
+              <entry align="right" class="- topic/entry ">12</entry>
+              <entry align="left" class="- topic/entry ">12</entry>
+              <entry class="- topic/entry ">12</entry>
+              <entry align="center" class="- topic/entry ">12</entry>
+            </row>
+            <row class="- topic/row ">
+              <entry align="right" class="- topic/entry ">123</entry>
+              <entry align="left" class="- topic/entry ">123</entry>
+              <entry class="- topic/entry ">123</entry>
+              <entry align="center" class="- topic/entry ">123</entry>
+            </row>
+            <row class="- topic/row ">
+              <entry align="right" class="- topic/entry ">1</entry>
+              <entry align="left" class="- topic/entry ">1</entry>
+              <entry class="- topic/entry ">1</entry>
+              <entry align="center" class="- topic/entry ">1</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+      <p class="- topic/p ">PHP Table:</p>
+      <table class="- topic/table ">
+        <tgroup class="- topic/tgroup " cols="3">
+          <colspec class="- topic/colspec " colname="col1"></colspec>
+          <colspec class="- topic/colspec " colname="col2"></colspec>
+          <colspec class="- topic/colspec " colname="col3"></colspec>
+          <thead class="- topic/thead ">
+            <row class="- topic/row ">
+              <entry align="left" class="- topic/entry ">First Header</entry>
+              <entry align="center" class="- topic/entry ">Second Header Very long data entry Very long data entry Very long data entry Very
+                long data entry Very long data entry Very long data entry Very long data entry Very long data entry Very
+                long data entry</entry>
+              <entry align="right" class="- topic/entry ">Third Header</entry>
+            </row>
+          </thead>
+          <tbody class="- topic/tbody ">
+            <row class="- topic/row ">
+              <entry align="left" class="- topic/entry ">First row</entry>
+              <entry align="center" class="- topic/entry ">Data</entry>
+              <entry align="right" class="- topic/entry ">Very long data entry Very long data entry Very long data entry Very long data entry
+                Very long data entry Very long data entry Very long data entry Very long data entry Very long data entry
+                Very long data entry</entry>
+            </row>
+            <row class="- topic/row ">
+              <entry align="left" class="- topic/entry ">Second row</entry>
+              <entry align="center" class="- topic/entry "><b class="+ topic/ph hi-d/b ">Cell</b></entry>
+              <entry align="right" class="- topic/entry "><i class="+ topic/ph hi-d/i ">Cell</i></entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </body>
+  </topic>
+  <topic class="- topic/topic " domains="(topic abbrev-d)                            a(props deliveryTarget)                            (topic equation-d)                            (topic hazard-d)                            (topic hi-d)                            (topic indexing-d)                            (topic markup-d)                            (topic mathml-d)                            (topic pr-d)                            (topic relmgmt-d)                            (topic sw-d)                            (topic svg-d)                            (topic ui-d)                            (topic ut-d)                            (topic markup-d xml-d)   " id="definition_list" ditaarch:DITAArchVersion="1.3">
+    <title class="- topic/title ">Definition list </title>
+    <body class="- topic/body ">
+      <dl class="- topic/dl ">
+        <dlentry class="- topic/dlentry ">
+          <dt class="- topic/dt ">Apple</dt>
+          <dd class="- topic/dd "><p class="- topic/p ">Pomaceous fruit of plants of the genus Malus in the family Rosaceae. Orange</p></dd>
+          <dd class="- topic/dd "><p class="- topic/p ">The fruit of an evergreen tree of the genus Citrus.</p><p class="- topic/p ">The fruit of an evergreen tree of the genus
+              Citrus.</p></dd>
+        </dlentry>
+      </dl>
+    </body>
+  </topic>
+  <topic class="- topic/topic " domains="(topic abbrev-d)                            a(props deliveryTarget)                            (topic equation-d)                            (topic hazard-d)                            (topic hi-d)                            (topic indexing-d)                            (topic markup-d)                            (topic mathml-d)                            (topic pr-d)                            (topic relmgmt-d)                            (topic sw-d)                            (topic svg-d)                            (topic ui-d)                            (topic ut-d)                            (topic markup-d xml-d)   " id="quote" ditaarch:DITAArchVersion="1.3">
+    <title class="- topic/title ">Quote </title>
+    <body class="- topic/body ">
+      <lq class="- topic/lq "><p class="- topic/p ">This is email And so it this Again.</p></lq>
+      <ul class="- topic/ul ">
+        <li class="- topic/li "><p class="- topic/p ">List</p><lq class="- topic/lq "><p class="- topic/p ">Quote in list</p></lq></li>
+        <li class="- topic/li "><p class="- topic/p ">Second list</p></li>
+      </ul>
+    </body>
+  </topic>
+</topic>

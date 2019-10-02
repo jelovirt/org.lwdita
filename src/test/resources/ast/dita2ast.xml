@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="../../main/resources/ast.rnc" type="application/relax-ng-compact-syntax"?>
+<pandoc>
+  <div>
+    <header id="test" level="1">Test</header>
+    <div>
+      <para>Paragraph <emph>test</emph> and <strong>list list list list list list list list list list list list list
+          list list list list list list list list list list</strong> or <code>code</code>. This is a very long line.
+        This is a very long line. This is a very long line. This is a very long line. This is a very long line. This is
+        a very long line. This is a very long line. This is a very long line. This is a very long line. This is a very
+        long line. This is a very long line.</para>
+      <para>Paragraph with block content</para>
+      <codeblock xml:space="preserve">codeblock
+codeblock
+codeblock</codeblock>
+      <para>nested with block content</para>
+      <orderedlist>
+        <li>
+          <plain>List item</plain>
+        </li>
+      </orderedlist>
+      <para>Asterisk \* bracket \[foo\].</para>
+      <para>\\\`\*\_\{\}\[\]\(\)\&gt;\#+-.!</para>
+      <para>Hyphen:</para>
+      <bulletlist>
+        <li>
+          <para>hyphen list list list list list list list list list list list list list list list list list list list
+            list list list list</para>
+        </li>
+        <li>
+          <para><strong>start</strong> with <emph>inline</emph>
+            <strong>elements</strong></para>
+          <para>para</para>
+        </li>
+        <li>
+          <para>list</para>
+          <bulletlist>
+            <li>
+              <para>item</para>
+              <bulletlist>
+                <li>
+                  <para>four</para>
+                </li>
+              </bulletlist>
+            </li>
+            <li>
+              <para>fifth</para>
+              <bulletlist>
+                <li>
+                  <para>sixth</para>
+                </li>
+              </bulletlist>
+            </li>
+          </bulletlist>
+        </li>
+      </bulletlist>
+      <para>Asterix:</para>
+      <bulletlist>
+        <li>
+          <para>inline <emph>bold</emph> normal</para>
+          <bulletlist>
+            <li>
+              <para>inline</para>
+            </li>
+          </bulletlist>
+        </li>
+        <li>
+          <para>para</para>
+          <bulletlist>
+            <li>
+              <para>inline</para>
+            </li>
+          </bulletlist>
+        </li>
+        <li>
+          <para>para</para>
+          <para>para</para>
+        </li>
+        <li>
+          <para>para</para>
+          <para>para</para>
+        </li>
+        <li>
+          <para>mixed codeblock</para>
+          <codeblock xml:space="preserve">codeblock
+codeblock
+</codeblock>
+        </li>
+        <li>
+          <para>para</para>
+          <codeblock xml:space="preserve">codeblock
+codeblock
+</codeblock>
+          <bulletlist>
+            <li>
+              <para>para</para>
+            </li>
+          </bulletlist>
+        </li>
+      </bulletlist>
+      <para>Ordered:</para>
+      <orderedlist>
+        <li>
+          <para>ordered</para>
+        </li>
+        <li>
+          <para>list</para>
+        </li>
+        <li>
+          <para>item</para>
+          <orderedlist type="a">
+            <li>
+              <para>nested</para>
+            </li>
+            <li>
+              <para>list</para>
+            </li>
+          </orderedlist>
+        </li>
+        <li>
+          <para>foo</para>
+        </li>
+        <li>
+          <para>foo</para>
+        </li>
+        <li>
+          <para>foo</para>
+        </li>
+        <li>
+          <para>foo</para>
+        </li>
+        <li>
+          <para>foo</para>
+        </li>
+        <li>
+          <para>foo</para>
+        </li>
+        <li>
+          <para>foo</para>
+        </li>
+        <li>
+          <para>foo</para>
+        </li>
+        <li>
+          <para>foo</para>
+        </li>
+        <li>
+          <para>foo</para>
+        </li>
+        <li>
+          <para>foo</para>
+        </li>
+        <li>
+          <para>foo</para>
+        </li>
+      </orderedlist>
+      <div class="section" id="example">
+        <header class="section" id="example" level="2">Example</header>
+        <para>Code example on <code>for</code> loop:</para>
+        <codeblock xml:space="preserve">for i in items:
+    println(i)
+</codeblock>
+        <para>Fenced:</para>
+        <codeblock class="scala" id="test__scala-example" xml:space="preserve">items.foreach(println)
+</codeblock>
+      </div>
+    </div>
+    <div id="images">
+      <header id="images" level="2">Images</header>
+      <div>
+        <para>An inline <image alt="Alt" href="test.jpg"/>.</para>
+        <para>
+          <image alt="Alt" href="test.jpg"/>
+        </para>
+        <para>
+          <image alt="Alt" href="test.jpg" title="Title"/>
+        </para>
+      </div>
+      <div id="key_references">
+        <header id="key_references" level="3">Key references</header>
+        <div>
+          <para>
+            <image href=""/>
+          </para>
+        </div>
+      </div>
+    </div>
+    <div id="links">
+      <header id="links" level="2">Links</header>
+      <div>
+        <bulletlist>
+          <li>
+            <para>
+              <link href="test.md.md">Markdown</link>
+            </para>
+          </li>
+          <li>
+            <para>
+              <link href="topic.md.md">DITA</link>
+            </para>
+          </li>
+          <li>
+            <para>
+              <link href="test.html">HTML</link>
+            </para>
+          </li>
+          <li>
+            <para>
+              <link href="http://www.example.com/test.html">External</link>
+            </para>
+          </li>
+          <li/>
+        </bulletlist>
+      </div>
+    </div>
+    <div id="tables">
+      <header id="tables" level="2">Tables</header>
+      <div>
+        <table>
+          <col/>
+          <col/>
+          <col/>
+          <col/>
+          <thead>
+            <tr>
+              <tablecell>Right</tablecell>
+              <tablecell>Left</tablecell>
+              <tablecell>Default</tablecell>
+              <tablecell>Center</tablecell>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <tablecell>12</tablecell>
+              <tablecell>12</tablecell>
+              <tablecell>12</tablecell>
+              <tablecell>12</tablecell>
+            </tr>
+            <tr>
+              <tablecell>123</tablecell>
+              <tablecell>123</tablecell>
+              <tablecell>123</tablecell>
+              <tablecell>123</tablecell>
+            </tr>
+            <tr>
+              <tablecell>1</tablecell>
+              <tablecell>1</tablecell>
+              <tablecell>1</tablecell>
+              <tablecell>1</tablecell>
+            </tr>
+          </tbody>
+        </table>
+        <para>PHP Table:</para>
+        <table>
+          <col/>
+          <col/>
+          <col/>
+          <thead>
+            <tr>
+              <tablecell>First Header</tablecell>
+              <tablecell>Second Header Very long data entry Very long data entry Very long data entry Very long data
+                entry Very long data entry Very long data entry Very long data entry Very long data entry Very long data
+                entry</tablecell>
+              <tablecell>Third Header</tablecell>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <tablecell>First row</tablecell>
+              <tablecell>Data</tablecell>
+              <tablecell>Very long data entry Very long data entry Very long data entry Very long data entry Very long
+                data entry Very long data entry Very long data entry Very long data entry Very long data entry Very long
+                data entry</tablecell>
+            </tr>
+            <tr>
+              <tablecell>Second row</tablecell>
+              <tablecell>
+                <strong>Cell</strong>
+              </tablecell>
+              <tablecell>
+                <emph>Cell</emph>
+              </tablecell>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div id="definition_list">
+      <header id="definition_list" level="2">Definition list</header>
+      <div>
+        <definitionlist>
+          <dlentry>
+            <dt>Apple</dt>
+            <dd>
+              <para>Pomaceous fruit of plants of the genus Malus in the family Rosaceae. Orange</para>
+            </dd>
+            <dd>
+              <para>The fruit of an evergreen tree of the genus Citrus.</para>
+              <para>The fruit of an evergreen tree of the genus Citrus.</para>
+            </dd>
+          </dlentry>
+        </definitionlist>
+      </div>
+    </div>
+    <div id="quote">
+      <header id="quote" level="2">Quote</header>
+      <div>
+        <blockquote>
+          <para>This is email And so it this Again.</para>
+        </blockquote>
+        <bulletlist>
+          <li>
+            <para>List</para>
+            <blockquote>
+              <para>Quote in list</para>
+            </blockquote>
+          </li>
+          <li>
+            <para>Second list</para>
+          </li>
+        </bulletlist>
+      </div>
+    </div>
+  </div>
+</pandoc>
