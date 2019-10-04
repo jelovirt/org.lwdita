@@ -83,6 +83,7 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
     private static final Attributes CODEBLOCK_ATTS = buildAtts(PR_D_CODEBLOCK);
     private static final Attributes DT_ATTS = buildAtts(TOPIC_DT);
     private static final Attributes DEL_ATTS = new AttributesBuilder().add(ATTRIBUTE_NAME_CLASS, TOPIC_PH.toString()).add("status", "deleted").build();
+    private static final Attributes LINE_THROUGH_ATTS = buildAtts(HI_D_LINE_THROUGH);
     private static final Attributes TITLE_ATTS = buildAtts(TOPIC_TITLE);
     private static final Attributes SHORTDESC_ATTS = buildAtts(TOPIC_SHORTDESC);
     private static final Attributes PROLOG_ATTS = buildAtts(TOPIC_PROLOG);
@@ -1083,7 +1084,7 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
 //    }
 
     private void render(final Strikethrough node, final NodeRendererContext context, final DitaWriter html) {
-        printTag(node, context, html, TOPIC_PH, DEL_ATTS);
+        printTag(node, context, html, HI_D_LINE_THROUGH, LINE_THROUGH_ATTS);
     }
 
     private void render(final Emphasis node, final NodeRendererContext context, final DitaWriter html) {

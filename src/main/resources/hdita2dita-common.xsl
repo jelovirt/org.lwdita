@@ -463,6 +463,15 @@
   <xsl:template match="del" mode="class">
     <xsl:attribute name="class">- topic/ph </xsl:attribute>
   </xsl:template>
+  <xsl:template match="s">
+    <line-through>
+      <xsl:apply-templates select="." mode="class"/>
+      <xsl:apply-templates select="@* | node()"/>
+    </line-through>
+  </xsl:template>
+  <xsl:template match="s" mode="class">
+    <xsl:attribute name="class">+ topic/ph hi-d/line-through </xsl:attribute>
+  </xsl:template>
   <xsl:template match="code">
     <codeph>
       <xsl:apply-templates select="." mode="class"/>
