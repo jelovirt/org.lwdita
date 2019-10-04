@@ -16,8 +16,9 @@
         class="+ topic/ph hi-d/b ">bold</b>) claim</p>
     <p class="- topic/p ">here is an <i class="+ topic/ph hi-d/i ">italics</i> (<i
         class="+ topic/ph hi-d/i ">italics</i>) claim</p>
+    <p class="- topic/p ">here is <line-through class="+ topic/ph hi-d/line-through ">strike through</line-through> test</p>
     <p class="- topic/p ">here is a <codeph class="+ topic/ph pr-d/codeph ">code</codeph> (<codeph
-        class="+ topic/ph pr-d/codeph ">code</codeph>) claim</p>
+      class="+ topic/ph pr-d/codeph ">code</codeph>) claim</p>
     <p class="- topic/p ">here --- mdash --- dash</p>
     <p class="- topic/p ">here -- ndash -- dash</p>
     <p class="- topic/p ">HTML <b class="+ topic/ph hi-d/b ">bold</b> element</p>

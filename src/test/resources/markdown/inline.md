@@ -9,6 +9,8 @@ here is a **bold** (**bold**) claim
 
 here is an *italics* (*italics*) claim
 
+here is ~~strike through~~ test
+
 here is a `code` (`code`) claim
 
 here --- mdash --- dash
