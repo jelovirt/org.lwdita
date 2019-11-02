@@ -1533,14 +1533,14 @@
      <xsl:when test="@keyref and @href">
        <link>
          <xsl:apply-templates select="." mode="add-linking-attributes"/>
-         <span style="margin: 1pt; background-color: #ffddff; border: 1pt black solid;">
+         <span>
            <xsl:call-template name="commonattributes"/>
            <xsl:apply-templates/>
          </span>
        </link>
      </xsl:when>
      <xsl:otherwise>
-       <span style="margin: 1pt; background-color: #ffddff; border: 1pt black solid;">
+       <span>
          <xsl:call-template name="commonattributes"/>
          <xsl:apply-templates/>
        </span>
