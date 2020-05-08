@@ -48,7 +48,7 @@ The DITA-OT LwDITA plug-in extends the DITA Open Toolkit with additional output 
 Requirements
 ------------
 
-DITA-OT 2.2 is required. Earlier versions of DITA-OT do not have the
+DITA-OT 2.4 is required. Earlier versions of DITA-OT do not have the
 required extension points.
 
 Install
