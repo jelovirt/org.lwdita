@@ -247,9 +247,7 @@ public class MarkdownReader implements XMLReader {
         BufferedInputStream bin = new BufferedInputStream(in);
         bin.mark(3);
         try {
-            final byte[] buf = new byte[3];
-            bin.read(buf);
-            if (buf[0] != (byte) 0xEF || buf[1] != (byte) 0xBB || buf[2] != (byte) 0xBF) {
+            if (bin.read() != 0xEF || bin.read() != 0xBB || bin.read() != 0xBF) {
                 bin.reset();
             }
         } catch (final IOException e) {
