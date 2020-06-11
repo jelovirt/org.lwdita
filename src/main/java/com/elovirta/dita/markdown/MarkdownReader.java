@@ -222,7 +222,10 @@ public class MarkdownReader implements XMLReader {
                 throw new IllegalArgumentException(e);
             }
             final String encoding = input.getEncoding() != null ? input.getEncoding() : "UTF-8";
-            final Reader in = new InputStreamReader(inUrl.openStream(), encoding);
+            final InputStream is = "UTF-8".equalsIgnoreCase(encoding)
+                    ? consumeBOM(inUrl.openStream())
+                    : inUrl.openStream();
+            final Reader in = new InputStreamReader(is, encoding);
             try {
                 copy(in, out);
             } finally {
