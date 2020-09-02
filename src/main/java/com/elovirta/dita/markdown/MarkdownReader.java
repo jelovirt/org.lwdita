@@ -1,6 +1,7 @@
 package com.elovirta.dita.markdown;
 
 import com.elovirta.dita.utils.ClasspathURIResolver;
+import com.google.common.annotations.VisibleForTesting;
 import com.vladsch.flexmark.ext.abbreviation.AbbreviationExtension;
 import com.vladsch.flexmark.ext.anchorlink.AnchorLinkExtension;
 import com.vladsch.flexmark.ext.autolink.AutolinkExtension;
@@ -192,19 +193,16 @@ public class MarkdownReader implements XMLReader {
         parse(new InputSource(systemId));
     }
 
-    private char[] getMarkdownContent(final InputSource input) throws IOException {
+    @VisibleForTesting
+    char[] getMarkdownContent(final InputSource input) throws IOException {
         final CharArrayWriter out = new CharArrayWriter();
         if (input.getByteStream() != null) {
             final String encoding = input.getEncoding() != null ? input.getEncoding() : "UTF-8";
-            final InputStream is = "UTF-8".equalsIgnoreCase(encoding)
+            try (InputStream is = "UTF-8".equalsIgnoreCase(encoding)
                     ? consumeBOM(input.getByteStream())
                     : input.getByteStream();
-            final Reader in = new InputStreamReader(is, encoding);
-            try {
+                 Reader in = new InputStreamReader(is, encoding)) {
                 copy(in, out);
-            } finally {
-                closeQuietly(in);
-                //closeQuietly(out);
             }
         } else if (input.getCharacterStream() != null) {
             final Reader in = input.getCharacterStream();
@@ -222,12 +220,11 @@ public class MarkdownReader implements XMLReader {
                 throw new IllegalArgumentException(e);
             }
             final String encoding = input.getEncoding() != null ? input.getEncoding() : "UTF-8";
-            final Reader in = new InputStreamReader(inUrl.openStream(), encoding);
-            try {
+            try (InputStream is = "UTF-8".equalsIgnoreCase(encoding)
+                    ? consumeBOM(inUrl.openStream())
+                    : inUrl.openStream();
+                 Reader in = new InputStreamReader(is, encoding)) {
                 copy(in, out);
-            } finally {
-                closeQuietly(in);
-                //closeQuietly(out);
             }
         }
         return out.toCharArray();
@@ -238,15 +235,12 @@ public class MarkdownReader implements XMLReader {
      *
      * @param in the original input stream
      * @return An input stream without a possible BOM
-     * @throws IOException
      */
     private InputStream consumeBOM(final InputStream in) throws IOException {
-        BufferedInputStream bin = new BufferedInputStream(in);
+        final BufferedInputStream bin = new BufferedInputStream(in);
         bin.mark(3);
         try {
-            final byte[] buf = new byte[3];
-            bin.read(buf);
-            if (buf[0] != (byte) 0xEF || buf[1] != (byte) 0xBB || buf[2] != (byte) 0xBF) {
+            if (bin.read() != 0xEF || bin.read() != 0xBB || bin.read() != 0xBF) {
                 bin.reset();
             }
         } catch (final IOException e) {

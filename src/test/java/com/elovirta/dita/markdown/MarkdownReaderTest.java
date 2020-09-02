@@ -3,7 +3,12 @@ package com.elovirta.dita.markdown;
 import com.elovirta.dita.utils.AbstractReaderTest;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
+
+import java.net.URL;
+
+import static org.junit.Assert.assertEquals;
 
 public class MarkdownReaderTest extends AbstractReaderTest {
 
@@ -139,6 +144,15 @@ public class MarkdownReaderTest extends AbstractReaderTest {
     @Test
     public void testBOM() throws Exception {
         run("testBOM.md");
+    }
+
+    @Test
+    public void getMarkdownContent_url() throws Exception {
+        final String input = getSrc() + "testBOM.md";
+        final URL in = getClass().getResource("/" + input);
+        final InputSource i = new InputSource(in.toString());
+        final char[] content = new MarkdownReader().getMarkdownContent(i);
+        assertEquals('W', content[0]);
     }
 
     @Test
