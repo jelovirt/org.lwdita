@@ -1,6 +1,7 @@
 package com.elovirta.dita.markdown;
 
 import com.elovirta.dita.utils.ClasspathURIResolver;
+import com.google.common.annotations.VisibleForTesting;
 import com.vladsch.flexmark.ext.abbreviation.AbbreviationExtension;
 import com.vladsch.flexmark.ext.anchorlink.AnchorLinkExtension;
 import com.vladsch.flexmark.ext.autolink.AutolinkExtension;
@@ -192,7 +193,8 @@ public class MarkdownReader implements XMLReader {
         parse(new InputSource(systemId));
     }
 
-    private char[] getMarkdownContent(final InputSource input) throws IOException {
+    @VisibleForTesting
+    char[] getMarkdownContent(final InputSource input) throws IOException {
         final CharArrayWriter out = new CharArrayWriter();
         if (input.getByteStream() != null) {
             final String encoding = input.getEncoding() != null ? input.getEncoding() : "UTF-8";
