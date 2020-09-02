@@ -196,15 +196,11 @@ public class MarkdownReader implements XMLReader {
         final CharArrayWriter out = new CharArrayWriter();
         if (input.getByteStream() != null) {
             final String encoding = input.getEncoding() != null ? input.getEncoding() : "UTF-8";
-            final InputStream is = "UTF-8".equalsIgnoreCase(encoding)
+            try (InputStream is = "UTF-8".equalsIgnoreCase(encoding)
                     ? consumeBOM(input.getByteStream())
                     : input.getByteStream();
-            final Reader in = new InputStreamReader(is, encoding);
-            try {
+                 Reader in = new InputStreamReader(is, encoding)) {
                 copy(in, out);
-            } finally {
-                closeQuietly(in);
-                //closeQuietly(out);
             }
         } else if (input.getCharacterStream() != null) {
             final Reader in = input.getCharacterStream();
@@ -222,15 +218,11 @@ public class MarkdownReader implements XMLReader {
                 throw new IllegalArgumentException(e);
             }
             final String encoding = input.getEncoding() != null ? input.getEncoding() : "UTF-8";
-            final InputStream is = "UTF-8".equalsIgnoreCase(encoding)
+            try (InputStream is = "UTF-8".equalsIgnoreCase(encoding)
                     ? consumeBOM(inUrl.openStream())
                     : inUrl.openStream();
-            final Reader in = new InputStreamReader(is, encoding);
-            try {
+                 Reader in = new InputStreamReader(is, encoding)) {
                 copy(in, out);
-            } finally {
-                closeQuietly(in);
-                //closeQuietly(out);
             }
         }
         return out.toCharArray();
@@ -241,10 +233,9 @@ public class MarkdownReader implements XMLReader {
      *
      * @param in the original input stream
      * @return An input stream without a possible BOM
-     * @throws IOException
      */
     private InputStream consumeBOM(final InputStream in) throws IOException {
-        BufferedInputStream bin = new BufferedInputStream(in);
+        final BufferedInputStream bin = new BufferedInputStream(in);
         bin.mark(3);
         try {
             if (bin.read() != 0xEF || bin.read() != 0xBB || bin.read() != 0xBF) {
