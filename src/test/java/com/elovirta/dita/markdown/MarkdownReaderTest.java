@@ -166,6 +166,11 @@ public class MarkdownReaderTest extends AbstractReaderTest {
     }
 
     @Test
+    public void testShortdescClass() throws Exception {
+        run("shortdesc_class.md");
+    }
+
+    @Test
     public void testLinebreak() throws Exception {
         run("linebreak.md");
     }

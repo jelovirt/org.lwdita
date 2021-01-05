@@ -138,6 +138,11 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
      */
     private int headerLevel = 0;
 
+    /**
+     * If we have used the first paragraph as a shortdesc
+     */
+    private boolean usedShortdesc = false;
+
     public CoreNodeRenderer(DataHolder options) {
         this.shortdescParagraph = DitaRenderer.SHORTDESC_PARAGRAPH.getFrom(options);
         this.idFromYaml = DitaRenderer.ID_FROM_YAML.getFrom(options);
@@ -672,17 +677,23 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
                 lastId = id;
                 atts.add(ATTRIBUTE_NAME_ID, id);
             }
-            if (!lwDita && !header.classes.isEmpty()) {
-                atts.add("outputclass", String.join(" ", header.classes));
+            final boolean useMarkdownShortdesc = !lwDita && header.classes.contains(TOPIC_SHORTDESC.localName);
+            if (!lwDita) {
+                final Collection<String> classes = new ArrayList<>(header.classes);
+                classes.remove(TOPIC_SHORTDESC.localName);
+                if (!classes.isEmpty()) {
+                    atts.add("outputclass", String.join(" ", classes));
+                }
             }
             html.startElement(TOPIC_TOPIC, atts.build());
             html.startElement(TOPIC_TITLE, TITLE_ATTS);
             context.renderChildren(node);
             html.endElement(); // title
-            if (shortdescParagraph && node.getNext() instanceof Paragraph) {
+            if ((shortdescParagraph || useMarkdownShortdesc) && node.getNext() instanceof Paragraph) {
                 html.startElement(TOPIC_SHORTDESC, SHORTDESC_ATTS);
                 context.renderChildren(node.getNext());
                 html.endElement(); // shortdesc
+                usedShortdesc = true;
             }
             if (node.getLevel() == 1) {
                 final Node firstChild = node.getDocument().getFirstChild();
@@ -894,7 +905,7 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
     private boolean onlyImageChild = false;
 
     private void render(final Paragraph node, final NodeRendererContext context, final DitaWriter html) {
-        if (shortdescParagraph && !inSection && node.getPrevious() instanceof Heading) {
+        if (usedShortdesc && !inSection && node.getPrevious() instanceof Heading) {
             // Pulled by Heading
         } else if (containsImage(node)) {
             onlyImageChild = true;
