@@ -342,6 +342,7 @@
   <xsl:template match="td | th">
     <entry>
       <xsl:apply-templates select="." mode="class"/>
+      <xsl:call-template name="processColspan"/>
       <xsl:apply-templates select="@* | node()"/>
     </entry>
   </xsl:template>
@@ -350,6 +351,54 @@
   </xsl:template>
   <xsl:template match="@rowspan">
     <xsl:attribute name="morerows" select="xs:integer(.) - 1"/>
+  </xsl:template>
+
+ <xsl:template name="processColspan">
+   <xsl:variable name="position" select="count(preceding-sibling::*) + 1"/>
+   <xsl:if test="(@colspan castable as xs:integer) and (@colspan > 1)">
+     <!-- Current row and column index -->
+     <xsl:variable name="currentRowIndex" select="x:getRowIndex(.)"/>
+     <xsl:variable name="currentColIndex" select="x:getColIndex(.)"/>
+     <!-- Set of preceding rows -->
+     <xsl:variable name="precedingRows" select="parent::tr/preceding-sibling::tr[position() &lt; $currentRowIndex]"/>
+     <!-- Preceding cells in column which have row spans over the current row. -->
+     <xsl:variable name="previousCellsWithRowSpans" select="
+       ancestor::table//(th | td)[@rowspan castable as xs:integer][@rowspan][x:getRowIndex(.) &lt; $currentRowIndex][x:getColIndex(.) &lt;= $currentColIndex][number(@rowspan) + number(x:getRowIndex(.)) - number($currentRowIndex) &gt; 0]"/>
+     <!-- Namestart and name end must be shifted with this shift offset. -->
+     <xsl:variable name="shiftColNumber" as="xs:integer" select="count($previousCellsWithRowSpans)"/>
+     <!-- The current cell might be pushed to the right by previous cells that span over multiple columns.  -->
+     <xsl:variable name="previousCellsWithColSpan" select="preceding-sibling::*[(@colspan castable as xs:integer) and (@colspan > 1)]"/>
+     <!-- Compute how many additional columns are occupied by the cells located to the left of the current cell. -->
+     <xsl:variable name="colspanShift" select="sum(($previousCellsWithRowSpans, $previousCellsWithColSpan)/(@colspan - 1))"/>    
+     
+     <xsl:attribute name="namest">
+       <xsl:value-of select="concat('col', $position + $shiftColNumber + $colspanShift)"/>
+     </xsl:attribute>
+     <xsl:attribute name="nameend">
+       <xsl:value-of select="concat('col', $position + number(@colspan) - 1 + $shiftColNumber + $colspanShift)"/>
+     </xsl:attribute>
+   </xsl:if>
+   <xsl:if test="@rowspan castable as xs:integer and @rowspan > 1">
+     <xsl:attribute name="morerows">
+       <xsl:value-of select="number(@rowspan) - 1"/>
+     </xsl:attribute>
+   </xsl:if>
+ </xsl:template>
+
+  <xsl:function name="x:getRowIndex" as="xs:integer">
+    <xsl:param name="cell" as="node()"/>
+    <xsl:variable name="precedingRows" select="$cell/parent::tr/preceding-sibling::tr"/>
+    <xsl:variable name="currentRowIndex" select="count($precedingRows) + 1"/>
+    <xsl:value-of select="$currentRowIndex"/>
+  </xsl:function>
+  
+  <xsl:function name="x:getColIndex" as="xs:integer">
+    <xsl:param name="cell" as="node()"/>
+    <xsl:sequence select="count($cell/preceding-sibling::td) + count($cell/preceding-sibling::th)"/>
+  </xsl:function>
+
+  <xsl:template match="td/@colspan | th/@colspan">
+    <!-- Ignore this attribute -->
   </xsl:template>
 
   <!--
