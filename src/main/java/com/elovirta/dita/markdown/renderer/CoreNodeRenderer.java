@@ -86,6 +86,8 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
     private static final Attributes DT_ATTS = buildAtts(TOPIC_DT);
     private static final Attributes DEL_ATTS = new AttributesBuilder().add(ATTRIBUTE_NAME_CLASS, TOPIC_PH.toString()).add("status", "deleted").build();
     private static final Attributes LINE_THROUGH_ATTS = buildAtts(HI_D_LINE_THROUGH);
+    private static final Attributes SUP_ATTS = buildAtts(HI_D_SUP);
+    private static final Attributes SUB_ATTS = buildAtts(HI_D_SUB);
     private static final Attributes TITLE_ATTS = buildAtts(TOPIC_TITLE);
     private static final Attributes SHORTDESC_ATTS = buildAtts(TOPIC_SHORTDESC);
     private static final Attributes PROLOG_ATTS = buildAtts(TOPIC_PROLOG);
@@ -481,11 +483,11 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
     }
     
     private void render(final Superscript node, final NodeRendererContext context, final DitaWriter html) {
-      printTag(node, context, html, HI_D_SUP, EMPTY_ATTS);
+      printTag(node, context, html, HI_D_SUP, SUP_ATTS);
     }
     
     private void render(final Subscript node, final NodeRendererContext context, final DitaWriter html) {
-      printTag(node, context, html, HI_D_SUB, EMPTY_ATTS);
+      printTag(node, context, html, HI_D_SUB, SUB_ATTS);
     }
 
     private void writeImage(Image node, final String title, final String alt, final String url, final String key, final NodeRendererContext context, DitaWriter html) {

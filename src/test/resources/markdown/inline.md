@@ -11,6 +11,10 @@ here is an *italics* (*italics*) claim
 
 here is ~~strike through~~ test
 
+here is ^super^ test
+
+here is ~sub~ test
+
 here is a `code` (`code`) claim
 
 here --- mdash --- dash
