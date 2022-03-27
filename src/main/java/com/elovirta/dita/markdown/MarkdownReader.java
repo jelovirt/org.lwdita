@@ -8,6 +8,7 @@ import com.vladsch.flexmark.ext.autolink.AutolinkExtension;
 import com.vladsch.flexmark.ext.definition.DefinitionExtension;
 import com.vladsch.flexmark.ext.footnotes.FootnoteExtension;
 import com.vladsch.flexmark.ext.gfm.strikethrough.StrikethroughExtension;
+import com.vladsch.flexmark.ext.gfm.strikethrough.StrikethroughSubscriptExtension;
 import com.vladsch.flexmark.ext.ins.InsExtension;
 import com.vladsch.flexmark.ext.jekyll.tag.JekyllTagExtension;
 import com.vladsch.flexmark.ext.tables.TablesExtension;
@@ -80,7 +81,7 @@ public class MarkdownReader implements XMLReader {
                                 AutolinkExtension.create(),
                                 YamlFrontMatterExtension.create(),
                                 DefinitionExtension.create(),
-                                StrikethroughExtension.create()))
+                                StrikethroughSubscriptExtension.create()))
                         .set(DefinitionExtension.TILDE_MARKER, false)
                         // for full GFM table compatibility add the following table extension options:
                         .set(TablesExtension.COLUMN_SPANS, false)
