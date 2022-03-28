@@ -10,5 +10,6 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: 8
+          cache: 'gradle'
       - name: Run unit tests
         run: ./gradlew check --info --stacktrace --no-daemon
