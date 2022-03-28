@@ -15,12 +15,14 @@ import com.vladsch.flexmark.ext.definition.DefinitionTerm;
 import com.vladsch.flexmark.ext.footnotes.Footnote;
 import com.vladsch.flexmark.ext.footnotes.FootnoteBlock;
 import com.vladsch.flexmark.ext.gfm.strikethrough.Strikethrough;
+import com.vladsch.flexmark.ext.gfm.strikethrough.Subscript;
 import com.vladsch.flexmark.ext.jekyll.tag.JekyllTag;
 import com.vladsch.flexmark.ext.jekyll.tag.JekyllTagBlock;
 import com.vladsch.flexmark.ext.tables.*;
 import com.vladsch.flexmark.ext.typographic.TypographicQuotes;
 import com.vladsch.flexmark.ext.yaml.front.matter.AbstractYamlFrontMatterVisitor;
 import com.vladsch.flexmark.ext.yaml.front.matter.YamlFrontMatterBlock;
+import com.vladsch.flexmark.superscript.Superscript;
 import com.vladsch.flexmark.util.ast.ContentNode;
 import com.vladsch.flexmark.util.ast.Document;
 import com.vladsch.flexmark.util.ast.Node;
@@ -84,6 +86,8 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
     private static final Attributes DT_ATTS = buildAtts(TOPIC_DT);
     private static final Attributes DEL_ATTS = new AttributesBuilder().add(ATTRIBUTE_NAME_CLASS, TOPIC_PH.toString()).add("status", "deleted").build();
     private static final Attributes LINE_THROUGH_ATTS = buildAtts(HI_D_LINE_THROUGH);
+    private static final Attributes SUP_ATTS = buildAtts(HI_D_SUP);
+    private static final Attributes SUB_ATTS = buildAtts(HI_D_SUB);
     private static final Attributes TITLE_ATTS = buildAtts(TOPIC_TITLE);
     private static final Attributes SHORTDESC_ATTS = buildAtts(TOPIC_SHORTDESC);
     private static final Attributes PROLOG_ATTS = buildAtts(TOPIC_PROLOG);
@@ -223,7 +227,9 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
                 new NodeRenderingHandler<ThematicBreak>(ThematicBreak.class, (node, context, html) -> render(node, context, html)),
                 new NodeRenderingHandler<AnchorLink>(AnchorLink.class, (node, context, html) -> render(node, context, html)),
                 new NodeRenderingHandler<JekyllTagBlock>(JekyllTagBlock.class, (node, context, html) -> render(node, context, html)),
-                new NodeRenderingHandler<JekyllTag>(JekyllTag.class, (node, context, html) -> render(node, context, html))
+                new NodeRenderingHandler<JekyllTag>(JekyllTag.class, (node, context, html) -> render(node, context, html)),
+                new NodeRenderingHandler<Superscript>(Superscript.class, (node, context, html) -> render(node, context, html)),
+                new NodeRenderingHandler<Subscript>(Subscript.class, (node, context, html) -> render(node, context, html))
         ));
     }
 
@@ -474,6 +480,14 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
 
     private void render(final Image node, final NodeRendererContext context, final DitaWriter html) {
         writeImage(node, node.getTitle().toString(), null, node.getUrl().toString(), null, context, html);
+    }
+    
+    private void render(final Superscript node, final NodeRendererContext context, final DitaWriter html) {
+      printTag(node, context, html, HI_D_SUP, SUP_ATTS);
+    }
+    
+    private void render(final Subscript node, final NodeRendererContext context, final DitaWriter html) {
+      printTag(node, context, html, HI_D_SUB, SUB_ATTS);
     }
 
     private void writeImage(Image node, final String title, final String alt, final String url, final String key, final NodeRendererContext context, DitaWriter html) {
