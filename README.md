@@ -1,4 +1,4 @@
-Lightweight DITA for DITA-OT [![build]](https://travis-ci.org/jelovirt/org.lwdita)
+Lightweight DITA for DITA-OT [![Test](https://github.com/jelovirt/org.lwdita/actions/workflows/test.yml/badge.svg)](https://github.com/jelovirt/org.lwdita/actions/workflows/test.yml)
 ============================
 
 The DITA-OT LwDITA plug-in supersedes the previously released [Markdown plug-in for DITA-OT](https://github.com/jelovirt/dita-ot-markdown) and adds additional features to support Lightweight DITA. 
@@ -93,5 +93,3 @@ License
 -------
 
 DITA-OT LwDITA is licensed for use under the [Apache License 2.0](http://www.apache.org/licenses/LICENSE-2.0).
-
-[build]: https://api.travis-ci.org/jelovirt/org.lwdita.svg?branch=master
