@@ -1367,18 +1367,15 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
 //    }
 
     private void render(final Text node, final NodeRendererContext context, final DitaWriter html) {
-      if (abbreviations.isEmpty()) {
-        boolean shoudUnescape = ! (node.getParent() instanceof Code);
-        String content;
-        if(shoudUnescape) {
-          content = node.getChars().unescapeNoEntities();
+        if (abbreviations.isEmpty()) {
+            if (node.getParent() instanceof Code) {
+                html.characters(node.getChars().toString());
+            } else {
+                html.characters(node.getChars().unescapeNoEntities());
+            }
         } else {
-          content = node.getChars().toString();
+            printWithAbbreviations(node.getChars().toString(), html);
         }
-        html.characters(content);
-      } else {
-        printWithAbbreviations(node.getChars().toString(), html);
-      }
     }
 
 //    @Override

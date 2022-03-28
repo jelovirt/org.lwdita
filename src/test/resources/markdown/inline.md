@@ -11,7 +11,7 @@ here is an *italics* (*italics*) claim
 
 here is ~~strike through~~ test
 
-here is a `code` (`code`) claim
+here is a `code \.` ``contains ` backtick`` (`two `` backtick`) claim
 
 here --- mdash --- dash
 
