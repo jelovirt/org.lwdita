@@ -91,28 +91,21 @@
           </row>
           <row class="- topic/row ">
             <entry class="- topic/entry ">A2</entry>
-            <entry class="- topic/entry ">B2</entry>
-            <entry class="- topic/entry "/>
+            <entry class="- topic/entry " nameend="col3" namest="col2">B2</entry>
           </row>
           <row class="- topic/row ">
-            <entry class="- topic/entry ">A3</entry>
-            <entry class="- topic/entry "/>
-            <entry class="- topic/entry "/>
+            <entry class="- topic/entry " nameend="col3" namest="col1">A3</entry>
           </row>
           <row class="- topic/row ">
-            <entry class="- topic/entry ">A4</entry>
-            <entry class="- topic/entry "/>
+            <entry class="- topic/entry " nameend="col2" namest="col1">A4</entry>
             <entry class="- topic/entry ">C4</entry>
           </row>
           <row class="- topic/row ">
             <entry class="- topic/entry ">A5</entry>
-            <entry class="- topic/entry "/>
-            <entry class="- topic/entry "/>
           </row>
           <row class="- topic/row ">
             <entry class="- topic/entry ">A6</entry>
             <entry class="- topic/entry ">A7</entry>
-            <entry class="- topic/entry "/>
           </row>
         </tbody>
       </tgroup>
