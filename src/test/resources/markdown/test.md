@@ -40,14 +40,6 @@ Tables
 | Second row   |    **Cell**   |               *Cell* |
 [simple_table]
 
-|              | Grouping                    ||
-| First Header | Second Header | Third Header |
-| ------------ | :-----------: | -----------: |
-| Content      | *Long Cell*                 ||
-| Content      | **Cell**      | Cell         |
-| New section  | More          | Data         |
-[Prototype table][reference_table]
-
 Links
 -----
 

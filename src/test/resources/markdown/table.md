@@ -14,3 +14,12 @@ PHP Table:
 | :----------- | :----: | -------------------: |
 | First row    |      Data     | Very long data entry Very long data entry Very long data entry Very long data entry Very long data entry Very long data entry Very long data entry Very long data entry Very long data entry Very long data entry |
 | Second row   |    **Cell**   |               *Cell* |
+
+| A  | B  | C  |
+|----|----|----|
+| A1 | B1 | C1 |
+| A2 | B2     ||
+| A3         |||
+| A4     || C4 |
+| A5 |
+| A6 | A7 |

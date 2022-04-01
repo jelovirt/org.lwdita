@@ -77,5 +77,51 @@
         </tbody>
       </tgroup>
     </table>
+    <table class="- topic/table ">
+      <tgroup class="- topic/tgroup " cols="3">
+        <colspec class="- topic/colspec " colname="col1"/>
+        <colspec class="- topic/colspec " colname="col2"/>
+        <colspec class="- topic/colspec " colname="col3"/>
+        <thead class="- topic/thead ">
+          <row class="- topic/row ">
+            <entry class="- topic/entry ">A</entry>
+            <entry class="- topic/entry ">B</entry>
+            <entry class="- topic/entry ">C</entry>
+          </row>
+        </thead>
+        <tbody class="- topic/tbody ">
+          <row class="- topic/row ">
+            <entry class="- topic/entry ">A1</entry>
+            <entry class="- topic/entry ">B1</entry>
+            <entry class="- topic/entry ">C1</entry>
+          </row>
+          <row class="- topic/row ">
+            <entry class="- topic/entry ">A2</entry>
+            <entry class="- topic/entry ">B2</entry>
+            <entry class="- topic/entry "/>
+          </row>
+          <row class="- topic/row ">
+            <entry class="- topic/entry ">A3</entry>
+            <entry class="- topic/entry "/>
+            <entry class="- topic/entry "/>
+          </row>
+          <row class="- topic/row ">
+            <entry class="- topic/entry ">A4</entry>
+            <entry class="- topic/entry "/>
+            <entry class="- topic/entry ">C4</entry>
+          </row>
+          <row class="- topic/row ">
+            <entry class="- topic/entry ">A5</entry>
+            <entry class="- topic/entry "/>
+            <entry class="- topic/entry "/>
+          </row>
+          <row class="- topic/row ">
+            <entry class="- topic/entry ">A6</entry>
+            <entry class="- topic/entry ">A7</entry>
+            <entry class="- topic/entry "/>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
   </body>
 </topic>
