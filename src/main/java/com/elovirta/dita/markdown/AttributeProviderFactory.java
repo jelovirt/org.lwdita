@@ -9,7 +9,7 @@ import java.util.function.Function;
 public interface AttributeProviderFactory extends Function<LinkResolverContext, AttributeProvider>, Dependent<AttributeProviderFactory> {
     @Override
     Set<Class<? extends AttributeProviderFactory>> getAfterDependents();
-    
+
     @Override
     Set<Class<? extends AttributeProviderFactory>> getBeforeDependents();
 

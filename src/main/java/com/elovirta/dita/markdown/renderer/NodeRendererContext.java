@@ -10,7 +10,7 @@ import com.vladsch.flexmark.util.html.Attributes;
 /**
  * The context for node rendering, including configuration and functionality for the node renderer to use.
  */
-public interface NodeRendererContext extends LinkResolverContext  {
+public interface NodeRendererContext extends LinkResolverContext {
 
     /**
      * @param url to be encoded

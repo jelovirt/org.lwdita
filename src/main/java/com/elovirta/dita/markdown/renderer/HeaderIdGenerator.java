@@ -60,18 +60,18 @@ public class HeaderIdGenerator implements DitaIdGenerator {
             else if (toDashChars.indexOf(c) != -1 && (!noDupedDashes
                     || ((c == '-' && baseRefId.length() == 0)
                     || baseRefId.length() != 0 && baseRefId.charAt(baseRefId.length() - 1) != '-'))
-                    ) baseRefId.append('-');
+            ) baseRefId.append('-');
         }
         return baseRefId.toString();
     }
 
     public static boolean isAlphabetic(final char c) {
         return (((((1 << Character.UPPERCASE_LETTER) |
-            (1 << Character.LOWERCASE_LETTER) |
-            (1 << Character.TITLECASE_LETTER) |
-            (1 << Character.MODIFIER_LETTER) |
-            (1 << Character.OTHER_LETTER) |
-            (1 << Character.LETTER_NUMBER)) >> Character.getType((int) c)) & 1) != 0);
+                (1 << Character.LOWERCASE_LETTER) |
+                (1 << Character.TITLECASE_LETTER) |
+                (1 << Character.MODIFIER_LETTER) |
+                (1 << Character.OTHER_LETTER) |
+                (1 << Character.LETTER_NUMBER)) >> Character.getType((int) c)) & 1) != 0);
     }
 
     public static class Factory implements HeaderIdGeneratorFactory {

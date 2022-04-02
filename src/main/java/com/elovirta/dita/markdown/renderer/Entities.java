@@ -7,6 +7,7 @@ import java.util.Properties;
 public class Entities {
 
     public static final Properties ENTITIES;
+
     static {
         ENTITIES = new Properties();
         try (InputStream in = Entities.class.getResourceAsStream("/entities.properties")) {

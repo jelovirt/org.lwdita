@@ -10,7 +10,7 @@ import java.util.function.Function;
 public interface LinkResolverFactory extends Function<LinkResolverContext, LinkResolver>, Dependent<LinkResolverFactory> {
     @Override
     Set<Class<? extends LinkResolverFactory>> getAfterDependents();
-    
+
     @Override
     Set<Class<? extends LinkResolverFactory>> getBeforeDependents();
 

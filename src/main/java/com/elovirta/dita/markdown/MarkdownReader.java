@@ -190,7 +190,7 @@ public class MarkdownReader implements XMLReader {
         final CharArrayWriter out = new CharArrayWriter();
         if (input.getByteStream() != null) {
             final String encoding = input.getEncoding() != null ? input.getEncoding() : "UTF-8";
-            try (InputStream is = "UTF-8".equalsIgnoreCase(encoding)
+            try (InputStream is = "UTF-8" .equalsIgnoreCase(encoding)
                     ? consumeBOM(input.getByteStream())
                     : input.getByteStream();
                  Reader in = new InputStreamReader(is, encoding)) {
@@ -208,7 +208,7 @@ public class MarkdownReader implements XMLReader {
                 throw new IllegalArgumentException(e);
             }
             final String encoding = input.getEncoding() != null ? input.getEncoding() : "UTF-8";
-            try (InputStream is = "UTF-8".equalsIgnoreCase(encoding)
+            try (InputStream is = "UTF-8" .equalsIgnoreCase(encoding)
                     ? consumeBOM(inUrl.openStream())
                     : inUrl.openStream();
                  Reader in = new InputStreamReader(is, encoding)) {

@@ -127,10 +127,12 @@ public class HtmlReader implements XMLReader {
                 }
                 handler.warning(e);
             }
+
             @Override
             public void error(SAXParseException e) throws SAXException {
                 handler.error(e);
             }
+
             @Override
             public void fatalError(SAXParseException e) throws SAXException {
                 handler.fatalError(e);

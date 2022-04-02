@@ -13,6 +13,6 @@ public class NodeRenderingHandler<N extends Node> extends NodeAdaptingVisitHandl
     @Override
     public void render(Node node, NodeRendererContext context, DitaWriter ditaWriter) {
         //noinspection unchecked
-        myAdapter.render((N)node, context, ditaWriter);
+        myAdapter.render((N) node, context, ditaWriter);
     }
 }
