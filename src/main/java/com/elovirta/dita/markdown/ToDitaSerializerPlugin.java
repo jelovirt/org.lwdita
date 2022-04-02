@@ -1,9 +1,5 @@
 package com.elovirta.dita.markdown;
 
-//import org.pegdown.Printer;
-//import org.pegdown.ast.Node;
-//import org.pegdown.ast.Visitor;
-
 /**
  * A plugin for the {@link org.pegdown.ToHtmlSerializer}
  */

@@ -7,12 +7,10 @@ import com.vladsch.flexmark.ext.anchorlink.AnchorLinkExtension;
 import com.vladsch.flexmark.ext.autolink.AutolinkExtension;
 import com.vladsch.flexmark.ext.definition.DefinitionExtension;
 import com.vladsch.flexmark.ext.footnotes.FootnoteExtension;
-import com.vladsch.flexmark.ext.gfm.strikethrough.StrikethroughExtension;
 import com.vladsch.flexmark.ext.gfm.strikethrough.StrikethroughSubscriptExtension;
 import com.vladsch.flexmark.ext.ins.InsExtension;
 import com.vladsch.flexmark.ext.jekyll.tag.JekyllTagExtension;
 import com.vladsch.flexmark.ext.tables.TablesExtension;
-import com.vladsch.flexmark.ext.typographic.TypographicExtension;
 import com.vladsch.flexmark.ext.yaml.front.matter.AbstractYamlFrontMatterVisitor;
 import com.vladsch.flexmark.ext.yaml.front.matter.YamlFrontMatterExtension;
 import com.vladsch.flexmark.parser.Parser;
@@ -39,7 +37,6 @@ import java.util.List;
 import java.util.Map;
 
 import static java.util.Arrays.asList;
-import static org.apache.commons.io.IOUtils.closeQuietly;
 import static org.apache.commons.io.IOUtils.copy;
 
 /**
@@ -167,10 +164,6 @@ public class MarkdownReader implements XMLReader {
     @Override
     public void parse(final InputSource input) throws IOException, SAXException {
         char[] markdownContent = getMarkdownContent(input);
-//        final Map<String, Object> metadata = parserYaml(markdownContent);
-//        if (metadata != null) {
-//            markdownContent = consumeYaml(markdownContent);
-//        }
         final BasedSequence sequence = BasedSequenceImpl.of(CharBuffer.wrap(markdownContent));
 
         final Document root;
@@ -185,7 +178,6 @@ public class MarkdownReader implements XMLReader {
         } catch (ParseException e) {
             throw new SAXException("Failed to parse Markdown: " + e.getMessage(), e);
         }
-
     }
 
     @Override
@@ -205,12 +197,8 @@ public class MarkdownReader implements XMLReader {
                 copy(in, out);
             }
         } else if (input.getCharacterStream() != null) {
-            final Reader in = input.getCharacterStream();
-            try {
+            try (Reader in = input.getCharacterStream()) {
                 copy(in, out);
-            } finally {
-                closeQuietly(in);
-                //closeQuietly(out);
             }
         } else if (input.getSystemId() != null) {
             final URL inUrl;

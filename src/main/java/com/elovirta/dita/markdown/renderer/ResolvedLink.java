@@ -3,6 +3,8 @@ package com.elovirta.dita.markdown.renderer;
 import com.vladsch.flexmark.util.html.Attribute;
 import com.vladsch.flexmark.util.html.Attributes;
 
+import java.util.Objects;
+
 public class ResolvedLink {
     private final LinkType myLinkType;
     private final String myUrl;
@@ -66,7 +68,7 @@ public class ResolvedLink {
 
     public ResolvedLink withTitle(CharSequence title) {
         String haveTitle = myAttributes == null ? null : myAttributes.getValue(Attribute.TITLE_ATTR);
-        if (title == haveTitle || haveTitle != null && haveTitle.equals(title)) return this;
+        if (Objects.equals(haveTitle, title)) return this;
 
         Attributes attributes = new Attributes(myAttributes);
         if (title == null) {
@@ -84,7 +86,7 @@ public class ResolvedLink {
 
     public ResolvedLink withTarget(CharSequence target) {
         String haveTarget = myAttributes == null ? null : myAttributes.getValue(Attribute.TARGET_ATTR);
-        if (target == haveTarget || haveTarget != null && haveTarget.equals(target)) return this;
+        if (Objects.equals(haveTarget, target)) return this;
 
         Attributes attributes = new Attributes(myAttributes);
         if (target == null) {

@@ -12,5 +12,5 @@ public enum RenderingPhase {
     BODY,
     BODY_BOTTOM,
     BODY_LOAD_SCRIPTS,
-    BODY_SCRIPTS;
+    BODY_SCRIPTS
 }

@@ -24,61 +24,57 @@ import java.util.*;
 import static org.dita.dost.util.Constants.ATTRIBUTE_PREFIX_DITAARCHVERSION;
 import static org.dita.dost.util.Constants.DITA_NAMESPACE;
 
-//import static javax.xml.XMLConstants.NULL_NS_URI;
-//import static org.dita.dost.util.Constants.ELEMENT_NAME_DITA;
-//import static org.dita.dost.util.XMLSerializer.EMPTY_ATTS;
-
 public class DitaRenderer implements IRender {
 
-    public static final DataKey<Boolean> SHORTDESC_PARAGRAPH = new DataKey<Boolean>("SHORTDESC_PARAGRAPH", false);
-    public static final DataKey<Boolean> ID_FROM_YAML = new DataKey<Boolean>("ID_FROM_YAML", false);
-    public static final DataKey<Boolean> LW_DITA = new DataKey<Boolean>("LW_DITA", false);
-    public static final DataKey<String> SOFT_BREAK = new DataKey<String>("SOFT_BREAK", "\n");
-    public static final DataKey<String> HARD_BREAK = new DataKey<String>("HARD_BREAK", "<br />\n");
-    public static final DataKey<String> STRONG_EMPHASIS_STYLE_HTML_OPEN = new DataKey<String>("STRONG_EMPHASIS_STYLE_HTML_OPEN", (String) null);
-    public static final DataKey<String> STRONG_EMPHASIS_STYLE_HTML_CLOSE = new DataKey<String>("STRONG_EMPHASIS_STYLE_HTML_CLOSE", (String) null);
-    public static final DataKey<String> EMPHASIS_STYLE_HTML_OPEN = new DataKey<String>("EMPHASIS_STYLE_HTML_OPEN", (String) null);
-    public static final DataKey<String> EMPHASIS_STYLE_HTML_CLOSE = new DataKey<String>("EMPHASIS_STYLE_HTML_CLOSE", (String) null);
-    public static final DataKey<String> CODE_STYLE_HTML_OPEN = new DataKey<String>("CODE_STYLE_HTML_OPEN", (String) null);
-    public static final DataKey<String> CODE_STYLE_HTML_CLOSE = new DataKey<String>("CODE_STYLE_HTML_CLOSE", (String) null);
-    public static final DataKey<String> INLINE_CODE_SPLICE_CLASS = new DataKey<String>("INLINE_CODE_SPLICE_CLASS", (String) null);
-    public static final DataKey<Boolean> PERCENT_ENCODE_URLS = new DataKey<Boolean>("ESCAPE_HTML", false);
-    public static final DataKey<Integer> INDENT_SIZE = new DataKey<Integer>("INDENT", 0);
-    public static final DataKey<Boolean> ESCAPE_HTML = new DataKey<Boolean>("ESCAPE_HTML", false);
-    public static final DataKey<Boolean> ESCAPE_HTML_BLOCKS = new DataKey<Boolean>("ESCAPE_HTML_BLOCKS", holder -> ESCAPE_HTML.getFrom(holder));
-    public static final DataKey<Boolean> ESCAPE_HTML_COMMENT_BLOCKS = new DataKey<Boolean>("ESCAPE_HTML_COMMENT_BLOCKS", holder -> ESCAPE_HTML_BLOCKS.getFrom(holder));
-    public static final DataKey<Boolean> ESCAPE_INLINE_HTML = new DataKey<Boolean>("ESCAPE_HTML_BLOCKS", holder -> ESCAPE_HTML.getFrom(holder));
-    public static final DataKey<Boolean> ESCAPE_INLINE_HTML_COMMENTS = new DataKey<Boolean>("ESCAPE_INLINE_HTML_COMMENTS", holder -> ESCAPE_INLINE_HTML.getFrom(holder));
-    public static final DataKey<Boolean> SUPPRESS_HTML = new DataKey<Boolean>("SUPPRESS_HTML", false);
-    public static final DataKey<Boolean> SUPPRESS_HTML_BLOCKS = new DataKey<Boolean>("SUPPRESS_HTML_BLOCKS", holder -> SUPPRESS_HTML.getFrom(holder));
-    public static final DataKey<Boolean> SUPPRESS_HTML_COMMENT_BLOCKS = new DataKey<Boolean>("SUPPRESS_HTML_COMMENT_BLOCKS", holder -> SUPPRESS_HTML_BLOCKS.getFrom(holder));
-    public static final DataKey<Boolean> SUPPRESS_INLINE_HTML = new DataKey<Boolean>("SUPPRESS_INLINE_HTML", holder -> SUPPRESS_HTML.getFrom(holder));
-    public static final DataKey<Boolean> SUPPRESS_INLINE_HTML_COMMENTS = new DataKey<Boolean>("SUPPRESS_INLINE_HTML_COMMENTS", holder -> SUPPRESS_INLINE_HTML.getFrom(holder));
-    public static final DataKey<Boolean> SOURCE_WRAP_HTML = new DataKey<Boolean>("SOURCE_WRAP_HTML", false);
-    public static final DataKey<Boolean> SOURCE_WRAP_HTML_BLOCKS = new DataKey<Boolean>("SOURCE_WRAP_HTML_BLOCKS", holder -> SOURCE_WRAP_HTML.getFrom(holder));
+    public static final DataKey<Boolean> SHORTDESC_PARAGRAPH = new DataKey<>("SHORTDESC_PARAGRAPH", false);
+    public static final DataKey<Boolean> ID_FROM_YAML = new DataKey<>("ID_FROM_YAML", false);
+    public static final DataKey<Boolean> LW_DITA = new DataKey<>("LW_DITA", false);
+    public static final DataKey<String> SOFT_BREAK = new DataKey<>("SOFT_BREAK", "\n");
+    public static final DataKey<String> HARD_BREAK = new DataKey<>("HARD_BREAK", "<br />\n");
+    public static final DataKey<String> STRONG_EMPHASIS_STYLE_HTML_OPEN = new DataKey<>("STRONG_EMPHASIS_STYLE_HTML_OPEN", (String) null);
+    public static final DataKey<String> STRONG_EMPHASIS_STYLE_HTML_CLOSE = new DataKey<>("STRONG_EMPHASIS_STYLE_HTML_CLOSE", (String) null);
+    public static final DataKey<String> EMPHASIS_STYLE_HTML_OPEN = new DataKey<>("EMPHASIS_STYLE_HTML_OPEN", (String) null);
+    public static final DataKey<String> EMPHASIS_STYLE_HTML_CLOSE = new DataKey<>("EMPHASIS_STYLE_HTML_CLOSE", (String) null);
+    public static final DataKey<String> CODE_STYLE_HTML_OPEN = new DataKey<>("CODE_STYLE_HTML_OPEN", (String) null);
+    public static final DataKey<String> CODE_STYLE_HTML_CLOSE = new DataKey<>("CODE_STYLE_HTML_CLOSE", (String) null);
+    public static final DataKey<String> INLINE_CODE_SPLICE_CLASS = new DataKey<>("INLINE_CODE_SPLICE_CLASS", (String) null);
+    public static final DataKey<Boolean> PERCENT_ENCODE_URLS = new DataKey<>("ESCAPE_HTML", false);
+    public static final DataKey<Integer> INDENT_SIZE = new DataKey<>("INDENT", 0);
+    public static final DataKey<Boolean> ESCAPE_HTML = new DataKey<>("ESCAPE_HTML", false);
+    public static final DataKey<Boolean> ESCAPE_HTML_BLOCKS = new DataKey<>("ESCAPE_HTML_BLOCKS", ESCAPE_HTML::getFrom);
+    public static final DataKey<Boolean> ESCAPE_HTML_COMMENT_BLOCKS = new DataKey<>("ESCAPE_HTML_COMMENT_BLOCKS", ESCAPE_HTML_BLOCKS::getFrom);
+    public static final DataKey<Boolean> ESCAPE_INLINE_HTML = new DataKey<>("ESCAPE_HTML_BLOCKS", ESCAPE_HTML::getFrom);
+    public static final DataKey<Boolean> ESCAPE_INLINE_HTML_COMMENTS = new DataKey<>("ESCAPE_INLINE_HTML_COMMENTS", ESCAPE_INLINE_HTML::getFrom);
+    public static final DataKey<Boolean> SUPPRESS_HTML = new DataKey<>("SUPPRESS_HTML", false);
+    public static final DataKey<Boolean> SUPPRESS_HTML_BLOCKS = new DataKey<>("SUPPRESS_HTML_BLOCKS", SUPPRESS_HTML::getFrom);
+    public static final DataKey<Boolean> SUPPRESS_HTML_COMMENT_BLOCKS = new DataKey<>("SUPPRESS_HTML_COMMENT_BLOCKS", SUPPRESS_HTML_BLOCKS::getFrom);
+    public static final DataKey<Boolean> SUPPRESS_INLINE_HTML = new DataKey<>("SUPPRESS_INLINE_HTML", SUPPRESS_HTML::getFrom);
+    public static final DataKey<Boolean> SUPPRESS_INLINE_HTML_COMMENTS = new DataKey<>("SUPPRESS_INLINE_HTML_COMMENTS", SUPPRESS_INLINE_HTML::getFrom);
+    public static final DataKey<Boolean> SOURCE_WRAP_HTML = new DataKey<>("SOURCE_WRAP_HTML", false);
+    public static final DataKey<Boolean> SOURCE_WRAP_HTML_BLOCKS = new DataKey<>("SOURCE_WRAP_HTML_BLOCKS", SOURCE_WRAP_HTML::getFrom);
     //public static final DataKey<Boolean> SOURCE_WRAP_INLINE_HTML = new DataKey<>("SOURCE_WRAP_INLINE_HTML", SOURCE_WRAP_HTML::getFrom);
-    public static final DataKey<Boolean> HEADER_ID_GENERATOR_RESOLVE_DUPES = new DataKey<Boolean>("HEADER_ID_GENERATOR_RESOLVE_DUPES", true);
-    public static final DataKey<String> HEADER_ID_GENERATOR_TO_DASH_CHARS = new DataKey<String>("HEADER_ID_GENERATOR_TO_DASH_CHARS", " -_");
-    public static final DataKey<Boolean> HEADER_ID_GENERATOR_NO_DUPED_DASHES = new DataKey<Boolean>("HEADER_ID_GENERATOR_NO_DUPED_DASHES", false);
-    public static final DataKey<Boolean> RENDER_HEADER_ID = new DataKey<Boolean>("RENDER_HEADER_ID", false);
-    public static final DataKey<Boolean> GENERATE_HEADER_ID = new DataKey<Boolean>("GENERATE_HEADER_ID", true);
-    public static final DataKey<Boolean> DO_NOT_RENDER_LINKS = new DataKey<Boolean>("DO_NOT_RENDER_LINKS", false);
-    public static final DataKey<String> FENCED_CODE_LANGUAGE_CLASS_PREFIX = new DataKey<String>("FENCED_CODE_LANGUAGE_CLASS_PREFIX", "language-");
-    public static final DataKey<String> FENCED_CODE_NO_LANGUAGE_CLASS = new DataKey<String>("FENCED_CODE_NO_LANGUAGE_CLASS", "");
-    public static final DataKey<String> SOURCE_POSITION_ATTRIBUTE = new DataKey<String>("SOURCE_POSITION_ATTRIBUTE", "");
-    public static final DataKey<Boolean> SOURCE_POSITION_PARAGRAPH_LINES = new DataKey<Boolean>("SOURCE_POSITION_PARAGRAPH_LINES", false);
-    public static final DataKey<String> TYPE = new DataKey<String>("TYPE", "HTML");
-    public static final DataKey<ArrayList<TagRange>> TAG_RANGES = new DataKey<ArrayList<TagRange>>("TAG_RANGES", value -> new ArrayList<TagRange>());
+    public static final DataKey<Boolean> HEADER_ID_GENERATOR_RESOLVE_DUPES = new DataKey<>("HEADER_ID_GENERATOR_RESOLVE_DUPES", true);
+    public static final DataKey<String> HEADER_ID_GENERATOR_TO_DASH_CHARS = new DataKey<>("HEADER_ID_GENERATOR_TO_DASH_CHARS", " -_");
+    public static final DataKey<Boolean> HEADER_ID_GENERATOR_NO_DUPED_DASHES = new DataKey<>("HEADER_ID_GENERATOR_NO_DUPED_DASHES", false);
+    public static final DataKey<Boolean> RENDER_HEADER_ID = new DataKey<>("RENDER_HEADER_ID", false);
+    public static final DataKey<Boolean> GENERATE_HEADER_ID = new DataKey<>("GENERATE_HEADER_ID", true);
+    public static final DataKey<Boolean> DO_NOT_RENDER_LINKS = new DataKey<>("DO_NOT_RENDER_LINKS", false);
+    public static final DataKey<String> FENCED_CODE_LANGUAGE_CLASS_PREFIX = new DataKey<>("FENCED_CODE_LANGUAGE_CLASS_PREFIX", "language-");
+    public static final DataKey<String> FENCED_CODE_NO_LANGUAGE_CLASS = new DataKey<>("FENCED_CODE_NO_LANGUAGE_CLASS", "");
+    public static final DataKey<String> SOURCE_POSITION_ATTRIBUTE = new DataKey<>("SOURCE_POSITION_ATTRIBUTE", "");
+    public static final DataKey<Boolean> SOURCE_POSITION_PARAGRAPH_LINES = new DataKey<>("SOURCE_POSITION_PARAGRAPH_LINES", false);
+    public static final DataKey<String> TYPE = new DataKey<>("TYPE", "HTML");
+    public static final DataKey<ArrayList<TagRange>> TAG_RANGES = new DataKey<>("TAG_RANGES", value -> new ArrayList<>());
 
-    public static final DataKey<Boolean> RECHECK_UNDEFINED_REFERENCES = new DataKey<Boolean>("RECHECK_UNDEFINED_REFERENCES", false);
-    public static final DataKey<Boolean> OBFUSCATE_EMAIL = new DataKey<Boolean>("OBFUSCATE_EMAIL", false);
-    public static final DataKey<Boolean> OBFUSCATE_EMAIL_RANDOM = new DataKey<Boolean>("OBFUSCATE_EMAIL_RANDOM", true);
-    public static final DataKey<Boolean> HTML_BLOCK_OPEN_TAG_EOL = new DataKey<Boolean>("HTML_BLOCK_OPEN_TAG_EOL", true);
-    public static final DataKey<Boolean> HTML_BLOCK_CLOSE_TAG_EOL = new DataKey<Boolean>("HTML_BLOCK_CLOSE_TAG_EOL", true);
-    public static final DataKey<Boolean> UNESCAPE_HTML_ENTITIES = new DataKey<Boolean>("UNESCAPE_HTML_ENTITIES", true);
+    public static final DataKey<Boolean> RECHECK_UNDEFINED_REFERENCES = new DataKey<>("RECHECK_UNDEFINED_REFERENCES", false);
+    public static final DataKey<Boolean> OBFUSCATE_EMAIL = new DataKey<>("OBFUSCATE_EMAIL", false);
+    public static final DataKey<Boolean> OBFUSCATE_EMAIL_RANDOM = new DataKey<>("OBFUSCATE_EMAIL_RANDOM", true);
+    public static final DataKey<Boolean> HTML_BLOCK_OPEN_TAG_EOL = new DataKey<>("HTML_BLOCK_OPEN_TAG_EOL", true);
+    public static final DataKey<Boolean> HTML_BLOCK_CLOSE_TAG_EOL = new DataKey<>("HTML_BLOCK_CLOSE_TAG_EOL", true);
+    public static final DataKey<Boolean> UNESCAPE_HTML_ENTITIES = new DataKey<>("UNESCAPE_HTML_ENTITIES", true);
 
-    public static final DataKey<Integer> FORMAT_FLAGS = new DataKey<Integer>("FORMAT_FLAGS", 0);
-    public static final DataKey<Integer> MAX_TRAILING_BLANK_LINES = new DataKey<Integer>("MAX_TRAILING_BLANK_LINES", 1);
+    public static final DataKey<Integer> FORMAT_FLAGS = new DataKey<>("FORMAT_FLAGS", 0);
+    public static final DataKey<Integer> MAX_TRAILING_BLANK_LINES = new DataKey<>("MAX_TRAILING_BLANK_LINES", 1);
 
     private final List<AttributeProviderFactory> attributeProviderFactories;
     private final List<DelegatingNodeRendererFactoryWrapper> nodeRendererFactories;
@@ -91,12 +87,7 @@ public class DitaRenderer implements IRender {
 
     DitaRenderer(Builder builder, Map<String, List<String>> metadata) {
 //        final ContentHandler contentHandler, final Map<String, Object> documentMetadata
-//        this.documentMetadata = documentMetadata;
-//        setContentHandler(contentHandler);
-//        metadataSerializer = new MetadataSerializerImpl();
-//        metadataSerializer.setContentHandler(contentHandler);
 
-        //////////////
         this.builder = new Builder(builder); // take a copy to avoid after creation side effects
         this.options = new DataSet(builder);
         this.ditaOptions = new DitaRendererOptions(this.options);
@@ -105,7 +96,7 @@ public class DitaRenderer implements IRender {
         this.ditaIdGeneratorFactory = builder.ditaIdGeneratorFactory;
 
         // resolve renderer dependencies
-        final List<DelegatingNodeRendererFactoryWrapper> nodeRenderers = new ArrayList<DelegatingNodeRendererFactoryWrapper>(builder.nodeRendererFactories.size());
+        final List<DelegatingNodeRendererFactoryWrapper> nodeRenderers = new ArrayList<>(builder.nodeRendererFactories.size());
 
         for (int i = builder.nodeRendererFactories.size() - 1; i >= 0; i--) {
             final NodeRendererFactory nodeRendererFactory = builder.nodeRendererFactories.get(i);
@@ -200,7 +191,7 @@ public class DitaRenderer implements IRender {
 
         public RendererDependencies(List<DitaRenderer.RendererDependencyStage> dependentStages) {
             super(dependentStages);
-            List<DelegatingNodeRendererFactoryWrapper> blockPreProcessorFactories = new ArrayList<DelegatingNodeRendererFactoryWrapper>();
+            List<DelegatingNodeRendererFactoryWrapper> blockPreProcessorFactories = new ArrayList<>();
             for (DitaRenderer.RendererDependencyStage stage : dependentStages) {
                 blockPreProcessorFactories.addAll(stage.dependents);
             }
@@ -240,26 +231,17 @@ public class DitaRenderer implements IRender {
         private final DataHolder options;
         private RenderingPhase phase;
         private final DitaIdGenerator ditaIdGenerator;
-        private final HashMap<LinkType, HashMap<String, ResolvedLink>> resolvedLinkMap = new HashMap<LinkType, HashMap<String, ResolvedLink>>();
+        private final HashMap<LinkType, HashMap<String, ResolvedLink>> resolvedLinkMap = new HashMap<>();
         private final AttributeProvider[] attributeProviders;
 
         @Override
         public void dispose() {
-//            document = null;
-//            renderers = null;
-//            phasedRenderers = null;
 
             for (LinkResolver linkResolver : myLinkResolvers) {
                 if (linkResolver instanceof Disposable) ((Disposable) linkResolver).dispose();
             }
-//            myLinkResolvers = null;
-
-//            renderingPhases = null;
-//            options = null;
 
             if (ditaIdGenerator instanceof Disposable) ((Disposable) ditaIdGenerator).dispose();
-//            ditaIdGenerator = null;
-//            resolvedLinkMap = null;
 
             for (AttributeProvider attributeProvider : attributeProviders) {
                 if (attributeProvider instanceof Disposable) ((Disposable) attributeProvider).dispose();
@@ -313,16 +295,12 @@ public class DitaRenderer implements IRender {
 
         @Override
         public ResolvedLink resolveLink(LinkType linkType, CharSequence url, Boolean urlEncode) {
-            return resolveLink(linkType, url, (Attributes) null, urlEncode);
+            return resolveLink(linkType, url, null, urlEncode);
         }
 
         @Override
         public ResolvedLink resolveLink(LinkType linkType, CharSequence url, Attributes attributes, Boolean urlEncode) {
-            HashMap<String, ResolvedLink> resolvedLinks = resolvedLinkMap.get(linkType);
-            if (resolvedLinks == null) {
-                resolvedLinks = new HashMap<String, ResolvedLink>();
-                resolvedLinkMap.put(linkType, resolvedLinks);
-            }
+            HashMap<String, ResolvedLink> resolvedLinks = resolvedLinkMap.computeIfAbsent(linkType, k -> new HashMap<>());
 
             String urlSeq = url instanceof String ? (String) url : String.valueOf(url);
             ResolvedLink resolvedLink = resolvedLinks.get(urlSeq);
@@ -406,18 +384,10 @@ public class DitaRenderer implements IRender {
         @Override
         public void render(Node node) {
             try {
-//            clean(astRoot);
-//            final boolean isCompound = hasMultipleTopLevelHeaders(astRoot);
                 ditaWriter.contentHandler.startDocument();
                 ditaWriter.contentHandler.startPrefixMapping(ATTRIBUTE_PREFIX_DITAARCHVERSION, DITA_NAMESPACE);
-//            if (isCompound) {
-//                contentHandler.startElement(NULL_NS_URI, ELEMENT_NAME_DITA, ELEMENT_NAME_DITA, EMPTY_ATTS);
-//            }
                 renderNode(node, this);
                 ditaWriter.close();
-//            if (isCompound) {
-//                contentHandler.endElement(NULL_NS_URI, ELEMENT_NAME_DITA, ELEMENT_NAME_DITA);
-//            }
                 ditaWriter.contentHandler.endPrefixMapping(ATTRIBUTE_PREFIX_DITAARCHVERSION);
                 ditaWriter.contentHandler.endDocument();
             } catch (SAXException e) {
@@ -454,19 +424,11 @@ public class DitaRenderer implements IRender {
         @Override
         public NodeRendererContext getSubContext(Appendable out, boolean inheritIndent) {
             throw new UnsupportedOperationException();
-//            DitaWriter ditaWriter = new DitaWriter(getDitaWriter(), out, inheritIndent);
-//            ditaWriter.setContext(this);
-//            //noinspection ReturnOfInnerClass
-//            return new DitaRenderer.MainNodeRenderer.SubNodeRenderer(this, ditaWriter, false);
         }
 
         @Override
         public NodeRendererContext getDelegatedSubContext(final Appendable out, final boolean inheritIndent) {
             throw new UnsupportedOperationException();
-//            DitaWriter ditaWriter = new DitaWriter(getDitaWriter(), out, inheritIndent);
-//            ditaWriter.setContext(this);
-//            //noinspection ReturnOfInnerClass
-//            return new DitaRenderer.MainNodeRenderer.SubNodeRenderer(this, ditaWriter, true);
         }
 
         void renderNode(Node node, NodeRendererSubContext subContext) {
@@ -626,19 +588,11 @@ public class DitaRenderer implements IRender {
             @Override
             public NodeRendererContext getSubContext(Appendable out, boolean inheritIndent) {
                 throw new UnsupportedOperationException();
-//                DitaWriter ditaWriter = new DitaWriter(this.ditaWriter, out, inheritIndent);
-//                ditaWriter.setContext(this);
-//                //noinspection ReturnOfInnerClass
-//                return new DitaRenderer.MainNodeRenderer.SubNodeRenderer(myMainNodeRenderer, ditaWriter, false);
             }
 
             @Override
             public NodeRendererContext getDelegatedSubContext(final Appendable out, final boolean inheritIndent) {
                 throw new UnsupportedOperationException();
-//                DitaWriter ditaWriter = new DitaWriter(this.ditaWriter, out, inheritIndent);
-//                ditaWriter.setContext(this);
-//                //noinspection ReturnOfInnerClass
-//                return new DitaRenderer.MainNodeRenderer.SubNodeRenderer(myMainNodeRenderer, ditaWriter, true);
             }
 
             @Override

@@ -34,8 +34,8 @@ public class MetadataSerializerImpl implements NodeRenderer {
 
     @Override
     public Set<NodeRenderingHandler<?>> getNodeRenderingHandlers() {
-        return new HashSet<>(Arrays.asList(
-                new NodeRenderingHandler<YamlFrontMatterBlock>(YamlFrontMatterBlock.class, (node, context, html) -> render(node, context, html))
+        return new HashSet<>(Collections.singletonList(
+                new NodeRenderingHandler<>(YamlFrontMatterBlock.class, this::render)
 
         ));
     }
@@ -90,7 +90,7 @@ public class MetadataSerializerImpl implements NodeRenderer {
             for (String v : header.get(elem.localName)) {
                 html.startElement(elem, buildAtts(elem));
                 if (v != null) {
-                    html.characters(v.toString());
+                    html.characters(v);
                 }
                 html.endElement();
             }
@@ -102,7 +102,7 @@ public class MetadataSerializerImpl implements NodeRenderer {
             for (String v : header.get(elem.localName)) {
                 html.startElement(elem, new XMLUtils.AttributesBuilder()
                         .add(ATTRIBUTE_NAME_CLASS, elem.toString())
-                        .add(attr, v.toString())
+                        .add(attr, v)
                         .build());
                 html.endElement();
             }
