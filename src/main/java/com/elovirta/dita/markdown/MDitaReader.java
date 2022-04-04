@@ -26,26 +26,16 @@ public class MDitaReader extends MarkdownReader {
                         .set(Parser.EXTENSIONS, asList(
                                 AbbreviationExtension.create(),
                                 AnchorLinkExtension.create(),
-//                        AsideExtension.create(),
                                 FootnoteExtension.create(),
-                                //                GfmIssuesExtension.create(),
-                                //                GfmUsersExtension.create(),
-                                //                TaskListExtension.create(),
                                 InsExtension.create(),
                                 JekyllTagExtension.create(),
-                                //                JiraConverterExtension.create(),
-                                //                StrikethroughSubscriptExtension.create(),
                                 SuperscriptExtension.create(),
-                                //                SubscriptExtension.create(),
                                 TablesExtension.create(),
-//                        TypographicExtension.create(),
-                                //                WikiLinkExtension.create(),
                                 AutolinkExtension.create(),
                                 YamlFrontMatterExtension.create(),
                                 DefinitionExtension.create(),
                                 StrikethroughExtension.create()))
                         .set(DefinitionExtension.TILDE_MARKER, false)
-                        // for full GFM table compatibility add the following table extension options:
                         .set(TablesExtension.COLUMN_SPANS, false)
                         .set(TablesExtension.APPEND_MISSING_COLUMNS, true)
                         .set(TablesExtension.DISCARD_EXTRA_COLUMNS, true)
@@ -54,7 +44,6 @@ public class MDitaReader extends MarkdownReader {
                         .set(DitaRenderer.ID_FROM_YAML, true)
                         .set(DitaRenderer.LW_DITA, true)
         );
-//        options.set(HtmlRenderer.SOFT_BREAK, "<br />\n");
     }
 
 }

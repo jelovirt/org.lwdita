@@ -61,20 +61,11 @@ public class MarkdownReader implements XMLReader {
                         .set(Parser.EXTENSIONS, asList(
                                 AbbreviationExtension.create(),
                                 AnchorLinkExtension.create(),
-//                        AsideExtension.create(),
                                 FootnoteExtension.create(),
-                                //                GfmIssuesExtension.create(),
-                                //                GfmUsersExtension.create(),
-                                //                TaskListExtension.create(),
                                 InsExtension.create(),
                                 JekyllTagExtension.create(),
-                                //                JiraConverterExtension.create(),
-                                //                StrikethroughSubscriptExtension.create(),
                                 SuperscriptExtension.create(),
-                                //                SubscriptExtension.create(),
                                 TablesExtension.create(),
-//                        TypographicExtension.create(),
-                                //                WikiLinkExtension.create(),
                                 AutolinkExtension.create(),
                                 YamlFrontMatterExtension.create(),
                                 DefinitionExtension.create(),
@@ -85,7 +76,6 @@ public class MarkdownReader implements XMLReader {
                         .set(TablesExtension.DISCARD_EXTRA_COLUMNS, true)
                         .set(TablesExtension.HEADER_SEPARATOR_COLUMN_MATCH, true)
         );
-//        options.set(HtmlRenderer.SOFT_BREAK, "<br />\n");
         try (InputStream style = getClass().getResourceAsStream("/specialize.xsl")) {
             tf = (SAXTransformerFactory) TransformerFactory.newInstance();
             tf.setURIResolver(new ClasspathURIResolver(tf.getURIResolver()));
@@ -93,7 +83,6 @@ public class MarkdownReader implements XMLReader {
         } catch (final IOException | TransformerConfigurationException e) {
             throw new RuntimeException(e);
         }
-
     }
 
     public MarkdownReader(final MutableDataSet options) {

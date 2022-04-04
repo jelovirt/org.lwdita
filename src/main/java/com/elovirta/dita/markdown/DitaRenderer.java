@@ -97,11 +97,9 @@ public class DitaRenderer implements IRender {
 
         // resolve renderer dependencies
         final List<DelegatingNodeRendererFactoryWrapper> nodeRenderers = new ArrayList<>(builder.nodeRendererFactories.size());
-
         for (int i = builder.nodeRendererFactories.size() - 1; i >= 0; i--) {
             final NodeRendererFactory nodeRendererFactory = builder.nodeRendererFactories.get(i);
             final Set<Class<? extends DelegatingNodeRendererFactoryWrapper>>[] myDelegates = new Set[]{null};
-
             nodeRenderers.add(new DelegatingNodeRendererFactoryWrapper(nodeRenderers, nodeRendererFactory));
         }
 
@@ -145,7 +143,6 @@ public class DitaRenderer implements IRender {
                 ditaWriter,
                 node.getDocument());
         renderer.render(node);
-//        renderer.flush(ditaOptions.maxTrailingBlankLines);
     }
 
     /**
@@ -226,27 +223,17 @@ public class DitaRenderer implements IRender {
         private final Map<Class<?>, NodeRenderingHandlerWrapper> renderers;
 
         private final List<PhasedNodeRenderer> phasedRenderers;
-        private final LinkResolver[] myLinkResolvers;
         private final Set<RenderingPhase> renderingPhases;
         private final DataHolder options;
         private RenderingPhase phase;
         private final DitaIdGenerator ditaIdGenerator;
         private final HashMap<LinkType, HashMap<String, ResolvedLink>> resolvedLinkMap = new HashMap<>();
-        private final AttributeProvider[] attributeProviders;
 
         @Override
         public void dispose() {
-
-            for (LinkResolver linkResolver : myLinkResolvers) {
-                if (linkResolver instanceof Disposable) ((Disposable) linkResolver).dispose();
+            if (ditaIdGenerator instanceof Disposable) {
+                ((Disposable) ditaIdGenerator).dispose();
             }
-
-            if (ditaIdGenerator instanceof Disposable) ((Disposable) ditaIdGenerator).dispose();
-
-            for (AttributeProvider attributeProvider : attributeProviders) {
-                if (attributeProvider instanceof Disposable) ((Disposable) attributeProvider).dispose();
-            }
-//            attributeProviders = null;
         }
 
         MainNodeRenderer(DataHolder options, DitaWriter ditaWriter, Document document) {
@@ -256,10 +243,12 @@ public class DitaRenderer implements IRender {
             this.renderers = new HashMap<>(32);
             this.renderingPhases = new HashSet<>(RenderingPhase.values().length);
             this.phasedRenderers = new ArrayList<>(nodeRendererFactories.size());
-            this.myLinkResolvers = new LinkResolver[linkResolverFactories.size()];
             this.doNotRenderLinksNesting = ditaOptions.doNotRenderLinksInDocument ? 0 : 1;
-            this.ditaIdGenerator = ditaIdGeneratorFactory != null ? ditaIdGeneratorFactory.create(this)
-                    : (!(ditaOptions.renderHeaderId || ditaOptions.generateHeaderIds) ? DitaIdGenerator.NULL : new HeaderIdGenerator.Factory().create(this));
+            this.ditaIdGenerator = ditaIdGeneratorFactory != null
+                    ? ditaIdGeneratorFactory.create(this)
+                    : (!(ditaOptions.renderHeaderId || ditaOptions.generateHeaderIds)
+                    ? DitaIdGenerator.NULL
+                    : new HeaderIdGenerator.Factory().create(this));
 
             ditaWriter.setContext(this);
 
@@ -267,24 +256,9 @@ public class DitaRenderer implements IRender {
                 NodeRendererFactory nodeRendererFactory = nodeRendererFactories.get(i);
                 NodeRenderer nodeRenderer = nodeRendererFactory.apply(this.getOptions());
                 for (NodeRenderingHandler nodeType : nodeRenderer.getNodeRenderingHandlers()) {
-                    // Overwrite existing renderer
                     NodeRenderingHandlerWrapper handlerWrapper = new NodeRenderingHandlerWrapper(nodeType, renderers.get(nodeType.getNodeType()));
                     renderers.put(nodeType.getNodeType(), handlerWrapper);
                 }
-
-                if (nodeRenderer instanceof PhasedNodeRenderer) {
-                    this.renderingPhases.addAll(((PhasedNodeRenderer) nodeRenderer).getRenderingPhases());
-                    this.phasedRenderers.add((PhasedNodeRenderer) nodeRenderer);
-                }
-            }
-
-            for (int i = 0; i < linkResolverFactories.size(); i++) {
-                myLinkResolvers[i] = linkResolverFactories.get(i).apply(this);
-            }
-
-            this.attributeProviders = new AttributeProvider[attributeProviderFactories.size()];
-            for (int i = 0; i < attributeProviderFactories.size(); i++) {
-                attributeProviders[i] = attributeProviderFactories.get(i).apply(this);
             }
         }
 
@@ -310,11 +284,6 @@ public class DitaRenderer implements IRender {
                 if (!urlSeq.isEmpty()) {
                     Node currentNode = getCurrentNode();
 
-                    for (LinkResolver linkResolver : myLinkResolvers) {
-                        resolvedLink = linkResolver.resolveLink(currentNode, this, resolvedLink);
-                        if (resolvedLink.getStatus() != LinkStatus.UNKNOWN) break;
-                    }
-
                     if (urlEncode == null && ditaOptions.percentEncodeUrls || urlEncode != null && urlEncode) {
                         resolvedLink = resolvedLink.withUrl(Escaping.percentEncodeUrl(resolvedLink.getUrl()));
                     }
@@ -335,9 +304,6 @@ public class DitaRenderer implements IRender {
                 Attributes attributes = new Attributes();
                 if (id != null) attributes.replaceValue("id", id);
 
-                for (AttributeProvider attributeProvider : attributeProviders) {
-                    attributeProvider.setAttributes(this.renderingNode, AttributablePart.ID, attributes);
-                }
                 id = attributes.getValue("id");
             }
             return id;
@@ -374,11 +340,7 @@ public class DitaRenderer implements IRender {
 
         @Override
         public Attributes extendRenderingNodeAttributes(AttributablePart part, Attributes attributes) {
-            Attributes attr = attributes != null ? attributes : new Attributes();
-            for (AttributeProvider attributeProvider : attributeProviders) {
-                attributeProvider.setAttributes(this.renderingNode, part, attr);
-            }
-            return attr;
+            return attributes != null ? attributes : new Attributes();
         }
 
         @Override
@@ -505,128 +467,6 @@ public class DitaRenderer implements IRender {
                 Node next = node.getNext();
                 renderNode(node, subContext);
                 node = next;
-            }
-        }
-
-        @SuppressWarnings("WeakerAccess")
-        private class SubNodeRenderer extends NodeRendererSubContext implements NodeRendererContext {
-            private final DitaRenderer.MainNodeRenderer myMainNodeRenderer;
-
-            public SubNodeRenderer(DitaRenderer.MainNodeRenderer mainNodeRenderer, DitaWriter ditaWriter, final boolean inheritCurrentHandler) {
-                super(ditaWriter);
-                myMainNodeRenderer = mainNodeRenderer;
-                doNotRenderLinksNesting = mainNodeRenderer.getDitaOptions().doNotRenderLinksInDocument ? 1 : 0;
-                if (inheritCurrentHandler) {
-                    renderingNode = mainNodeRenderer.renderingNode;
-                    renderingHandlerWrapper = mainNodeRenderer.renderingHandlerWrapper;
-                }
-            }
-
-            @Override
-            public String getNodeId(Node node) {
-                return myMainNodeRenderer.getNodeId(node);
-            }
-
-            @Override
-            public DataHolder getOptions() {
-                return myMainNodeRenderer.getOptions();
-            }
-
-            @Override
-            public DitaRendererOptions getDitaOptions() {
-                return myMainNodeRenderer.getDitaOptions();
-            }
-
-            @Override
-            public Document getDocument() {
-                return myMainNodeRenderer.getDocument();
-            }
-
-            @Override
-            public RenderingPhase getRenderingPhase() {
-                return myMainNodeRenderer.getRenderingPhase();
-            }
-
-            @Override
-            public String encodeUrl(CharSequence url) {
-                return myMainNodeRenderer.encodeUrl(url);
-            }
-
-            @Override
-            public Attributes extendRenderingNodeAttributes(AttributablePart part, Attributes attributes) {
-                return myMainNodeRenderer.extendRenderingNodeAttributes(
-                        part,
-                        attributes
-                );
-            }
-
-            @Override
-            public void render(Node node) {
-                myMainNodeRenderer.renderNode(node, this);
-            }
-
-            @Override
-            public void delegateRender() {
-                myMainNodeRenderer.renderByPreviousHandler(this);
-            }
-
-            @Override
-            public Node getCurrentNode() {
-                return myMainNodeRenderer.getCurrentNode();
-            }
-
-            @Override
-            public ResolvedLink resolveLink(LinkType linkType, CharSequence url, Boolean urlEncode) {
-                return myMainNodeRenderer.resolveLink(linkType, url, urlEncode);
-            }
-
-            @Override
-            public ResolvedLink resolveLink(LinkType linkType, CharSequence url, Attributes attributes, Boolean urlEncode) {
-                return myMainNodeRenderer.resolveLink(linkType, url, attributes, urlEncode);
-            }
-
-            @Override
-            public NodeRendererContext getSubContext(Appendable out, boolean inheritIndent) {
-                throw new UnsupportedOperationException();
-            }
-
-            @Override
-            public NodeRendererContext getDelegatedSubContext(final Appendable out, final boolean inheritIndent) {
-                throw new UnsupportedOperationException();
-            }
-
-            @Override
-            public void renderChildren(Node parent) {
-                myMainNodeRenderer.renderChildrenNode(parent, this);
-            }
-
-            @Override
-            public DitaWriter getDitaWriter() {
-                return ditaWriter;
-            }
-
-            protected int getDoNotRenderLinksNesting() {
-                return super.getDoNotRenderLinksNesting();
-            }
-
-            @Override
-            public boolean isDoNotRenderLinks() {
-                return super.isDoNotRenderLinks();
-            }
-
-            @Override
-            public void doNotRenderLinks(boolean doNotRenderLinks) {
-                super.doNotRenderLinks(doNotRenderLinks);
-            }
-
-            @Override
-            public void doNotRenderLinks() {
-                super.doNotRenderLinks();
-            }
-
-            @Override
-            public void doRenderLinks() {
-                super.doRenderLinks();
             }
         }
     }
