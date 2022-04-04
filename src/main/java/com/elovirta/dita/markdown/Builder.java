@@ -13,10 +13,6 @@ import java.util.List;
  * Builder for configuring an {@link DitaRenderer}. See methods for default configuration.
  */
 class Builder extends MutableDataSet {
-    List<AttributeProviderFactory> attributeProviderFactories = new ArrayList<>();
-    List<NodeRendererFactory> nodeRendererFactories = new ArrayList<>();
-    List<LinkResolverFactory> linkResolverFactories = new ArrayList<>();
-    private final HashSet<DitaRenderer.DitaRendererExtension> loadedExtensions = new HashSet<>();
     HeaderIdGeneratorFactory ditaIdGeneratorFactory = null;
 
     public Builder(DataHolder options) {
@@ -25,12 +21,6 @@ class Builder extends MutableDataSet {
 
     public Builder(Builder other) {
         super(other);
-
-        this.attributeProviderFactories.addAll(other.attributeProviderFactories);
-        this.nodeRendererFactories.addAll(other.nodeRendererFactories);
-        this.linkResolverFactories.addAll(other.linkResolverFactories);
-        this.loadedExtensions.addAll(other.loadedExtensions);
         this.ditaIdGeneratorFactory = other.ditaIdGeneratorFactory;
     }
-
 }

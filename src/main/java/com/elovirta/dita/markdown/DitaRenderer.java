@@ -76,9 +76,7 @@ public class DitaRenderer implements IRender {
     public static final DataKey<Integer> FORMAT_FLAGS = new DataKey<>("FORMAT_FLAGS", 0);
     public static final DataKey<Integer> MAX_TRAILING_BLANK_LINES = new DataKey<>("MAX_TRAILING_BLANK_LINES", 1);
 
-    private final List<AttributeProviderFactory> attributeProviderFactories;
     private final List<DelegatingNodeRendererFactoryWrapper> nodeRendererFactories;
-    private final List<LinkResolverFactory> linkResolverFactories;
     private final HeaderIdGeneratorFactory ditaIdGeneratorFactory;
     private final DitaRendererOptions ditaOptions;
     private final DataHolder options;
@@ -96,22 +94,13 @@ public class DitaRenderer implements IRender {
         this.ditaIdGeneratorFactory = builder.ditaIdGeneratorFactory;
 
         // resolve renderer dependencies
-        final List<DelegatingNodeRendererFactoryWrapper> nodeRenderers = new ArrayList<>(builder.nodeRendererFactories.size());
-        for (int i = builder.nodeRendererFactories.size() - 1; i >= 0; i--) {
-            final NodeRendererFactory nodeRendererFactory = builder.nodeRendererFactories.get(i);
-            final Set<Class<? extends DelegatingNodeRendererFactoryWrapper>>[] myDelegates = new Set[]{null};
-            nodeRenderers.add(new DelegatingNodeRendererFactoryWrapper(nodeRenderers, nodeRendererFactory));
-        }
 
         // Add as last. This means clients can override the rendering of core nodes if they want by default
         final CoreNodeRenderer.Factory nodeRendererFactory = new CoreNodeRenderer.Factory();
-        nodeRenderers.add(new DelegatingNodeRendererFactoryWrapper(nodeRenderers, nodeRendererFactory));
+        final List<DelegatingNodeRendererFactoryWrapper> nodeRenderers = Collections.singletonList(new DelegatingNodeRendererFactoryWrapper(nodeRendererFactory));
 
         DitaRenderer.RendererDependencyHandler resolver = new DitaRenderer.RendererDependencyHandler();
         nodeRendererFactories = resolver.resolveDependencies(nodeRenderers).getNodeRendererFactories();
-
-        this.attributeProviderFactories = FlatDependencyHandler.computeDependencies(builder.attributeProviderFactories);
-        this.linkResolverFactories = FlatDependencyHandler.computeDependencies(builder.linkResolverFactories);
     }
 
     @Override
@@ -154,25 +143,6 @@ public class DitaRenderer implements IRender {
      * and should call back on the builder argument to register all extension points
      */
     public interface DitaRendererExtension extends Extension {
-        /**
-         * This method is called first on all extensions so that they can adjust the options that must be
-         * common to all extensions.
-         *
-         * @param options option set that will be used for the builder
-         */
-        void rendererOptions(MutableDataHolder options);
-
-        /**
-         * Called to give each extension to register extension points that it contains
-         *
-         * @param rendererBuilder builder to call back for extension point registration
-         * @param rendererType    type of rendering being performed. For now "HTML", "JIRA" or "YOUTRACK"
-         * @see Builder#attributeProviderFactory(AttributeProviderFactory)
-         * @see Builder#nodeRendererFactory(NodeRendererFactory)
-         * @see Builder#linkResolverFactory(LinkResolverFactory)
-         * @see Builder#ditaIdGeneratorFactory(HeaderIdGeneratorFactory)
-         */
-        void extend(Builder rendererBuilder, String rendererType);
     }
 
     public static class RendererDependencyStage {
@@ -268,11 +238,6 @@ public class DitaRenderer implements IRender {
         }
 
         @Override
-        public ResolvedLink resolveLink(LinkType linkType, CharSequence url, Boolean urlEncode) {
-            return resolveLink(linkType, url, null, urlEncode);
-        }
-
-        @Override
         public ResolvedLink resolveLink(LinkType linkType, CharSequence url, Attributes attributes, Boolean urlEncode) {
             HashMap<String, ResolvedLink> resolvedLinks = resolvedLinkMap.computeIfAbsent(linkType, k -> new HashMap<>());
 
@@ -297,19 +262,6 @@ public class DitaRenderer implements IRender {
         }
 
         @Override
-        public String getNodeId(Node node) {
-            String id = ditaIdGenerator.getId(node);
-            if (attributeProviderFactories.size() != 0) {
-
-                Attributes attributes = new Attributes();
-                if (id != null) attributes.replaceValue("id", id);
-
-                id = attributes.getValue("id");
-            }
-            return id;
-        }
-
-        @Override
         public DataHolder getOptions() {
             return options;
         }
@@ -330,20 +282,6 @@ public class DitaRenderer implements IRender {
         }
 
         @Override
-        public String encodeUrl(CharSequence url) {
-            if (ditaOptions.percentEncodeUrls) {
-                return Escaping.percentEncodeUrl(url);
-            } else {
-                return url instanceof String ? (String) url : String.valueOf(url);
-            }
-        }
-
-        @Override
-        public Attributes extendRenderingNodeAttributes(AttributablePart part, Attributes attributes) {
-            return attributes != null ? attributes : new Attributes();
-        }
-
-        @Override
         public void render(Node node) {
             try {
                 ditaWriter.contentHandler.startDocument();
@@ -355,42 +293,6 @@ public class DitaRenderer implements IRender {
             } catch (SAXException e) {
                 throw new RuntimeException(e);
             }
-        }
-
-        @Override
-        public void delegateRender() {
-            renderByPreviousHandler(this);
-        }
-
-        void renderByPreviousHandler(NodeRendererSubContext subContext) {
-            if (subContext.renderingNode != null) {
-                NodeRenderingHandlerWrapper nodeRenderer = subContext.renderingHandlerWrapper.myPreviousRenderingHandler;
-                if (nodeRenderer != null) {
-                    Node oldNode = subContext.renderingNode;
-                    int oldDoNotRenderLinksNesting = subContext.doNotRenderLinksNesting;
-                    NodeRenderingHandlerWrapper prevWrapper = subContext.renderingHandlerWrapper;
-                    try {
-                        subContext.renderingHandlerWrapper = nodeRenderer;
-                        nodeRenderer.myRenderingHandler.render(oldNode, subContext, subContext.ditaWriter);
-                    } finally {
-                        subContext.renderingNode = oldNode;
-                        subContext.doNotRenderLinksNesting = oldDoNotRenderLinksNesting;
-                        subContext.renderingHandlerWrapper = prevWrapper;
-                    }
-                }
-            } else {
-                throw new IllegalStateException("renderingByPreviousHandler called outside node rendering code");
-            }
-        }
-
-        @Override
-        public NodeRendererContext getSubContext(Appendable out, boolean inheritIndent) {
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
-        public NodeRendererContext getDelegatedSubContext(final Appendable out, final boolean inheritIndent) {
-            throw new UnsupportedOperationException();
         }
 
         void renderNode(Node node, NodeRendererSubContext subContext) {
@@ -470,6 +372,4 @@ public class DitaRenderer implements IRender {
             }
         }
     }
-
-
 }

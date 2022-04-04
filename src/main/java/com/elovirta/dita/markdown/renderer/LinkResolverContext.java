@@ -22,12 +22,6 @@ public interface LinkResolverContext {
     Document getDocument();
 
     /**
-     * @param url to be encoded
-     * @return an encoded URL (depending on the configuration)
-     */
-    String encodeUrl(CharSequence url);
-
-    /**
      * Render the specified node and its children using the configured renderers. This should be used to render child
      * nodes; be careful not to pass the node that is being rendered, that would result in an endless loop.
      *
@@ -46,21 +40,6 @@ public interface LinkResolverContext {
      * @return the current node being rendered
      */
     Node getCurrentNode();
-
-    /**
-     * Resolve link for rendering. Link Resolvers are going to be called until one returns ResolvedLink with getStatus() != LinkStatus.Unknown
-     * <p>
-     * A resolver can replace the url but not change the status letting downstream resolvers handle the rest.
-     * This is useful when a resolver does partial processing like macro expansion but does not know how to handle the rest.
-     * <p>
-     * Core processing will simply pass the link as is. It is up to extension LinkResolvers and AttributeProviders to make sense of the link and applicable attributes based on status.
-     *
-     * @param linkType  type of link being rendered. Core defined links are Link, Image. Extensions can define their own
-     * @param url       link url text
-     * @param urlEncode whether the link should be url encoded, if null then the value of {@link HtmlRenderer#PERCENT_ENCODE_URLS} will be used to determine whether the resolved URL is to be encoded.
-     * @return resolved link url for this link and its resolved status
-     */
-    ResolvedLink resolveLink(LinkType linkType, CharSequence url, Boolean urlEncode);
 
     /**
      * Resolve link for rendering. Link Resolvers are going to be called until one returns ResolvedLink with getStatus() != LinkStatus.Unknown
