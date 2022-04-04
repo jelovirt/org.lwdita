@@ -4,19 +4,21 @@
 package com.elovirta.dita.markdown;
 
 import com.elovirta.dita.markdown.renderer.*;
-import com.vladsch.flexmark.html.Disposable;
 import com.vladsch.flexmark.util.ast.Document;
 import com.vladsch.flexmark.util.ast.IRender;
 import com.vladsch.flexmark.util.ast.Node;
-import com.vladsch.flexmark.util.builder.Extension;
-import com.vladsch.flexmark.util.data.*;
-import com.vladsch.flexmark.util.dependency.DependencyHandler;
-import com.vladsch.flexmark.util.dependency.ResolvedDependencies;
+import com.vladsch.flexmark.util.data.DataHolder;
+import com.vladsch.flexmark.util.data.DataKey;
+import com.vladsch.flexmark.util.data.DataSet;
+import com.vladsch.flexmark.util.data.ScopedDataSet;
 import com.vladsch.flexmark.util.sequence.TagRange;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static org.dita.dost.util.Constants.ATTRIBUTE_PREFIX_DITAARCHVERSION;
 import static org.dita.dost.util.Constants.DITA_NAMESPACE;
@@ -73,7 +75,6 @@ public class DitaRenderer implements IRender {
     public static final DataKey<Integer> FORMAT_FLAGS = new DataKey<>("FORMAT_FLAGS", 0);
     public static final DataKey<Integer> MAX_TRAILING_BLANK_LINES = new DataKey<>("MAX_TRAILING_BLANK_LINES", 1);
 
-    private final List<DelegatingNodeRendererFactoryWrapper> nodeRendererFactories;
     private final HeaderIdGeneratorFactory ditaIdGeneratorFactory;
     private final DitaRendererOptions ditaOptions;
     private final DataHolder options;
@@ -81,23 +82,11 @@ public class DitaRenderer implements IRender {
     private final Map<String, List<String>> metadata;
 
     DitaRenderer(Builder builder, Map<String, List<String>> metadata) {
-//        final ContentHandler contentHandler, final Map<String, Object> documentMetadata
-
         this.builder = new Builder(builder); // take a copy to avoid after creation side effects
         this.options = new DataSet(builder);
         this.ditaOptions = new DitaRendererOptions(this.options);
         this.metadata = metadata;
-
         this.ditaIdGeneratorFactory = builder.ditaIdGeneratorFactory;
-
-        // resolve renderer dependencies
-
-        // Add as last. This means clients can override the rendering of core nodes if they want by default
-        final CoreNodeRenderer.Factory nodeRendererFactory = new CoreNodeRenderer.Factory();
-        final List<DelegatingNodeRendererFactoryWrapper> nodeRenderers = Collections.singletonList(new DelegatingNodeRendererFactoryWrapper(nodeRendererFactory));
-
-        DitaRenderer.RendererDependencyHandler resolver = new DitaRenderer.RendererDependencyHandler();
-        nodeRendererFactories = resolver.resolveDependencies(nodeRenderers).getNodeRendererFactories();
     }
 
     @Override
@@ -131,49 +120,6 @@ public class DitaRenderer implements IRender {
         renderer.render(node);
     }
 
-    public static class RendererDependencyStage {
-        private final List<DelegatingNodeRendererFactoryWrapper> dependents;
-
-        public RendererDependencyStage(List<DelegatingNodeRendererFactoryWrapper> dependents) {
-            this.dependents = dependents;
-        }
-    }
-
-    public static class RendererDependencies extends ResolvedDependencies<DitaRenderer.RendererDependencyStage> {
-        private final List<DelegatingNodeRendererFactoryWrapper> nodeRendererFactories;
-
-        public RendererDependencies(List<DitaRenderer.RendererDependencyStage> dependentStages) {
-            super(dependentStages);
-            List<DelegatingNodeRendererFactoryWrapper> blockPreProcessorFactories = new ArrayList<>();
-            for (DitaRenderer.RendererDependencyStage stage : dependentStages) {
-                blockPreProcessorFactories.addAll(stage.dependents);
-            }
-            this.nodeRendererFactories = blockPreProcessorFactories;
-        }
-
-        public List<DelegatingNodeRendererFactoryWrapper> getNodeRendererFactories() {
-            return nodeRendererFactories;
-        }
-    }
-
-    private static class RendererDependencyHandler extends DependencyHandler<DelegatingNodeRendererFactoryWrapper, DitaRenderer.RendererDependencyStage, DitaRenderer.RendererDependencies> {
-        @Override
-        protected Class getDependentClass(DelegatingNodeRendererFactoryWrapper dependent) {
-            return dependent.getFactory().getClass();
-        }
-
-        @Override
-        protected DitaRenderer.RendererDependencies createResolvedDependencies(List<DitaRenderer.RendererDependencyStage> stages) {
-            return new DitaRenderer.RendererDependencies(stages);
-        }
-
-        @Override
-        protected DitaRenderer.RendererDependencyStage createStage(List<DelegatingNodeRendererFactoryWrapper> dependents) {
-            return new DitaRenderer.RendererDependencyStage(dependents);
-        }
-    }
-
-
     private class MainNodeRenderer extends NodeRendererSubContext implements NodeRendererContext {
         private final Document document;
         private final Map<Class<?>, NodeRenderingHandlerWrapper> renderers;
@@ -195,13 +141,10 @@ public class DitaRenderer implements IRender {
 
             ditaWriter.setContext(this);
 
-            for (int i = nodeRendererFactories.size() - 1; i >= 0; i--) {
-                NodeRendererFactory nodeRendererFactory = nodeRendererFactories.get(i);
-                NodeRenderer nodeRenderer = nodeRendererFactory.apply(this.getOptions());
-                for (NodeRenderingHandler nodeType : nodeRenderer.getNodeRenderingHandlers()) {
-                    NodeRenderingHandlerWrapper handlerWrapper = new NodeRenderingHandlerWrapper(nodeType, renderers.get(nodeType.getNodeType()));
-                    renderers.put(nodeType.getNodeType(), handlerWrapper);
-                }
+            NodeRenderer nodeRenderer = new CoreNodeRenderer(this.getOptions());
+            for (NodeRenderingHandler nodeType : nodeRenderer.getNodeRenderingHandlers()) {
+                NodeRenderingHandlerWrapper handlerWrapper = new NodeRenderingHandlerWrapper(nodeType, renderers.get(nodeType.getNodeType()));
+                renderers.put(nodeType.getNodeType(), handlerWrapper);
             }
         }
 

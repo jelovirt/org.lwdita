@@ -1574,35 +1574,4 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
             html.characters(string);
         }
     }
-
-//    private class MetadataNode extends Node {
-//        final String title;
-//
-//        MetadataNode(final String title) {
-//            this.title = title;
-//        }
-//
-//        @Override
-//        public void accept(final Visitor visitor) {
-//            visitor.visit(this);
-//        }
-//
-//        @Override
-//        public List<Node> getChildren() {
-//            return Collections.emptyList();
-//        }
-//
-//        @Override
-//        public BasedSequence[] getSegments() {
-//            return new BasedSequence[0];
-//        }
-//    }
-
-    public static class Factory implements NodeRendererFactory {
-        @Override
-        public NodeRenderer apply(final DataHolder options) {
-            return new CoreNodeRenderer(options);
-        }
-    }
-
 }
