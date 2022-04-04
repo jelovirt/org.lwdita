@@ -1,6 +1,7 @@
 package com.elovirta.dita.markdown;
 
 import com.vladsch.flexmark.util.data.DataHolder;
+import com.vladsch.flexmark.util.misc.Utils;
 
 public class DitaRendererOptions {
     public final boolean doNotRenderLinksInDocument;
