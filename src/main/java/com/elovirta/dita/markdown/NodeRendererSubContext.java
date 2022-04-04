@@ -18,13 +18,4 @@ public abstract class NodeRendererSubContext implements NodeRendererContext {
     protected int getDoNotRenderLinksNesting() {
         return doNotRenderLinksNesting;
     }
-
-    public void doNotRenderLinks() {
-        this.doNotRenderLinksNesting++;
-    }
-
-    public void doRenderLinks() {
-        if (this.doNotRenderLinksNesting == 0) throw new IllegalStateException("Not in do not render links context");
-        this.doNotRenderLinksNesting--;
-    }
 }

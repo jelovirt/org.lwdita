@@ -11,7 +11,6 @@ import com.vladsch.flexmark.ext.gfm.strikethrough.StrikethroughSubscriptExtensio
 import com.vladsch.flexmark.ext.ins.InsExtension;
 import com.vladsch.flexmark.ext.jekyll.tag.JekyllTagExtension;
 import com.vladsch.flexmark.ext.tables.TablesExtension;
-import com.vladsch.flexmark.ext.yaml.front.matter.AbstractYamlFrontMatterVisitor;
 import com.vladsch.flexmark.ext.yaml.front.matter.YamlFrontMatterExtension;
 import com.vladsch.flexmark.parser.Parser;
 import com.vladsch.flexmark.superscript.SuperscriptExtension;
@@ -33,8 +32,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.CharBuffer;
-import java.util.List;
-import java.util.Map;
 
 import static java.util.Arrays.asList;
 import static org.apache.commons.io.IOUtils.copy;
@@ -158,12 +155,7 @@ public class MarkdownReader implements XMLReader {
         final Document root;
         try {
             root = p.parse(sequence);
-
-            final AbstractYamlFrontMatterVisitor v = new AbstractYamlFrontMatterVisitor();
-            v.visit(root);
-            final Map<String, List<String>> metadata = v.getData();
-
-            parseAST(root, metadata);
+            parseAST(root);
         } catch (ParseException e) {
             throw new SAXException("Failed to parse Markdown: " + e.getMessage(), e);
         }
@@ -226,7 +218,7 @@ public class MarkdownReader implements XMLReader {
         return bin;
     }
 
-    private void parseAST(final Document root, final Map<String, List<String>> metadata) throws SAXException {
+    private void parseAST(final Document root) throws SAXException {
         ContentHandler res = contentHandler;
         if (t != null) {
             final TransformerHandler h;
@@ -239,7 +231,7 @@ public class MarkdownReader implements XMLReader {
             res = h;
         }
         final Builder builder = new Builder(options);
-        final DitaRenderer s = new DitaRenderer(builder, metadata);
+        final DitaRenderer s = new DitaRenderer(builder);
         s.render(root, res);
     }
 

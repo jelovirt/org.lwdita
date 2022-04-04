@@ -5,7 +5,6 @@ package com.elovirta.dita.markdown;
 
 import com.elovirta.dita.markdown.renderer.*;
 import com.vladsch.flexmark.util.ast.Document;
-import com.vladsch.flexmark.util.ast.IRender;
 import com.vladsch.flexmark.util.ast.Node;
 import com.vladsch.flexmark.util.data.DataHolder;
 import com.vladsch.flexmark.util.data.DataKey;
@@ -17,13 +16,12 @@ import org.xml.sax.SAXException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import static org.dita.dost.util.Constants.ATTRIBUTE_PREFIX_DITAARCHVERSION;
 import static org.dita.dost.util.Constants.DITA_NAMESPACE;
 
-public class DitaRenderer implements IRender {
+public class DitaRenderer {
 
     public static final DataKey<Boolean> SHORTDESC_PARAGRAPH = new DataKey<>("SHORTDESC_PARAGRAPH", false);
     public static final DataKey<Boolean> ID_FROM_YAML = new DataKey<>("ID_FROM_YAML", false);
@@ -79,37 +77,12 @@ public class DitaRenderer implements IRender {
     private final DitaRendererOptions ditaOptions;
     private final DataHolder options;
     private final Builder builder;
-    private final Map<String, List<String>> metadata;
 
-    DitaRenderer(Builder builder, Map<String, List<String>> metadata) {
+    DitaRenderer(Builder builder) {
         this.builder = new Builder(builder); // take a copy to avoid after creation side effects
         this.options = new DataSet(builder);
         this.ditaOptions = new DitaRendererOptions(this.options);
-        this.metadata = metadata;
         this.ditaIdGeneratorFactory = builder.ditaIdGeneratorFactory;
-    }
-
-    @Override
-    public DataHolder getOptions() {
-        return new DataSet(builder);
-    }
-
-    @Override
-    public void render(Node node, Appendable output) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public String render(Node node) {
-        StringBuilder sb = new StringBuilder();
-        render(node, sb);
-        return sb.toString();
-    }
-
-    @Override
-    public DitaRenderer withOptions(DataHolder options) {
-//        return options == null ? this : new DitaRenderer(new Builder(builder, options));
-        return null;
     }
 
     public void render(Node node, ContentHandler out) {
