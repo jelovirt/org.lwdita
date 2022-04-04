@@ -14,7 +14,7 @@ import static javax.xml.XMLConstants.NULL_NS_URI;
 /**
  * Serializer to SAX content handler.
  */
-public class SaxSerializer implements Serializer {
+public class SaxSerializer {
 
     final Deque<DitaClass> tagStack = new ArrayDeque<>();
     protected ContentHandler contentHandler;
