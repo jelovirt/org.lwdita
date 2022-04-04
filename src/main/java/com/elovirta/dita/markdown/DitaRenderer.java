@@ -11,10 +11,7 @@ import com.vladsch.flexmark.util.ast.Node;
 import com.vladsch.flexmark.util.builder.Extension;
 import com.vladsch.flexmark.util.data.*;
 import com.vladsch.flexmark.util.dependency.DependencyHandler;
-import com.vladsch.flexmark.util.dependency.FlatDependencyHandler;
 import com.vladsch.flexmark.util.dependency.ResolvedDependencies;
-import com.vladsch.flexmark.util.html.Attributes;
-import com.vladsch.flexmark.util.html.Escaping;
 import com.vladsch.flexmark.util.sequence.TagRange;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
@@ -134,17 +131,6 @@ public class DitaRenderer implements IRender {
         renderer.render(node);
     }
 
-    /**
-     * Extension for {@link DitaRenderer}.
-     * <p>
-     * This should be implemented by all extensions that have DitaRenderer extension code.
-     * <p>
-     * Each extension will have its {@link DitaRenderer.DitaRendererExtension#extend(Builder, String)} method called.
-     * and should call back on the builder argument to register all extension points
-     */
-    public interface DitaRendererExtension extends Extension {
-    }
-
     public static class RendererDependencyStage {
         private final List<DelegatingNodeRendererFactoryWrapper> dependents;
 
@@ -188,31 +174,18 @@ public class DitaRenderer implements IRender {
     }
 
 
-    private class MainNodeRenderer extends NodeRendererSubContext implements NodeRendererContext, Disposable {
+    private class MainNodeRenderer extends NodeRendererSubContext implements NodeRendererContext {
         private final Document document;
         private final Map<Class<?>, NodeRenderingHandlerWrapper> renderers;
 
-        private final List<PhasedNodeRenderer> phasedRenderers;
-        private final Set<RenderingPhase> renderingPhases;
         private final DataHolder options;
-        private RenderingPhase phase;
         private final DitaIdGenerator ditaIdGenerator;
-        private final HashMap<LinkType, HashMap<String, ResolvedLink>> resolvedLinkMap = new HashMap<>();
-
-        @Override
-        public void dispose() {
-            if (ditaIdGenerator instanceof Disposable) {
-                ((Disposable) ditaIdGenerator).dispose();
-            }
-        }
 
         MainNodeRenderer(DataHolder options, DitaWriter ditaWriter, Document document) {
             super(ditaWriter);
             this.options = new ScopedDataSet(options, document);
             this.document = document;
             this.renderers = new HashMap<>(32);
-            this.renderingPhases = new HashSet<>(RenderingPhase.values().length);
-            this.phasedRenderers = new ArrayList<>(nodeRendererFactories.size());
             this.doNotRenderLinksNesting = ditaOptions.doNotRenderLinksInDocument ? 0 : 1;
             this.ditaIdGenerator = ditaIdGeneratorFactory != null
                     ? ditaIdGeneratorFactory.create(this)
@@ -233,35 +206,6 @@ public class DitaRenderer implements IRender {
         }
 
         @Override
-        public Node getCurrentNode() {
-            return renderingNode;
-        }
-
-        @Override
-        public ResolvedLink resolveLink(LinkType linkType, CharSequence url, Attributes attributes, Boolean urlEncode) {
-            HashMap<String, ResolvedLink> resolvedLinks = resolvedLinkMap.computeIfAbsent(linkType, k -> new HashMap<>());
-
-            String urlSeq = url instanceof String ? (String) url : String.valueOf(url);
-            ResolvedLink resolvedLink = resolvedLinks.get(urlSeq);
-            if (resolvedLink == null) {
-                resolvedLink = new ResolvedLink(linkType, urlSeq, attributes);
-
-                if (!urlSeq.isEmpty()) {
-                    Node currentNode = getCurrentNode();
-
-                    if (urlEncode == null && ditaOptions.percentEncodeUrls || urlEncode != null && urlEncode) {
-                        resolvedLink = resolvedLink.withUrl(Escaping.percentEncodeUrl(resolvedLink.getUrl()));
-                    }
-                }
-
-                // put it in the map
-                resolvedLinks.put(urlSeq, resolvedLink);
-            }
-
-            return resolvedLink;
-        }
-
-        @Override
         public DataHolder getOptions() {
             return options;
         }
@@ -274,11 +218,6 @@ public class DitaRenderer implements IRender {
         @Override
         public Document getDocument() {
             return document;
-        }
-
-        @Override
-        public RenderingPhase getRenderingPhase() {
-            return phase;
         }
 
         @Override
@@ -302,39 +241,18 @@ public class DitaRenderer implements IRender {
                 int documentDoNotRenderLinksNesting = getDitaOptions().doNotRenderLinksInDocument ? 1 : 0;
                 this.ditaIdGenerator.generateIds(document);
 
-                for (RenderingPhase phase : RenderingPhase.values()) {
-                    if (phase != RenderingPhase.BODY && !renderingPhases.contains(phase)) {
-                        continue;
-                    }
-                    this.phase = phase;
-                    // here we render multiple phases
-
-                    // go through all renderers that want this phase
-                    for (PhasedNodeRenderer phasedRenderer : phasedRenderers) {
-                        if (phasedRenderer.getRenderingPhases().contains(phase)) {
-                            subContext.doNotRenderLinksNesting = documentDoNotRenderLinksNesting;
-                            subContext.renderingNode = node;
-                            phasedRenderer.renderDocument(subContext, subContext.ditaWriter, (Document) node, phase);
-                            subContext.renderingNode = null;
-                            subContext.doNotRenderLinksNesting = oldDoNotRenderLinksNesting;
-                        }
-                    }
-
-                    if (getRenderingPhase() == RenderingPhase.BODY) {
-                        NodeRenderingHandlerWrapper nodeRenderer = renderers.get(node.getClass());
-                        if (nodeRenderer != null) {
-                            subContext.doNotRenderLinksNesting = documentDoNotRenderLinksNesting;
-                            NodeRenderingHandlerWrapper prevWrapper = subContext.renderingHandlerWrapper;
-                            try {
-                                subContext.renderingNode = node;
-                                subContext.renderingHandlerWrapper = nodeRenderer;
-                                nodeRenderer.myRenderingHandler.render(node, subContext, subContext.ditaWriter);
-                            } finally {
-                                subContext.renderingHandlerWrapper = prevWrapper;
-                                subContext.renderingNode = null;
-                                subContext.doNotRenderLinksNesting = oldDoNotRenderLinksNesting;
-                            }
-                        }
+                NodeRenderingHandlerWrapper nodeRenderer = renderers.get(node.getClass());
+                if (nodeRenderer != null) {
+                    subContext.doNotRenderLinksNesting = documentDoNotRenderLinksNesting;
+                    NodeRenderingHandlerWrapper prevWrapper = subContext.renderingHandlerWrapper;
+                    try {
+                        subContext.renderingNode = node;
+                        subContext.renderingHandlerWrapper = nodeRenderer;
+                        nodeRenderer.myRenderingHandler.render(node, subContext, subContext.ditaWriter);
+                    } finally {
+                        subContext.renderingHandlerWrapper = prevWrapper;
+                        subContext.renderingNode = null;
+                        subContext.doNotRenderLinksNesting = oldDoNotRenderLinksNesting;
                     }
                 }
             } else {
