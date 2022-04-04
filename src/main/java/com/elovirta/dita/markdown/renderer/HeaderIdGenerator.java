@@ -2,16 +2,16 @@ package com.elovirta.dita.markdown.renderer;
 
 import com.elovirta.dita.markdown.DitaRenderer;
 import com.vladsch.flexmark.ast.AnchorRefTarget;
+import com.vladsch.flexmark.ast.util.AnchorRefTargetBlockVisitor;
 import com.vladsch.flexmark.util.ast.Document;
 import com.vladsch.flexmark.util.ast.Node;
-import com.vladsch.flexmark.ast.util.AnchorRefTargetBlockVisitor;
 
 import java.util.HashMap;
 
 public class HeaderIdGenerator implements DitaIdGenerator {
     @Override
     public void generateIds(Document document) {
-        final HashMap<String, Integer> headerBaseIds = new HashMap<String, Integer>();
+        final HashMap<String, Integer> headerBaseIds = new HashMap<>();
         final boolean resolveDupes = DitaRenderer.HEADER_ID_GENERATOR_RESOLVE_DUPES.getFrom(document);
         final String toDashChars = DitaRenderer.HEADER_ID_GENERATOR_TO_DASH_CHARS.getFrom(document);
         final boolean noDupedDashes = DitaRenderer.HEADER_ID_GENERATOR_NO_DUPED_DASHES.getFrom(document);
@@ -60,18 +60,18 @@ public class HeaderIdGenerator implements DitaIdGenerator {
             else if (toDashChars.indexOf(c) != -1 && (!noDupedDashes
                     || ((c == '-' && baseRefId.length() == 0)
                     || baseRefId.length() != 0 && baseRefId.charAt(baseRefId.length() - 1) != '-'))
-                    ) baseRefId.append('-');
+            ) baseRefId.append('-');
         }
         return baseRefId.toString();
     }
 
     public static boolean isAlphabetic(final char c) {
         return (((((1 << Character.UPPERCASE_LETTER) |
-            (1 << Character.LOWERCASE_LETTER) |
-            (1 << Character.TITLECASE_LETTER) |
-            (1 << Character.MODIFIER_LETTER) |
-            (1 << Character.OTHER_LETTER) |
-            (1 << Character.LETTER_NUMBER)) >> Character.getType((int) c)) & 1) != 0);
+                (1 << Character.LOWERCASE_LETTER) |
+                (1 << Character.TITLECASE_LETTER) |
+                (1 << Character.MODIFIER_LETTER) |
+                (1 << Character.OTHER_LETTER) |
+                (1 << Character.LETTER_NUMBER)) >> Character.getType((int) c)) & 1) != 0);
     }
 
     public static class Factory implements HeaderIdGeneratorFactory {

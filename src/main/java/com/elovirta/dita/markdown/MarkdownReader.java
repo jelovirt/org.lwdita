@@ -7,13 +7,10 @@ import com.vladsch.flexmark.ext.anchorlink.AnchorLinkExtension;
 import com.vladsch.flexmark.ext.autolink.AutolinkExtension;
 import com.vladsch.flexmark.ext.definition.DefinitionExtension;
 import com.vladsch.flexmark.ext.footnotes.FootnoteExtension;
-import com.vladsch.flexmark.ext.gfm.strikethrough.StrikethroughExtension;
 import com.vladsch.flexmark.ext.gfm.strikethrough.StrikethroughSubscriptExtension;
 import com.vladsch.flexmark.ext.ins.InsExtension;
 import com.vladsch.flexmark.ext.jekyll.tag.JekyllTagExtension;
 import com.vladsch.flexmark.ext.tables.TablesExtension;
-import com.vladsch.flexmark.ext.typographic.TypographicExtension;
-import com.vladsch.flexmark.ext.yaml.front.matter.AbstractYamlFrontMatterVisitor;
 import com.vladsch.flexmark.ext.yaml.front.matter.YamlFrontMatterExtension;
 import com.vladsch.flexmark.parser.Parser;
 import com.vladsch.flexmark.superscript.SuperscriptExtension;
@@ -35,11 +32,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.CharBuffer;
-import java.util.List;
-import java.util.Map;
 
 import static java.util.Arrays.asList;
-import static org.apache.commons.io.IOUtils.closeQuietly;
 import static org.apache.commons.io.IOUtils.copy;
 
 /**
@@ -64,20 +58,11 @@ public class MarkdownReader implements XMLReader {
                         .set(Parser.EXTENSIONS, asList(
                                 AbbreviationExtension.create(),
                                 AnchorLinkExtension.create(),
-//                        AsideExtension.create(),
                                 FootnoteExtension.create(),
-                                //                GfmIssuesExtension.create(),
-                                //                GfmUsersExtension.create(),
-                                //                TaskListExtension.create(),
                                 InsExtension.create(),
                                 JekyllTagExtension.create(),
-                                //                JiraConverterExtension.create(),
-                                //                StrikethroughSubscriptExtension.create(),
                                 SuperscriptExtension.create(),
-                                //                SubscriptExtension.create(),
                                 TablesExtension.create(),
-//                        TypographicExtension.create(),
-                                //                WikiLinkExtension.create(),
                                 AutolinkExtension.create(),
                                 YamlFrontMatterExtension.create(),
                                 DefinitionExtension.create(),
@@ -88,7 +73,6 @@ public class MarkdownReader implements XMLReader {
                         .set(TablesExtension.DISCARD_EXTRA_COLUMNS, true)
                         .set(TablesExtension.HEADER_SEPARATOR_COLUMN_MATCH, true)
         );
-//        options.set(HtmlRenderer.SOFT_BREAK, "<br />\n");
         try (InputStream style = getClass().getResourceAsStream("/specialize.xsl")) {
             tf = (SAXTransformerFactory) TransformerFactory.newInstance();
             tf.setURIResolver(new ClasspathURIResolver(tf.getURIResolver()));
@@ -96,7 +80,6 @@ public class MarkdownReader implements XMLReader {
         } catch (final IOException | TransformerConfigurationException e) {
             throw new RuntimeException(e);
         }
-
     }
 
     public MarkdownReader(final MutableDataSet options) {
@@ -167,25 +150,15 @@ public class MarkdownReader implements XMLReader {
     @Override
     public void parse(final InputSource input) throws IOException, SAXException {
         char[] markdownContent = getMarkdownContent(input);
-//        final Map<String, Object> metadata = parserYaml(markdownContent);
-//        if (metadata != null) {
-//            markdownContent = consumeYaml(markdownContent);
-//        }
         final BasedSequence sequence = BasedSequenceImpl.of(CharBuffer.wrap(markdownContent));
 
         final Document root;
         try {
             root = p.parse(sequence);
-
-            final AbstractYamlFrontMatterVisitor v = new AbstractYamlFrontMatterVisitor();
-            v.visit(root);
-            final Map<String, List<String>> metadata = v.getData();
-
-            parseAST(root, metadata);
+            parseAST(root);
         } catch (ParseException e) {
             throw new SAXException("Failed to parse Markdown: " + e.getMessage(), e);
         }
-
     }
 
     @Override
@@ -198,19 +171,15 @@ public class MarkdownReader implements XMLReader {
         final CharArrayWriter out = new CharArrayWriter();
         if (input.getByteStream() != null) {
             final String encoding = input.getEncoding() != null ? input.getEncoding() : "UTF-8";
-            try (InputStream is = "UTF-8".equalsIgnoreCase(encoding)
+            try (InputStream is = "UTF-8" .equalsIgnoreCase(encoding)
                     ? consumeBOM(input.getByteStream())
                     : input.getByteStream();
                  Reader in = new InputStreamReader(is, encoding)) {
                 copy(in, out);
             }
         } else if (input.getCharacterStream() != null) {
-            final Reader in = input.getCharacterStream();
-            try {
+            try (Reader in = input.getCharacterStream()) {
                 copy(in, out);
-            } finally {
-                closeQuietly(in);
-                //closeQuietly(out);
             }
         } else if (input.getSystemId() != null) {
             final URL inUrl;
@@ -220,7 +189,7 @@ public class MarkdownReader implements XMLReader {
                 throw new IllegalArgumentException(e);
             }
             final String encoding = input.getEncoding() != null ? input.getEncoding() : "UTF-8";
-            try (InputStream is = "UTF-8".equalsIgnoreCase(encoding)
+            try (InputStream is = "UTF-8" .equalsIgnoreCase(encoding)
                     ? consumeBOM(inUrl.openStream())
                     : inUrl.openStream();
                  Reader in = new InputStreamReader(is, encoding)) {
@@ -249,7 +218,7 @@ public class MarkdownReader implements XMLReader {
         return bin;
     }
 
-    private void parseAST(final Document root, final Map<String, List<String>> metadata) throws SAXException {
+    private void parseAST(final Document root) throws SAXException {
         ContentHandler res = contentHandler;
         if (t != null) {
             final TransformerHandler h;
@@ -262,7 +231,7 @@ public class MarkdownReader implements XMLReader {
             res = h;
         }
         final Builder builder = new Builder(options);
-        final DitaRenderer s = new DitaRenderer(builder, metadata);
+        final DitaRenderer s = new DitaRenderer(builder);
         s.render(root, res);
     }
 

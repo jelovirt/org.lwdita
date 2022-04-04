@@ -23,7 +23,7 @@ public class Metadata {
                 classes.add(t.substring(1));
             }
         }
-        final String id = fragment != null ? fragment : null;
+        final String id = fragment;
         return new Metadata(id, classes);
     }
 }

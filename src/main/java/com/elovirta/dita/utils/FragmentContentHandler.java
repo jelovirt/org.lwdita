@@ -5,13 +5,6 @@ import org.xml.sax.helpers.XMLFilterImpl;
 
 public class FragmentContentHandler extends XMLFilterImpl {
 
-//    /**
-//     * Construct an XML filter with the specified parent.
-//     */
-//    public FragmentContentHandler(XMLReader parent) {
-//        super(parent);
-//    }
-
     /**
      * Ignore start document event
      */

@@ -17,7 +17,7 @@ class Title {
     Title(final Heading node) {
         final String contents = node.getText().toString();
         classes = new ArrayList<>();
-        final Pattern p = Pattern.compile("^(.+?)(?:\\{(.*?)\\})?$");
+        final Pattern p = Pattern.compile("^(.+?)(?:\\{(.*?)})?$");
         final Matcher m = p.matcher(contents);
         if (m.matches()) {
             title = m.group(1);

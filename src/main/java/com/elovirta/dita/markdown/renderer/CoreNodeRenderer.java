@@ -481,13 +481,13 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
     private void render(final Image node, final NodeRendererContext context, final DitaWriter html) {
         writeImage(node, node.getTitle().toString(), null, node.getUrl().toString(), null, context, html);
     }
-    
+
     private void render(final Superscript node, final NodeRendererContext context, final DitaWriter html) {
-      printTag(node, context, html, HI_D_SUP, SUP_ATTS);
+        printTag(node, context, html, HI_D_SUP, SUP_ATTS);
     }
-    
+
     private void render(final Subscript node, final NodeRendererContext context, final DitaWriter html) {
-      printTag(node, context, html, HI_D_SUB, SUB_ATTS);
+        printTag(node, context, html, HI_D_SUB, SUB_ATTS);
     }
 
     private void writeImage(Image node, final String title, final String alt, final String url, final String key, final NodeRendererContext context, DitaWriter html) {
@@ -1574,35 +1574,4 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
             html.characters(string);
         }
     }
-
-//    private class MetadataNode extends Node {
-//        final String title;
-//
-//        MetadataNode(final String title) {
-//            this.title = title;
-//        }
-//
-//        @Override
-//        public void accept(final Visitor visitor) {
-//            visitor.visit(this);
-//        }
-//
-//        @Override
-//        public List<Node> getChildren() {
-//            return Collections.emptyList();
-//        }
-//
-//        @Override
-//        public BasedSequence[] getSegments() {
-//            return new BasedSequence[0];
-//        }
-//    }
-
-    public static class Factory implements NodeRendererFactory {
-        @Override
-        public NodeRenderer apply(final DataHolder options) {
-            return new CoreNodeRenderer(options);
-        }
-    }
-
 }
