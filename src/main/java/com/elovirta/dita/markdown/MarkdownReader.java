@@ -230,8 +230,7 @@ public class MarkdownReader implements XMLReader {
             h.setResult(new SAXResult(res));
             res = h;
         }
-        final Builder builder = new Builder(options);
-        final DitaRenderer s = new DitaRenderer(builder);
+        final DitaRenderer s = new DitaRenderer(options);
         s.render(root, res);
     }
 

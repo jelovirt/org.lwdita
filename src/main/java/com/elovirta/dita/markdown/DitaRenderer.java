@@ -6,10 +6,7 @@ package com.elovirta.dita.markdown;
 import com.elovirta.dita.markdown.renderer.*;
 import com.vladsch.flexmark.util.ast.Document;
 import com.vladsch.flexmark.util.ast.Node;
-import com.vladsch.flexmark.util.data.DataHolder;
-import com.vladsch.flexmark.util.data.DataKey;
-import com.vladsch.flexmark.util.data.DataSet;
-import com.vladsch.flexmark.util.data.ScopedDataSet;
+import com.vladsch.flexmark.util.data.*;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 
@@ -68,7 +65,7 @@ public class DitaRenderer {
     private final DitaRendererOptions ditaOptions;
     private final DataHolder options;
 
-    DitaRenderer(Builder builder) {
+    DitaRenderer(MutableDataSet builder) {
         this.options = new DataSet(builder);
         this.ditaOptions = new DitaRendererOptions(this.options);
     }
