@@ -65,14 +65,12 @@ public class DitaRenderer {
     public static final DataKey<Integer> FORMAT_FLAGS = new DataKey<>("FORMAT_FLAGS", 0);
     public static final DataKey<Integer> MAX_TRAILING_BLANK_LINES = new DataKey<>("MAX_TRAILING_BLANK_LINES", 1);
 
-    private final HeaderIdGeneratorFactory ditaIdGeneratorFactory;
     private final DitaRendererOptions ditaOptions;
     private final DataHolder options;
 
     DitaRenderer(Builder builder) {
         this.options = new DataSet(builder);
         this.ditaOptions = new DitaRendererOptions(this.options);
-        this.ditaIdGeneratorFactory = builder.ditaIdGeneratorFactory;
     }
 
     public void render(Node node, ContentHandler out) {
@@ -96,11 +94,7 @@ public class DitaRenderer {
             this.document = document;
             this.renderers = new HashMap<>(32);
             this.doNotRenderLinksNesting = ditaOptions.doNotRenderLinksInDocument ? 0 : 1;
-            this.ditaIdGenerator = ditaIdGeneratorFactory != null
-                    ? ditaIdGeneratorFactory.create(this)
-                    : (!(ditaOptions.renderHeaderId || ditaOptions.generateHeaderIds)
-                    ? DitaIdGenerator.NULL
-                    : new HeaderIdGenerator.Factory().create(this));
+            this.ditaIdGenerator = new HeaderIdGenerator.Factory().create(this);
 
             ditaWriter.setContext(this);
 
