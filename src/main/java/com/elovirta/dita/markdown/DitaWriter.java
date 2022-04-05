@@ -1,6 +1,5 @@
 package com.elovirta.dita.markdown;
 
-import com.elovirta.dita.markdown.renderer.AttributablePart;
 import com.elovirta.dita.markdown.renderer.NodeRendererContext;
 import org.dita.dost.util.DitaClass;
 import org.xml.sax.ContentHandler;
@@ -13,7 +12,6 @@ import static javax.xml.XMLConstants.NULL_NS_URI;
 
 public class DitaWriter {
     private NodeRendererContext context;
-    private AttributablePart useAttributes;
 
     public DitaWriter(ContentHandler out) {
         this.contentHandler = out;

@@ -140,7 +140,7 @@ public class DitaRenderer {
             }
         }
 
-        void renderNode(Node node, NodeRendererSubContext subContext) {
+        private void renderNode(Node node, NodeRendererSubContext subContext) {
             if (node instanceof Document) {
                 // here we render multiple phases
                 int oldDoNotRenderLinksNesting = subContext.getDoNotRenderLinksNesting();
@@ -182,16 +182,12 @@ public class DitaRenderer {
             }
         }
 
+        @Override
         public void renderChildren(Node parent) {
-            renderChildrenNode(parent, this);
-        }
-
-        @SuppressWarnings("WeakerAccess")
-        protected void renderChildrenNode(Node parent, NodeRendererSubContext subContext) {
             Node node = parent.getFirstChild();
             while (node != null) {
                 Node next = node.getNext();
-                renderNode(node, subContext);
+                renderNode(node, this);
                 node = next;
             }
         }
