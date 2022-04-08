@@ -64,7 +64,7 @@ import static org.dita.dost.util.Constants.*;
 import static org.dita.dost.util.URLUtils.toURI;
 import static org.dita.dost.util.XMLUtils.AttributesBuilder;
 
-public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
+public class CoreNodeRenderer implements NodeRenderer {
 
     private static final String COLUMN_NAME_COL = "col";
 
