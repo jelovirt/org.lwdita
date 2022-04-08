@@ -8,7 +8,7 @@ import com.vladsch.flexmark.util.data.DataHolder;
 /**
  * The context for node rendering, including configuration and functionality for the node renderer to use.
  */
-public interface NodeRendererContext extends LinkResolverContext {
+public interface NodeRendererContext {
 
     /**
      * Render the specified node and its children using the configured renderers. This should be used to render child
@@ -26,7 +26,7 @@ public interface NodeRendererContext extends LinkResolverContext {
     void renderChildren(Node parent);
 
     /**
-     * Get the current rendering context {@link DataHolder}. These are the options passed or set on the {@link DitaRenderer#builder()} or passed to {@link DitaRenderer#builder(DataHolder)}.
+     * Get the current rendering context {@link DataHolder}.
      * To get the document options you should use {@link #getDocument()} as the data holder.
      *
      * @return the current renderer options {@link DataHolder}
