@@ -5,5 +5,5 @@ import com.vladsch.flexmark.util.ast.Node;
 import com.vladsch.flexmark.util.ast.NodeAdaptingVisitor;
 
 public interface CustomNodeRenderer<N extends Node> extends NodeAdaptingVisitor<N> {
-    void render(N node, NodeRendererContext context, DitaWriter html);
+    void render(N node, NodeRendererContext context, SaxWriter html);
 }

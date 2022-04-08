@@ -10,10 +10,13 @@ import java.util.Deque;
 
 import static javax.xml.XMLConstants.NULL_NS_URI;
 
-public class DitaWriter {
+/**
+ * Write to SAX ContentHandler.
+ */
+public class SaxWriter {
     private NodeRendererContext context;
 
-    public DitaWriter(ContentHandler out) {
+    public SaxWriter(ContentHandler out) {
         this.contentHandler = out;
     }
 
@@ -27,10 +30,6 @@ public class DitaWriter {
 
     public final Deque<String> tagStack = new ArrayDeque<>();
     public ContentHandler contentHandler;
-
-    public void setContentHandler(final ContentHandler contentHandler) {
-        this.contentHandler = contentHandler;
-    }
 
     // ContentHandler methods
 

@@ -35,7 +35,7 @@ public class MetadataSerializerImpl {
                 .build();
     }
 
-    public void render(final YamlFrontMatterBlock node, final NodeRendererContext context, final DitaWriter html) {
+    public void render(final YamlFrontMatterBlock node, final NodeRendererContext context, final SaxWriter html) {
         final AbstractYamlFrontMatterVisitor v = new AbstractYamlFrontMatterVisitor();
         v.visit(node);
         final Map<String, List<String>> header = v.getData();
@@ -74,7 +74,7 @@ public class MetadataSerializerImpl {
         }
     }
 
-    private void write(final Map<String, List<String>> header, final DitaClass elem, DitaWriter html) {
+    private void write(final Map<String, List<String>> header, final DitaClass elem, SaxWriter html) {
         if (header.containsKey(elem.localName)) {
             for (String v : header.get(elem.localName)) {
                 html.startElement(elem, buildAtts(elem));
@@ -86,7 +86,7 @@ public class MetadataSerializerImpl {
         }
     }
 
-    private void write(final Map<String, List<String>> header, final DitaClass elem, final String attr, DitaWriter html) {
+    private void write(final Map<String, List<String>> header, final DitaClass elem, final String attr, SaxWriter html) {
         if (header.containsKey(elem.localName)) {
             for (String v : header.get(elem.localName)) {
                 html.startElement(elem, new XMLUtils.AttributesBuilder()

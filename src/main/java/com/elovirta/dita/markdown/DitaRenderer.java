@@ -10,7 +10,6 @@ import com.vladsch.flexmark.util.data.*;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import static org.dita.dost.util.Constants.ATTRIBUTE_PREFIX_DITAARCHVERSION;
@@ -71,9 +70,9 @@ public class DitaRenderer {
     }
 
     public void render(Node node, ContentHandler out) {
-        final DitaWriter ditaWriter = new DitaWriter(out);
+        final SaxWriter saxWriter = new SaxWriter(out);
         MainNodeRenderer renderer = new MainNodeRenderer(options,
-                ditaWriter,
+                saxWriter,
                 node.getDocument());
         renderer.render(node);
     }
@@ -83,13 +82,13 @@ public class DitaRenderer {
         private final Map<Class<? extends Node>, NodeRenderingHandler<? extends Node>> renderers;
         private final DataHolder options;
         private final DitaIdGenerator ditaIdGenerator;
-        private final DitaWriter ditaWriter;
+        private final SaxWriter saxWriter;
         private Node renderingNode;
         private NodeRenderingHandler renderingHandler;
         private int doNotRenderLinksNesting;
 
-        MainNodeRenderer(DataHolder options, DitaWriter ditaWriter, Document document) {
-            this.ditaWriter = ditaWriter;
+        MainNodeRenderer(DataHolder options, SaxWriter saxWriter, Document document) {
+            this.saxWriter = saxWriter;
             this.renderingNode = null;
             this.doNotRenderLinksNesting = 0;
             this.options = new ScopedDataSet(options, document);
@@ -98,7 +97,7 @@ public class DitaRenderer {
             this.doNotRenderLinksNesting = ditaOptions.doNotRenderLinksInDocument ? 0 : 1;
             this.ditaIdGenerator = new HeaderIdGenerator();
 
-            ditaWriter.setContext(this);
+            saxWriter.setContext(this);
         }
 
         @Override
@@ -119,12 +118,12 @@ public class DitaRenderer {
         @Override
         public void render(Node node) {
             try {
-                ditaWriter.contentHandler.startDocument();
-                ditaWriter.contentHandler.startPrefixMapping(ATTRIBUTE_PREFIX_DITAARCHVERSION, DITA_NAMESPACE);
+                saxWriter.contentHandler.startDocument();
+                saxWriter.contentHandler.startPrefixMapping(ATTRIBUTE_PREFIX_DITAARCHVERSION, DITA_NAMESPACE);
                 renderNode(node, this);
-                ditaWriter.close();
-                ditaWriter.contentHandler.endPrefixMapping(ATTRIBUTE_PREFIX_DITAARCHVERSION);
-                ditaWriter.contentHandler.endDocument();
+                saxWriter.close();
+                saxWriter.contentHandler.endPrefixMapping(ATTRIBUTE_PREFIX_DITAARCHVERSION);
+                saxWriter.contentHandler.endDocument();
             } catch (SAXException e) {
                 throw new RuntimeException(e);
             }
@@ -144,7 +143,7 @@ public class DitaRenderer {
                     try {
                         subContext.renderingNode = node;
                         subContext.renderingHandler = nodeRenderer;
-                        nodeRenderer.render(node, subContext, subContext.ditaWriter);
+                        nodeRenderer.render(node, subContext, subContext.saxWriter);
                     } finally {
                         subContext.renderingHandler = prevWrapper;
                         subContext.renderingNode = null;
@@ -160,7 +159,7 @@ public class DitaRenderer {
                     try {
                         subContext.renderingNode = node;
                         subContext.renderingHandler = nodeRenderer;
-                        nodeRenderer.render(node, subContext, subContext.ditaWriter);
+                        nodeRenderer.render(node, subContext, subContext.saxWriter);
                     } finally {
                         subContext.renderingNode = oldNode;
                         subContext.doNotRenderLinksNesting = oldDoNotRenderLinksNesting;
