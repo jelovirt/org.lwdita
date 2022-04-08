@@ -80,7 +80,7 @@ public class DitaRenderer {
 
     private class MainNodeRenderer implements NodeRendererContext {
         private final Document document;
-        private final Map<Class<?>, NodeRenderingHandler> renderers;
+        private final Map<Class<? extends Node>, NodeRenderingHandler<? extends Node>> renderers;
         private final DataHolder options;
         private final DitaIdGenerator ditaIdGenerator;
         private final DitaWriter ditaWriter;
@@ -94,16 +94,11 @@ public class DitaRenderer {
             this.doNotRenderLinksNesting = 0;
             this.options = new ScopedDataSet(options, document);
             this.document = document;
-            this.renderers = new HashMap<>(32);
+            this.renderers = new CoreNodeRenderer(this.getOptions()).getNodeRenderingHandlers();
             this.doNotRenderLinksNesting = ditaOptions.doNotRenderLinksInDocument ? 0 : 1;
             this.ditaIdGenerator = new HeaderIdGenerator();
 
             ditaWriter.setContext(this);
-
-            CoreNodeRenderer nodeRenderer = new CoreNodeRenderer(this.getOptions());
-            for (NodeRenderingHandler nodeType : nodeRenderer.getNodeRenderingHandlers()) {
-                renderers.put(nodeType.getNodeType(), nodeType);
-            }
         }
 
         @Override
