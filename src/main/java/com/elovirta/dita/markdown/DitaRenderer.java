@@ -80,12 +80,12 @@ public class DitaRenderer {
 
     private class MainNodeRenderer implements NodeRendererContext {
         private final Document document;
-        private final Map<Class<?>, NodeRenderingHandlerWrapper> renderers;
+        private final Map<Class<?>, NodeRenderingHandler> renderers;
         private final DataHolder options;
         private final DitaIdGenerator ditaIdGenerator;
         private final DitaWriter ditaWriter;
         private Node renderingNode;
-        private NodeRenderingHandlerWrapper renderingHandlerWrapper;
+        private NodeRenderingHandler renderingHandler;
         private int doNotRenderLinksNesting;
 
         MainNodeRenderer(DataHolder options, DitaWriter ditaWriter, Document document) {
@@ -102,8 +102,7 @@ public class DitaRenderer {
 
             CoreNodeRenderer nodeRenderer = new CoreNodeRenderer(this.getOptions());
             for (NodeRenderingHandler nodeType : nodeRenderer.getNodeRenderingHandlers()) {
-                NodeRenderingHandlerWrapper handlerWrapper = new NodeRenderingHandlerWrapper(nodeType, renderers.get(nodeType.getNodeType()));
-                renderers.put(nodeType.getNodeType(), handlerWrapper);
+                renderers.put(nodeType.getNodeType(), nodeType);
             }
         }
 
@@ -143,34 +142,34 @@ public class DitaRenderer {
                 int documentDoNotRenderLinksNesting = getDitaOptions().doNotRenderLinksInDocument ? 1 : 0;
                 this.ditaIdGenerator.generateIds(document);
 
-                NodeRenderingHandlerWrapper nodeRenderer = renderers.get(node.getClass());
+                NodeRenderingHandler nodeRenderer = renderers.get(node.getClass());
                 if (nodeRenderer != null) {
                     subContext.doNotRenderLinksNesting = documentDoNotRenderLinksNesting;
-                    NodeRenderingHandlerWrapper prevWrapper = subContext.renderingHandlerWrapper;
+                    NodeRenderingHandler prevWrapper = subContext.renderingHandler;
                     try {
                         subContext.renderingNode = node;
-                        subContext.renderingHandlerWrapper = nodeRenderer;
-                        nodeRenderer.myRenderingHandler.render(node, subContext, subContext.ditaWriter);
+                        subContext.renderingHandler = nodeRenderer;
+                        nodeRenderer.render(node, subContext, subContext.ditaWriter);
                     } finally {
-                        subContext.renderingHandlerWrapper = prevWrapper;
+                        subContext.renderingHandler = prevWrapper;
                         subContext.renderingNode = null;
                         subContext.doNotRenderLinksNesting = oldDoNotRenderLinksNesting;
                     }
                 }
             } else {
-                NodeRenderingHandlerWrapper nodeRenderer = renderers.get(node.getClass());
+                NodeRenderingHandler nodeRenderer = renderers.get(node.getClass());
                 if (nodeRenderer != null) {
                     Node oldNode = this.renderingNode;
                     int oldDoNotRenderLinksNesting = subContext.doNotRenderLinksNesting;
-                    NodeRenderingHandlerWrapper prevWrapper = subContext.renderingHandlerWrapper;
+                    NodeRenderingHandler prevWrapper = subContext.renderingHandler;
                     try {
                         subContext.renderingNode = node;
-                        subContext.renderingHandlerWrapper = nodeRenderer;
-                        nodeRenderer.myRenderingHandler.render(node, subContext, subContext.ditaWriter);
+                        subContext.renderingHandler = nodeRenderer;
+                        nodeRenderer.render(node, subContext, subContext.ditaWriter);
                     } finally {
                         subContext.renderingNode = oldNode;
                         subContext.doNotRenderLinksNesting = oldDoNotRenderLinksNesting;
-                        subContext.renderingHandlerWrapper = prevWrapper;
+                        subContext.renderingHandler = prevWrapper;
                     }
                 } else {
                     throw new RuntimeException("No renderer configured for " + node.getClass().getName());
