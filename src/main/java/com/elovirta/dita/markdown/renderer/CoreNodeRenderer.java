@@ -64,7 +64,10 @@ import static org.dita.dost.util.Constants.*;
 import static org.dita.dost.util.URLUtils.toURI;
 import static org.dita.dost.util.XMLUtils.AttributesBuilder;
 
-public class CoreNodeRenderer implements NodeRenderer {
+/**
+ * A renderer for a set of node types.
+ */
+public class CoreNodeRenderer {
 
     private static final String COLUMN_NAME_COL = "col";
 
@@ -157,7 +160,9 @@ public class CoreNodeRenderer implements NodeRenderer {
         }
     }
 
-    @Override
+    /**
+     * @return the mapping of nodes this renderer handles to rendering function
+     */
     public Set<NodeRenderingHandler<?>> getNodeRenderingHandlers() {
         return new HashSet<>(Arrays.asList(
                 new NodeRenderingHandler<>(YamlFrontMatterBlock.class, (node, context, html) -> render(node, context, html)),

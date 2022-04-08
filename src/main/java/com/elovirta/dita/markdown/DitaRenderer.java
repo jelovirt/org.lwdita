@@ -100,7 +100,7 @@ public class DitaRenderer {
 
             ditaWriter.setContext(this);
 
-            NodeRenderer nodeRenderer = new CoreNodeRenderer(this.getOptions());
+            CoreNodeRenderer nodeRenderer = new CoreNodeRenderer(this.getOptions());
             for (NodeRenderingHandler nodeType : nodeRenderer.getNodeRenderingHandlers()) {
                 NodeRenderingHandlerWrapper handlerWrapper = new NodeRenderingHandlerWrapper(nodeType, renderers.get(nodeType.getNodeType()));
                 renderers.put(nodeType.getNodeType(), handlerWrapper);
