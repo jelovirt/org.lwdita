@@ -8,10 +8,10 @@
   <xsl:import href="ast2markdown.xsl"/>
 
   <!-- Copies from DITA-OT to allow tests to run independently -->
-  <xsl:import href="plugin:org.dita.base:xsl/common/output-message.xsl"/>
-  <xsl:import href="plugin:org.dita.base:xsl/common/dita-utilities.xsl"/>
-  <xsl:import href="plugin:org.dita.base:xsl/common/related-links.xsl"/>
-  <xsl:import href="plugin:org.dita.base:xsl/common/dita-textonly.xsl"/>
+<!--  <xsl:import href="plugin:org.dita.base:xsl/common/output-message.xsl"/>-->
+<!--  <xsl:import href="plugin:org.dita.base:xsl/common/dita-utilities.xsl"/>-->
+<!--  <xsl:import href="plugin:org.dita.base:xsl/common/related-links.xsl"/>-->
+<!--  <xsl:import href="plugin:org.dita.base:xsl/common/dita-textonly.xsl"/>-->
 
   <xsl:import href="dita2markdownImpl.xsl"/>
   <!--xsl:import href="conceptdisplay.xsl"/>
