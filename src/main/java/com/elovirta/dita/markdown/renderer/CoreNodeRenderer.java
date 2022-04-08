@@ -56,6 +56,8 @@ import java.net.URI;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 import static com.elovirta.dita.markdown.MetadataSerializerImpl.buildAtts;
@@ -64,7 +66,10 @@ import static org.dita.dost.util.Constants.*;
 import static org.dita.dost.util.URLUtils.toURI;
 import static org.dita.dost.util.XMLUtils.AttributesBuilder;
 
-public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
+/**
+ * A renderer for a set of node types.
+ */
+public class CoreNodeRenderer {
 
     private static final String COLUMN_NAME_COL = "col";
 
@@ -146,18 +151,7 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
         this.shortdescParagraph = DitaRenderer.SHORTDESC_PARAGRAPH.getFrom(options);
         this.idFromYaml = DitaRenderer.ID_FROM_YAML.getFrom(options);
         this.lwDita = DitaRenderer.LW_DITA.getFrom(options);
-//        this.referenceRepository = options.get(Parser.REFERENCES);
-//        this.listOptions = ListOptions.getFrom(options);
-//        this.recheckUndefinedReferences = HtmlRenderer.RECHECK_UNDEFINED_REFERENCES.getFrom(options);
-//        this.obfuscateEmail = HtmlRenderer.OBFUSCATE_EMAIL.getFrom(options);
-//        this.obfuscateEmailRandom = HtmlRenderer.OBFUSCATE_EMAIL_RANDOM.getFrom(options);
-//        this.codeContentBlock = Parser.FENCED_CODE_CONTENT_BLOCK.getFrom(options);
-//        codeSoftLineBreaks = Parser.CODE_SOFT_LINE_BREAKS.getFrom(options);
-//        myLines = null;
-//        myEOLs = null;
-//        myNextLine = 0;
-//        nextLineStartOffset = 0;
-        metadataSerializer = new MetadataSerializerImpl(idFromYaml);
+        this.metadataSerializer = new MetadataSerializerImpl(idFromYaml);
 
         try (InputStream in = getClass().getResourceAsStream("/hdita2dita-markdown.xsl")) {
             tf = (SAXTransformerFactory) TransformerFactory.newInstance();
@@ -168,69 +162,68 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
         }
     }
 
-//    CoreNodeRenderer(final ContentHandler contentHandler, final Map<String, Object> documentMetadata) {
-////        this.documentMetadata = documentMetadata;
-//        setContentHandler(contentHandler);
-//        metadataSerializer = new MetadataSerializerImpl();
-//
-//    }
-
-    @Override
-    public Set<NodeRenderingHandler<?>> getNodeRenderingHandlers() {
-        return new HashSet<>(Arrays.asList(
-                new NodeRenderingHandler<YamlFrontMatterBlock>(YamlFrontMatterBlock.class, (node, context, html) -> render(node, context, html)),
-                new NodeRenderingHandler<Footnote>(Footnote.class, (node, context, html) -> render(node, context, html)),
-                new NodeRenderingHandler<FootnoteBlock>(FootnoteBlock.class, (node, context, html) -> render(node, context, html)),
-                new NodeRenderingHandler<AutoLink>(AutoLink.class, (node, context, html) -> render(node, context, html)),
-                new NodeRenderingHandler<BlockQuote>(BlockQuote.class, (node, context, html) -> render(node, context, html)),
-                new NodeRenderingHandler<BulletList>(BulletList.class, (node, context, html) -> render(node, context, html)),
-                new NodeRenderingHandler<Code>(Code.class, (node, context, html) -> render(node, context, html)),
-                new NodeRenderingHandler<CodeBlock>(CodeBlock.class, (node, context, html) -> render(node, context, html)),
-                new NodeRenderingHandler<DefinitionList>(DefinitionList.class, (node, context, html) -> render(node, context, html)),
-                new NodeRenderingHandler<DefinitionTerm>(DefinitionTerm.class, (node, context, html) -> render(node, context, html)),
-                new NodeRenderingHandler<DefinitionItem>(DefinitionItem.class, (node, context, html) -> render(node, context, html)),
-                new NodeRenderingHandler<Document>(Document.class, (node, context, html) -> render(node, context, html)),
-                new NodeRenderingHandler<Emphasis>(Emphasis.class, (node, context, html) -> render(node, context, html)),
-                new NodeRenderingHandler<FencedCodeBlock>(FencedCodeBlock.class, (node, context, html) -> render(node, context, html)),
-                new NodeRenderingHandler<HardLineBreak>(HardLineBreak.class, (node, context, html) -> render(node, context, html)),
-                new NodeRenderingHandler<Heading>(Heading.class, (node, context, html) -> render(node, context, html)),
-                new NodeRenderingHandler<HtmlBlock>(HtmlBlock.class, (node, context, html) -> render(node, context, html)),
-                new NodeRenderingHandler<HtmlCommentBlock>(HtmlCommentBlock.class, (node, context, html) -> render(node, context, html)),
-                new NodeRenderingHandler<HtmlInnerBlock>(HtmlInnerBlock.class, (node, context, html) -> render(node, context, html)),
-                new NodeRenderingHandler<HtmlInnerBlockComment>(HtmlInnerBlockComment.class, (node, context, html) -> render(node, context, html)),
-                new NodeRenderingHandler<HtmlEntity>(HtmlEntity.class, (node, context, html) -> render(node, context, html)),
-                new NodeRenderingHandler<HtmlInline>(HtmlInline.class, (node, context, html) -> render(node, context, html)),
-                new NodeRenderingHandler<HtmlInlineComment>(HtmlInlineComment.class, (node, context, html) -> render(node, context, html)),
-                new NodeRenderingHandler<Image>(Image.class, (node, context, html) -> render(node, context, html)),
-                new NodeRenderingHandler<ImageRef>(ImageRef.class, (node, context, html) -> render(node, context, html)),
-                new NodeRenderingHandler<IndentedCodeBlock>(IndentedCodeBlock.class, (node, context, html) -> render(node, context, html)),
-                new NodeRenderingHandler<Link>(Link.class, (node, context, html) -> render(node, context, html)),
-                new NodeRenderingHandler<Strikethrough>(Strikethrough.class, (node, context, html) -> render(node, context, html)),
-                new NodeRenderingHandler<LinkRef>(LinkRef.class, (node, context, html) -> render(node, context, html)),
-                new NodeRenderingHandler<BulletListItem>(BulletListItem.class, (node, context, html) -> render(node, context, html)),
-                new NodeRenderingHandler<OrderedListItem>(OrderedListItem.class, (node, context, html) -> render(node, context, html)),
-                new NodeRenderingHandler<MailLink>(MailLink.class, (node, context, html) -> render(node, context, html)),
-                new NodeRenderingHandler<OrderedList>(OrderedList.class, (node, context, html) -> render(node, context, html)),
-                new NodeRenderingHandler<Paragraph>(Paragraph.class, (node, context, html) -> render(node, context, html)),
-                new NodeRenderingHandler<Reference>(Reference.class, (node, context, html) -> render(node, context, html)),
-                new NodeRenderingHandler<TableBlock>(TableBlock.class, (node, context, html) -> render(node, context, html)),
-                new NodeRenderingHandler<TableCaption>(TableCaption.class, (node, context, html) -> render(node, context, html)),
-                new NodeRenderingHandler<TableBody>(TableBody.class, (node, context, html) -> render(node, context, html)),
-                new NodeRenderingHandler<TableHead>(TableHead.class, (node, context, html) -> render(node, context, html)),
-                new NodeRenderingHandler<TableRow>(TableRow.class, (node, context, html) -> render(node, context, html)),
-                new NodeRenderingHandler<TableCell>(TableCell.class, (node, context, html) -> render(node, context, html)),
-                new NodeRenderingHandler<TableSeparator>(TableSeparator.class, (node, context, html) -> render(node, context, html)),
-                new NodeRenderingHandler<SoftLineBreak>(SoftLineBreak.class, (node, context, html) -> render(node, context, html)),
-                new NodeRenderingHandler<StrongEmphasis>(StrongEmphasis.class, (node, context, html) -> render(node, context, html)),
-                new NodeRenderingHandler<Text>(Text.class, (node, context, html) -> render(node, context, html)),
-                new NodeRenderingHandler<TextBase>(TextBase.class, (node, context, html) -> render(node, context, html)),
-                new NodeRenderingHandler<ThematicBreak>(ThematicBreak.class, (node, context, html) -> render(node, context, html)),
-                new NodeRenderingHandler<AnchorLink>(AnchorLink.class, (node, context, html) -> render(node, context, html)),
-                new NodeRenderingHandler<JekyllTagBlock>(JekyllTagBlock.class, (node, context, html) -> render(node, context, html)),
-                new NodeRenderingHandler<JekyllTag>(JekyllTag.class, (node, context, html) -> render(node, context, html)),
-                new NodeRenderingHandler<Superscript>(Superscript.class, (node, context, html) -> render(node, context, html)),
-                new NodeRenderingHandler<Subscript>(Subscript.class, (node, context, html) -> render(node, context, html))
-        ));
+    /**
+     * @return the mapping of nodes this renderer handles to rendering function
+     */
+    public Map<Class<? extends Node>, NodeRenderingHandler<? extends Node>> getNodeRenderingHandlers() {
+        return Stream.<NodeRenderingHandler>of(
+                        new NodeRenderingHandler<>(YamlFrontMatterBlock.class, (node, context, html) -> render(node, context, html)),
+                        new NodeRenderingHandler<>(Footnote.class, (node, context, html) -> render(node, context, html)),
+                        new NodeRenderingHandler<>(FootnoteBlock.class, (node, context, html) -> render(node, context, html)),
+                        new NodeRenderingHandler<>(AutoLink.class, (node, context, html) -> render(node, context, html)),
+                        new NodeRenderingHandler<>(BlockQuote.class, (node, context, html) -> render(node, context, html)),
+                        new NodeRenderingHandler<>(BulletList.class, (node, context, html) -> render(node, context, html)),
+                        new NodeRenderingHandler<>(Code.class, (node, context, html) -> render(node, context, html)),
+                        new NodeRenderingHandler<>(CodeBlock.class, (node, context, html) -> render(node, context, html)),
+                        new NodeRenderingHandler<>(DefinitionList.class, (node, context, html) -> render(node, context, html)),
+                        new NodeRenderingHandler<>(DefinitionTerm.class, (node, context, html) -> render(node, context, html)),
+                        new NodeRenderingHandler<>(DefinitionItem.class, (node, context, html) -> render(node, context, html)),
+                        new NodeRenderingHandler<>(Document.class, (node, context, html) -> render(node, context, html)),
+                        new NodeRenderingHandler<>(Emphasis.class, (node, context, html) -> render(node, context, html)),
+                        new NodeRenderingHandler<>(FencedCodeBlock.class, (node, context, html) -> render(node, context, html)),
+                        new NodeRenderingHandler<>(HardLineBreak.class, (node, context, html) -> render(node, context, html)),
+                        new NodeRenderingHandler<>(Heading.class, (node, context, html) -> render(node, context, html)),
+                        new NodeRenderingHandler<>(HtmlBlock.class, (node, context, html) -> render(node, context, html)),
+                        new NodeRenderingHandler<>(HtmlCommentBlock.class, (node, context, html) -> render(node, context, html)),
+                        new NodeRenderingHandler<>(HtmlInnerBlock.class, (node, context, html) -> render(node, context, html)),
+                        new NodeRenderingHandler<>(HtmlInnerBlockComment.class, (node, context, html) -> render(node, context, html)),
+                        new NodeRenderingHandler<>(HtmlEntity.class, (node, context, html) -> render(node, context, html)),
+                        new NodeRenderingHandler<>(HtmlInline.class, (node, context, html) -> render(node, context, html)),
+                        new NodeRenderingHandler<>(HtmlInlineComment.class, (node, context, html) -> render(node, context, html)),
+                        new NodeRenderingHandler<>(Image.class, (node, context, html) -> render(node, context, html)),
+                        new NodeRenderingHandler<>(ImageRef.class, (node, context, html) -> render(node, context, html)),
+                        new NodeRenderingHandler<>(IndentedCodeBlock.class, (node, context, html) -> render(node, context, html)),
+                        new NodeRenderingHandler<>(Link.class, (node, context, html) -> render(node, context, html)),
+                        new NodeRenderingHandler<>(Strikethrough.class, (node, context, html) -> render(node, context, html)),
+                        new NodeRenderingHandler<>(LinkRef.class, (node, context, html) -> render(node, context, html)),
+                        new NodeRenderingHandler<>(BulletListItem.class, (node, context, html) -> render(node, context, html)),
+                        new NodeRenderingHandler<>(OrderedListItem.class, (node, context, html) -> render(node, context, html)),
+                        new NodeRenderingHandler<>(MailLink.class, (node, context, html) -> render(node, context, html)),
+                        new NodeRenderingHandler<>(OrderedList.class, (node, context, html) -> render(node, context, html)),
+                        new NodeRenderingHandler<>(Paragraph.class, (node, context, html) -> render(node, context, html)),
+                        new NodeRenderingHandler<>(Reference.class, (node, context, html) -> render(node, context, html)),
+                        new NodeRenderingHandler<>(TableBlock.class, (node, context, html) -> render(node, context, html)),
+                        new NodeRenderingHandler<>(TableCaption.class, (node, context, html) -> render(node, context, html)),
+                        new NodeRenderingHandler<>(TableBody.class, (node, context, html) -> render(node, context, html)),
+                        new NodeRenderingHandler<>(TableHead.class, (node, context, html) -> render(node, context, html)),
+                        new NodeRenderingHandler<>(TableRow.class, (node, context, html) -> render(node, context, html)),
+                        new NodeRenderingHandler<>(TableCell.class, (node, context, html) -> render(node, context, html)),
+                        new NodeRenderingHandler<>(TableSeparator.class, (node, context, html) -> render(node, context, html)),
+                        new NodeRenderingHandler<>(SoftLineBreak.class, (node, context, html) -> render(node, context, html)),
+                        new NodeRenderingHandler<>(StrongEmphasis.class, (node, context, html) -> render(node, context, html)),
+                        new NodeRenderingHandler<>(Text.class, (node, context, html) -> render(node, context, html)),
+                        new NodeRenderingHandler<>(TextBase.class, (node, context, html) -> render(node, context, html)),
+                        new NodeRenderingHandler<>(ThematicBreak.class, (node, context, html) -> render(node, context, html)),
+                        new NodeRenderingHandler<>(AnchorLink.class, (node, context, html) -> render(node, context, html)),
+                        new NodeRenderingHandler<>(JekyllTagBlock.class, (node, context, html) -> render(node, context, html)),
+                        new NodeRenderingHandler<>(JekyllTag.class, (node, context, html) -> render(node, context, html)),
+                        new NodeRenderingHandler<>(Superscript.class, (node, context, html) -> render(node, context, html)),
+                        new NodeRenderingHandler<>(Subscript.class, (node, context, html) -> render(node, context, html))
+                )
+                .collect(Collectors.toMap(
+                        handler -> handler.getNodeType(),
+                        handler -> handler
+                ));
     }
 
 //    void toHtml(final Document astRoot) throws SAXException {
@@ -335,7 +328,7 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
 //        return buf.toString();
 //    }
 
-    private void render(final Document node, final NodeRendererContext context, final DitaWriter html) {
+    private void render(final Document node, final NodeRendererContext context, final SaxWriter html) {
 //        for (final ReferenceNode refNode : node.getReferences()) {
 //            references.put(normalize(toString(refNode)), refNode);
 //        }
@@ -358,18 +351,18 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
         }
     }
 
-    private void render(final Abbreviation node, final NodeRendererContext context, final DitaWriter html) {
+    private void render(final Abbreviation node, final NodeRendererContext context, final SaxWriter html) {
     }
 
-    private void render(AnchorLink node, final NodeRendererContext context, final DitaWriter html) {
+    private void render(AnchorLink node, final NodeRendererContext context, final SaxWriter html) {
         context.renderChildren(node);
     }
 
-    private void render(JekyllTagBlock node, final NodeRendererContext context, final DitaWriter html) {
+    private void render(JekyllTagBlock node, final NodeRendererContext context, final SaxWriter html) {
         context.renderChildren(node);
     }
 
-    private void render(JekyllTag node, final NodeRendererContext context, final DitaWriter html) {
+    private void render(JekyllTag node, final NodeRendererContext context, final SaxWriter html) {
         if (node.getTag().toString().equals("include")) {
             final AttributesBuilder atts = new AttributesBuilder(REQUIRED_CLEANUP_ATTS)
                     .add(ATTRIBUTE_NAME_CONREF, node.getParameters().toString());
@@ -378,7 +371,7 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
         }
     }
 
-    private void render(final AutoLink node, final NodeRendererContext context, final DitaWriter html) {
+    private void render(final AutoLink node, final NodeRendererContext context, final SaxWriter html) {
         if (node.getChars().charAt(0) == '<') {
             final AttributesBuilder atts = getLinkAttributes(node.getText().toString());
 
@@ -390,11 +383,11 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
         }
     }
 
-    private void render(final TextBase node, final NodeRendererContext context, final DitaWriter html) {
+    private void render(final TextBase node, final NodeRendererContext context, final SaxWriter html) {
         context.renderChildren(node);
     }
 
-    private void render(final Footnote node, final NodeRendererContext context, final DitaWriter html) {
+    private void render(final Footnote node, final NodeRendererContext context, final SaxWriter html) {
         final String callout = node.getText().toString().trim();
         final String id = getId("fn_" + callout);
         if (footnotes.contains(id)) {
@@ -420,23 +413,23 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
         }
     }
 
-    private void render(final FootnoteBlock node, final NodeRendererContext context, final DitaWriter html) {
+    private void render(final FootnoteBlock node, final NodeRendererContext context, final SaxWriter html) {
         // Ignore
     }
 
-    private void render(final BlockQuote node, final NodeRendererContext context, final DitaWriter html) {
+    private void render(final BlockQuote node, final NodeRendererContext context, final SaxWriter html) {
         printTag(node, context, html, TOPIC_LQ, BLOCKQUOTE_ATTS);
     }
 
-    private void render(final BulletList node, final NodeRendererContext context, final DitaWriter html) {
+    private void render(final BulletList node, final NodeRendererContext context, final SaxWriter html) {
         printTag(node, context, html, TOPIC_UL, UL_ATTS);
     }
 
-    private void render(final Code node, final NodeRendererContext context, final DitaWriter html) {
+    private void render(final Code node, final NodeRendererContext context, final SaxWriter html) {
         printTag(node, context, html, PR_D_CODEPH, CODEPH_ATTS);
     }
 
-    private void render(final DefinitionList node, final NodeRendererContext context, final DitaWriter html) {
+    private void render(final DefinitionList node, final NodeRendererContext context, final SaxWriter html) {
         html.startElement(TOPIC_DL, DL_ATTS);
         DitaClass previous = null;
 //        for (final Node child : node.getChildren()) {
@@ -456,7 +449,7 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
         html.endElement(); // dl
     }
 
-    private void render(final DefinitionTerm node, final NodeRendererContext context, final DitaWriter html) {
+    private void render(final DefinitionTerm node, final NodeRendererContext context, final SaxWriter html) {
         if (node.getPrevious() == null || !(node.getPrevious() instanceof DefinitionTerm)) {
             html.startElement(TOPIC_DLENTRY, DLENTRY_ATTS);
         }
@@ -471,26 +464,26 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
         html.endElement();
     }
 
-    private void render(final DefinitionItem node, final NodeRendererContext context, final DitaWriter html) {
+    private void render(final DefinitionItem node, final NodeRendererContext context, final SaxWriter html) {
         printTag(node, context, html, TOPIC_DD, DD_ATTS);
         if (node.getNext() == null || !(node.getNext() instanceof DefinitionItem)) {
             html.endElement();
         }
     }
 
-    private void render(final Image node, final NodeRendererContext context, final DitaWriter html) {
+    private void render(final Image node, final NodeRendererContext context, final SaxWriter html) {
         writeImage(node, node.getTitle().toString(), null, node.getUrl().toString(), null, context, html);
     }
 
-    private void render(final Superscript node, final NodeRendererContext context, final DitaWriter html) {
+    private void render(final Superscript node, final NodeRendererContext context, final SaxWriter html) {
         printTag(node, context, html, HI_D_SUP, SUP_ATTS);
     }
 
-    private void render(final Subscript node, final NodeRendererContext context, final DitaWriter html) {
+    private void render(final Subscript node, final NodeRendererContext context, final SaxWriter html) {
         printTag(node, context, html, HI_D_SUB, SUB_ATTS);
     }
 
-    private void writeImage(Image node, final String title, final String alt, final String url, final String key, final NodeRendererContext context, DitaWriter html) {
+    private void writeImage(Image node, final String title, final String alt, final String url, final String key, final NodeRendererContext context, SaxWriter html) {
         final AttributesBuilder atts = new AttributesBuilder(IMAGE_ATTS)
                 .add(ATTRIBUTE_NAME_HREF, url);
         if (key != null) {
@@ -532,7 +525,7 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
         }
     }
 
-    private void writeImage(ImageRef node, final String title, final String alt, final String url, final String key, final NodeRendererContext context, DitaWriter html) {
+    private void writeImage(ImageRef node, final String title, final String alt, final String url, final String key, final NodeRendererContext context, SaxWriter html) {
         final AttributesBuilder atts = new AttributesBuilder(IMAGE_ATTS)
                 .add(ATTRIBUTE_NAME_HREF, url);
         if (key != null) {
@@ -613,7 +606,7 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
         return null;
     }
 
-    private void render(final Heading node, final NodeRendererContext context, final DitaWriter html) {
+    private void render(final Heading node, final NodeRendererContext context, final SaxWriter html) {
         if (lwDita && node.getLevel() > 2) {
             throw new ParseException("LwDITA does not support level " + node.getLevel() + " header: " + node.getText());
         }
@@ -772,13 +765,13 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
         return null;
     }
 
-    private void outputMetadata(Map<String, Object> documentMetadata, DitaWriter html) {
+    private void outputMetadata(Map<String, Object> documentMetadata, SaxWriter html) {
         html.startElement(TOPIC_PROLOG, PROLOG_ATTS);
 //        metadataSerializer.write(documentMetadata);
         html.endElement();
     }
 
-    private void render(final YamlFrontMatterBlock node, final NodeRendererContext context, final DitaWriter html) {
+    private void render(final YamlFrontMatterBlock node, final NodeRendererContext context, final SaxWriter html) {
 //        final String text = node.getChars().toString();
 //        html.characters(text);
         // YAML header is pulled by Heading renderer
@@ -795,7 +788,7 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
                 .replaceAll("\\s+", "_");
     }
 
-    private void render(final HtmlBlock node, final NodeRendererContext context, final DitaWriter html) {
+    private void render(final HtmlBlock node, final NodeRendererContext context, final SaxWriter html) {
         final String text = node.getChars().toString();
         final FragmentContentHandler fragmentFilter = new FragmentContentHandler();
         fragmentFilter.setContentHandler(html.contentHandler);
@@ -815,7 +808,7 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
         }
     }
 
-    private void render(final HtmlInline node, final NodeRendererContext context, final DitaWriter html) {
+    private void render(final HtmlInline node, final NodeRendererContext context, final SaxWriter html) {
         final String text = node.getChars().toString();
         final CacheContentHandler cache = new CacheContentHandler();
         final TransformerHandler h;
@@ -888,11 +881,11 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
         return events.get(0);
     }
 
-    private void render(final ListItem node, final NodeRendererContext context, final DitaWriter html) {
+    private void render(final ListItem node, final NodeRendererContext context, final SaxWriter html) {
         printTag(node, context, html, TOPIC_LI, LI_ATTS);
     }
 
-    private void render(final MailLink node, final NodeRendererContext context, final DitaWriter html) {
+    private void render(final MailLink node, final NodeRendererContext context, final SaxWriter html) {
         final AttributesBuilder atts = getLinkAttributes("mailto:" + node.getText());
         atts.add(ATTRIBUTE_NAME_FORMAT, "email");
 
@@ -901,13 +894,13 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
         html.endElement();
     }
 
-    private void render(final OrderedList node, final NodeRendererContext context, final DitaWriter html) {
+    private void render(final OrderedList node, final NodeRendererContext context, final SaxWriter html) {
         printTag(node, context, html, TOPIC_OL, OL_ATTS);
     }
 
     private boolean onlyImageChild = false;
 
-    private void render(final Paragraph node, final NodeRendererContext context, final DitaWriter html) {
+    private void render(final Paragraph node, final NodeRendererContext context, final SaxWriter html) {
         if (shortdescParagraph && !inSection && node.getPrevious() instanceof Heading) {
             // Pulled by Heading
         } else if (containsImage(node)) {
@@ -932,7 +925,7 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
         return false;
     }
 
-    private void render(final TypographicQuotes node, final NodeRendererContext context, final DitaWriter html) {
+    private void render(final TypographicQuotes node, final NodeRendererContext context, final SaxWriter html) {
 //        switch (node.getType()) {
 //            case DoubleAngle:
 //                html.characters('\u00AB');//&laquo;
@@ -952,15 +945,15 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
 //        }
     }
 
-    private void render(final ReferenceNode node, final NodeRendererContext context, final DitaWriter html) {
+    private void render(final ReferenceNode node, final NodeRendererContext context, final SaxWriter html) {
         throw new RuntimeException();
     }
 
-    private void render(final Reference node, final NodeRendererContext context, final DitaWriter html) {
+    private void render(final Reference node, final NodeRendererContext context, final SaxWriter html) {
         // Ignore
     }
 
-    private void render(final ImageRef node, final NodeRendererContext context, final DitaWriter html) {
+    private void render(final ImageRef node, final NodeRendererContext context, final SaxWriter html) {
         final String text = node.getText().toString();
         final String key = node.getReference() != null ? node.getReference().toString() : text;
         final Reference refNode = node.getReferenceNode(node.getDocument());
@@ -980,7 +973,7 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
         }
     }
 
-    private void render(final RefNode node, final NodeRendererContext context, final DitaWriter html) {
+    private void render(final RefNode node, final NodeRendererContext context, final SaxWriter html) {
         final String text = node.getText().toString();
         final String key = node.getReference() != null ? node.getReference().toString() : text;
         final Reference refNode = node.getReferenceNode(node.getDocument());
@@ -1004,7 +997,7 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
         }
     }
 
-    private void render(final Link node, final NodeRendererContext context, final DitaWriter html) {
+    private void render(final Link node, final NodeRendererContext context, final SaxWriter html) {
         final String text = node.getText().toString();
 //        final String key = node.getReference() != null ? node.getReference().toString() : text;
 //        final ReferenceNode refNode = node.getReferenceNode(node.getDocument());
@@ -1097,30 +1090,30 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
 //        }
 //    }
 
-    private void render(final Strikethrough node, final NodeRendererContext context, final DitaWriter html) {
+    private void render(final Strikethrough node, final NodeRendererContext context, final SaxWriter html) {
         printTag(node, context, html, HI_D_LINE_THROUGH, LINE_THROUGH_ATTS);
     }
 
-    private void render(final Emphasis node, final NodeRendererContext context, final DitaWriter html) {
+    private void render(final Emphasis node, final NodeRendererContext context, final SaxWriter html) {
         printTag(node, context, html, HI_D_I, I_ATTS);
     }
 
-    private void render(final StrongEmphasis node, final NodeRendererContext context, final DitaWriter html) {
+    private void render(final StrongEmphasis node, final NodeRendererContext context, final SaxWriter html) {
         printTag(node, context, html, HI_D_B, B_ATTS);
     }
 
-    private void render(final TableBody node, final NodeRendererContext context, final DitaWriter html) {
+    private void render(final TableBody node, final NodeRendererContext context, final SaxWriter html) {
         printTag(node, context, html, TOPIC_TBODY, TBODY_ATTS);
     }
 
-    private void render(final TableCaption node, final NodeRendererContext context, final DitaWriter html) {
+    private void render(final TableCaption node, final NodeRendererContext context, final SaxWriter html) {
         // Pull processed by TableBlock
 //        html.startElement(TOPIC_TITLE, TITLE_ATTS);
 //        context.renderChildren(node);
 //        html.endElement();
     }
 
-    private void render(final TableCell node, final NodeRendererContext context, final DitaWriter html) {
+    private void render(final TableCell node, final NodeRendererContext context, final SaxWriter html) {
 //        final List<TableColumnNode> columns = currentTableNode.getColumns();
 //        final TableColumnNode column = columns.get(Math.min(currentTableColumn, columns.size() - 1));
 //
@@ -1161,11 +1154,11 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
 //        }
 //    }
 
-    private void render(final TableHead node, final NodeRendererContext context, final DitaWriter html) {
+    private void render(final TableHead node, final NodeRendererContext context, final SaxWriter html) {
         printTag(node, context, html, TOPIC_THEAD, THEAD_ATTS);
     }
 
-    private void render(final TableBlock node, final NodeRendererContext context, final DitaWriter html) {
+    private void render(final TableBlock node, final NodeRendererContext context, final SaxWriter html) {
         currentTableNode = node;
         html.startElement(TOPIC_TABLE, TABLE_ATTS);
         for (final Node child : node.getChildren()) {
@@ -1247,16 +1240,16 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
         return max;
     }
 
-    private void render(TableSeparator node, NodeRendererContext context, DitaWriter html) {
+    private void render(TableSeparator node, NodeRendererContext context, SaxWriter html) {
         // Ignore
     }
 
-    private void render(final TableRow node, final NodeRendererContext context, final DitaWriter html) {
+    private void render(final TableRow node, final NodeRendererContext context, final SaxWriter html) {
         currentTableColumn = 0;
         printTag(node, context, html, TOPIC_ROW, TR_ATTS);
     }
 
-    private void render(final CodeBlock node, final NodeRendererContext context, final DitaWriter html) {
+    private void render(final CodeBlock node, final NodeRendererContext context, final SaxWriter html) {
         final AttributesBuilder atts = new AttributesBuilder(CODEBLOCK_ATTS)
                 .add(XML_NS_URI, "space", "xml:space", "CDATA", "preserve");
 //        if (node.getType() != null && !node.getType().isEmpty()) {
@@ -1283,7 +1276,7 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
         html.endElement();
     }
 
-    private void render(final IndentedCodeBlock node, final NodeRendererContext context, final DitaWriter html) {
+    private void render(final IndentedCodeBlock node, final NodeRendererContext context, final SaxWriter html) {
         final AttributesBuilder atts = new AttributesBuilder(CODEBLOCK_ATTS)
                 .add(XML_NS_URI, "space", "xml:space", "CDATA", "preserve");
 //        if (node.getType() != null && !node.getType().isEmpty()) {
@@ -1310,7 +1303,7 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
         html.endElement();
     }
 
-    private void render(final FencedCodeBlock node, final NodeRendererContext context, final DitaWriter html) {
+    private void render(final FencedCodeBlock node, final NodeRendererContext context, final SaxWriter html) {
         final AttributesBuilder atts = new AttributesBuilder(CODEBLOCK_ATTS)
                 .add(XML_NS_URI, "space", "xml:space", "CDATA", "preserve");
 //        if (node.getType() != null && !node.getType().isEmpty()) {
@@ -1380,7 +1373,7 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
 //        html.endElement();
 //    }
 
-    private void render(final Text node, final NodeRendererContext context, final DitaWriter html) {
+    private void render(final Text node, final NodeRendererContext context, final SaxWriter html) {
         if (abbreviations.isEmpty()) {
             if (node.getParent() instanceof Code) {
                 html.characters(node.getChars().toString());
@@ -1397,19 +1390,19 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
 //        html.characters(node.getChars().toString());
 //    }
 
-    private void render(final ContentNode node, final NodeRendererContext context, final DitaWriter html) {
+    private void render(final ContentNode node, final NodeRendererContext context, final SaxWriter html) {
         context.renderChildren(node);
     }
 
-    private void render(final SoftLineBreak node, final NodeRendererContext context, final DitaWriter html) {
+    private void render(final SoftLineBreak node, final NodeRendererContext context, final SaxWriter html) {
         html.characters('\n');
     }
 
-    private void render(final HardLineBreak node, final NodeRendererContext context, final DitaWriter html) {
+    private void render(final HardLineBreak node, final NodeRendererContext context, final SaxWriter html) {
         html.processingInstruction("linebreak", null);
     }
 
-    private void render(final HtmlEntity node, final NodeRendererContext context, final DitaWriter html) {
+    private void render(final HtmlEntity node, final NodeRendererContext context, final SaxWriter html) {
         final BasedSequence chars = node.getChars();
         final String name = chars.subSequence(1, chars.length() - 1).toString().toLowerCase();
         final String val = Entities.ENTITIES.getProperty(name);
@@ -1418,11 +1411,11 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
         }
     }
 
-    private void render(final HtmlInlineComment node, final NodeRendererContext context, final DitaWriter html) {
+    private void render(final HtmlInlineComment node, final NodeRendererContext context, final SaxWriter html) {
         // Ignore
     }
 
-    private void render(final Node node, final NodeRendererContext context, final DitaWriter html) {
+    private void render(final Node node, final NodeRendererContext context, final SaxWriter html) {
         throw new RuntimeException("No renderer configured for " + node.getNodeName() + " = " + node.getClass().getCanonicalName());
 //        if (node instanceof MetadataNode) {
 //            final MetadataNode n = (MetadataNode) node;
@@ -1460,13 +1453,13 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
 //        }
 //    }
 
-    private void printTag(Text node, NodeRendererContext context, DitaWriter html, final DitaClass tag, final Attributes atts) {
+    private void printTag(Text node, NodeRendererContext context, SaxWriter html, final DitaClass tag, final Attributes atts) {
         html.startElement(tag, atts);
         html.characters(node.getChars().toString());
         html.endElement();
     }
 
-    private void printTag(Node node, NodeRendererContext context, DitaWriter html, final DitaClass tag, final Attributes atts) {
+    private void printTag(Node node, NodeRendererContext context, SaxWriter html, final DitaClass tag, final Attributes atts) {
         html.startElement(tag, atts);
         context.renderChildren(node);
         html.endElement();
@@ -1524,7 +1517,7 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
         return sb.toString();
     }
 
-    private void printWithAbbreviations(String string, final DitaWriter html) {
+    private void printWithAbbreviations(String string, final SaxWriter html) {
         Map<Integer, Map.Entry<String, String>> expansions = null;
 
         for (Map.Entry<String, String> entry : abbreviations.entrySet()) {

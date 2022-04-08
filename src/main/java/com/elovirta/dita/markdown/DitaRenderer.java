@@ -6,14 +6,10 @@ package com.elovirta.dita.markdown;
 import com.elovirta.dita.markdown.renderer.*;
 import com.vladsch.flexmark.util.ast.Document;
 import com.vladsch.flexmark.util.ast.Node;
-import com.vladsch.flexmark.util.data.DataHolder;
-import com.vladsch.flexmark.util.data.DataKey;
-import com.vladsch.flexmark.util.data.DataSet;
-import com.vladsch.flexmark.util.data.ScopedDataSet;
+import com.vladsch.flexmark.util.data.*;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import static org.dita.dost.util.Constants.ATTRIBUTE_PREFIX_DITAARCHVERSION;
@@ -65,50 +61,41 @@ public class DitaRenderer {
     public static final DataKey<Integer> FORMAT_FLAGS = new DataKey<>("FORMAT_FLAGS", 0);
     public static final DataKey<Integer> MAX_TRAILING_BLANK_LINES = new DataKey<>("MAX_TRAILING_BLANK_LINES", 1);
 
-    private final HeaderIdGeneratorFactory ditaIdGeneratorFactory;
     private final DitaRendererOptions ditaOptions;
     private final DataHolder options;
 
-    DitaRenderer(Builder builder) {
+    DitaRenderer(MutableDataSet builder) {
         this.options = new DataSet(builder);
         this.ditaOptions = new DitaRendererOptions(this.options);
-        this.ditaIdGeneratorFactory = builder.ditaIdGeneratorFactory;
     }
 
     public void render(Node node, ContentHandler out) {
-        final DitaWriter ditaWriter = new DitaWriter(out);
+        final SaxWriter saxWriter = new SaxWriter(out);
         MainNodeRenderer renderer = new MainNodeRenderer(options,
-                ditaWriter,
+                saxWriter,
                 node.getDocument());
         renderer.render(node);
     }
 
-    private class MainNodeRenderer extends NodeRendererSubContext implements NodeRendererContext {
+    private class MainNodeRenderer implements NodeRendererContext {
         private final Document document;
-        private final Map<Class<?>, NodeRenderingHandlerWrapper> renderers;
-
+        private final Map<Class<? extends Node>, NodeRenderingHandler<? extends Node>> renderers;
         private final DataHolder options;
         private final DitaIdGenerator ditaIdGenerator;
+        private final SaxWriter saxWriter;
+        private Node renderingNode;
+        private NodeRenderingHandler renderingHandler;
+        private int doNotRenderLinksNesting;
 
-        MainNodeRenderer(DataHolder options, DitaWriter ditaWriter, Document document) {
-            super(ditaWriter);
+        MainNodeRenderer(DataHolder options, SaxWriter saxWriter, Document document) {
+            this.saxWriter = saxWriter;
+            this.renderingNode = null;
+            this.doNotRenderLinksNesting = 0;
             this.options = new ScopedDataSet(options, document);
             this.document = document;
-            this.renderers = new HashMap<>(32);
+            this.renderers = new CoreNodeRenderer(this.getOptions()).getNodeRenderingHandlers();
             this.doNotRenderLinksNesting = ditaOptions.doNotRenderLinksInDocument ? 0 : 1;
-            this.ditaIdGenerator = ditaIdGeneratorFactory != null
-                    ? ditaIdGeneratorFactory.create(this)
-                    : (!(ditaOptions.renderHeaderId || ditaOptions.generateHeaderIds)
-                    ? DitaIdGenerator.NULL
-                    : new HeaderIdGenerator.Factory().create(this));
-
-            ditaWriter.setContext(this);
-
-            NodeRenderer nodeRenderer = new CoreNodeRenderer(this.getOptions());
-            for (NodeRenderingHandler nodeType : nodeRenderer.getNodeRenderingHandlers()) {
-                NodeRenderingHandlerWrapper handlerWrapper = new NodeRenderingHandlerWrapper(nodeType, renderers.get(nodeType.getNodeType()));
-                renderers.put(nodeType.getNodeType(), handlerWrapper);
-            }
+            this.ditaIdGenerator = new HeaderIdGenerator();
         }
 
         @Override
@@ -129,52 +116,52 @@ public class DitaRenderer {
         @Override
         public void render(Node node) {
             try {
-                ditaWriter.contentHandler.startDocument();
-                ditaWriter.contentHandler.startPrefixMapping(ATTRIBUTE_PREFIX_DITAARCHVERSION, DITA_NAMESPACE);
+                saxWriter.contentHandler.startDocument();
+                saxWriter.contentHandler.startPrefixMapping(ATTRIBUTE_PREFIX_DITAARCHVERSION, DITA_NAMESPACE);
                 renderNode(node, this);
-                ditaWriter.close();
-                ditaWriter.contentHandler.endPrefixMapping(ATTRIBUTE_PREFIX_DITAARCHVERSION);
-                ditaWriter.contentHandler.endDocument();
+                saxWriter.close();
+                saxWriter.contentHandler.endPrefixMapping(ATTRIBUTE_PREFIX_DITAARCHVERSION);
+                saxWriter.contentHandler.endDocument();
             } catch (SAXException e) {
                 throw new RuntimeException(e);
             }
         }
 
-        void renderNode(Node node, NodeRendererSubContext subContext) {
+        private void renderNode(Node node, MainNodeRenderer subContext) {
             if (node instanceof Document) {
                 // here we render multiple phases
                 int oldDoNotRenderLinksNesting = subContext.getDoNotRenderLinksNesting();
                 int documentDoNotRenderLinksNesting = getDitaOptions().doNotRenderLinksInDocument ? 1 : 0;
                 this.ditaIdGenerator.generateIds(document);
 
-                NodeRenderingHandlerWrapper nodeRenderer = renderers.get(node.getClass());
+                NodeRenderingHandler nodeRenderer = renderers.get(node.getClass());
                 if (nodeRenderer != null) {
                     subContext.doNotRenderLinksNesting = documentDoNotRenderLinksNesting;
-                    NodeRenderingHandlerWrapper prevWrapper = subContext.renderingHandlerWrapper;
+                    NodeRenderingHandler prevWrapper = subContext.renderingHandler;
                     try {
                         subContext.renderingNode = node;
-                        subContext.renderingHandlerWrapper = nodeRenderer;
-                        nodeRenderer.myRenderingHandler.render(node, subContext, subContext.ditaWriter);
+                        subContext.renderingHandler = nodeRenderer;
+                        nodeRenderer.render(node, subContext, subContext.saxWriter);
                     } finally {
-                        subContext.renderingHandlerWrapper = prevWrapper;
+                        subContext.renderingHandler = prevWrapper;
                         subContext.renderingNode = null;
                         subContext.doNotRenderLinksNesting = oldDoNotRenderLinksNesting;
                     }
                 }
             } else {
-                NodeRenderingHandlerWrapper nodeRenderer = renderers.get(node.getClass());
+                NodeRenderingHandler nodeRenderer = renderers.get(node.getClass());
                 if (nodeRenderer != null) {
                     Node oldNode = this.renderingNode;
                     int oldDoNotRenderLinksNesting = subContext.doNotRenderLinksNesting;
-                    NodeRenderingHandlerWrapper prevWrapper = subContext.renderingHandlerWrapper;
+                    NodeRenderingHandler prevWrapper = subContext.renderingHandler;
                     try {
                         subContext.renderingNode = node;
-                        subContext.renderingHandlerWrapper = nodeRenderer;
-                        nodeRenderer.myRenderingHandler.render(node, subContext, subContext.ditaWriter);
+                        subContext.renderingHandler = nodeRenderer;
+                        nodeRenderer.render(node, subContext, subContext.saxWriter);
                     } finally {
                         subContext.renderingNode = oldNode;
                         subContext.doNotRenderLinksNesting = oldDoNotRenderLinksNesting;
-                        subContext.renderingHandlerWrapper = prevWrapper;
+                        subContext.renderingHandler = prevWrapper;
                     }
                 } else {
                     throw new RuntimeException("No renderer configured for " + node.getClass().getName());
@@ -182,18 +169,18 @@ public class DitaRenderer {
             }
         }
 
+        @Override
         public void renderChildren(Node parent) {
-            renderChildrenNode(parent, this);
-        }
-
-        @SuppressWarnings("WeakerAccess")
-        protected void renderChildrenNode(Node parent, NodeRendererSubContext subContext) {
             Node node = parent.getFirstChild();
             while (node != null) {
                 Node next = node.getNext();
-                renderNode(node, subContext);
+                renderNode(node, this);
                 node = next;
             }
+        }
+
+        protected int getDoNotRenderLinksNesting() {
+            return doNotRenderLinksNesting;
         }
     }
 }

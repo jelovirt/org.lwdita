@@ -1,8 +1,6 @@
 package com.elovirta.dita.markdown;
 
-import com.elovirta.dita.markdown.renderer.NodeRenderer;
 import com.elovirta.dita.markdown.renderer.NodeRendererContext;
-import com.elovirta.dita.markdown.renderer.NodeRenderingHandler;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import com.vladsch.flexmark.ext.yaml.front.matter.AbstractYamlFrontMatterVisitor;
@@ -16,7 +14,7 @@ import java.util.stream.Collectors;
 
 import static org.dita.dost.util.Constants.*;
 
-public class MetadataSerializerImpl implements NodeRenderer {
+public class MetadataSerializerImpl {
 
     private final Set<String> knownKeys;
 
@@ -31,22 +29,13 @@ public class MetadataSerializerImpl implements NodeRenderer {
         knownKeys = keys.build();
     }
 
-
-    @Override
-    public Set<NodeRenderingHandler<?>> getNodeRenderingHandlers() {
-        return new HashSet<>(Collections.singletonList(
-                new NodeRenderingHandler<>(YamlFrontMatterBlock.class, this::render)
-
-        ));
-    }
-
     public static Attributes buildAtts(final DitaClass cls) {
         return new XMLUtils.AttributesBuilder()
                 .add(ATTRIBUTE_NAME_CLASS, cls.toString())
                 .build();
     }
 
-    public void render(final YamlFrontMatterBlock node, final NodeRendererContext context, final DitaWriter html) {
+    public void render(final YamlFrontMatterBlock node, final NodeRendererContext context, final SaxWriter html) {
         final AbstractYamlFrontMatterVisitor v = new AbstractYamlFrontMatterVisitor();
         v.visit(node);
         final Map<String, List<String>> header = v.getData();
@@ -85,7 +74,7 @@ public class MetadataSerializerImpl implements NodeRenderer {
         }
     }
 
-    private void write(final Map<String, List<String>> header, final DitaClass elem, DitaWriter html) {
+    private void write(final Map<String, List<String>> header, final DitaClass elem, SaxWriter html) {
         if (header.containsKey(elem.localName)) {
             for (String v : header.get(elem.localName)) {
                 html.startElement(elem, buildAtts(elem));
@@ -97,7 +86,7 @@ public class MetadataSerializerImpl implements NodeRenderer {
         }
     }
 
-    private void write(final Map<String, List<String>> header, final DitaClass elem, final String attr, DitaWriter html) {
+    private void write(final Map<String, List<String>> header, final DitaClass elem, final String attr, SaxWriter html) {
         if (header.containsKey(elem.localName)) {
             for (String v : header.get(elem.localName)) {
                 html.startElement(elem, new XMLUtils.AttributesBuilder()

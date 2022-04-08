@@ -4,9 +4,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-public class Entities {
+class Entities {
 
-    public static final Properties ENTITIES;
+    static final Properties ENTITIES;
 
     static {
         ENTITIES = new Properties();

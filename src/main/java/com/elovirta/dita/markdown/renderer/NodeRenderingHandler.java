@@ -1,7 +1,7 @@
 package com.elovirta.dita.markdown.renderer;
 
 import com.elovirta.dita.markdown.CustomNodeRenderer;
-import com.elovirta.dita.markdown.DitaWriter;
+import com.elovirta.dita.markdown.SaxWriter;
 import com.vladsch.flexmark.util.ast.Node;
 import com.vladsch.flexmark.util.ast.NodeAdaptingVisitHandler;
 
@@ -11,8 +11,8 @@ public class NodeRenderingHandler<N extends Node> extends NodeAdaptingVisitHandl
     }
 
     @Override
-    public void render(Node node, NodeRendererContext context, DitaWriter ditaWriter) {
+    public void render(Node node, NodeRendererContext context, SaxWriter saxWriter) {
         //noinspection unchecked
-        myAdapter.render((N) node, context, ditaWriter);
+        myAdapter.render((N) node, context, saxWriter);
     }
 }
