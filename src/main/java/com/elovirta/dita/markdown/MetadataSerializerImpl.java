@@ -1,8 +1,6 @@
 package com.elovirta.dita.markdown;
 
-import com.elovirta.dita.markdown.renderer.NodeRenderer;
 import com.elovirta.dita.markdown.renderer.NodeRendererContext;
-import com.elovirta.dita.markdown.renderer.NodeRenderingHandler;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import com.vladsch.flexmark.ext.yaml.front.matter.AbstractYamlFrontMatterVisitor;
@@ -16,7 +14,7 @@ import java.util.stream.Collectors;
 
 import static org.dita.dost.util.Constants.*;
 
-public class MetadataSerializerImpl implements NodeRenderer {
+public class MetadataSerializerImpl {
 
     private final Set<String> knownKeys;
 
@@ -29,15 +27,6 @@ public class MetadataSerializerImpl implements NodeRenderer {
             keys.add(ATTRIBUTE_NAME_ID);
         }
         knownKeys = keys.build();
-    }
-
-
-    @Override
-    public Set<NodeRenderingHandler<?>> getNodeRenderingHandlers() {
-        return new HashSet<>(Collections.singletonList(
-                new NodeRenderingHandler<>(YamlFrontMatterBlock.class, this::render)
-
-        ));
     }
 
     public static Attributes buildAtts(final DitaClass cls) {

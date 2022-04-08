@@ -146,18 +146,7 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
         this.shortdescParagraph = DitaRenderer.SHORTDESC_PARAGRAPH.getFrom(options);
         this.idFromYaml = DitaRenderer.ID_FROM_YAML.getFrom(options);
         this.lwDita = DitaRenderer.LW_DITA.getFrom(options);
-//        this.referenceRepository = options.get(Parser.REFERENCES);
-//        this.listOptions = ListOptions.getFrom(options);
-//        this.recheckUndefinedReferences = HtmlRenderer.RECHECK_UNDEFINED_REFERENCES.getFrom(options);
-//        this.obfuscateEmail = HtmlRenderer.OBFUSCATE_EMAIL.getFrom(options);
-//        this.obfuscateEmailRandom = HtmlRenderer.OBFUSCATE_EMAIL_RANDOM.getFrom(options);
-//        this.codeContentBlock = Parser.FENCED_CODE_CONTENT_BLOCK.getFrom(options);
-//        codeSoftLineBreaks = Parser.CODE_SOFT_LINE_BREAKS.getFrom(options);
-//        myLines = null;
-//        myEOLs = null;
-//        myNextLine = 0;
-//        nextLineStartOffset = 0;
-        metadataSerializer = new MetadataSerializerImpl(idFromYaml);
+        this.metadataSerializer = new MetadataSerializerImpl(idFromYaml);
 
         try (InputStream in = getClass().getResourceAsStream("/hdita2dita-markdown.xsl")) {
             tf = (SAXTransformerFactory) TransformerFactory.newInstance();
@@ -167,13 +156,6 @@ public class CoreNodeRenderer extends SaxSerializer implements NodeRenderer {
             throw new RuntimeException(e);
         }
     }
-
-//    CoreNodeRenderer(final ContentHandler contentHandler, final Map<String, Object> documentMetadata) {
-////        this.documentMetadata = documentMetadata;
-//        setContentHandler(contentHandler);
-//        metadataSerializer = new MetadataSerializerImpl();
-//
-//    }
 
     @Override
     public Set<NodeRenderingHandler<?>> getNodeRenderingHandlers() {
