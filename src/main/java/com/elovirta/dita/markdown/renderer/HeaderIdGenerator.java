@@ -73,10 +73,4 @@ public class HeaderIdGenerator implements DitaIdGenerator {
                 (1 << Character.OTHER_LETTER) |
                 (1 << Character.LETTER_NUMBER)) >> Character.getType((int) c)) & 1) != 0);
     }
-
-    public static class Factory {
-        public DitaIdGenerator create(NodeRendererContext context) {
-            return new HeaderIdGenerator();
-        }
-    }
 }

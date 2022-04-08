@@ -96,7 +96,7 @@ public class DitaRenderer {
             this.document = document;
             this.renderers = new HashMap<>(32);
             this.doNotRenderLinksNesting = ditaOptions.doNotRenderLinksInDocument ? 0 : 1;
-            this.ditaIdGenerator = new HeaderIdGenerator.Factory().create(this);
+            this.ditaIdGenerator = new HeaderIdGenerator();
 
             ditaWriter.setContext(this);
 
