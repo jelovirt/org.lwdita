@@ -96,8 +96,6 @@ public class DitaRenderer {
             this.renderers = new CoreNodeRenderer(this.getOptions()).getNodeRenderingHandlers();
             this.doNotRenderLinksNesting = ditaOptions.doNotRenderLinksInDocument ? 0 : 1;
             this.ditaIdGenerator = new HeaderIdGenerator();
-
-            saxWriter.setContext(this);
         }
 
         @Override

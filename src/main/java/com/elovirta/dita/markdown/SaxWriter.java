@@ -1,6 +1,5 @@
 package com.elovirta.dita.markdown;
 
-import com.elovirta.dita.markdown.renderer.NodeRendererContext;
 import org.dita.dost.util.DitaClass;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
@@ -14,24 +13,12 @@ import static javax.xml.XMLConstants.NULL_NS_URI;
  * Write to SAX ContentHandler.
  */
 public class SaxWriter {
-    private NodeRendererContext context;
+    public final Deque<String> tagStack = new ArrayDeque<>();
+    public final ContentHandler contentHandler;
 
     public SaxWriter(ContentHandler out) {
         this.contentHandler = out;
     }
-
-    void setContext(NodeRendererContext context) {
-        this.context = context;
-    }
-
-    public NodeRendererContext getContext() {
-        return context;
-    }
-
-    public final Deque<String> tagStack = new ArrayDeque<>();
-    public ContentHandler contentHandler;
-
-    // ContentHandler methods
 
     public void startElement(final DitaClass tag, final org.xml.sax.Attributes atts) {
         startElement(tag.localName, atts);
