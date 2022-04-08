@@ -78,15 +78,20 @@ public class DitaRenderer {
         renderer.render(node);
     }
 
-    private class MainNodeRenderer extends NodeRendererSubContext implements NodeRendererContext {
+    private class MainNodeRenderer implements NodeRendererContext {
         private final Document document;
         private final Map<Class<?>, NodeRenderingHandlerWrapper> renderers;
-
         private final DataHolder options;
         private final DitaIdGenerator ditaIdGenerator;
+        private final DitaWriter ditaWriter;
+        private Node renderingNode;
+        private NodeRenderingHandlerWrapper renderingHandlerWrapper;
+        private int doNotRenderLinksNesting;
 
         MainNodeRenderer(DataHolder options, DitaWriter ditaWriter, Document document) {
-            super(ditaWriter);
+            this.ditaWriter = ditaWriter;
+            this.renderingNode = null;
+            this.doNotRenderLinksNesting = 0;
             this.options = new ScopedDataSet(options, document);
             this.document = document;
             this.renderers = new HashMap<>(32);
@@ -131,7 +136,7 @@ public class DitaRenderer {
             }
         }
 
-        private void renderNode(Node node, NodeRendererSubContext subContext) {
+        private void renderNode(Node node, MainNodeRenderer subContext) {
             if (node instanceof Document) {
                 // here we render multiple phases
                 int oldDoNotRenderLinksNesting = subContext.getDoNotRenderLinksNesting();
@@ -181,6 +186,10 @@ public class DitaRenderer {
                 renderNode(node, this);
                 node = next;
             }
+        }
+
+        protected int getDoNotRenderLinksNesting() {
+            return doNotRenderLinksNesting;
         }
     }
 }
