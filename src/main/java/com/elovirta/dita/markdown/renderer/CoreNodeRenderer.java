@@ -22,7 +22,7 @@ import com.vladsch.flexmark.ext.tables.*;
 import com.vladsch.flexmark.ext.typographic.TypographicQuotes;
 import com.vladsch.flexmark.ext.yaml.front.matter.AbstractYamlFrontMatterVisitor;
 import com.vladsch.flexmark.ext.yaml.front.matter.YamlFrontMatterBlock;
-import com.vladsch.flexmark.superscript.Superscript;
+import com.vladsch.flexmark.ext.superscript.Superscript;
 import com.vladsch.flexmark.util.ast.ContentNode;
 import com.vladsch.flexmark.util.ast.Document;
 import com.vladsch.flexmark.util.ast.Node;
