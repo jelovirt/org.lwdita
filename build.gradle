@@ -20,6 +20,7 @@ dependencies {
         exclude group: 'com.vladsch.flexmark', module: 'flexmark-ext-admonition'
 //        exclude group: 'com.vladsch.flexmark', module: 'flexmark-ext-anchorlink'
         exclude group: 'com.vladsch.flexmark', module: 'flexmark-ext-aside'
+        exclude group: 'com.vladsch.flexmark', module: 'flexmark-ext-emoji'
         exclude group: 'com.vladsch.flexmark', module: 'flexmark-ext-enumerated-reference'
         exclude group: 'com.vladsch.flexmark', module: 'flexmark-ext-attributes'
 //        exclude group: 'com.vladsch.flexmark', module: 'flexmark-ext-autolink'
@@ -29,8 +30,10 @@ dependencies {
 //        exclude group: 'com.vladsch.flexmark', module: 'flexmark-ext-footnotes'
         exclude group: 'com.vladsch.flexmark', module: 'flexmark-jira-converter'
         exclude group: 'com.vladsch.flexmark', module: 'flexmark-youtrack-converter'
+        exclude group: 'com.vladsch.flexmark', module: 'flexmark-ext-gfm-issues'
 //        exclude group: 'com.vladsch.flexmark', module: 'flexmark-ext-gfm-strikethrough'
         exclude group: 'com.vladsch.flexmark', module: 'flexmark-ext-gfm-tasklist'
+        exclude group: 'com.vladsch.flexmark', module: 'flexmark-ext-gfm-users'
         exclude group: 'com.vladsch.flexmark', module: 'flexmark-ext-macros'
         exclude group: 'com.vladsch.flexmark', module: 'flexmark-ext-gitlab'
         exclude group: 'com.vladsch.flexmark', module: 'flexmark-ext-jekyll-front-matter'
@@ -44,6 +47,7 @@ dependencies {
         exclude group: 'com.vladsch.flexmark', module: 'flexmark-ext-wikilink'
 //        exclude group: 'com.vladsch.flexmark', module: 'flexmark-ext-yaml-front-matter'
         exclude group: 'com.vladsch.flexmark', module: 'flexmark-ext-youtube-embedded'
+        exclude group: 'com.vladsch.flexmark', module: 'flexmark-ext-xwiki-macros'
         exclude group: 'com.vladsch.flexmark', module: 'flexmark-util'
 //        exclude group: 'com.vladsch.flexmark', module: 'flexmark-util-format'
 //        exclude group: 'com.vladsch.flexmark', module: 'flexmark-util-ast'
@@ -78,11 +82,11 @@ task dist(type: Zip) {
     from(configurations.runtime) {
         include { details -> details.file.name.contains('flexmark') }
         exclude { details -> details.file.name.contains('flexmark-all') }
-        exclude { details -> details.file.name.contains('flexmark-ext-emoji') }
-        exclude { details -> details.file.name.contains('flexmark-ext-gfm-issues') }
-        exclude { details -> details.file.name.contains('flexmark-ext-gfm-users') }
-        exclude { details -> details.file.name.contains('flexmark-ext-xwiki-macros') }
-        exclude { details -> details.file.name.contains('flexmark-pdf') }
+//        exclude { details -> details.file.name.contains('flexmark-ext-emoji') }
+//        exclude { details -> details.file.name.contains('flexmark-ext-gfm-issues') }
+//        exclude { details -> details.file.name.contains('flexmark-ext-gfm-users') }
+//        exclude { details -> details.file.name.contains('flexmark-ext-xwiki-macros') }
+//        exclude { details -> details.file.name.contains('flexmark-pdf') }
         include { details -> details.file.name.contains('autolink') }
         include { details -> details.file.name.contains('htmlparser') }
         into "lib"
