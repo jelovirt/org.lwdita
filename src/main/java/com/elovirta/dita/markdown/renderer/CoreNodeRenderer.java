@@ -1466,9 +1466,11 @@ public class CoreNodeRenderer {
     }
 
     private AttributesBuilder getLinkAttributes(final String href) {
-        final AttributesBuilder atts = new AttributesBuilder(XREF_ATTS)
-                .add(ATTRIBUTE_NAME_HREF, href);
-
+      final AttributesBuilder atts = new AttributesBuilder(XREF_ATTS)
+          .add(ATTRIBUTE_NAME_HREF, href);
+      if(href.startsWith("#")) { 
+        atts.add(ATTRIBUTE_NAME_FORMAT, "markdown");
+      } else {
         final URI uri = toURI(href);
         String format = null;
         if (uri.getPath() != null) {
@@ -1498,8 +1500,8 @@ public class CoreNodeRenderer {
         if (uri != null && (uri.isAbsolute() || !uri.isAbsolute() && uri.getPath() != null && uri.getPath().startsWith("/"))) {
             atts.add(ATTRIBUTE_NAME_SCOPE, ATTR_SCOPE_VALUE_EXTERNAL);
         }
-
-        return atts;
+      }
+      return atts;
     }
 
     private String normalize(final String string) {
