@@ -42,6 +42,7 @@
     <parser format="md" class="com.elovirta.dita.markdown.MarkdownReader"/>
     <parser format="mdita" class="com.elovirta.dita.markdown.MDitaReader"/>
   </feature>
+  <extension-point id="dita.xsl.markdown" name="Markdown overrides XSLT import"/>
   <!-- HTML to DITA -->
   <template file="build-html_template.xml"/>
   <feature extension="dita.parser">
