@@ -1,8 +1,10 @@
 package com.elovirta.dita.markdown;
 
+import com.vladsch.flexmark.util.ast.Node;
 import org.dita.dost.util.DitaClass;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
+import org.xml.sax.ext.Locator2Impl;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
@@ -15,16 +17,29 @@ import static javax.xml.XMLConstants.NULL_NS_URI;
 public class SaxWriter {
     public final Deque<String> tagStack = new ArrayDeque<>();
     public final ContentHandler contentHandler;
+    private final Locator2Impl locator = new Locator2Impl();
 
     public SaxWriter(ContentHandler out) {
         this.contentHandler = out;
     }
 
-    public void startElement(final DitaClass tag, final org.xml.sax.Attributes atts) {
-        startElement(tag.localName, atts);
+    public void startDocument() {
+        contentHandler.setDocumentLocator(locator);
     }
 
-    public void startElement(final String tag, final org.xml.sax.Attributes atts) {
+    private void setLocation(Node node) {
+        if (node != null) {
+            locator.setLineNumber(node.getLineNumber() + 1);
+            locator.setColumnNumber(node.getStartOffset());
+        }
+    }
+
+    public void startElement(final Node node, final DitaClass tag, final org.xml.sax.Attributes atts) {
+        startElement(node, tag.localName, atts);
+    }
+
+    public void startElement(final Node node, final String tag, final org.xml.sax.Attributes atts) {
+        setLocation(node);
         try {
             contentHandler.startElement(NULL_NS_URI, tag, tag, atts);
         } catch (final SAXException e) {

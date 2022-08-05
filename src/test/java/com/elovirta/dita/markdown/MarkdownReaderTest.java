@@ -1,11 +1,13 @@
 package com.elovirta.dita.markdown;
 
 import com.elovirta.dita.utils.AbstractReaderTest;
+import org.dita.dost.util.SaxCache;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.xml.sax.InputSource;
-import org.xml.sax.XMLReader;
+import org.xml.sax.*;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 
 import static org.junit.Assert.assertEquals;
@@ -252,4 +254,70 @@ public class MarkdownReaderTest extends AbstractReaderTest {
         run("abbreviation.md");
     }
 
+    @Test
+    public void testLocator() throws IOException, SAXException {
+        final XMLReader r = getReader();
+        r.setContentHandler(new ContentHandler() {
+            Locator locator;
+
+            @Override
+            public void setDocumentLocator(Locator locator) {
+                this.locator = locator;
+            }
+
+            @Override
+            public void startDocument() throws SAXException {
+                System.out.println(locator.getLineNumber() + ":" + locator.getColumnNumber());
+            }
+
+            @Override
+            public void endDocument() throws SAXException {
+                System.out.println(locator.getLineNumber() + ":" + locator.getColumnNumber());
+            }
+
+            @Override
+            public void startPrefixMapping(String prefix, String uri) throws SAXException {
+                System.out.println(locator.getLineNumber() + ":" + locator.getColumnNumber());
+            }
+
+            @Override
+            public void endPrefixMapping(String prefix) throws SAXException {
+                System.out.println(locator.getLineNumber() + ":" + locator.getColumnNumber());
+            }
+
+            @Override
+            public void startElement(String uri, String localName, String qName, Attributes atts) throws SAXException {
+                System.out.println(locator.getLineNumber() + ":" + locator.getColumnNumber());
+            }
+
+            @Override
+            public void endElement(String uri, String localName, String qName) throws SAXException {
+                System.out.println(locator.getLineNumber() + ":" + locator.getColumnNumber());
+            }
+
+            @Override
+            public void characters(char[] ch, int start, int length) throws SAXException {
+                System.out.println(locator.getLineNumber() + ":" + locator.getColumnNumber());
+            }
+
+            @Override
+            public void ignorableWhitespace(char[] ch, int start, int length) throws SAXException {
+                System.out.println(locator.getLineNumber() + ":" + locator.getColumnNumber());
+            }
+
+            @Override
+            public void processingInstruction(String target, String data) throws SAXException {
+                System.out.println(locator.getLineNumber() + ":" + locator.getColumnNumber());
+            }
+
+            @Override
+            public void skippedEntity(String name) throws SAXException {
+                System.out.println(locator.getLineNumber() + ":" + locator.getColumnNumber());
+            }
+        });
+        try (InputStream in = getClass().getClassLoader().getResourceAsStream("/" + getSrc() + "shortdesc.md")) {
+            InputSource input = new InputSource(in);
+            r.parse(input);
+        }
+    }
 }

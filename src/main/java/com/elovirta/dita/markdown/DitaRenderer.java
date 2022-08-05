@@ -10,7 +10,9 @@ import com.vladsch.flexmark.util.data.*;
 import com.vladsch.flexmark.util.sequence.LineAppendable;
 import com.vladsch.flexmark.util.sequence.TagRange;
 import org.xml.sax.ContentHandler;
+import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
+import org.xml.sax.ext.Locator2Impl;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -139,6 +141,7 @@ public class DitaRenderer {
         @Override
         public void render(Node node) {
             try {
+                saxWriter.startDocument();
                 saxWriter.contentHandler.startDocument();
                 saxWriter.contentHandler.startPrefixMapping(ATTRIBUTE_PREFIX_DITAARCHVERSION, DITA_NAMESPACE);
                 renderNode(node, this);
