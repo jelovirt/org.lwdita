@@ -220,4 +220,9 @@ public class MarkdownReaderTest extends AbstractReaderTest {
         run("jekyll.md");
     }
 
+    @Test
+    public void testAbbreviation() throws Exception {
+        run("abbreviation.md");
+    }
+
 }

@@ -8,6 +8,7 @@ import com.elovirta.dita.utils.ClasspathURIResolver;
 import com.elovirta.dita.utils.FragmentContentHandler;
 import com.vladsch.flexmark.ast.*;
 import com.vladsch.flexmark.ext.abbreviation.Abbreviation;
+import com.vladsch.flexmark.ext.abbreviation.AbbreviationBlock;
 import com.vladsch.flexmark.ext.anchorlink.AnchorLink;
 import com.vladsch.flexmark.ext.definition.DefinitionItem;
 import com.vladsch.flexmark.ext.definition.DefinitionList;
@@ -167,6 +168,8 @@ public class CoreNodeRenderer {
      */
     public Map<Class<? extends Node>, NodeRenderingHandler<? extends Node>> getNodeRenderingHandlers() {
         return Stream.<NodeRenderingHandler>of(
+                        new NodeRenderingHandler<>(Abbreviation.class, (node, context, html) -> render(node, context, html)),
+                        new NodeRenderingHandler<>(AbbreviationBlock.class, (node, context, html) -> render(node, context, html)),
                         new NodeRenderingHandler<>(YamlFrontMatterBlock.class, (node, context, html) -> render(node, context, html)),
                         new NodeRenderingHandler<>(Footnote.class, (node, context, html) -> render(node, context, html)),
                         new NodeRenderingHandler<>(FootnoteBlock.class, (node, context, html) -> render(node, context, html)),
@@ -352,6 +355,11 @@ public class CoreNodeRenderer {
     }
 
     private void render(final Abbreviation node, final NodeRendererContext context, final SaxWriter html) {
+        html.characters(node.getChars().toString());
+    }
+
+    private void render(final AbbreviationBlock node, final NodeRendererContext context, final SaxWriter html) {
+        // Ignore
     }
 
     private void render(AnchorLink node, final NodeRendererContext context, final SaxWriter html) {
