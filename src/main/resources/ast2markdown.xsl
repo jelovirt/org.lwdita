@@ -189,9 +189,16 @@
           <xsl:variable name="content">
             <xsl:call-template name="process-inline-contents"/>
           </xsl:variable>
-          <xsl:value-of select="if ($align = ('left', 'center')) then ':' else '-'"/>
-          <xsl:for-each select="3 to string-length($content)">-</xsl:for-each>
-          <xsl:value-of select="if ($align = ('right', 'center')) then ':' else '-'"/>
+          <xsl:value-of select="if ($align = ('left', 'center')) then ':' else ''"/>
+          <xsl:variable name="extra-width" as="xs:integer">
+            <xsl:choose>
+              <xsl:when test="$align = 'center'">2</xsl:when>
+              <xsl:when test="$align = ('left', 'right')">1</xsl:when>
+              <xsl:otherwise>0</xsl:otherwise>
+            </xsl:choose>
+          </xsl:variable>
+          <xsl:for-each select="1 to max((3, string-length($content) - $extra-width))">-</xsl:for-each>
+          <xsl:value-of select="if ($align = ('right', 'center')) then ':' else ''"/>
           <xsl:text>|</xsl:text>
         </xsl:for-each>
         <xsl:value-of select="$linefeed"/>
