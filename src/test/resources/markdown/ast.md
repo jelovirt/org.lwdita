@@ -128,6 +128,10 @@ An inline ![Alt](test.jpg).
 |123|123|123|123|
 |1|1|1|1|
 
+|A|B|
+|---|---|
+|1|2|
+
 PHP Table:
 
 |First Header|Second Header Very long data entry Very long data entry Very long data entry Very long data entry Very long data entry Very long data entry Very long data entry Very long data entry Very long data entry|Third Header|
