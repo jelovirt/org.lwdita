@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<topic xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/" class="- topic/topic "
+       id="html-elements-reference">
+  <title class="- topic/title ">HTML elements reference</title>
+  <body class="- topic/body "/>
+  <topic class="- topic/topic " id="main-root">
+    <title class="- topic/title ">Main root</title>
+    <body class="- topic/body "/>
+  </topic>
+  <topic class="- topic/topic " id="document-metadata">
+    <title class="- topic/title ">Document metadata</title>
+    <body class="- topic/body "/>
+  </topic>
+  <topic class="- topic/topic " id="sectioning-root">
+    <title class="- topic/title ">Sectioning root</title>
+    <body class="- topic/body "/>
+  </topic>
+  <topic class="- topic/topic " id="content-sectioning">
+    <title class="- topic/title ">Content sectioning</title>
+    <body class="- topic/body ">
+      <address class="- topic/address ">content</address>
+      <aside class="- topic/aside ">content</aside>
+      <footer class="- topic/footer ">content</footer>
+      <header class="- topic/header ">content</header>
+      <main class="- topic/main ">content</main>
+      <section class="- topic/section "/>
+    </body>
+  </topic>
+  <topic class="- topic/topic " id="text-content">
+    <title class="- topic/title ">Text content</title>
+    <body class="- topic/body ">
+      <blockquote class="- topic/blockquote ">content</blockquote>
+      <dd class="- topic/dd ">
+        <p class="- topic/p ">content</p>
+      </dd>
+      <div class="- topic/div ">content</div>
+      <dl class="- topic/dl "/>
+      <dt class="- topic/dt ">content</dt>
+      <title class="- topic/title ">content</title>
+      <fig class="- topic/fig ">content</fig>
+      <hr class="- topic/hr "/>
+      <li class="- topic/li ">content</li>
+      <menu class="- topic/menu ">content</menu>
+      <ol class="- topic/ol ">content</ol>
+      <p class="- topic/p ">content</p>
+      <pre class="- topic/pre " xml:space="preserve">content</pre>
+      <ul class="- topic/ul ">content</ul>
+    </body>
+  </topic>
+  <topic class="- topic/topic " id="inline-text-semantics">
+    <title class="- topic/title ">Inline text semantics</title>
+    <body class="- topic/body ">
+      <p class="- topic/p "><xref class="- topic/xref ">content</xref></p>
+      <p class="- topic/p "><abbr class="- topic/abbr ">content</abbr></p>
+      <p class="- topic/p "><b class="+ topic/ph hi-d/b ">content</b></p>
+      <p class="- topic/p "><bdi class="- topic/bdi ">content</bdi></p>
+      <p class="- topic/p "><bdo class="- topic/bdo ">content</bdo></p>
+      <?linebreak?>
+      <p class="- topic/p ">contentcontent</p>
+      <p class="- topic/p "><cite class="- topic/cite ">content</cite></p>
+      <p class="- topic/p "><codeph class="+ topic/ph pr-d/codeph ">content</codeph></p>
+      <p class="- topic/p "><data class="- topic/data ">content</data></p>
+      <p class="- topic/p "><dfn class="- topic/dfn ">content</dfn></p>
+      <p class="- topic/p "><i class="+ topic/ph hi-d/i ">content</i></p>
+      <p class="- topic/p "><i class="+ topic/ph hi-d/i ">content</i></p>
+      <p class="- topic/p "><kbd class="- topic/kbd ">content</kbd></p>
+      <p class="- topic/p "><mark class="- topic/mark ">content</mark></p>
+      <p class="- topic/p "><q class="- topic/q ">content</q></p>
+      <p class="- topic/p "><rp class="- topic/rp ">content</rp></p>
+      <p class="- topic/p "><rt class="- topic/rt ">content</rt></p>
+      <p class="- topic/p "><ruby class="- topic/ruby ">content</ruby></p>
+      <p class="- topic/p "><line-through class="+ topic/ph hi-d/line-through ">content</line-through></p>
+      <p class="- topic/p "><samp class="- topic/samp ">content</samp></p>
+      <p class="- topic/p "><small class="- topic/small ">content</small></p>
+      <p class="- topic/p "><ph class="- topic/ph ">content</ph></p>
+      <p class="- topic/p "><b class="+ topic/ph hi-d/b ">content</b></p>
+      <p class="- topic/p "><sub class="+ topic/ph hi-d/sub ">content</sub></p>
+      <p class="- topic/p "><sup class="+ topic/ph hi-d/sup ">content</sup></p>
+      <p class="- topic/p "><time class="- topic/time ">content</time></p>
+      <p class="- topic/p "><u class="+ topic/ph hi-d/u ">content</u></p>
+      <p class="- topic/p "><var class="- topic/var ">content</var></p>
+      <p class="- topic/p "><wbr class="- topic/wbr ">content</wbr></p>
+    </body>
+  </topic>
+  <topic class="- topic/topic " id="image-and-multimedia">
+    <title class="- topic/title ">Image and multimedia</title>
+    <body class="- topic/body ">
+      <p class="- topic/p "><area class="- topic/area ">content</area></p>
+      <p class="- topic/p "><audio class="+ topic/object h5m-d/audio ">content</audio></p>
+      <p class="- topic/p "><image class="- topic/image ">content</image></p>
+      <p class="- topic/p "><map class="- topic/map ">content</map></p>
+      <track class="+ topic/param h5m-d/track " name="track"/>
+      <p class="- topic/p "><video class="+ topic/object h5m-d/video ">content</video></p>
+    </body>
+  </topic>
+  <topic class="- topic/topic " id="embedded-content">
+    <title class="- topic/title ">Embedded content</title>
+    <body class="- topic/body ">
+      <p class="- topic/p "><embed class="- topic/embed ">content</embed></p>
+      <iframe class="- topic/iframe ">content</iframe>
+      <p class="- topic/p "><object class="- topic/object ">content</object></p>
+      <p class="- topic/p "><picture class="- topic/picture ">content</picture></p>
+      <p class="- topic/p "><portal class="- topic/portal ">content</portal></p>
+      <source class="+ topic/param h5m-d/source " name="source"/>
+    </body>
+  </topic>
+  <topic class="- topic/topic " id="svg-and-mathml">
+    <title class="- topic/title ">SVG and MathML</title>
+    <body class="- topic/body ">
+      <p class="- topic/p "><svg class="- topic/svg ">content</svg></p>
+      <math class="- topic/math ">content</math>
+    </body>
+  </topic>
+  <topic class="- topic/topic " id="scripting">
+    <title class="- topic/title ">Scripting</title>
+    <body class="- topic/body ">
+      <p class="- topic/p "><canvas class="- topic/canvas ">content</canvas></p>
+      <p class="- topic/p ">content</p>
+    </body>
+  </topic>
+  <topic class="- topic/topic " id="demarcating-edits">
+    <title class="- topic/title ">Demarcating edits</title>
+    <body class="- topic/body ">
+      <p class="- topic/p "><ph class="- topic/ph " status="deleted">content</ph></p>
+      <p class="- topic/p "><ins class="- topic/ins ">content</ins></p>
+    </body>
+  </topic>
+  <topic class="- topic/topic " id="table-content">
+    <title class="- topic/title ">Table content</title>
+    <body class="- topic/body ">
+      <table class="- topic/table ">
+        <tgroup class="- topic/tgroup " cols="0"/>
+      </table>
+    </body>
+  </topic>
+  <topic class="- topic/topic " id="forms">
+    <title class="- topic/title ">Forms</title>
+    <body class="- topic/body ">
+      <p class="- topic/p "><button class="- topic/button ">content</button></p>
+      <p class="- topic/p "><datalist class="- topic/datalist ">content</datalist></p>
+      <fieldset class="- topic/fieldset ">content</fieldset>
+      <form class="- topic/form ">content</form>
+      <p class="- topic/p "><input class="- topic/input ">content</input></p>
+      <p class="- topic/p "><label class="- topic/label ">content</label></p>
+      <legend class="- topic/legend ">content</legend>
+      <p class="- topic/p "><meter class="- topic/meter ">content</meter></p>
+      <optgroup class="- topic/optgroup ">content</optgroup>
+      <option class="- topic/option ">content</option>
+      <p class="- topic/p "><output class="- topic/output ">content</output></p>
+      <p class="- topic/p "><progress class="- topic/progress ">content</progress></p>
+      <p class="- topic/p "><select class="- topic/select ">content</select></p>
+      <p class="- topic/p "><textarea class="- topic/textarea ">content</textarea></p>
+    </body>
+  </topic>
+  <topic class="- topic/topic " id="interactive-elements">
+    <title class="- topic/title ">Interactive elements</title>
+    <body class="- topic/body ">
+      <details class="- topic/details ">content</details>
+      <dialog class="- topic/dialog ">content</dialog>
+      <summary class="- topic/summary ">content</summary>
+    </body>
+  </topic>
+  <topic class="- topic/topic " id="web-components">
+    <title class="- topic/title ">Web Components</title>
+    <body class="- topic/body ">
+      <p class="- topic/p "><slot class="- topic/slot ">content</slot></p>
+      <p class="- topic/p "><template class="- topic/template ">content</template></p>
+    </body>
+  </topic>
+  <topic class="- topic/topic " id="obsolete-and-deprecated-elements">
+    <title class="- topic/title ">Obsolete and deprecated elements</title>
+    <body class="- topic/body ">
+      <p class="- topic/p "><acronym class="- topic/acronym ">content</acronym></p>
+      <p class="- topic/p "><applet class="- topic/applet ">content</applet></p>
+      <p class="- topic/p ">content</p>
+      <p class="- topic/p "><big class="- topic/big ">content</big></p>
+      <p class="- topic/p "><blink class="- topic/blink ">content</blink></p>
+      <center class="- topic/center ">content</center>
+      <p class="- topic/p "><content class="- topic/content ">content</content></p>
+      <dir class="- topic/dir ">content</dir>
+      <p class="- topic/p "><font class="- topic/font ">content</font></p>
+      <p class="- topic/p "><hgroup class="- topic/hgroup ">content</hgroup></p>
+      <p class="- topic/p "><image class="- topic/image ">content</image></p>
+      <p class="- topic/p "><keygen class="- topic/keygen ">content</keygen></p>
+      <p class="- topic/p "><marquee class="- topic/marquee ">content</marquee></p>
+      <menuitem class="- topic/menuitem ">content</menuitem>
+      <p class="- topic/p "><nobr class="- topic/nobr ">content</nobr></p>
+      <p class="- topic/p "><noembed class="- topic/noembed ">content</noembed></p>
+      <param class="- topic/param "/>
+      <p class="- topic/p "><plaintext class="- topic/plaintext ">content</plaintext></p>
+      <p class="- topic/p "><rb class="- topic/rb ">content</rb></p>
+      <p class="- topic/p "><rtc class="- topic/rtc ">content</rtc></p>
+      <p class="- topic/p "><shadow class="- topic/shadow ">content</shadow></p>
+      <p class="- topic/p "><spacer class="- topic/spacer ">content</spacer></p>
+      <p class="- topic/p "><strike class="- topic/strike ">content</strike></p>
+      <p class="- topic/p "><tt class="- topic/tt ">content</tt></p>
+      <p class="- topic/p "><xmp class="- topic/xmp ">content</xmp></p>
+    </body>
+  </topic>
+</topic>
