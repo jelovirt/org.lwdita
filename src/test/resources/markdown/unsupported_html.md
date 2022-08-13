@@ -6,13 +6,13 @@
 
 ## Document metadata
 
-<base>content</base>
+<base>
 
 <head>content</head>
 
-<link>content</link>
+<link>
 
-<meta>content</meta>
+<meta>
 
 <style>content</style>
 
@@ -40,31 +40,25 @@
 
 <blockquote>content</blockquote>
 
-<dd>content</dd>
-
 <div>content</div>
 
-<dl>content</dl>
-
-<dt>content</dt>
+<dl><dt>content</dt><dd>content</dd></dl>
 
 <figcaption>content</figcaption>
 
 <figure>content</figure>
 
-<hr>content</hr>
-
-<li>content</li>
+<hr>
 
 <menu>content</menu>
 
-<ol>content</ol>
+<ol><li>content</li></ol>
 
 <p>content</p>
 
 <pre>content</pre>
 
-<ul>content</ul>
+<ul><li>content</li></ul>
 
 ## Inline text semantics
 
@@ -130,13 +124,13 @@ content<br>content
 
 ## Image and multimedia
 
-<area>content</area>
-
 <audio>content</audio>
 
 <img>content</img>
 
-<map>content</map>
+<map>
+ <area>content</area>
+</map>
 
 <track>content</track>
 
@@ -144,7 +138,9 @@ content<br>content
 
 ## Embedded content
 
-<embed>content</embed>
+<embed>
+  <noembed>content</noembed>
+</embed>
 
 <iframe>content</iframe>
 
@@ -178,37 +174,29 @@ content<br>content
 
 ## Table content
 
-<caption>content</caption>
-
-<col>content</col>
-
-<colgroup>content</colgroup>
-
-<table>content</table>
-
-<tbody>content</tbody>
-
-<td>content</td>
-
-<tfoot>content</tfoot>
-
-<th>content</th>
-
-<thead>content</thead>
-
-<tr>content</tr>
+<table>
+  <caption>content</caption>
+  <colgroup>
+    <col>
+  </colgroup>
+  <thead><tr><th>content</th></tr></thead>
+  <tbody><tr><td>content</td></tr></tbody>
+  <tfoot><tr><th>content</th></tr></tfoot>
+</table>
 
 ## Forms
 
 <button>content</button>
 
-<datalist>content</datalist>
+<datalist>
+  <option>
+</datalist>
 
 <fieldset>content</fieldset>
 
 <form>content</form>
 
-<input>content</input>
+<input>
 
 <label>content</label>
 
@@ -216,15 +204,11 @@ content<br>content
 
 <meter>content</meter>
 
-<optgroup>content</optgroup>
-
-<option>content</option>
-
 <output>content</output>
 
 <progress>content</progress>
 
-<select>content</select>
+<select><optgroup><option>content</option></optgroup></select>
 
 <textarea>content</textarea>
 
@@ -275,10 +259,6 @@ content<br>content
 <marquee>content</marquee>
 
 <menuitem>content</menuitem>
-
-<nobr>content</nobr>
-
-<noembed>content</noembed>
 
 <noframes>content</noframes>
 

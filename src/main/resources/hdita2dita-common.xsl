@@ -119,7 +119,6 @@
       <xsl:apply-templates select="*"/>
     </xsl:element>
   </xsl:template>
-
   <xsl:template match="section" mode="class">
     <xsl:attribute name="class">
       <!--
@@ -142,13 +141,13 @@
     </xsl:attribute>
   </xsl:template>
 
-  <xsl:template match="h1 | h2 | h3 | h4 | h5 | h6">
+  <xsl:template match="h1 | h2">
     <title>
       <xsl:apply-templates select="." mode="class"/>
       <xsl:apply-templates select="@* except @id | node()"/>
     </title>
   </xsl:template>
-  <xsl:template match="h1 | h2 | h3 | h4 | h5 | h6" mode="class">
+  <xsl:template match="h1 | h2" mode="class">
     <xsl:attribute name="class">- topic/title </xsl:attribute>
   </xsl:template>
 
@@ -162,6 +161,12 @@
         </dlentry>
       </xsl:for-each-group>
     </xsl:element>
+  </xsl:template>
+  <xsl:template match="dt">
+    <dt>
+      <xsl:apply-templates select="." mode="class"/>
+      <xsl:apply-templates select="@* | node()"/>
+    </dt>
   </xsl:template>
   <xsl:template match="dd">
     <dd>
@@ -255,17 +260,6 @@
   </xsl:template>
   <xsl:template match="pre" mode="class">
     <xsl:attribute name="class">- topic/pre </xsl:attribute>
-  </xsl:template>
-  
-  <xsl:template match="pre[code]">
-    <codeblock>
-      <xsl:apply-templates select="." mode="class"/>
-      <xsl:attribute name="xml:space">preserve</xsl:attribute>
-      <xsl:apply-templates select="@* | code/node()"/>
-    </codeblock>
-  </xsl:template>
-  <xsl:template match="pre[code]" mode="class">
-    <xsl:attribute name="class">+ topic/pre pr-d/codeblock </xsl:attribute>
   </xsl:template>
 
   <xsl:template match="img">
@@ -407,18 +401,6 @@
   </xsl:template>
   -->
 
-  <xsl:template match="br">
-    <xsl:processing-instruction name="linebreak"/>
-  </xsl:template>
-  <xsl:template match="b | strong" mode="class">
-    <xsl:attribute name="class">+ topic/ph hi-d/b </xsl:attribute>
-  </xsl:template>
-  <xsl:template match="i | em" mode="class">
-    <xsl:attribute name="class">+ topic/ph hi-d/i </xsl:attribute>
-  </xsl:template>
-  <xsl:template match="u" mode="class">
-    <xsl:attribute name="class">+ topic/ph hi-d/u </xsl:attribute>
-  </xsl:template>
   <xsl:template match="span">
     <ph>
       <xsl:apply-templates select="." mode="class"/>
@@ -428,20 +410,29 @@
   <xsl:template match="span" mode="class">
     <xsl:attribute name="class">- topic/ph </xsl:attribute>
   </xsl:template>
+
   <xsl:template match="@data-keyref">
     <xsl:attribute name="keyref" select="."/>
   </xsl:template>
-  <xsl:template match="strong">
+
+  <xsl:template match="b | strong">
     <b>
       <xsl:apply-templates select="." mode="class"/>
       <xsl:apply-templates select="@* | node()"/>
     </b>
   </xsl:template>
-  <xsl:template match="em">
+  <xsl:template match="b | strong" mode="class">
+    <xsl:attribute name="class">+ topic/ph hi-d/b </xsl:attribute>
+  </xsl:template>
+
+  <xsl:template match="em | i">
     <i>
       <xsl:apply-templates select="." mode="class"/>
       <xsl:apply-templates select="@* | node()"/>
     </i>
+  </xsl:template>
+  <xsl:template match="i | em" mode="class">
+    <xsl:attribute name="class">+ topic/ph hi-d/i </xsl:attribute>
   </xsl:template>
   <xsl:template match="sup">
     <sup>
@@ -452,6 +443,7 @@
   <xsl:template match="sup" mode="class">
     <xsl:attribute name="class">+ topic/ph hi-d/sup </xsl:attribute>
   </xsl:template>
+
   <xsl:template match="sub">
     <sub>
       <xsl:apply-templates select="." mode="class"/>
@@ -461,6 +453,17 @@
   <xsl:template match="sub" mode="class">
     <xsl:attribute name="class">+ topic/ph hi-d/sub </xsl:attribute>
   </xsl:template>
+
+  <xsl:template match="u">
+    <sub>
+      <xsl:apply-templates select="." mode="class"/>
+      <xsl:apply-templates select="@* | node()"/>
+    </sub>
+  </xsl:template>
+  <xsl:template match="u" mode="class">
+    <xsl:attribute name="class">+ topic/ph hi-d/u </xsl:attribute>
+  </xsl:template>
+
   <xsl:template match="a">
     <xsl:variable name="href" select="lower-case(if (contains(@href, '#')) then substring-before(@href, '#') else @href)"/>
     <xref>
@@ -502,58 +505,97 @@
     <xsl:attribute name="class">- topic/xref </xsl:attribute>
   </xsl:template>
   <xsl:template match="a/@target"/>
-  <xsl:template match="del">
-    <ph>
-      <xsl:apply-templates select="." mode="class"/>
-      <xsl:attribute name="status">deleted</xsl:attribute>
-      <xsl:apply-templates select="@* | node()"/>
-    </ph>
+  <xsl:template match="a/@data-processing-role">
+    <xsl:attribute name="processing-role" select="."/>
   </xsl:template>
-  <xsl:template match="del" mode="class">
-    <xsl:attribute name="class">- topic/ph </xsl:attribute>
-  </xsl:template>
-  <xsl:template match="s">
-    <line-through>
-      <xsl:apply-templates select="." mode="class"/>
-      <xsl:apply-templates select="@* | node()"/>
-    </line-through>
-  </xsl:template>
-  <xsl:template match="s" mode="class">
-    <xsl:attribute name="class">+ topic/ph hi-d/line-through </xsl:attribute>
-  </xsl:template>
-  <xsl:template match="code">
-    <codeph>
-      <xsl:apply-templates select="." mode="class"/>
-      <xsl:apply-templates select="@* | node()"/>
-    </codeph>
-  </xsl:template>
-  <xsl:template match="code" mode="class">
-    <xsl:attribute name="class">+ topic/ph pr-d/codeph </xsl:attribute>
+  <xsl:template match="a/@rel">
+    <xsl:attribute name="scope" select="."/>
   </xsl:template>
 
   <!-- HDITA -->
 
+  <xsl:template match="div">
+    <div>
+      <xsl:apply-templates select="." mode="class"/>
+      <xsl:apply-templates select="@* | node()"/>
+    </div>
+  </xsl:template>
+
+  <xsl:template match="ol">
+    <ol>
+      <xsl:apply-templates select="." mode="class"/>
+      <xsl:apply-templates select="@* | node()"/>
+    </ol>
+  </xsl:template>
+
+  <xsl:template match="ul">
+    <ul>
+      <xsl:apply-templates select="." mode="class"/>
+      <xsl:apply-templates select="@* | node()"/>
+    </ul>
+  </xsl:template>
+  <xsl:template match="ul" mode="class">
+    <xsl:attribute name="class">- topic/ul </xsl:attribute>
+  </xsl:template>
+
+  <xsl:template match="li">
+    <li>
+      <xsl:apply-templates select="." mode="class"/>
+      <xsl:apply-templates select="@* | node()"/>
+    </li>
+  </xsl:template>
+
+  <xsl:template match="p">
+    <p>
+      <xsl:apply-templates select="." mode="class"/>
+      <xsl:apply-templates select="@* | node()"/>
+    </p>
+  </xsl:template>
+
+  <xsl:template match="audio">
+    <audio>
+      <xsl:apply-templates select="." mode="class"/>
+      <xsl:apply-templates select="@* | node()"/>
+    </audio>
+  </xsl:template>
   <xsl:template match="audio" mode="class">
     <xsl:attribute name="class">+ topic/object h5m-d/audio </xsl:attribute>
+  </xsl:template>
+
+  <xsl:template match="video">
+    <video>
+      <xsl:apply-templates select="." mode="class"/>
+      <xsl:apply-templates select="@* | node()"/>
+    </video>
   </xsl:template>
   <xsl:template match="video" mode="class">
     <xsl:attribute name="class">+ topic/object h5m-d/video </xsl:attribute>
   </xsl:template>
+
   <xsl:template match="fallback" mode="class">
     <xsl:attribute name="class">+ topic/desc h5m-d/fallback </xsl:attribute>
   </xsl:template>
-  <xsl:template match="controls" mode="class">
-    <xsl:attribute name="class">+ topic/param h5m-d/controls </xsl:attribute>
-    <xsl:attribute name="name" select="local-name()"/>
-  </xsl:template>
-  <xsl:template match="poster" mode="class">
-    <xsl:attribute name="class">+ topic/param h5m-d/poster </xsl:attribute>
-    <xsl:attribute name="name" select="local-name()"/>
+
+<!--  <xsl:template match="controls" mode="class">-->
+<!--    <xsl:attribute name="class">+ topic/param h5m-d/controls </xsl:attribute>-->
+<!--    <xsl:attribute name="name" select="local-name()"/>-->
+<!--  </xsl:template>-->
+<!--  <xsl:template match="poster" mode="class">-->
+<!--    <xsl:attribute name="class">+ topic/param h5m-d/poster </xsl:attribute>-->
+<!--    <xsl:attribute name="name" select="local-name()"/>-->
+<!--  </xsl:template>-->
+
+  <xsl:template match="source">
+    <source>
+      <xsl:apply-templates select="." mode="class"/>
+      <xsl:apply-templates select="@* | node()"/>
+    </source>
   </xsl:template>
   <xsl:template match="source" mode="class">
     <xsl:attribute name="class">+ topic/param h5m-d/source </xsl:attribute>
     <xsl:attribute name="name" select="local-name()"/>
   </xsl:template>
+
   <xsl:template match="track" mode="class">
     <xsl:attribute name="class">+ topic/param h5m-d/track </xsl:attribute>
     <xsl:attribute name="name" select="local-name()"/>
@@ -603,6 +645,10 @@
     <xsl:attribute name="outputclass" select="."/>
   </xsl:template>
 
+  <xsl:template match="@data-props">
+    <xsl:attribute name="props" select="."/>
+  </xsl:template>
+
   <!--
   <xsl:template match="*[@data-hd-class]" mode="class" priority="-5">
     <xsl:attribute name="class">
@@ -624,6 +670,51 @@
   <xsl:template match="@* | node()" mode="class" priority="-15"/>
 
   <xsl:template match="*" priority="-10">
+    <xsl:message>WARN: Unsupported HTML5 element '<xsl:value-of select="name()"/>'</xsl:message>
+    <!--
+    <xsl:if test="name() = (
+    'a',
+'article',
+'audio',
+'b',
+'body',
+'caption',
+'dd',
+'div',
+'dl',
+'dt',
+'em',
+'figcaption',
+'figure',
+'h1',
+'h2',
+'i',
+'img',
+'li',
+'meta',
+'nav',
+'ol',
+'p',
+'pre',
+'section',
+'source',
+'span',
+'strong',
+'sub',
+'sup',
+'table',
+'td',
+'th',
+'title',
+'tr',
+'u',
+'ul',
+'video'
+    )">
+      <xsl:message terminate="yes">FATAL: Unsupported HDITA element '<xsl:value-of select="name()"/>': <xsl:for-each select="ancestor-or-self::*"><xsl:value-of select="name()"/>/</xsl:for-each>
+      </xsl:message>
+    </xsl:if>
+    -->
     <xsl:element name="{name()}">
       <xsl:apply-templates select="." mode="class"/>
       <xsl:apply-templates select="@* | node()"/>
