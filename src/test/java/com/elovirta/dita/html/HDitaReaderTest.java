@@ -18,7 +18,7 @@ public class HDitaReaderTest extends HtmlReaderTest {
 
     @Override
     public String getExp() {
-        return "lwdita/";
+        return "xdita/";
     }
 
     @Test

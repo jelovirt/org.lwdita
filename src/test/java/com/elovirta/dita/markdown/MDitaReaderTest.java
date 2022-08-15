@@ -11,7 +11,7 @@ public class MDitaReaderTest extends MarkdownReaderTest {
 
     @Override
     public String getExp() {
-        return "lwdita/";
+        return "xdita/";
     }
 
     @Override
