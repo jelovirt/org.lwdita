@@ -36,7 +36,7 @@
       <title class="- topic/title ">content</title>
       <fig class="- topic/fig ">content</fig>
       <hr class="- topic/hr "/>
-      <ul class="- topic/ul ">content</ul>
+      <menu class="- topic/menu ">content</menu>
       <ol class="- topic/ol ">
         <li class="- topic/li ">content</li>
       </ol>
@@ -69,7 +69,7 @@
         <cite class="- topic/cite ">content</cite>
       </p>
       <p class="- topic/p ">
-        <codeph class="+ topic/ph pr-d/codeph ">content</codeph>
+        <ph class="- topic/ph ">content</ph>
       </p>
       <p class="- topic/p ">
         <data class="- topic/data ">content</data>
@@ -102,7 +102,7 @@
         <ruby class="- topic/ruby ">content</ruby>
       </p>
       <p class="- topic/p ">
-        <line-through class="+ topic/ph hi-d/line-through ">content</line-through>
+        <ph class="- topic/ph ">content</ph>
       </p>
       <p class="- topic/p ">
         <samp class="- topic/samp ">content</samp>
@@ -129,7 +129,7 @@
         <sub class="+ topic/ph hi-d/u ">content</sub>
       </p>
       <p class="- topic/p ">
-        <var class="+ topic/ph pr-d/var ">content</var>
+        <var class="- topic/var ">content</var>
       </p>
       <p class="- topic/p ">
         <wbr class="- topic/wbr ">content</wbr>
@@ -184,7 +184,7 @@
     <section class="- topic/section " id="demarcating-edits">
       <title class="- topic/title ">Demarcating edits</title>
       <p class="- topic/p ">
-        <ph class="- topic/ph " status="deleted">content</ph>
+        <del class="- topic/del ">content</del>
       </p>
       <p class="- topic/p ">
         <ins class="- topic/ins ">content</ins>

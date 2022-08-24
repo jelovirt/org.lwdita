@@ -15,4 +15,76 @@
     <xsl:apply-templates select="html/body"/>
   </xsl:template>
 
+  <xsl:template match="h3 | h4 | h5 | h6">
+    <title>
+      <xsl:apply-templates select="." mode="class"/>
+      <xsl:apply-templates select="@* except @id | node()"/>
+    </title>
+  </xsl:template>
+  <xsl:template match="h3 | h4 | h5 | h6" mode="class">
+    <xsl:attribute name="class">- topic/title </xsl:attribute>
+  </xsl:template>
+
+  <xsl:template match="pre[code]">
+    <codeblock>
+      <xsl:apply-templates select="." mode="class"/>
+      <xsl:attribute name="xml:space">preserve</xsl:attribute>
+      <xsl:apply-templates select="@* | code/node()"/>
+    </codeblock>
+  </xsl:template>
+  <xsl:template match="pre[code]" mode="class">
+    <xsl:attribute name="class">+ topic/pre pr-d/codeblock </xsl:attribute>
+  </xsl:template>
+
+  <xsl:template match="del">
+    <ph>
+      <xsl:apply-templates select="." mode="class"/>
+      <xsl:attribute name="status">deleted</xsl:attribute>
+      <xsl:apply-templates select="@* | node()"/>
+    </ph>
+  </xsl:template>
+  <xsl:template match="del" mode="class">
+    <xsl:attribute name="class">- topic/ph </xsl:attribute>
+  </xsl:template>
+
+  <xsl:template match="s">
+    <line-through>
+      <xsl:apply-templates select="." mode="class"/>
+      <xsl:apply-templates select="@* | node()"/>
+    </line-through>
+  </xsl:template>
+  <xsl:template match="s" mode="class">
+    <xsl:attribute name="class">+ topic/ph hi-d/line-through </xsl:attribute>
+  </xsl:template>
+
+  <xsl:template match="code">
+    <codeph>
+      <xsl:apply-templates select="." mode="class"/>
+      <xsl:apply-templates select="@* | node()"/>
+    </codeph>
+  </xsl:template>
+  <xsl:template match="code" mode="class">
+    <xsl:attribute name="class">+ topic/ph pr-d/codeph </xsl:attribute>
+  </xsl:template>
+
+  <xsl:template match="var">
+    <var>
+      <xsl:apply-templates select="." mode="class"/>
+      <xsl:apply-templates select="@* | node()"/>
+    </var>
+  </xsl:template>
+  <xsl:template match="var" mode="class">
+    <xsl:attribute name="class">+ topic/ph pr-d/var </xsl:attribute>
+  </xsl:template>
+
+  <xsl:template match="menu">
+    <ul>
+      <xsl:apply-templates select="." mode="class"/>
+      <xsl:apply-templates select="@* | node()"/>
+    </ul>
+  </xsl:template>
+  <xsl:template match="menu" mode="class">
+    <xsl:attribute name="class">- topic/ul </xsl:attribute>
+  </xsl:template>
+
 </xsl:stylesheet>
