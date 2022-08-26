@@ -2,15 +2,6 @@
 
 Paragraph ~~Text~~ *test* and **list**:
 
-Tables
-------
-
-| First Header | Second Header |         Third Header |
-| :----------- | :-----------: | -------------------: |
-| First row    |      Data     | Very long data entry |
-| Second row   |    **Cell**   |               *Cell* |
-[simple_table]
-
 Keys
 ----
 

@@ -127,7 +127,7 @@ public class HtmlReaderTest extends AbstractReaderTest {
         run("shortdesc.html");
     }
     @Test
-    public void testtable() throws Exception {
+    public void testTable() throws Exception {
         run("table.html");
     }
     @Test
