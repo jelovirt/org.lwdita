@@ -2,16 +2,6 @@
 
 Paragraph ~~Text~~ *test* and **list**:
 
--   hyphen
--   list
--   item
-
-
-*   asterix
-    *   list
-*   item
-    *   nested
-
 Tables
 ------
 

@@ -4,23 +4,6 @@
   <title class="- topic/title ">Test</title>
   <body class="- topic/body ">
     <p class="- topic/p ">Paragraph <line-through class="+ topic/ph hi-d/line-through ">Text</line-through> <i class="+ topic/ph hi-d/i ">test</i> and <b class="+ topic/ph hi-d/b ">list</b>:</p>
-    <ul class="- topic/ul ">
-      <li class="- topic/li "><p class="- topic/p ">hyphen</p></li>
-      <li class="- topic/li "><p class="- topic/p ">list</p></li>
-      <li class="- topic/li "><p class="- topic/p ">item</p></li>
-    </ul>
-    <ul class="- topic/ul ">
-      <li class="- topic/li ">
-        <p class="- topic/p ">asterix</p>
-        <ul class="- topic/ul ">
-          <li class="- topic/li "><p class="- topic/p ">list</p></li>
-        </ul>
-      </li>
-      <li class="- topic/li "><p class="- topic/p ">item</p><ul class="- topic/ul ">
-        <li class="- topic/li "><p class="- topic/p ">nested</p></li>
-      </ul>
-      </li>
-    </ul>
   </body>
   <topic class="- topic/topic " id="tables">
     <title class="- topic/title ">Tables</title>
