@@ -4,28 +4,5 @@
   <shortdesc class="- topic/shortdesc ">Paragraph <ph class="- topic/ph ">Text</ph>
     <i class="+ topic/ph hi-d/i ">test</i> and <b class="+ topic/ph hi-d/b ">list</b>:
   </shortdesc>
-  <body class="- topic/body ">
-    <section class="- topic/section " id="keys">
-      <title class="- topic/title ">Keys</title>
-      <p class="- topic/p ">This is <xref class="- topic/xref " format="markdown" href="test.md">an example</xref> reference-style
-        link.
-      </p>
-      <p class="- topic/p ">This is <xref class="- topic/xref " format="markdown" href="test.md">key-a</xref> reference-style
-        link.
-      </p>
-      <p class="- topic/p ">This is <xref class="- topic/xref " format="markdown" href="test.md">Markdown</xref> reference-style
-        link.
-      </p>
-      <p class="- topic/p ">This is <xref class="- topic/xref " format="markdown" href="test.md">Markdown</xref> reference-style
-        link.
-      </p>
-      <p class="- topic/p ">This is <xref class="- topic/xref " keyref="key-missing">an example</xref> reference-style
-        link.
-      </p>
-      <p class="- topic/p ">This is
-        <xref class="- topic/xref " keyref="key-missing"/>
-        reference-style link.
-      </p>
-    </section>
-  </body>
+  <body class="- topic/body "/>
 </topic>
