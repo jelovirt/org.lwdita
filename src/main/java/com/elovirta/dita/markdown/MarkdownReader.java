@@ -10,10 +10,10 @@ import com.vladsch.flexmark.ext.footnotes.FootnoteExtension;
 import com.vladsch.flexmark.ext.gfm.strikethrough.StrikethroughSubscriptExtension;
 import com.vladsch.flexmark.ext.ins.InsExtension;
 import com.vladsch.flexmark.ext.jekyll.tag.JekyllTagExtension;
+import com.vladsch.flexmark.ext.superscript.SuperscriptExtension;
 import com.vladsch.flexmark.ext.tables.TablesExtension;
 import com.vladsch.flexmark.ext.yaml.front.matter.YamlFrontMatterExtension;
 import com.vladsch.flexmark.parser.Parser;
-import com.vladsch.flexmark.ext.superscript.SuperscriptExtension;
 import com.vladsch.flexmark.util.ast.Document;
 import com.vladsch.flexmark.util.data.MutableDataSet;
 import com.vladsch.flexmark.util.sequence.BasedSequence;
@@ -55,23 +55,23 @@ public class MarkdownReader implements XMLReader {
      */
     public MarkdownReader() {
         this(new MutableDataSet()
-                        .set(Parser.EXTENSIONS, asList(
-                                AbbreviationExtension.create(),
-                                AnchorLinkExtension.create(),
-                                FootnoteExtension.create(),
-                                InsExtension.create(),
-                                JekyllTagExtension.create(),
-                                SuperscriptExtension.create(),
-                                TablesExtension.create(),
-                                AutolinkExtension.create(),
-                                YamlFrontMatterExtension.create(),
-                                DefinitionExtension.create(),
-                                StrikethroughSubscriptExtension.create()))
-                        .set(DefinitionExtension.TILDE_MARKER, false)
-                        .set(TablesExtension.COLUMN_SPANS, true)
-                        .set(TablesExtension.APPEND_MISSING_COLUMNS, false)
-                        .set(TablesExtension.DISCARD_EXTRA_COLUMNS, true)
-                        .set(TablesExtension.HEADER_SEPARATOR_COLUMN_MATCH, true)
+                .set(Parser.EXTENSIONS, asList(
+                        AbbreviationExtension.create(),
+                        AnchorLinkExtension.create(),
+                        FootnoteExtension.create(),
+                        InsExtension.create(),
+                        JekyllTagExtension.create(),
+                        SuperscriptExtension.create(),
+                        TablesExtension.create(),
+                        AutolinkExtension.create(),
+                        YamlFrontMatterExtension.create(),
+                        DefinitionExtension.create(),
+                        StrikethroughSubscriptExtension.create()))
+                .set(DefinitionExtension.TILDE_MARKER, false)
+                .set(TablesExtension.COLUMN_SPANS, true)
+                .set(TablesExtension.APPEND_MISSING_COLUMNS, false)
+                .set(TablesExtension.DISCARD_EXTRA_COLUMNS, true)
+                .set(TablesExtension.HEADER_SEPARATOR_COLUMN_MATCH, true)
         );
         try (InputStream style = getClass().getResourceAsStream("/specialize.xsl")) {
             tf = (SAXTransformerFactory) TransformerFactory.newInstance();
@@ -171,7 +171,7 @@ public class MarkdownReader implements XMLReader {
         final CharArrayWriter out = new CharArrayWriter();
         if (input.getByteStream() != null) {
             final String encoding = input.getEncoding() != null ? input.getEncoding() : "UTF-8";
-            try (InputStream is = "UTF-8" .equalsIgnoreCase(encoding)
+            try (InputStream is = "UTF-8".equalsIgnoreCase(encoding)
                     ? consumeBOM(input.getByteStream())
                     : input.getByteStream();
                  Reader in = new InputStreamReader(is, encoding)) {
@@ -189,7 +189,7 @@ public class MarkdownReader implements XMLReader {
                 throw new IllegalArgumentException(e);
             }
             final String encoding = input.getEncoding() != null ? input.getEncoding() : "UTF-8";
-            try (InputStream is = "UTF-8" .equalsIgnoreCase(encoding)
+            try (InputStream is = "UTF-8".equalsIgnoreCase(encoding)
                     ? consumeBOM(inUrl.openStream())
                     : inUrl.openStream();
                  Reader in = new InputStreamReader(is, encoding)) {

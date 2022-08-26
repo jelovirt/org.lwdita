@@ -18,9 +18,8 @@ import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
-import java.io.*;
-
-import static org.junit.Assert.assertEquals;
+import java.io.IOException;
+import java.io.InputStream;
 
 public class DitaToAstTest {
 

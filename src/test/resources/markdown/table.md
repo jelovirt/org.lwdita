@@ -8,6 +8,12 @@ Tables
 |  123  |  123 |   123   |   123  |
 |    1  |    1 |     1   |     1  |
 
+| First Header | Second Header |         Third Header |
+| :----------- | :-----------: | -------------------: |
+| First row    |      Data     | Very long data entry |
+| Second row   |    **Cell**   |               *Cell* |
+[simple_table]
+
 PHP Table:
 
 | First Header | Second Header Very long data entry Very long data entry Very long data entry Very long data entry Very long data entry Very long data entry Very long data entry Very long data entry Very long data entry |         Third Header |

@@ -28,19 +28,16 @@ public class MarkdownReaderTest extends AbstractReaderTest {
     }
 
     @Test
-    public void testComplex() throws Exception {
-        run("test.md");
-    }
-
-    @Test
     public void testHeader() throws Exception {
         run("header.md");
     }
+
     @Ignore
     @Test
     public void testPandocHeader() throws Exception {
         run("pandoc_header.md");
     }
+
     @Test(expected = RuntimeException.class)
     public void testInvalidHeader() throws Exception {
         run("invalid_header.md");
