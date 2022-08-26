@@ -11,14 +11,6 @@ Tables
 | Second row   |    **Cell**   |               *Cell* |
 [simple_table]
 
-Links
------
-
-*   [Markdown](test.md)
-*   [DITA](test.dita)
-*   [HTML](test.html)
-*   [External](http://www.example.com/test.html)
-
 Keys
 ----
 
