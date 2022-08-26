@@ -53,15 +53,6 @@
         </ol>
       </li>
     </ol>
-    <section class="- topic/section " id="codeblock-section">
-      <title class="- topic/title ">Codeblock {.section}</title>
-      <p class="- topic/p ">Code example on <ph class="- topic/ph ">for</ph> loop:
-      </p>
-      <pre class="- topic/pre " xml:space="preserve"><ph class="- topic/ph ">for i in items:
-            println(i)</ph></pre>
-      <p class="- topic/p ">Fenced block:</p>
-      <pre class="- topic/pre " id="foreach-example" outputclass="scala" xml:space="preserve"><ph class="- topic/ph ">items.foreach(println)</ph></pre>
-    </section>
     <section class="- topic/section " id="tables">
       <title class="- topic/title ">Tables</title>
       <table class="- topic/table ">

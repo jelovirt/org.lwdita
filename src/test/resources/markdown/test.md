@@ -18,19 +18,6 @@ Paragraph ~~Text~~ *test* and **list**:
     1.  nested
     1.  list
 
-## Codeblock {.section}
-
-Code example on `for` loop:
-
-    for i in items:
-        println(i)
-
-Fenced block:
-
-```{.scala #foreach-example}
-items.foreach(println)
-```
-
 Tables
 ------
 

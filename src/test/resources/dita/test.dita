@@ -30,14 +30,6 @@
       </ol>
       </li>
     </ol>
-    <section class="- topic/section " id="codeblock">
-      <title class="- topic/title ">Codeblock </title>
-      <p class="- topic/p ">Code example on <codeph class="+ topic/ph pr-d/codeph ">for</codeph> loop:</p>
-      <codeblock class="+ topic/pre pr-d/codeblock " xml:space="preserve">for i in items:
-        println(i)</codeblock>
-      <p class="- topic/p ">Fenced block:</p>
-      <codeblock class="+ topic/pre pr-d/codeblock " id="foreach-example" outputclass="scala" xml:space="preserve">items.foreach(println)</codeblock>
-    </section>
   </body>
   <topic class="- topic/topic " id="tables">
     <title class="- topic/title ">Tables</title>
