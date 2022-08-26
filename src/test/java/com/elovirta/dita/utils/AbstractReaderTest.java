@@ -23,7 +23,9 @@ import java.io.InputStream;
 
 public abstract class AbstractReaderTest {
 
+    private final TransformerFactory transformerFactory = TransformerFactory.newInstance();
     private final DocumentBuilder db;
+    private final XMLReader r;
 
     public abstract XMLReader getReader();
 
@@ -40,6 +42,7 @@ public abstract class AbstractReaderTest {
             final DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
             builderFactory.setNamespaceAware(true);
             db = builderFactory.newDocumentBuilder();
+            r = getReader();
         } catch (ParserConfigurationException e) {
             throw new RuntimeException(e);
         }
@@ -53,8 +56,7 @@ public abstract class AbstractReaderTest {
         final Document act;
         try (final InputStream in = getClass().getResourceAsStream("/" + input)) {
             act = db.newDocument();
-            final Transformer t = TransformerFactory.newInstance().newTransformer();
-            final XMLReader r = getReader();
+            final Transformer t = transformerFactory.newTransformer();
             final InputSource i = new InputSource(in);
             t.transform(new SAXSource(r, i), new DOMResult(act));
         }
@@ -69,7 +71,7 @@ public abstract class AbstractReaderTest {
         try {
             XMLAssert.assertXMLEqual(clean(exp), clean(act));
         } catch (AssertionFailedError e) {
-            TransformerFactory.newInstance().newTransformer().transform(new DOMSource(act), new StreamResult(System.out));
+            transformerFactory.newTransformer().transform(new DOMSource(act), new StreamResult(System.out));
             throw e;
         }
     }
