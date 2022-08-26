@@ -28,11 +28,6 @@ public class MarkdownReaderTest extends AbstractReaderTest {
     }
 
     @Test
-    public void testComplex() throws Exception {
-        run("test.md");
-    }
-
-    @Test
     public void testHeader() throws Exception {
         run("header.md");
     }

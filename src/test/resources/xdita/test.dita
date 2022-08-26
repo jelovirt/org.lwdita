@@ -1,8 +1,0 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
-<topic xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/" class="- topic/topic " id="test">
-  <title class="- topic/title ">Test</title>
-  <shortdesc class="- topic/shortdesc ">Paragraph <ph class="- topic/ph ">Text</ph>
-    <i class="+ topic/ph hi-d/i ">test</i> and <b class="+ topic/ph hi-d/b ">list</b>:
-  </shortdesc>
-  <body class="- topic/body "/>
-</topic>

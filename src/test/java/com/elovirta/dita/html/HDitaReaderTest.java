@@ -22,11 +22,6 @@ public class HDitaReaderTest extends HtmlReaderTest {
     }
 
     @Test
-    public void test() throws Exception {
-        run("test.html");
-    }
-
-    @Test
     public void testHdita() throws Exception {
         run("hdita.html");
     }

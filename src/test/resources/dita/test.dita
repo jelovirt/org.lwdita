@@ -1,8 +1,0 @@
-<topic xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/"
-       class="- topic/topic "
-       id="test">
-  <title class="- topic/title ">Test</title>
-  <body class="- topic/body ">
-    <p class="- topic/p ">Paragraph <line-through class="+ topic/ph hi-d/line-through ">Text</line-through> <i class="+ topic/ph hi-d/i ">test</i> and <b class="+ topic/ph hi-d/b ">list</b>:</p>
-  </body>
-</topic>
