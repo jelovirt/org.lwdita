@@ -3,7 +3,10 @@
  */
 package com.elovirta.dita.markdown.renderer;
 
-import com.elovirta.dita.markdown.*;
+import com.elovirta.dita.markdown.DitaRenderer;
+import com.elovirta.dita.markdown.MetadataSerializerImpl;
+import com.elovirta.dita.markdown.ParseException;
+import com.elovirta.dita.markdown.SaxWriter;
 import com.elovirta.dita.utils.ClasspathURIResolver;
 import com.elovirta.dita.utils.FragmentContentHandler;
 import com.vladsch.flexmark.ast.*;
@@ -19,11 +22,11 @@ import com.vladsch.flexmark.ext.gfm.strikethrough.Strikethrough;
 import com.vladsch.flexmark.ext.gfm.strikethrough.Subscript;
 import com.vladsch.flexmark.ext.jekyll.tag.JekyllTag;
 import com.vladsch.flexmark.ext.jekyll.tag.JekyllTagBlock;
+import com.vladsch.flexmark.ext.superscript.Superscript;
 import com.vladsch.flexmark.ext.tables.*;
 import com.vladsch.flexmark.ext.typographic.TypographicQuotes;
 import com.vladsch.flexmark.ext.yaml.front.matter.AbstractYamlFrontMatterVisitor;
 import com.vladsch.flexmark.ext.yaml.front.matter.YamlFrontMatterBlock;
-import com.vladsch.flexmark.ext.superscript.Superscript;
 import com.vladsch.flexmark.util.ast.ContentNode;
 import com.vladsch.flexmark.util.ast.Document;
 import com.vladsch.flexmark.util.ast.Node;
@@ -1500,42 +1503,42 @@ public class CoreNodeRenderer {
     }
 
     private AttributesBuilder getLinkAttributes(final String href) {
-      final AttributesBuilder atts = new AttributesBuilder(XREF_ATTS)
-          .add(ATTRIBUTE_NAME_HREF, href);
-      if(href.startsWith("#")) { 
-        atts.add(ATTRIBUTE_NAME_FORMAT, "markdown");
-      } else {
-        final URI uri = toURI(href);
-        String format = null;
-        if (uri.getPath() != null) {
-            final String ext = FilenameUtils.getExtension(uri.getPath()).toLowerCase();
-            switch (ext) {
-                case ATTR_FORMAT_VALUE_DITA:
-                case "xml":
-                    format = null;
-                    break;
-                // Markdown is converted to DITA
-                case "md":
-                case "markdown":
-                    format = "markdown";
-                    break;
-                default:
-                    format = !ext.isEmpty() ? ext : "html";
-                    break;
+        final AttributesBuilder atts = new AttributesBuilder(XREF_ATTS)
+                .add(ATTRIBUTE_NAME_HREF, href);
+        if (href.startsWith("#")) {
+            atts.add(ATTRIBUTE_NAME_FORMAT, "markdown");
+        } else {
+            final URI uri = toURI(href);
+            String format = null;
+            if (uri.getPath() != null) {
+                final String ext = FilenameUtils.getExtension(uri.getPath()).toLowerCase();
+                switch (ext) {
+                    case ATTR_FORMAT_VALUE_DITA:
+                    case "xml":
+                        format = null;
+                        break;
+                    // Markdown is converted to DITA
+                    case "md":
+                    case "markdown":
+                        format = "markdown";
+                        break;
+                    default:
+                        format = !ext.isEmpty() ? ext : "html";
+                        break;
+                }
+            }
+            if (uri.getScheme() != null && uri.getScheme().equals("mailto")) {
+                atts.add(ATTRIBUTE_NAME_FORMAT, "email");
+            }
+            if (format != null) {
+                atts.add(ATTRIBUTE_NAME_FORMAT, format);
+            }
+
+            if (uri != null && (uri.isAbsolute() || !uri.isAbsolute() && uri.getPath() != null && uri.getPath().startsWith("/"))) {
+                atts.add(ATTRIBUTE_NAME_SCOPE, ATTR_SCOPE_VALUE_EXTERNAL);
             }
         }
-        if (uri.getScheme() != null && uri.getScheme().equals("mailto")) {
-            atts.add(ATTRIBUTE_NAME_FORMAT, "email");
-        }
-        if (format != null) {
-            atts.add(ATTRIBUTE_NAME_FORMAT, format);
-        }
-
-        if (uri != null && (uri.isAbsolute() || !uri.isAbsolute() && uri.getPath() != null && uri.getPath().startsWith("/"))) {
-            atts.add(ATTRIBUTE_NAME_SCOPE, ATTR_SCOPE_VALUE_EXTERNAL);
-        }
-      }
-      return atts;
+        return atts;
     }
 
     private String normalize(final String string) {

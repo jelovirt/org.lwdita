@@ -9,7 +9,9 @@ import org.dita.dost.util.DitaClass;
 import org.dita.dost.util.XMLUtils;
 import org.xml.sax.Attributes;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.dita.dost.util.Constants.*;
