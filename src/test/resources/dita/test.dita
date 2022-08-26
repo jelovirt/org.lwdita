@@ -21,15 +21,6 @@
       </ul>
       </li>
     </ul>
-    <ol class="- topic/ol ">
-      <li class="- topic/li "><p class="- topic/p ">ordered</p></li>
-      <li class="- topic/li "><p class="- topic/p ">list</p></li>
-      <li class="- topic/li "><p class="- topic/p ">item</p><ol class="- topic/ol ">
-        <li class="- topic/li "><p class="- topic/p ">nested</p></li>
-        <li class="- topic/li "><p class="- topic/p ">list</p></li>
-      </ol>
-      </li>
-    </ol>
   </body>
   <topic class="- topic/topic " id="tables">
     <title class="- topic/title ">Tables</title>

@@ -12,12 +12,6 @@ Paragraph ~~Text~~ *test* and **list**:
 *   item
     *   nested
 
-1.  ordered
-1.  list
-1.  item
-    1.  nested
-    1.  list
-
 Tables
 ------
 
