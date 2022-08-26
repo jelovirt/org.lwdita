@@ -196,6 +196,11 @@ public class MarkdownReaderTest extends AbstractReaderTest {
     }
 
     @Test
+    public void testUnsupportedHtml() throws Exception {
+        run("unsupported_html.md");
+    }
+
+    @Test
     public void testConref() throws Exception {
         run("conref.md");
     }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<topic class="- topic/topic " id="add-remove-or-edit-menu-items-in-your-online-store">
+<topic xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/" class="- topic/topic "
+       id="add-remove-or-edit-menu-items-in-your-online-store">
   <title class="- topic/title ">Add, remove, or edit menu items in your online store</title>
   <shortdesc class="- topic/shortdesc ">============================
     You can add menu items to your online store menus to build your store's navigation. Menu items are links to
@@ -11,7 +12,7 @@
     </xref> before you can add it to a menu.
     </p>
     <p class="- topic/p ">You can view and change your online store navigation from the
-      <xref class="- topic/xref " format="html" scope="external" href="/www.shopify.com/admin/menus">
+      <xref class="- topic/xref " format="html" href="/www.shopify.com/admin/menus" scope="external">
         <b class="+ topic/ph hi-d/b ">Navigation</b>
       </xref>
       page in your Shopify admin.
@@ -108,14 +109,15 @@
               <p class="- topic/p ">
                 <b class="+ topic/ph hi-d/b ">Policies</b>
                 - one of your
-                <xref class="- topic/xref " format="html" scope="external"
-                      href="/manual/sell-online/checkout-settings/refund-privacy-tos">store policies
+                <xref class="- topic/xref " format="html"
+                      href="/manual/sell-online/checkout-settings/refund-privacy-tos" scope="external">store policies
                 </xref>
               </p>
             </li>
           </ul>
-          <p class="- topic/p ">To create an email link, use the format <codeph class="+ topic/ph pr-d/codeph "
-          >mailto:youremail@example.com</codeph>.</p>
+          <p class="- topic/p ">To create an email link, use the format <ph class="- topic/ph ">
+            mailto:youremail@example.com</ph>.
+          </p>
         </li>
         <li class="- topic/li ">
           <p class="- topic/p ">If you selected a link type, then select a specific destination. When you select <b
@@ -155,9 +157,8 @@
               </p>
             </li>
             <li class="- topic/li ">
-              <p class="- topic/p ">To change the destination of the menu item, click the <codeph
-                  class="+ topic/ph pr-d/codeph ">x
-              </codeph> in the <b class="+ topic/ph hi-d/b ">Link</b> field, and then enter or select a new destination.
+              <p class="- topic/p ">To change the destination of the menu item, click the <ph class="- topic/ph ">x</ph> in
+                the <b class="+ topic/ph hi-d/b ">Link</b> field, and then enter or select a new destination.
               </p>
             </li>
           </ul>
@@ -175,7 +176,7 @@
     <section class="- topic/section " id="change-the-display-order-of-menu-items">
       <title class="- topic/title ">Change the display order of menu items</title>
       <p class="- topic/p ">You can view the display order of menu items on the
-        <xref class="- topic/xref " format="html"  scope="external" href="/www.shopify.com/admin/menus">
+        <xref class="- topic/xref " format="html" href="/www.shopify.com/admin/menus" scope="external">
           <b class="+ topic/ph hi-d/b ">Navigation</b>
         </xref>
         page. The menu items display on your online store in the order that they are listed.

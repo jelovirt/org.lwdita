@@ -89,6 +89,7 @@ public class CoreNodeRenderer {
     private static final Attributes DD_ATTS = buildAtts(TOPIC_DD);
     private static final Attributes CODEPH_ATTS = buildAtts(PR_D_CODEPH);
     private static final Attributes CODEBLOCK_ATTS = buildAtts(PR_D_CODEBLOCK);
+    private static final Attributes PRE_ATTS = buildAtts(TOPIC_PRE);
     private static final Attributes DT_ATTS = buildAtts(TOPIC_DT);
     private static final Attributes DEL_ATTS = new AttributesBuilder().add(ATTRIBUTE_NAME_CLASS, TOPIC_PH.toString()).add("status", "deleted").build();
     private static final Attributes LINE_THROUGH_ATTS = buildAtts(HI_D_LINE_THROUGH);
@@ -154,10 +155,13 @@ public class CoreNodeRenderer {
         this.lwDita = DitaRenderer.LW_DITA.getFrom(options);
         this.metadataSerializer = new MetadataSerializerImpl(idFromYaml);
 
-        try (InputStream in = getClass().getResourceAsStream("/hdita2dita-markdown.xsl")) {
+        final String stylesheet = lwDita
+                ? "/hdita2dita-common.xsl"
+                : "/hdita2dita-markdown.xsl";
+        try (InputStream in = getClass().getResourceAsStream(stylesheet)) {
             tf = (SAXTransformerFactory) TransformerFactory.newInstance();
             tf.setURIResolver(new ClasspathURIResolver(tf.getURIResolver()));
-            t = tf.newTemplates(new StreamSource(in, "classpath:///hdita2dita-markdown.xsl"));
+            t = tf.newTemplates(new StreamSource(in, "classpath://" + stylesheet));
         } catch (IOException | TransformerConfigurationException e) {
             throw new RuntimeException(e);
         }
@@ -434,7 +438,11 @@ public class CoreNodeRenderer {
     }
 
     private void render(final Code node, final NodeRendererContext context, final SaxWriter html) {
-        printTag(node, context, html, PR_D_CODEPH, CODEPH_ATTS);
+        if (lwDita) {
+            printTag(node, context, html, TOPIC_PH, PH_ATTS);
+        } else {
+            printTag(node, context, html, PR_D_CODEPH, CODEPH_ATTS);
+        }
     }
 
     private void render(final DefinitionList node, final NodeRendererContext context, final SaxWriter html) {
@@ -1099,7 +1107,11 @@ public class CoreNodeRenderer {
 //    }
 
     private void render(final Strikethrough node, final NodeRendererContext context, final SaxWriter html) {
-        printTag(node, context, html, HI_D_LINE_THROUGH, LINE_THROUGH_ATTS);
+        if (lwDita) {
+            printTag(node, context, html, TOPIC_PH, PH_ATTS);
+        } else {
+            printTag(node, context, html, HI_D_LINE_THROUGH, LINE_THROUGH_ATTS);
+        }
     }
 
     private void render(final Emphasis node, final NodeRendererContext context, final SaxWriter html) {
@@ -1258,7 +1270,7 @@ public class CoreNodeRenderer {
     }
 
     private void render(final CodeBlock node, final NodeRendererContext context, final SaxWriter html) {
-        final AttributesBuilder atts = new AttributesBuilder(CODEBLOCK_ATTS)
+        final AttributesBuilder atts = new AttributesBuilder(lwDita ? PRE_ATTS : CODEBLOCK_ATTS)
                 .add(XML_NS_URI, "space", "xml:space", "CDATA", "preserve");
 //        if (node.getType() != null && !node.getType().isEmpty()) {
 //            final String type = node.getType().trim();
@@ -1275,7 +1287,7 @@ public class CoreNodeRenderer {
 //                atts.add("outputclass", String.join(" ", metadata.classes));
 //            }
 //        }
-        html.startElement(PR_D_CODEBLOCK, atts.build());
+        html.startElement(lwDita ? TOPIC_PRE : PR_D_CODEBLOCK, atts.build());
         String text = node.getChars().toString();
         if (text.endsWith("\n")) {
             text = text.substring(0, text.length() - 1);
@@ -1285,7 +1297,7 @@ public class CoreNodeRenderer {
     }
 
     private void render(final IndentedCodeBlock node, final NodeRendererContext context, final SaxWriter html) {
-        final AttributesBuilder atts = new AttributesBuilder(CODEBLOCK_ATTS)
+        final AttributesBuilder atts = new AttributesBuilder(lwDita ? PRE_ATTS : CODEBLOCK_ATTS)
                 .add(XML_NS_URI, "space", "xml:space", "CDATA", "preserve");
 //        if (node.getType() != null && !node.getType().isEmpty()) {
 //            final String type = node.getType().trim();
@@ -1302,17 +1314,24 @@ public class CoreNodeRenderer {
 //                atts.add("outputclass", String.join(" ", metadata.classes));
 //            }
 //        }
-        html.startElement(PR_D_CODEBLOCK, atts.build());
+        html.startElement(lwDita ? TOPIC_PRE : PR_D_CODEBLOCK, atts.build());
+        // FIXME: For compatibility with HTML pre/code, should be removed
+        if (lwDita) {
+            html.startElement(TOPIC_PH, PH_ATTS);
+        }
         String text = node.getContentChars().toString();
         if (text.endsWith("\n")) {
             text = text.substring(0, text.length() - 1);
         }
         html.characters(text);
+        if (lwDita) {
+            html.endElement();
+        }
         html.endElement();
     }
 
     private void render(final FencedCodeBlock node, final NodeRendererContext context, final SaxWriter html) {
-        final AttributesBuilder atts = new AttributesBuilder(CODEBLOCK_ATTS)
+        final AttributesBuilder atts = new AttributesBuilder(lwDita ? PRE_ATTS : CODEBLOCK_ATTS)
                 .add(XML_NS_URI, "space", "xml:space", "CDATA", "preserve");
 //        if (node.getType() != null && !node.getType().isEmpty()) {
 //            final String type = node.getType().trim();
@@ -1356,12 +1375,19 @@ public class CoreNodeRenderer {
             }
         }
 
-        html.startElement(PR_D_CODEBLOCK, atts.build());
+        html.startElement(lwDita ? TOPIC_PRE : PR_D_CODEBLOCK, atts.build());
+        // FIXME: For compatibility with HTML pre/code, should be removed
+        if (lwDita) {
+            html.startElement(TOPIC_PH, PH_ATTS);
+        }
         String text = node.getContentChars().normalizeEOL();
         if (text.endsWith("\n")) {
             text = text.substring(0, text.length() - 1);
         }
         html.characters(text);
+        if (lwDita) {
+            html.endElement();
+        }
         html.endElement();
     }
 

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<topic xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/" class="- topic/topic " id="codeblock">
+  <title class="- topic/title ">Codeblock</title>
+  <shortdesc class="- topic/shortdesc ">Code example on <ph class="- topic/ph ">for</ph> loop:
+  </shortdesc>
+  <body class="- topic/body ">
+    <pre class="- topic/pre " xml:space="preserve"><ph class="- topic/ph ">for i in items:
+    println(i)</ph></pre>
+    <p class="- topic/p ">Fenced block:</p>
+    <pre class="- topic/pre " id="foreach-example" outputclass="scala" xml:space="preserve"><ph class="- topic/ph ">items.foreach(println)</ph></pre>
+  </body>
+</topic>

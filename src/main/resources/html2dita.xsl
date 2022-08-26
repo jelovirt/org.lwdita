@@ -7,10 +7,10 @@
                 xpath-default-namespace="http://www.w3.org/1999/xhtml"
                 exclude-result-prefixes="xs x">
 
-  <xsl:import href="classpath:///hdita2dita-common.xsl"/>
+  <xsl:import href="classpath:///hdita2dita-markdown.xsl"/>
   <xsl:import href="classpath:///specialize.xsl"/>
 
-  <xsl:output indent="yes"></xsl:output>
+  <xsl:output indent="yes"/>
 
   <xsl:template match="/">
     <xsl:variable name="dita" as="element()">
