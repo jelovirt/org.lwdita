@@ -725,12 +725,11 @@ public class CoreNodeRenderer {
 
     private String getSectionId(Heading node, Title header) {
         if (header != null) {
-            if (header.id != null) {
-                return header.id;
-            } else if (node.getAnchorRefId() != null) {
+            if (node.getAnchorRefId() != null) {
                 return node.getAnchorRefId();
             } else {
-                return getId(header.title);
+                return null;
+//                return getId(header.title);
             }
         } else {
             if (node.getAnchorRefId() != null) {

@@ -6,25 +6,20 @@ import com.vladsch.flexmark.ext.attributes.AttributeNode;
 import com.vladsch.flexmark.ext.attributes.AttributesNode;
 import com.vladsch.flexmark.util.ast.Node;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
-
-import static com.elovirta.dita.markdown.renderer.HeaderIdGenerator.generateId;
+import java.util.*;
 
 class Title {
-    final String title;
-    final String id;
+//    final String title;
     final Collection<String> classes;
+//    final Map<String, String> attributes;
 
     Title(final Heading node) {
-        final StringBuilder contents = new StringBuilder();
-        getText(node, contents);
-        title = contents.toString();
+//        final StringBuilder contents = new StringBuilder();
+//        getText(node, contents);
+//        title = contents.toString();
         final List<AttributesNode> attributesNodes = getAttributesNodes(node);
         classes = getClasses(attributesNodes);
-        id = getId(attributesNodes).orElse(generateId(title.replaceAll("\\s+", " ").trim(), " -_", false));
+        getId(attributesNodes).ifPresent(node::setAnchorRefId);
     }
 
     private Optional<String> getId(List<AttributesNode> attributesNodes) {
@@ -68,14 +63,14 @@ class Title {
         return res;
     }
 
-    private void getText(Node parent, StringBuilder buf) {
-        final List<AttributesNode> res = new ArrayList<>();
-        for (Node child : parent.getChildren()) {
-            if (child instanceof Text) {
-                buf.append(child.getChars());
-            } else {
-                getText(child, buf);
-            }
-        }
-    }
+//    private void getText(Node parent, StringBuilder buf) {
+//        final List<AttributesNode> res = new ArrayList<>();
+//        for (Node child : parent.getChildren()) {
+//            if (child instanceof Text) {
+//                buf.append(child.getChars());
+//            } else {
+//                getText(child, buf);
+//            }
+//        }
+//    }
 }
