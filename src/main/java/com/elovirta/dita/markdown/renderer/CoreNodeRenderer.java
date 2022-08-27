@@ -13,6 +13,7 @@ import com.vladsch.flexmark.ast.*;
 import com.vladsch.flexmark.ext.abbreviation.Abbreviation;
 import com.vladsch.flexmark.ext.abbreviation.AbbreviationBlock;
 import com.vladsch.flexmark.ext.anchorlink.AnchorLink;
+import com.vladsch.flexmark.ext.attributes.AttributesNode;
 import com.vladsch.flexmark.ext.definition.DefinitionItem;
 import com.vladsch.flexmark.ext.definition.DefinitionList;
 import com.vladsch.flexmark.ext.definition.DefinitionTerm;
@@ -177,6 +178,7 @@ public class CoreNodeRenderer {
         return Stream.<NodeRenderingHandler>of(
                         new NodeRenderingHandler<>(Abbreviation.class, (node, context, html) -> render(node, context, html)),
                         new NodeRenderingHandler<>(AbbreviationBlock.class, (node, context, html) -> render(node, context, html)),
+                        new NodeRenderingHandler<>(AttributesNode.class, (node, context, html) -> { /* Ignore */ }),
                         new NodeRenderingHandler<>(YamlFrontMatterBlock.class, (node, context, html) -> render(node, context, html)),
                         new NodeRenderingHandler<>(Footnote.class, (node, context, html) -> render(node, context, html)),
                         new NodeRenderingHandler<>(FootnoteBlock.class, (node, context, html) -> render(node, context, html)),
@@ -637,7 +639,6 @@ public class CoreNodeRenderer {
         Title header = null;
         if (!lwDita) {
             header = new Title(node);
-            stripHeaderAttributes(node, header);
         }
 
         if (inSection) {
@@ -722,22 +723,6 @@ public class CoreNodeRenderer {
         }
     }
 
-    /**
-     * Strip header attributes from the heading contents.
-     */
-    private void stripHeaderAttributes(Heading node, Title header) {
-        if (header.id != null || !header.classes.isEmpty()) {
-            final Text last = findLastText(node);
-            if (last != null) {
-                final BasedSequence chars = last.getChars();
-                final int i = chars.indexOf('{');
-                final Text copy = new Text(i != -1 ? chars.subSequence(0, i) : chars);
-                last.insertAfter(copy);
-                last.unlink();
-            }
-        }
-    }
-
     private String getSectionId(Heading node, Title header) {
         if (header != null) {
             if (header.id != null) {
@@ -767,21 +752,6 @@ public class CoreNodeRenderer {
             }
         }
         return getSectionId(node, header);
-    }
-
-    private Text findLastText(Node node) {
-        for (Node child : node.getReversedChildren()) {
-            Text t = null;
-            if (child instanceof Text) {
-                t = (Text) child;
-            } else if (child.hasChildren()) {
-                t = findLastText(child);
-            }
-            if (t != null) {
-                return t;
-            }
-        }
-        return null;
     }
 
     private void outputMetadata(Map<String, Object> documentMetadata, SaxWriter html) {

@@ -4,6 +4,7 @@ import com.elovirta.dita.utils.ClasspathURIResolver;
 import com.google.common.annotations.VisibleForTesting;
 import com.vladsch.flexmark.ext.abbreviation.AbbreviationExtension;
 import com.vladsch.flexmark.ext.anchorlink.AnchorLinkExtension;
+import com.vladsch.flexmark.ext.attributes.AttributesExtension;
 import com.vladsch.flexmark.ext.autolink.AutolinkExtension;
 import com.vladsch.flexmark.ext.definition.DefinitionExtension;
 import com.vladsch.flexmark.ext.footnotes.FootnoteExtension;
@@ -58,6 +59,7 @@ public class MarkdownReader implements XMLReader {
                 .set(Parser.EXTENSIONS, asList(
                         AbbreviationExtension.create(),
                         AnchorLinkExtension.create(),
+                        AttributesExtension.create(),
                         FootnoteExtension.create(),
                         InsExtension.create(),
                         JekyllTagExtension.create(),

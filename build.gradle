@@ -22,7 +22,7 @@ dependencies {
         exclude group: 'com.vladsch.flexmark', module: 'flexmark-ext-aside'
         exclude group: 'com.vladsch.flexmark', module: 'flexmark-ext-emoji'
         exclude group: 'com.vladsch.flexmark', module: 'flexmark-ext-enumerated-reference'
-        exclude group: 'com.vladsch.flexmark', module: 'flexmark-ext-attributes'
+//        exclude group: 'com.vladsch.flexmark', module: 'flexmark-ext-attributes'
 //        exclude group: 'com.vladsch.flexmark', module: 'flexmark-ext-autolink'
 //        exclude group: 'com.vladsch.flexmark', module: 'flexmark-ext-definition'
         exclude group: 'com.vladsch.flexmark', module: 'flexmark-html2md-converter'
