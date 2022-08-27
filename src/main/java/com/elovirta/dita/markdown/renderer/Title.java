@@ -11,7 +11,7 @@ import java.util.*;
 class Title {
 //    final String title;
     final Collection<String> classes;
-//    final Map<String, String> attributes;
+    final Map<String, String> attributes;
 
     Title(final Heading node) {
 //        final StringBuilder contents = new StringBuilder();
@@ -19,7 +19,23 @@ class Title {
 //        title = contents.toString();
         final List<AttributesNode> attributesNodes = getAttributesNodes(node);
         classes = getClasses(attributesNodes);
+        attributes = getAttributes(attributesNodes);
         getId(attributesNodes).ifPresent(node::setAnchorRefId);
+    }
+
+    private Map<String, String> getAttributes(List<AttributesNode> attributesNodes) {
+        final Map<String, String> res = new HashMap<>();
+        for (AttributesNode attributesNode : attributesNodes) {
+            for (Node child : attributesNode.getChildren()) {
+                if (child instanceof AttributeNode) {
+                    final AttributeNode attributeNode = (AttributeNode) child;
+                    if (!isClass(attributeNode) && !isId(attributeNode)) {
+                        res.put(attributeNode.getName().toString(), attributeNode.getValue().toString());
+                    }
+                }
+            }
+        }
+        return res;
     }
 
     private Optional<String> getId(List<AttributesNode> attributesNodes) {
@@ -27,7 +43,7 @@ class Title {
             for (Node child : attributesNode.getChildren()) {
                 if (child instanceof AttributeNode) {
                     final AttributeNode attributeNode = (AttributeNode) child;
-                    if (attributeNode.getName().equals("#")) {
+                    if (isId(attributeNode)) {
                         return Optional.of(attributeNode.getValue().toString());
                     }
                 }
@@ -36,19 +52,27 @@ class Title {
         return Optional.empty();
     }
 
+    private boolean isId(AttributeNode attributeNode) {
+        return attributeNode.getName().equals("#") || attributeNode.getName().equals("id");
+    }
+
     private List<String> getClasses(List<AttributesNode> attributesNodes) {
         final List<String> res = new ArrayList<>();
         for (AttributesNode attributesNode : attributesNodes) {
             for (Node child : attributesNode.getChildren()) {
                 if (child instanceof AttributeNode) {
                     final AttributeNode attributeNode = (AttributeNode) child;
-                    if (attributeNode.getName().equals(".")) {
+                    if (isClass(attributeNode)) {
                         res.add(attributeNode.getValue().toString());
                     }
                 }
             }
         }
         return res;
+    }
+
+    private boolean isClass(AttributeNode attributeNode) {
+        return attributeNode.getName().equals(".") || attributeNode.getName().equals("class");
     }
 
     private List<AttributesNode> getAttributesNodes(Node parent) {

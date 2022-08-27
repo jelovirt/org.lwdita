@@ -415,10 +415,6 @@
     <xsl:attribute name="class">- topic/ph </xsl:attribute>
   </xsl:template>
 
-  <xsl:template match="@data-keyref">
-    <xsl:attribute name="keyref" select="."/>
-  </xsl:template>
-
   <xsl:template match="b | strong">
     <b>
       <xsl:apply-templates select="." mode="class"/>
@@ -732,6 +728,10 @@
   </xsl:template>
 
   <xsl:template match="@data-hd-class" priority="10"/>
+
+  <xsl:template match="@data-keyref">
+    <xsl:attribute name="keyref" select="."/>
+  </xsl:template>
 
   <xsl:template match="@data-conref" priority="10">
     <xsl:attribute name="conref" select="."/>

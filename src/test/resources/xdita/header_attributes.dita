@@ -5,11 +5,11 @@
   id="my-header-foo">
   <title class="- topic/title ">My header {#foo}</title>
   <body class="- topic/body ">
-    <section class="- topic/section " id="my-header-----foo-section">
-      <title class="- topic/title ">My header ## {#foo-section}</title>
+    <section class="- topic/section " id="my-header-----foo-section-platformosx-audiencenovice">
+      <title class="- topic/title ">My header ## {#foo-section platform=osx audience="novice"}</title>
     </section>
-    <section class="- topic/section " id="my-other-header---main-shine-the-site">
-      <title class="- topic/title ">My other header {.main .shine #the-site}</title>
+    <section class="- topic/section " id="my-other-header---main-classshine-the-site">
+      <title class="- topic/title ">My other header {.main} {class=shine #the-site}</title>
     </section>
   </body>
 </topic>

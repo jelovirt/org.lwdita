@@ -87,4 +87,10 @@
     <xsl:attribute name="class">- topic/ul </xsl:attribute>
   </xsl:template>
 
+  <xsl:template match="@*[starts-with(name(), 'data-')]">
+    <xsl:attribute name="{substring-after(name(), '-')}" select="."/>
+  </xsl:template>
+
+  <xsl:template match="@data-hd-class" priority="10"/>
+
 </xsl:stylesheet>

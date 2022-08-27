@@ -699,8 +699,13 @@ public class CoreNodeRenderer {
                 lastId = id;
                 atts.add(ATTRIBUTE_NAME_ID, id);
             }
-            if (!lwDita && !header.classes.isEmpty()) {
-                atts.add("outputclass", String.join(" ", header.classes));
+            if (!lwDita) {
+                if (!header.classes.isEmpty()) {
+                    atts.add(ATTRIBUTE_NAME_OUTPUTCLASS, String.join(" ", header.classes));
+                }
+                for (Map.Entry<String, String> attr : header.attributes.entrySet()) {
+                    atts.add(attr.getKey(), attr.getValue());
+                }
             }
             html.startElement(TOPIC_TOPIC, atts.build());
             html.startElement(TOPIC_TITLE, TITLE_ATTS);
