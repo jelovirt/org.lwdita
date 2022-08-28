@@ -13,6 +13,7 @@ import com.vladsch.flexmark.ast.*;
 import com.vladsch.flexmark.ext.abbreviation.Abbreviation;
 import com.vladsch.flexmark.ext.abbreviation.AbbreviationBlock;
 import com.vladsch.flexmark.ext.anchorlink.AnchorLink;
+import com.vladsch.flexmark.ext.attributes.AttributesNode;
 import com.vladsch.flexmark.ext.definition.DefinitionItem;
 import com.vladsch.flexmark.ext.definition.DefinitionList;
 import com.vladsch.flexmark.ext.definition.DefinitionTerm;
@@ -177,6 +178,7 @@ public class CoreNodeRenderer {
         return Stream.<NodeRenderingHandler>of(
                         new NodeRenderingHandler<>(Abbreviation.class, (node, context, html) -> render(node, context, html)),
                         new NodeRenderingHandler<>(AbbreviationBlock.class, (node, context, html) -> render(node, context, html)),
+                        new NodeRenderingHandler<>(AttributesNode.class, (node, context, html) -> { /* Ignore */ }),
                         new NodeRenderingHandler<>(YamlFrontMatterBlock.class, (node, context, html) -> render(node, context, html)),
                         new NodeRenderingHandler<>(Footnote.class, (node, context, html) -> render(node, context, html)),
                         new NodeRenderingHandler<>(FootnoteBlock.class, (node, context, html) -> render(node, context, html)),
@@ -433,11 +435,21 @@ public class CoreNodeRenderer {
     }
 
     private void render(final BlockQuote node, final NodeRendererContext context, final SaxWriter html) {
-        printTag(node, context, html, TOPIC_LQ, BLOCKQUOTE_ATTS);
+        printTag(node, context, html, TOPIC_LQ, getAttributesFromAttributesNode(node, BLOCKQUOTE_ATTS));
+    }
+
+    private Attributes getAttributesFromAttributesNode(Node node, Attributes base) {
+        if (!lwDita && isAttributesParagraph(node.getNext())) {
+            final Title header = new Title(node.getNext());
+            final AttributesBuilder builder = new AttributesBuilder(base);
+            return readAttributes(header, builder).build();
+        } else {
+            return base;
+        }
     }
 
     private void render(final BulletList node, final NodeRendererContext context, final SaxWriter html) {
-        printTag(node, context, html, TOPIC_UL, UL_ATTS);
+        printTag(node, context, html, TOPIC_UL, getAttributesFromAttributesNode(node, UL_ATTS));
     }
 
     private void render(final Code node, final NodeRendererContext context, final SaxWriter html) {
@@ -449,7 +461,7 @@ public class CoreNodeRenderer {
     }
 
     private void render(final DefinitionList node, final NodeRendererContext context, final SaxWriter html) {
-        html.startElement(TOPIC_DL, DL_ATTS);
+        html.startElement(TOPIC_DL, getAttributesFromAttributesNode(node, DL_ATTS));
         DitaClass previous = null;
 //        for (final Node child : node.getChildren()) {
 //            if (previous == null) {
@@ -637,7 +649,7 @@ public class CoreNodeRenderer {
         Title header = null;
         if (!lwDita) {
             header = new Title(node);
-            stripHeaderAttributes(node, header);
+            header.id.ifPresent(node::setAnchorRefId);
         }
 
         if (inSection) {
@@ -698,8 +710,13 @@ public class CoreNodeRenderer {
                 lastId = id;
                 atts.add(ATTRIBUTE_NAME_ID, id);
             }
-            if (!lwDita && !header.classes.isEmpty()) {
-                atts.add("outputclass", String.join(" ", header.classes));
+            if (!lwDita) {
+                if (!header.classes.isEmpty()) {
+                    atts.add(ATTRIBUTE_NAME_OUTPUTCLASS, String.join(" ", header.classes));
+                }
+                for (Map.Entry<String, String> attr : header.attributes.entrySet()) {
+                    atts.add(attr.getKey(), attr.getValue());
+                }
             }
             html.startElement(TOPIC_TOPIC, atts.build());
             html.startElement(TOPIC_TITLE, TITLE_ATTS);
@@ -722,30 +739,13 @@ public class CoreNodeRenderer {
         }
     }
 
-    /**
-     * Strip header attributes from the heading contents.
-     */
-    private void stripHeaderAttributes(Heading node, Title header) {
-        if (header.id != null || !header.classes.isEmpty()) {
-            final Text last = findLastText(node);
-            if (last != null) {
-                final BasedSequence chars = last.getChars();
-                final int i = chars.indexOf('{');
-                final Text copy = new Text(i != -1 ? chars.subSequence(0, i) : chars);
-                last.insertAfter(copy);
-                last.unlink();
-            }
-        }
-    }
-
     private String getSectionId(Heading node, Title header) {
         if (header != null) {
-            if (header.id != null) {
-                return header.id;
-            } else if (node.getAnchorRefId() != null) {
+            if (node.getAnchorRefId() != null) {
                 return node.getAnchorRefId();
             } else {
-                return getId(header.title);
+                return null;
+//                return getId(header.title);
             }
         } else {
             if (node.getAnchorRefId() != null) {
@@ -767,21 +767,6 @@ public class CoreNodeRenderer {
             }
         }
         return getSectionId(node, header);
-    }
-
-    private Text findLastText(Node node) {
-        for (Node child : node.getReversedChildren()) {
-            Text t = null;
-            if (child instanceof Text) {
-                t = (Text) child;
-            } else if (child.hasChildren()) {
-                t = findLastText(child);
-            }
-            if (t != null) {
-                return t;
-            }
-        }
-        return null;
     }
 
     private void outputMetadata(Map<String, Object> documentMetadata, SaxWriter html) {
@@ -914,21 +899,50 @@ public class CoreNodeRenderer {
     }
 
     private void render(final OrderedList node, final NodeRendererContext context, final SaxWriter html) {
-        printTag(node, context, html, TOPIC_OL, OL_ATTS);
+        printTag(node, context, html, TOPIC_OL, getAttributesFromAttributesNode(node, OL_ATTS));
     }
 
     private boolean onlyImageChild = false;
 
+    private boolean isAttributesParagraph(final Node node) {
+        if (node == null) {
+            return false;
+        }
+        final Node firstChild = node.getFirstChild();
+        return firstChild != null && firstChild instanceof AttributesNode &&  firstChild.getNext() == null;
+    }
+
     private void render(final Paragraph node, final NodeRendererContext context, final SaxWriter html) {
-        if (shortdescParagraph && !inSection && node.getPrevious() instanceof Heading) {
+        if (isAttributesParagraph(node)) {
+            // Attributes for previous block
+        } else if (shortdescParagraph && !inSection && node.getPrevious() instanceof Heading) {
             // Pulled by Heading
         } else if (containsImage(node)) {
             onlyImageChild = true;
             context.renderChildren(node);
             onlyImageChild = false;
         } else {
-            printTag(node, context, html, TOPIC_P, P_ATTS);
+            final Attributes atts;
+            if (!lwDita) {
+                final Title header = new Title(node);
+                final AttributesBuilder builder = new AttributesBuilder(P_ATTS);
+                atts = readAttributes(header, builder).build();
+            } else {
+                atts = P_ATTS;
+            }
+            printTag(node, context, html, TOPIC_P, atts);
         }
+    }
+
+    private AttributesBuilder readAttributes(Title header, AttributesBuilder builder) {
+        if (!header.classes.isEmpty()) {
+            builder.add(ATTRIBUTE_NAME_OUTPUTCLASS, header.classes.stream().collect(Collectors.joining(" ")));
+        }
+        for (Map.Entry<String, String> attr : header.attributes.entrySet()) {
+            builder.add(attr.getKey(), attr.getValue());
+        }
+        header.id.ifPresent(id -> builder.add(ATTRIBUTE_NAME_ID, id));
+        return builder;
     }
 
     /**
@@ -1183,7 +1197,15 @@ public class CoreNodeRenderer {
 
     private void render(final TableBlock node, final NodeRendererContext context, final SaxWriter html) {
         currentTableNode = node;
-        html.startElement(TOPIC_TABLE, TABLE_ATTS);
+        final Attributes tableAtts;
+        if (!lwDita && isAttributesParagraph(node.getNext())) {
+            final Title header = new Title(node.getNext());
+            final AttributesBuilder builder = new AttributesBuilder(TABLE_ATTS);
+            tableAtts = readAttributes(header, builder).build();
+        } else {
+            tableAtts = TABLE_ATTS;
+        }
+        html.startElement(TOPIC_TABLE, tableAtts);
         for (final Node child : node.getChildren()) {
             if (child instanceof TableCaption) {
                 html.startElement(TOPIC_TITLE, TITLE_ATTS);
