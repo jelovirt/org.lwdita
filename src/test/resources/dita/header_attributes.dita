@@ -17,20 +17,20 @@
       <p class="- topic/p " outputclass="draft" rev="1" id="p">Paragraph</p>
       <p class="- topic/p ">Inline <b class="+ topic/ph hi-d/b ">bold</b>.
       </p>
-      <lq class="- topic/lq ">
+      <lq class="- topic/lq " audience="novice">
         <p class="- topic/p " outputclass="red">Quote</p>
       </lq>
-      <ul class="- topic/ul ">
+      <ul class="- topic/ul " audience="novice">
         <li class="- topic/li ">
           <p class="- topic/p " id="ul">List item</p>
         </li>
       </ul>
-      <ol class="- topic/ol ">
+      <ol class="- topic/ol " audience="novice">
         <li class="- topic/li ">
           <p class="- topic/p " id="ol">List item</p>
         </li>
       </ol>
-      <dl class="- topic/dl ">
+      <dl class="- topic/dl " audience="novice">
         <dlentry class="- topic/dlentry ">
           <dt class="- topic/dt ">Definition Term</dt>
           <dd class="- topic/dd ">
@@ -41,7 +41,7 @@
           </dd>
         </dlentry>
       </dl>
-      <table class="- topic/table ">
+      <table class="- topic/table " audience="novice">
         <tgroup class="- topic/tgroup " cols="1">
           <colspec class="- topic/colspec " colname="col1"/>
           <thead class="- topic/thead ">

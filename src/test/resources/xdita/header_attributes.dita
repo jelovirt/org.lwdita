@@ -13,16 +13,19 @@
       <lq class="- topic/lq ">
         <p class="- topic/p ">Quote {.red}</p>
       </lq>
+      <p class="- topic/p ">{audience=novice}</p>
       <ul class="- topic/ul ">
         <li class="- topic/li ">
           <p class="- topic/p ">List item {#ul}</p>
         </li>
       </ul>
+      <p class="- topic/p ">{audience=novice}</p>
       <ol class="- topic/ol ">
         <li class="- topic/li ">
           <p class="- topic/p ">List item {#ol}</p>
         </li>
       </ol>
+      <p class="- topic/p ">{audience=novice}</p>
       <dl class="- topic/dl ">
         <dlentry class="- topic/dlentry ">
           <dt class="- topic/dt ">Definition Term</dt>
@@ -34,6 +37,7 @@
           </dd>
         </dlentry>
       </dl>
+      <p class="- topic/p ">{audience=novice}</p>
       <table class="- topic/table ">
         <tgroup class="- topic/tgroup " cols="1">
           <colspec class="- topic/colspec " colname="col1"/>
@@ -49,6 +53,7 @@
           </tbody>
         </tgroup>
       </table>
+      <p class="- topic/p ">{audience=novice}</p>
       <pre class="- topic/pre " outputclass="lang" xml:space="preserve"><ph class="- topic/ph ">code</ph></pre>
     </section>
   </body>
