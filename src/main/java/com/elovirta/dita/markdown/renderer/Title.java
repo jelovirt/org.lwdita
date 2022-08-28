@@ -2,6 +2,7 @@ package com.elovirta.dita.markdown.renderer;
 
 import com.vladsch.flexmark.ast.Heading;
 import com.vladsch.flexmark.ast.Text;
+import com.vladsch.flexmark.ext.anchorlink.AnchorLink;
 import com.vladsch.flexmark.ext.attributes.AttributeNode;
 import com.vladsch.flexmark.ext.attributes.AttributesNode;
 import com.vladsch.flexmark.util.ast.Node;
@@ -12,15 +13,20 @@ class Title {
 //    final String title;
     final Collection<String> classes;
     final Map<String, String> attributes;
+    final Optional<String> id;
 
-    Title(final Heading node) {
+    Title(final Node node) {
 //        final StringBuilder contents = new StringBuilder();
 //        getText(node, contents);
 //        title = contents.toString();
         final List<AttributesNode> attributesNodes = getAttributesNodes(node);
         classes = getClasses(attributesNodes);
         attributes = getAttributes(attributesNodes);
-        getId(attributesNodes).ifPresent(node::setAnchorRefId);
+        id = getId(attributesNodes);
+//        if (node instanceof Heading) {
+//            final Heading heading = (Heading) node;
+//            getId(attributesNodes).ifPresent(heading::setAnchorRefId);
+//        }
     }
 
     private Map<String, String> getAttributes(List<AttributesNode> attributesNodes) {
@@ -80,8 +86,10 @@ class Title {
         for (Node child : parent.getChildren()) {
             if (child instanceof AttributesNode) {
                 res.add((AttributesNode) child);
-            } else {
+            } else if (child instanceof AnchorLink) {
                 res.addAll(getAttributesNodes(child));
+            } else {
+//                res.addAll(getAttributesNodes(child));
             }
         }
         return res;

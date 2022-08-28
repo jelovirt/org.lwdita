@@ -67,6 +67,16 @@
     <xsl:attribute name="class">+ topic/ph pr-d/codeph </xsl:attribute>
   </xsl:template>
 
+  <xsl:template match="blockquote">
+    <lq>
+      <xsl:apply-templates select="." mode="class"/>
+      <xsl:apply-templates select="@* | node()"/>
+    </lq>
+  </xsl:template>
+  <xsl:template match="blockquote" mode="class">
+    <xsl:attribute name="class">- topic/lq </xsl:attribute>
+  </xsl:template>
+
   <xsl:template match="var">
     <var>
       <xsl:apply-templates select="." mode="class"/>

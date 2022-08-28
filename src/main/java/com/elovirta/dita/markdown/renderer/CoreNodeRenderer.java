@@ -639,6 +639,7 @@ public class CoreNodeRenderer {
         Title header = null;
         if (!lwDita) {
             header = new Title(node);
+            header.id.ifPresent(node::setAnchorRefId);
         }
 
         if (inSection) {
@@ -901,7 +902,22 @@ public class CoreNodeRenderer {
             context.renderChildren(node);
             onlyImageChild = false;
         } else {
-            printTag(node, context, html, TOPIC_P, P_ATTS);
+            final Attributes atts;
+            if (!lwDita) {
+                final Title header = new Title(node);
+                final AttributesBuilder attributesBuilder = new AttributesBuilder(P_ATTS);
+                if (!header.classes.isEmpty()) {
+                    attributesBuilder.add(ATTRIBUTE_NAME_OUTPUTCLASS, header.classes.stream().collect(Collectors.joining(" ")));
+                }
+                for (Map.Entry<String, String> attr : header.attributes.entrySet()) {
+                    attributesBuilder.add(attr.getKey(), attr.getValue());
+                }
+                header.id.ifPresent(id -> attributesBuilder.add(ATTRIBUTE_NAME_ID, id));
+                atts = attributesBuilder.build();
+            } else {
+                atts = P_ATTS;
+            }
+            printTag(node, context, html, TOPIC_P, atts);
         }
     }
 
