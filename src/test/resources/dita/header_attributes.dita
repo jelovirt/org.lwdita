@@ -15,7 +15,7 @@
     <title class="- topic/title ">My other header </title>
     <body class="- topic/body ">
       <p class="- topic/p " outputclass="draft" rev="1" id="p">Paragraph</p>
-      <p class="- topic/p ">Inline <b class="+ topic/ph hi-d/b ">bold</b>.
+      <p class="- topic/p ">Inline <b class="+ topic/ph hi-d/b " outputclass="red">bold</b>.
       </p>
       <lq class="- topic/lq " audience="novice">
         <p class="- topic/p " outputclass="red">Quote</p>
