@@ -54,6 +54,11 @@ public class MarkdownReaderTest extends AbstractReaderTest {
     }
 
     @Test
+    public void testBodyAttributes() throws Exception {
+        run("body_attributes.md");
+    }
+
+    @Test
     public void testConcept() throws Exception {
         run("concept.md");
     }

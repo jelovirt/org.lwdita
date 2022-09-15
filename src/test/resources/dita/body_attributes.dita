@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<topic class="- topic/topic " id="header">
+  <title class="- topic/title ">Header</title>
+  <body class="- topic/body ">
+    <p class="- topic/p " id="p" outputclass="draft" rev="1">Paragraph</p>
+    <p class="- topic/p ">Inline <b class="+ topic/ph hi-d/b " outputclass="red">bold</b>.
+    </p>
+    <p class="- topic/p ">Inline <i class="+ topic/ph hi-d/i " outputclass="red">inline</i>.
+    </p>
+    <lq class="- topic/lq " audience="novice">
+      <p class="- topic/p " outputclass="red">Quote</p>
+    </lq>
+    <ul class="- topic/ul " audience="novice">
+      <li class="- topic/li ">
+        <p class="- topic/p " id="ul">List item</p>
+      </li>
+    </ul>
+    <ol class="- topic/ol " audience="novice">
+      <li class="- topic/li ">
+        <p class="- topic/p " id="ol">List item</p>
+      </li>
+    </ol>
+    <dl class="- topic/dl " audience="novice">
+      <dlentry class="- topic/dlentry ">
+        <dt class="- topic/dt ">Definition Term</dt>
+        <dd class="- topic/dd ">
+          <p class="- topic/p " outputclass="red">definition item 1</p>
+        </dd>
+        <dd class="- topic/dd ">
+          <p class="- topic/p ">definition item 2</p>
+        </dd>
+      </dlentry>
+    </dl>
+    <table class="- topic/table " audience="novice">
+      <tgroup class="- topic/tgroup " cols="1">
+        <colspec class="- topic/colspec " colname="col1"/>
+        <thead class="- topic/thead ">
+          <row class="- topic/row ">
+            <entry class="- topic/entry ">head</entry>
+          </row>
+        </thead>
+        <tbody class="- topic/tbody ">
+          <row class="- topic/row ">
+            <entry class="- topic/entry ">body</entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+    <codeblock class="+ topic/pre pr-d/codeblock " outputclass="lang" xml:space="preserve">code</codeblock>
+  </body>
+</topic>
