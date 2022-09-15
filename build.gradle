@@ -48,6 +48,7 @@ dependencies {
 //        exclude group: 'com.vladsch.flexmark', module: 'flexmark-ext-yaml-front-matter'
         exclude group: 'com.vladsch.flexmark', module: 'flexmark-ext-youtube-embedded'
         exclude group: 'com.vladsch.flexmark', module: 'flexmark-ext-xwiki-macros'
+        exclude group: 'com.vladsch.flexmark', module: 'flexmark-pdf-converter'
         exclude group: 'com.vladsch.flexmark', module: 'flexmark-util'
 //        exclude group: 'com.vladsch.flexmark', module: 'flexmark-util-format'
 //        exclude group: 'com.vladsch.flexmark', module: 'flexmark-util-ast'

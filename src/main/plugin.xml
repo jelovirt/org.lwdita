@@ -15,6 +15,7 @@
   <template file="xsl/map2markdown-cover_template.xsl"/>
   <feature extension="dita.conductor.lib.import" file="lib/flexmark-ext-abbreviation-0.62.2.jar"/>
   <feature extension="dita.conductor.lib.import" file="lib/flexmark-ext-anchorlink-0.62.2.jar"/>
+  <feature extension="dita.conductor.lib.import" file="lib/flexmark-ext-attributes-0.62.2.jar"/>
   <feature extension="dita.conductor.lib.import" file="lib/flexmark-ext-autolink-0.62.2.jar"/>
   <feature extension="dita.conductor.lib.import" file="lib/flexmark-ext-definition-0.62.2.jar"/>
   <feature extension="dita.conductor.lib.import" file="lib/flexmark-ext-footnotes-0.62.2.jar"/>
