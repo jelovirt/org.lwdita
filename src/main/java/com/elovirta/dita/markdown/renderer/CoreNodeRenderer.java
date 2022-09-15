@@ -440,7 +440,7 @@ public class CoreNodeRenderer {
 
     private Attributes getAttributesFromAttributesNode(Node node, Attributes base) {
         if (!lwDita && isAttributesParagraph(node.getNext())) {
-            final Title header = new Title(node.getNext());
+            final Title header = Title.getFromChildren(node.getNext());
             final AttributesBuilder builder = new AttributesBuilder(base);
             return readAttributes(header, builder).build();
         } else {
@@ -449,13 +449,16 @@ public class CoreNodeRenderer {
     }
 
     private Attributes getInlineAttributes(Node node, Attributes base) {
-        if (!lwDita && node.getChildOfType(AttributesNode.class) != null) {
-            final Title header = new Title(node);
-            final AttributesBuilder builder = new AttributesBuilder(base);
-            return readAttributes(header, builder).build();
-        } else {
-            return base;
+        if (!lwDita) {
+            if (node.getChildOfType(AttributesNode.class) != null) {
+                final Title header = Title.getFromChildren(node);
+                final AttributesBuilder builder = new AttributesBuilder(base);
+                return readAttributes(header, builder).build();
+            } else if (node.getNext() instanceof AttributesNode) {
+                return base;
+            }
         }
+        return base;
     }
 
     private void render(final BulletList node, final NodeRendererContext context, final SaxWriter html) {
@@ -658,7 +661,7 @@ public class CoreNodeRenderer {
         node.getAstExtra(buf);
         Title header = null;
         if (!lwDita) {
-            header = new Title(node);
+            header = Title.getFromChildren(node);
             header.id.ifPresent(node::setAnchorRefId);
         }
 
@@ -934,7 +937,7 @@ public class CoreNodeRenderer {
         } else {
             final Attributes atts;
             if (!lwDita) {
-                final Title header = new Title(node);
+                final Title header = Title.getFromChildren(node);
                 final AttributesBuilder builder = new AttributesBuilder(P_ATTS);
                 atts = readAttributes(header, builder).build();
             } else {
@@ -1209,7 +1212,7 @@ public class CoreNodeRenderer {
         currentTableNode = node;
         final Attributes tableAtts;
         if (!lwDita && isAttributesParagraph(node.getNext())) {
-            final Title header = new Title(node.getNext());
+            final Title header = Title.getFromChildren(node.getNext());
             final AttributesBuilder builder = new AttributesBuilder(TABLE_ATTS);
             tableAtts = readAttributes(header, builder).build();
         } else {
