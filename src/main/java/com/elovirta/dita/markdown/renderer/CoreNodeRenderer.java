@@ -392,7 +392,7 @@ public class CoreNodeRenderer {
         if (node.getChars().charAt(0) == '<') {
             final AttributesBuilder atts = getLinkAttributes(node.getText().toString());
 
-            html.startElement(TOPIC_XREF, atts.build());
+            html.startElement(TOPIC_XREF, getInlineAttributes(node, atts.build()));
             html.characters(node.getText().toString());
             html.endElement();
         } else {
@@ -440,12 +440,27 @@ public class CoreNodeRenderer {
 
     private Attributes getAttributesFromAttributesNode(Node node, Attributes base) {
         if (!lwDita && isAttributesParagraph(node.getNext())) {
-            final Title header = new Title(node.getNext());
+            final Title header = Title.getFromChildren(node.getNext());
             final AttributesBuilder builder = new AttributesBuilder(base);
             return readAttributes(header, builder).build();
         } else {
             return base;
         }
+    }
+
+    private Attributes getInlineAttributes(Node node, Attributes base) {
+        if (!lwDita) {
+            if (node.getChildOfType(AttributesNode.class) != null) {
+                final Title header = Title.getFromChildren(node);
+                final AttributesBuilder builder = new AttributesBuilder(base);
+                return readAttributes(header, builder).build();
+            } else if (node.getNext() instanceof AttributesNode) {
+                final Title header = Title.getFromNext(node);
+                final AttributesBuilder builder = new AttributesBuilder(base);
+                return readAttributes(header, builder).build();
+            }
+        }
+        return base;
     }
 
     private void render(final BulletList node, final NodeRendererContext context, final SaxWriter html) {
@@ -456,7 +471,7 @@ public class CoreNodeRenderer {
         if (lwDita) {
             printTag(node, context, html, TOPIC_PH, PH_ATTS);
         } else {
-            printTag(node, context, html, PR_D_CODEPH, CODEPH_ATTS);
+            printTag(node, context, html, PR_D_CODEPH, getInlineAttributes(node, CODEPH_ATTS));
         }
     }
 
@@ -507,11 +522,11 @@ public class CoreNodeRenderer {
     }
 
     private void render(final Superscript node, final NodeRendererContext context, final SaxWriter html) {
-        printTag(node, context, html, HI_D_SUP, SUP_ATTS);
+        printTag(node, context, html, HI_D_SUP, getInlineAttributes(node, SUP_ATTS));
     }
 
     private void render(final Subscript node, final NodeRendererContext context, final SaxWriter html) {
-        printTag(node, context, html, HI_D_SUB, SUB_ATTS);
+        printTag(node, context, html, HI_D_SUB, getInlineAttributes(node, SUB_ATTS));
     }
 
     private void writeImage(Image node, final String title, final String alt, final String url, final String key, final NodeRendererContext context, SaxWriter html) {
@@ -648,7 +663,11 @@ public class CoreNodeRenderer {
         node.getAstExtra(buf);
         Title header = null;
         if (!lwDita) {
-            header = new Title(node);
+            if (node.getFirstChild() instanceof AnchorLink) {
+                header = Title.getFromChildren(node.getFirstChild());
+            } else {
+                header = Title.getFromChildren(node);
+            }
             header.id.ifPresent(node::setAnchorRefId);
         }
 
@@ -893,7 +912,7 @@ public class CoreNodeRenderer {
         final AttributesBuilder atts = getLinkAttributes("mailto:" + node.getText());
         atts.add(ATTRIBUTE_NAME_FORMAT, "email");
 
-        html.startElement(TOPIC_XREF, atts.build());
+        html.startElement(TOPIC_XREF, getInlineAttributes(node, atts.build()));
         context.renderChildren(node);
         html.endElement();
     }
@@ -924,7 +943,7 @@ public class CoreNodeRenderer {
         } else {
             final Attributes atts;
             if (!lwDita) {
-                final Title header = new Title(node);
+                final Title header = Title.getFromChildren(node);
                 final AttributesBuilder builder = new AttributesBuilder(P_ATTS);
                 atts = readAttributes(header, builder).build();
             } else {
@@ -996,7 +1015,7 @@ public class CoreNodeRenderer {
             if (onlyImageChild) {
                 atts.add("placement", "break");
             }
-            html.startElement(TOPIC_IMAGE, atts.build());
+            html.startElement(TOPIC_IMAGE, getInlineAttributes(node, atts.build()));
 //            if (node.getReference() != null) {
 //                context.renderChildren(node);
 //            }
@@ -1044,7 +1063,7 @@ public class CoreNodeRenderer {
 //            html.endElement();
 //        } else {
         final AttributesBuilder atts = getLinkAttributes(node.getUrl().toString());
-        html.startElement(TOPIC_XREF, atts.build());
+        html.startElement(TOPIC_XREF, getInlineAttributes(node, atts.build()));
 //            if (!refNode.getTitle().toString().isEmpty()) {
 //                html.characters(refNode.toString());
 //            } else {
@@ -1127,16 +1146,16 @@ public class CoreNodeRenderer {
         if (lwDita) {
             printTag(node, context, html, TOPIC_PH, PH_ATTS);
         } else {
-            printTag(node, context, html, HI_D_LINE_THROUGH, LINE_THROUGH_ATTS);
+            printTag(node, context, html, HI_D_LINE_THROUGH, getInlineAttributes(node, LINE_THROUGH_ATTS));
         }
     }
 
     private void render(final Emphasis node, final NodeRendererContext context, final SaxWriter html) {
-        printTag(node, context, html, HI_D_I, I_ATTS);
+        printTag(node, context, html, HI_D_I, getInlineAttributes(node, I_ATTS));
     }
 
     private void render(final StrongEmphasis node, final NodeRendererContext context, final SaxWriter html) {
-        printTag(node, context, html, HI_D_B, B_ATTS);
+        printTag(node, context, html, HI_D_B, getInlineAttributes(node, B_ATTS));
     }
 
     private void render(final TableBody node, final NodeRendererContext context, final SaxWriter html) {
@@ -1199,7 +1218,7 @@ public class CoreNodeRenderer {
         currentTableNode = node;
         final Attributes tableAtts;
         if (!lwDita && isAttributesParagraph(node.getNext())) {
-            final Title header = new Title(node.getNext());
+            final Title header = Title.getFromChildren(node.getNext());
             final AttributesBuilder builder = new AttributesBuilder(TABLE_ATTS);
             tableAtts = readAttributes(header, builder).build();
         } else {

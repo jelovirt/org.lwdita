@@ -13,50 +13,6 @@
          domains="(topic abbrev-d)                            a(props deliveryTarget)                            (topic equation-d)                            (topic hazard-d)                            (topic hi-d)                            (topic indexing-d)                            (topic markup-d)                            (topic mathml-d)                            (topic pr-d)                            (topic relmgmt-d)                            (topic sw-d)                            (topic svg-d)                            (topic ui-d)                            (topic ut-d)                            (topic markup-d xml-d)   "
          id="the-site" ditaarch:DITAArchVersion="1.3" outputclass="main shine">
     <title class="- topic/title ">My other header </title>
-    <body class="- topic/body ">
-      <p class="- topic/p " outputclass="draft" rev="1" id="p">Paragraph</p>
-      <p class="- topic/p ">Inline <b class="+ topic/ph hi-d/b ">bold</b>.
-      </p>
-      <lq class="- topic/lq " audience="novice">
-        <p class="- topic/p " outputclass="red">Quote</p>
-      </lq>
-      <ul class="- topic/ul " audience="novice">
-        <li class="- topic/li ">
-          <p class="- topic/p " id="ul">List item</p>
-        </li>
-      </ul>
-      <ol class="- topic/ol " audience="novice">
-        <li class="- topic/li ">
-          <p class="- topic/p " id="ol">List item</p>
-        </li>
-      </ol>
-      <dl class="- topic/dl " audience="novice">
-        <dlentry class="- topic/dlentry ">
-          <dt class="- topic/dt ">Definition Term</dt>
-          <dd class="- topic/dd ">
-            <p class="- topic/p " outputclass="red">definition item 1</p>
-          </dd>
-          <dd class="- topic/dd ">
-            <p class="- topic/p ">definition item 2</p>
-          </dd>
-        </dlentry>
-      </dl>
-      <table class="- topic/table " audience="novice">
-        <tgroup class="- topic/tgroup " cols="1">
-          <colspec class="- topic/colspec " colname="col1"/>
-          <thead class="- topic/thead ">
-            <row class="- topic/row ">
-              <entry class="- topic/entry ">head</entry>
-            </row>
-          </thead>
-          <tbody class="- topic/tbody ">
-            <row class="- topic/row ">
-              <entry class="- topic/entry ">body</entry>
-            </row>
-          </tbody>
-        </tgroup>
-      </table>
-      <codeblock class="+ topic/pre pr-d/codeblock " outputclass="lang" xml:space="preserve">code</codeblock>
-    </body>
+    <body class="- topic/body "/>
   </topic>
 </topic>

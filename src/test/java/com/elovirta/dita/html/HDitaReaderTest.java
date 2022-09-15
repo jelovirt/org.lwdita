@@ -37,6 +37,12 @@ public class HDitaReaderTest extends HtmlReaderTest {
         run("header_attributes.html");
     }
 
+    @Ignore
+    @Test
+    public void testbody_attributes() throws Exception {
+        run("body_attributes.html");
+    }
+
     @Ignore("specialization not supported by LwDITA")
     @Test
     public void testMultipleTopLevelSpecialized() throws Exception {

@@ -78,6 +78,11 @@ public class HtmlReaderTest extends AbstractReaderTest {
     }
 
     @Test
+    public void testbody_attributes() throws Exception {
+        run("body_attributes.html");
+    }
+
+    @Test
     public void testhtml() throws Exception {
         run("html.html");
     }
