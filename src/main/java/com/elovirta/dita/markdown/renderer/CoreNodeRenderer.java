@@ -455,7 +455,9 @@ public class CoreNodeRenderer {
                 final AttributesBuilder builder = new AttributesBuilder(base);
                 return readAttributes(header, builder).build();
             } else if (node.getNext() instanceof AttributesNode) {
-                return base;
+                final Title header = Title.getFromNext(node);
+                final AttributesBuilder builder = new AttributesBuilder(base);
+                return readAttributes(header, builder).build();
             }
         }
         return base;
@@ -661,7 +663,11 @@ public class CoreNodeRenderer {
         node.getAstExtra(buf);
         Title header = null;
         if (!lwDita) {
-            header = Title.getFromChildren(node);
+            if (node.getFirstChild() instanceof AnchorLink) {
+                header = Title.getFromChildren(node.getFirstChild());
+            } else {
+                header = Title.getFromChildren(node);
+            }
             header.id.ifPresent(node::setAnchorRefId);
         }
 

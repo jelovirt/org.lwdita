@@ -23,7 +23,8 @@ class Title {
     }
 
     public static Title getFromChildren(final Node node) {
-        return new Title(getAttributesNodes(node));
+//        return new Title(getAttributesNodes(node));
+        return new Title(getPreviousAttributesNodes(node));
     }
 
     private static List<AttributesNode> getNextAttributesNodes(Node current) {
@@ -33,6 +34,23 @@ class Title {
             res.add((AttributesNode) node);
             node = node.getNext();
         }
+        return res;
+    }
+
+    private static List<AttributesNode> getPreviousAttributesNodes(Node current) {
+        final List<AttributesNode> res = new ArrayList<>();
+        Node node = current.getLastChild();
+        while (node != null) {
+            if (node instanceof AttributesNode) {
+                res.add((AttributesNode) node);
+//            } else if (node instanceof AnchorLink) {
+//                // Ignore
+            } else {
+                break;
+            }
+            node = node.getPrevious();
+        }
+        Collections.reverse(res);
         return res;
     }
 

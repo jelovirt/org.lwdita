@@ -5,7 +5,7 @@
   <body class="- topic/body ">
     <p class="- topic/p ">Inline <b class="+ topic/ph hi-d/b ">bold {.red}</b>.
     </p>
-    <p class="- topic/p ">Inline <i class="+ topic/ph hi-d/i ">inline{.red}</i>.
+    <p class="- topic/p ">Inline <i class="+ topic/ph hi-d/i ">inline</i>{.red}.
     </p>
     <lq class="- topic/lq ">
       <p class="- topic/p ">Quote {.red}</p>
@@ -27,7 +27,7 @@
       <dlentry class="- topic/dlentry ">
         <dt class="- topic/dt ">Definition Term</dt>
         <dd class="- topic/dd ">
-          <p class="- topic/p ">{.red} definition item 1</p>
+          <p class="- topic/p ">definition item 1 {.red}</p>
         </dd>
         <dd class="- topic/dd ">
           <p class="- topic/p ">definition item 2</p>

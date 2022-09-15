@@ -4,7 +4,7 @@ Paragraph {.draft rev=1 #p}
 
 Inline **bold {.red}**.
 
-Inline *inline{.red}*.
+Inline *inline*{.red}.
 
 > Quote {.red}
 
@@ -19,7 +19,7 @@ Inline *inline{.red}*.
 {audience=novice}
 
 Definition Term
-:   {.red} definition item 1
+:   definition item 1 {.red}
 :   definition item 2
 
 {audience=novice}
