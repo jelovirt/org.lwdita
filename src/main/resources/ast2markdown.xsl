@@ -271,9 +271,9 @@
     <xsl:text>]</xsl:text>
     <xsl:text>(</xsl:text>
     <xsl:value-of select="@href"/>
-    <xsl:if test="@title">
+    <xsl:if test="normalize-space(@title)">
       <xsl:text> "</xsl:text>
-      <xsl:value-of select="@title"/>
+      <xsl:value-of select="normalize-space(@title)"/>
       <xsl:text>"</xsl:text>
     </xsl:if>
     <xsl:text>)</xsl:text>
