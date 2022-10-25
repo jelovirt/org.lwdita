@@ -19,6 +19,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.sax.SAXSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.InputStream;
+import java.net.URI;
 
 public abstract class AbstractReaderTest {
 
@@ -57,6 +58,7 @@ public abstract class AbstractReaderTest {
             act = db.newDocument();
             final Transformer t = transformerFactory.newTransformer();
             final InputSource i = new InputSource(in);
+            i.setSystemId(URI.create("classpath:/" + input).toString());
             t.transform(new SAXSource(r, i), new DOMResult(act));
         }
 

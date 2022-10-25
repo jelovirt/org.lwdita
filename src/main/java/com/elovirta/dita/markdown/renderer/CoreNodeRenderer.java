@@ -656,9 +656,9 @@ public class CoreNodeRenderer {
         if (lwDita && node.getLevel() > 2) {
             throw new ParseException("LwDITA does not support level " + node.getLevel() + " header: " + node.getText());
         }
-        if (node.getLevel() > headerLevel + 1) {
-            throw new ParseException("Header level raised from " + headerLevel + " to " + node.getLevel() + " without intermediate header level");
-        }
+//        if (node.getLevel() > headerLevel + 1) {
+//            throw new ParseException("Header level raised from " + headerLevel + " to " + node.getLevel() + " without intermediate header level");
+//        }
         final StringBuilder buf = new StringBuilder();
         node.getAstExtra(buf);
         Title header = null;
@@ -776,7 +776,7 @@ public class CoreNodeRenderer {
     }
 
     private String getTopicId(final Heading node, final Title header) {
-        if (idFromYaml && node.getLevel() == 1 && node.getPrevious() instanceof YamlFrontMatterBlock) {
+        if (idFromYaml && node.getLevel() == 1 && node.getDocument().getChildOfType(YamlFrontMatterBlock.class) != null) {
             final AbstractYamlFrontMatterVisitor v = new AbstractYamlFrontMatterVisitor();
             v.visit(node.getDocument());
             final Map<String, List<String>> metadata = v.getData();
