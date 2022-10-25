@@ -1,5 +1,6 @@
 package com.elovirta.dita.markdown;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class MDitaReaderTest extends MarkdownReaderTest {
@@ -18,5 +19,19 @@ public class MDitaReaderTest extends MarkdownReaderTest {
     @Test(expected = ParseException.class)
     public void testHeader() throws Exception {
         run("header.md");
+    }
+
+    @Override
+    @Ignore
+    @Test
+    public void testGitHubWiki() throws Exception {
+//        run("missing_root_header.md");
+    }
+
+    @Override
+    @Ignore
+    @Test
+    public void testGitHubWikiWithYaml() throws Exception {
+//        run("missing_root_header_with_yaml.md");
     }
 }

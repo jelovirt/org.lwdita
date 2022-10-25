@@ -16,6 +16,8 @@ import com.vladsch.flexmark.ext.ins.InsExtension;
 import com.vladsch.flexmark.ext.jekyll.tag.JekyllTagExtension;
 import com.vladsch.flexmark.ext.superscript.SuperscriptExtension;
 import com.vladsch.flexmark.ext.tables.TablesExtension;
+import com.vladsch.flexmark.ext.yaml.front.matter.AbstractYamlFrontMatterVisitor;
+import com.vladsch.flexmark.ext.yaml.front.matter.YamlFrontMatterBlock;
 import com.vladsch.flexmark.ext.yaml.front.matter.YamlFrontMatterExtension;
 import com.vladsch.flexmark.parser.Parser;
 import com.vladsch.flexmark.util.ast.Document;
@@ -39,6 +41,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.CharBuffer;
+import java.util.List;
+import java.util.Map;
 
 import static java.util.Arrays.asList;
 import static org.apache.commons.io.IOUtils.copy;
@@ -163,22 +167,54 @@ public class MarkdownReader implements XMLReader {
         try {
             final Document root = p.parse(sequence);
             final Document cleaned = clean(root, input);
+            validate(cleaned);
             parseAST(cleaned);
         } catch (ParseException e) {
             throw new SAXException("Failed to parse Markdown: " + e.getMessage(), e);
         }
     }
 
+    private void validate(Document root)  {
+        int level = 0;
+        Node node = root.getFirstChild();
+        while (node != null) {
+            if (node instanceof Heading) {
+                Heading heading = (Heading) node;
+                if (heading.getLevel() > level + 1) {
+                    throw new ParseException("Header level raised from " + level + " to " + heading.getLevel() + " without intermediate header level");
+                }
+                level = heading.getLevel();
+            }
+            node = node.getNext();
+        }
+    }
+
     private Document clean(Document root, InputSource input) {
         final boolean lwDita = DitaRenderer.LW_DITA.getFrom(options);
         if (!lwDita) {
-            final boolean isWiki = !(root.getFirstChild() != null
-                    && root.getFirstChild() instanceof Heading
-                    && ((Heading) root.getFirstChild()).getLevel() == 1);
-            if (isWiki) {
-                final String title = getTextFromFile(input.getSystemId());
+            if (isWiki(root)) {
+                final YamlFrontMatterBlock yaml = root.getFirstChild() instanceof YamlFrontMatterBlock
+                        ? (YamlFrontMatterBlock) root.getFirstChild()
+                        : null;
+                String title = getTextFromFile(input.getSystemId());
                 final Heading heading = new Heading();
-//                heading.setAnchorRefId(getIdFromFile(input.getSystemId()));
+                if (yaml != null) {
+                    final AbstractYamlFrontMatterVisitor v = new AbstractYamlFrontMatterVisitor();
+                    v.visit(root);
+                    final Map<String, List<String>> metadata = v.getData();
+                    final List<String> ids = metadata.get("id");
+                    if (ids != null && !ids.isEmpty()) {
+                        heading.setAnchorRefId(ids.get(0));
+                    }
+                    final List<String> titles = metadata.get("title");
+                    if (titles != null && !titles.isEmpty()) {
+                        title = titles.get(0);
+                        if ((title.charAt(0) == '\'' && title.charAt(title.length() - 1) == '\'') ||
+                                (title.charAt(0) == '"' && title.charAt(title.length() - 1) == '"')) {
+                            title = title.substring(1, title.length() - 1);
+                        }
+                    }
+                }
                 heading.setLevel(1);
                 final AnchorLink anchorLink = new AnchorLink();
                 anchorLink.appendChild(new Text(title));
@@ -187,6 +223,17 @@ public class MarkdownReader implements XMLReader {
             }
         }
         return root;
+    }
+
+    private static boolean isWiki(Document root) {
+        Node firstChild = root.getFirstChild();
+        if (firstChild == null) {
+            return false;
+        }
+        if (firstChild instanceof YamlFrontMatterBlock) {
+            firstChild = firstChild.getNext();
+        }
+        return !(firstChild instanceof Heading && ((Heading) firstChild).getLevel() == 1);
     }
 
     private String getTextFromFile(String file) {
