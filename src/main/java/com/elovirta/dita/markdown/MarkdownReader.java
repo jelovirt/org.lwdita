@@ -2,7 +2,10 @@ package com.elovirta.dita.markdown;
 
 import com.elovirta.dita.utils.ClasspathURIResolver;
 import com.google.common.annotations.VisibleForTesting;
+import com.vladsch.flexmark.ast.Heading;
+import com.vladsch.flexmark.ast.Text;
 import com.vladsch.flexmark.ext.abbreviation.AbbreviationExtension;
+import com.vladsch.flexmark.ext.anchorlink.AnchorLink;
 import com.vladsch.flexmark.ext.anchorlink.AnchorLinkExtension;
 import com.vladsch.flexmark.ext.attributes.AttributesExtension;
 import com.vladsch.flexmark.ext.autolink.AutolinkExtension;
@@ -16,9 +19,12 @@ import com.vladsch.flexmark.ext.tables.TablesExtension;
 import com.vladsch.flexmark.ext.yaml.front.matter.YamlFrontMatterExtension;
 import com.vladsch.flexmark.parser.Parser;
 import com.vladsch.flexmark.util.ast.Document;
+import com.vladsch.flexmark.util.ast.Node;
 import com.vladsch.flexmark.util.data.MutableDataSet;
 import com.vladsch.flexmark.util.sequence.BasedSequence;
 import com.vladsch.flexmark.util.sequence.BasedSequenceImpl;
+import org.dita.dost.util.FileUtils;
+import org.dita.dost.util.URLUtils;
 import org.xml.sax.*;
 
 import javax.xml.transform.Templates;
@@ -154,13 +160,42 @@ public class MarkdownReader implements XMLReader {
         char[] markdownContent = getMarkdownContent(input);
         final BasedSequence sequence = BasedSequenceImpl.of(CharBuffer.wrap(markdownContent));
 
-        final Document root;
         try {
-            root = p.parse(sequence);
-            parseAST(root);
+            final Document root = p.parse(sequence);
+            final Document cleaned = clean(root, input);
+            parseAST(cleaned);
         } catch (ParseException e) {
             throw new SAXException("Failed to parse Markdown: " + e.getMessage(), e);
         }
+    }
+
+    private Document clean(Document root, InputSource input) {
+        final boolean lwDita = DitaRenderer.LW_DITA.getFrom(options);
+        if (!lwDita) {
+            final boolean isWiki = !(root.getFirstChild() != null
+                    && root.getFirstChild() instanceof Heading
+                    && ((Heading) root.getFirstChild()).getLevel() == 1);
+            if (isWiki) {
+                final String title = getTextFromFile(input.getSystemId());
+                final Heading heading = new Heading();
+//                heading.setAnchorRefId(getIdFromFile(input.getSystemId()));
+                heading.setLevel(1);
+                final AnchorLink anchorLink = new AnchorLink();
+                anchorLink.appendChild(new Text(title));
+                heading.appendChild(anchorLink);
+                root.prependChild(heading);
+            }
+        }
+        return root;
+    }
+
+    private String getTextFromFile(String file) {
+        final String path = URI.create(file).getPath();
+        final String name = path.substring(path.lastIndexOf("/") + 1);
+        final String title = name.lastIndexOf(".") != -1
+                ? name.substring(0, name.lastIndexOf("."))
+                : name;
+        return title.replace('_', ' ').replace('-', ' ');
     }
 
     @Override

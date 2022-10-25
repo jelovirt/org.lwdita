@@ -49,6 +49,11 @@ public class MarkdownReaderTest extends AbstractReaderTest {
     }
 
     @Test
+    public void testGitHubWiki() throws Exception {
+        run("missing_root_header.md");
+    }
+
+    @Test
     public void testHeaderAttributes() throws Exception {
         run("header_attributes.md");
     }
