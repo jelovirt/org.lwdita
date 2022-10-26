@@ -222,21 +222,36 @@
   <!-- Inline -->
   
   <xsl:template match="strong" mode="ast">
-    <xsl:text>**</xsl:text>
-    <xsl:apply-templates mode="ast"/>
-    <xsl:text>**</xsl:text>
+    <xsl:param name="escape" as="xs:string?" tunnel="yes"/>
+    <xsl:variable name="char" as="xs:string"
+                  select="if (contains($escape, '*')) then '__' else '**'"/>
+    <xsl:value-of select="$char"/>
+    <xsl:apply-templates mode="ast">
+      <xsl:with-param name="escape" select="concat($char, $escape)" as="xs:string?" tunnel="yes"/>
+    </xsl:apply-templates>
+    <xsl:value-of select="$char"/>
   </xsl:template>
 
   <xsl:template match="emph" mode="ast">
-    <xsl:text>*</xsl:text>
-    <xsl:apply-templates mode="ast"/>
-    <xsl:text>*</xsl:text>
+    <xsl:param name="escape" as="xs:string?" tunnel="yes"/>
+    <xsl:variable name="char" as="xs:string"
+                  select="if (contains($escape, '*')) then '_' else '*'"/>
+    <xsl:value-of select="$char"/>
+    <xsl:apply-templates mode="ast">
+      <xsl:with-param name="escape" select="concat($char, $escape)" as="xs:string?" tunnel="yes"/>
+    </xsl:apply-templates>
+    <xsl:value-of select="$char"/>
   </xsl:template>
 
   <xsl:template match="cite" mode="ast">
-    <xsl:text>*</xsl:text>
-    <xsl:apply-templates mode="ast"/>
-    <xsl:text>*</xsl:text>
+    <xsl:param name="escape" as="xs:string?" tunnel="yes"/>
+    <xsl:variable name="char" as="xs:string"
+                  select="if (contains($escape, '*')) then '__' else '**'"/>
+    <xsl:value-of select="$char"/>
+    <xsl:apply-templates mode="ast">
+      <xsl:with-param name="escape" select="concat('*', $escape)" as="xs:string?" tunnel="yes"/>
+    </xsl:apply-templates>
+    <xsl:value-of select="$char"/>
   </xsl:template>
 
   <xsl:template match="code" mode="ast">
@@ -298,20 +313,17 @@
     <xsl:value-of select="$linefeed"/>
   </xsl:template>
   
-  <xsl:template match="text()" mode="ast"
-                name="text">
-    <xsl:param name="text" select="." as="xs:string"/>
-    <xsl:variable name="head" select="substring($text, 1, 1)" as="xs:string"/>
-    <xsl:if test="contains('\`*_{}[]()>#|', $head)"><!--{}+-.!-->
-      <xsl:text>\</xsl:text>
-    </xsl:if>
-    <xsl:value-of select="$head"/>
-    <xsl:variable name="tail" select="substring($text, 2)" as="xs:string"/>
-    <xsl:if test="string-length($tail) gt 0">
-      <xsl:call-template name="text">
-        <xsl:with-param name="text" select="substring($text, 2)" as="xs:string"/>
-      </xsl:call-template>
-    </xsl:if>
+  <xsl:template match="text()" mode="ast">
+    <xsl:variable name="regexp" as="xs:string" select="string-join(('[', '*_', '\\`\{}\[\]()>#|' , ']'))"/>
+    <xsl:analyze-string select="." regex="{$regexp}">
+      <xsl:matching-substring>
+        <xsl:text>\</xsl:text>
+        <xsl:value-of select="."/>
+      </xsl:matching-substring>
+      <xsl:non-matching-substring>
+        <xsl:value-of select="."/>
+      </xsl:non-matching-substring>
+    </xsl:analyze-string>
   </xsl:template>
   
   <xsl:template match="code/text() |
