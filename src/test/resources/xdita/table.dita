@@ -5,154 +5,207 @@
   id="tables">
   <title class="- topic/title ">Tables</title>
   <body class="- topic/body ">
-    <table class="- topic/table ">
-      <tgroup class="- topic/tgroup " cols="4">
-        <colspec class="- topic/colspec " colname="col1"/>
-        <colspec class="- topic/colspec " colname="col2"/>
-        <colspec class="- topic/colspec " colname="col3"/>
-        <colspec class="- topic/colspec " colname="col4"/>
-        <thead class="- topic/thead ">
-          <row class="- topic/row ">
-            <entry align="right" class="- topic/entry ">Right</entry>
-            <entry align="left" class="- topic/entry ">Left</entry>
-            <entry class="- topic/entry ">Default</entry>
-            <entry align="center" class="- topic/entry ">Center</entry>
-          </row>
-        </thead>
-        <tbody class="- topic/tbody ">
-          <row class="- topic/row ">
-            <entry align="right" class="- topic/entry ">12</entry>
-            <entry align="left" class="- topic/entry ">12</entry>
-            <entry class="- topic/entry ">12</entry>
-            <entry align="center" class="- topic/entry ">12</entry>
-          </row>
-          <row class="- topic/row ">
-            <entry align="right" class="- topic/entry ">123</entry>
-            <entry align="left" class="- topic/entry ">123</entry>
-            <entry class="- topic/entry ">123</entry>
-            <entry align="center" class="- topic/entry ">123</entry>
-          </row>
-          <row class="- topic/row ">
-            <entry align="right" class="- topic/entry ">1</entry>
-            <entry align="left" class="- topic/entry ">1</entry>
-            <entry class="- topic/entry ">1</entry>
-            <entry align="center" class="- topic/entry ">1</entry>
-          </row>
-        </tbody>
-      </tgroup>
-    </table>
-    <table class="- topic/table ">
+    <simpletable class="- topic/simpletable ">
+      <sthead class="- topic/sthead ">
+        <stentry class="- topic/stentry ">
+          <p class="- topic/p ">Right</p>
+        </stentry>
+        <stentry class="- topic/stentry ">
+          <p class="- topic/p ">Left</p>
+        </stentry>
+        <stentry class="- topic/stentry ">
+          <p class="- topic/p ">Default</p>
+        </stentry>
+        <stentry class="- topic/stentry ">
+          <p class="- topic/p ">Center</p>
+        </stentry>
+      </sthead>
+      <strow class="- topic/strow ">
+        <stentry class="- topic/stentry ">
+          <p class="- topic/p ">12</p>
+        </stentry>
+        <stentry class="- topic/stentry ">
+          <p class="- topic/p ">12</p>
+        </stentry>
+        <stentry class="- topic/stentry ">
+          <p class="- topic/p ">12</p>
+        </stentry>
+        <stentry class="- topic/stentry ">
+          <p class="- topic/p ">12</p>
+        </stentry>
+      </strow>
+      <strow class="- topic/strow ">
+        <stentry class="- topic/stentry ">
+          <p class="- topic/p ">123</p>
+        </stentry>
+        <stentry class="- topic/stentry ">
+          <p class="- topic/p ">123</p>
+        </stentry>
+        <stentry class="- topic/stentry ">
+          <p class="- topic/p ">123</p>
+        </stentry>
+        <stentry class="- topic/stentry ">
+          <p class="- topic/p ">123</p>
+        </stentry>
+      </strow>
+      <strow class="- topic/strow ">
+        <stentry class="- topic/stentry ">
+          <p class="- topic/p ">1</p>
+        </stentry>
+        <stentry class="- topic/stentry ">
+          <p class="- topic/p ">1</p>
+        </stentry>
+        <stentry class="- topic/stentry ">
+          <p class="- topic/p ">1</p>
+        </stentry>
+        <stentry class="- topic/stentry ">
+          <p class="- topic/p ">1</p>
+        </stentry>
+      </strow>
+    </simpletable>
+    <simpletable class="- topic/simpletable ">
       <title class="- topic/title ">simple_table</title>
-      <tgroup class="- topic/tgroup " cols="3">
-        <colspec class="- topic/colspec " colname="col1"/>
-        <colspec class="- topic/colspec " colname="col2"/>
-        <colspec class="- topic/colspec " colname="col3"/>
-        <thead class="- topic/thead ">
-          <row class="- topic/row ">
-            <entry align="left" class="- topic/entry ">First Header</entry>
-            <entry align="center" class="- topic/entry ">Second Header</entry>
-            <entry align="right" class="- topic/entry ">Third Header</entry>
-          </row>
-        </thead>
-        <tbody class="- topic/tbody ">
-          <row class="- topic/row ">
-            <entry align="left" class="- topic/entry ">First row</entry>
-            <entry align="center" class="- topic/entry ">Data</entry>
-            <entry align="right" class="- topic/entry ">Very long data entry</entry>
-          </row>
-          <row class="- topic/row ">
-            <entry align="left" class="- topic/entry ">Second row</entry>
-            <entry align="center" class="- topic/entry ">
-              <b class="+ topic/ph hi-d/b ">Cell</b>
-            </entry>
-            <entry align="right" class="- topic/entry ">
-              <i class="+ topic/ph hi-d/i ">Cell</i>
-            </entry>
-          </row>
-        </tbody>
-      </tgroup>
-    </table>
+      <sthead class="- topic/sthead ">
+        <stentry class="- topic/stentry ">
+          <p class="- topic/p ">First Header</p>
+        </stentry>
+        <stentry class="- topic/stentry ">
+          <p class="- topic/p ">Second Header</p>
+        </stentry>
+        <stentry class="- topic/stentry ">
+          <p class="- topic/p ">Third Header</p>
+        </stentry>
+      </sthead>
+      <strow class="- topic/strow ">
+        <stentry class="- topic/stentry ">
+          <p class="- topic/p ">First row</p>
+        </stentry>
+        <stentry class="- topic/stentry ">
+          <p class="- topic/p ">Data</p>
+        </stentry>
+        <stentry class="- topic/stentry ">
+          <p class="- topic/p ">Very long data entry</p>
+        </stentry>
+      </strow>
+      <strow class="- topic/strow ">
+        <stentry class="- topic/stentry ">
+          <p class="- topic/p ">Second row</p>
+        </stentry>
+        <stentry class="- topic/stentry ">
+          <p class="- topic/p ">
+            <b class="+ topic/ph hi-d/b ">Cell</b>
+          </p>
+        </stentry>
+        <stentry class="- topic/stentry ">
+          <p class="- topic/p ">
+            <i class="+ topic/ph hi-d/i ">Cell</i>
+          </p>
+        </stentry>
+      </strow>
+    </simpletable>
     <p class="- topic/p ">PHP Table:</p>
-    <table class="- topic/table ">
-      <tgroup class="- topic/tgroup " cols="3">
-        <colspec class="- topic/colspec " colname="col1"/>
-        <colspec class="- topic/colspec " colname="col2"/>
-        <colspec class="- topic/colspec " colname="col3"/>
-        <thead class="- topic/thead ">
-          <row class="- topic/row ">
-            <entry align="left" class="- topic/entry ">First Header</entry>
-            <entry align="center" class="- topic/entry ">Second Header Very long data entry Very
-              long data entry Very long data entry Very long data entry Very long data entry Very
-              long data entry Very long data entry Very long data entry Very long data entry</entry>
-            <entry align="right" class="- topic/entry ">Third Header</entry>
-          </row>
-        </thead>
-        <tbody class="- topic/tbody ">
-          <row class="- topic/row ">
-            <entry align="left" class="- topic/entry ">First row</entry>
-            <entry align="center" class="- topic/entry ">Data</entry>
-            <entry align="right" class="- topic/entry ">Very long data entry Very long data entry
-              Very long data entry Very long data entry Very long data entry Very long data entry
-              Very long data entry Very long data entry Very long data entry Very long data
-              entry</entry>
-          </row>
-          <row class="- topic/row ">
-            <entry align="left" class="- topic/entry ">Second row</entry>
-            <entry align="center" class="- topic/entry ">
-              <b class="+ topic/ph hi-d/b ">Cell</b>
-            </entry>
-            <entry align="right" class="- topic/entry ">
-              <i class="+ topic/ph hi-d/i ">Cell</i>
-            </entry>
-          </row>
-        </tbody>
-      </tgroup>
-    </table>
-    <table class="- topic/table ">
-      <tgroup class="- topic/tgroup " cols="3">
-        <colspec class="- topic/colspec " colname="col1"/>
-        <colspec class="- topic/colspec " colname="col2"/>
-        <colspec class="- topic/colspec " colname="col3"/>
-        <thead class="- topic/thead ">
-          <row class="- topic/row ">
-            <entry class="- topic/entry ">A</entry>
-            <entry class="- topic/entry ">B</entry>
-            <entry class="- topic/entry ">C</entry>
-          </row>
-        </thead>
-        <tbody class="- topic/tbody ">
-          <row class="- topic/row ">
-            <entry class="- topic/entry ">A1</entry>
-            <entry class="- topic/entry ">B1</entry>
-            <entry class="- topic/entry ">C1</entry>
-          </row>
-          <row class="- topic/row ">
-            <entry class="- topic/entry ">A2</entry>
-            <entry class="- topic/entry ">B2</entry>
-            <entry class="- topic/entry "/>
-          </row>
-          <row class="- topic/row ">
-            <entry class="- topic/entry ">A3</entry>
-            <entry class="- topic/entry "/>
-            <entry class="- topic/entry "/>
-          </row>
-          <row class="- topic/row ">
-            <entry class="- topic/entry ">A4</entry>
-            <entry class="- topic/entry "/>
-            <entry class="- topic/entry ">C4</entry>
-          </row>
-          <row class="- topic/row ">
-            <entry class="- topic/entry ">A5</entry>
-            <entry class="- topic/entry "/>
-            <entry class="- topic/entry "/>
-          </row>
-          <row class="- topic/row ">
-            <entry class="- topic/entry ">A6</entry>
-            <entry class="- topic/entry ">A7</entry>
-            <entry class="- topic/entry "/>
-          </row>
-        </tbody>
-      </tgroup>
-    </table>
+    <simpletable class="- topic/simpletable ">
+      <sthead class="- topic/sthead ">
+        <stentry class="- topic/stentry ">
+          <p class="- topic/p ">First Header</p>
+        </stentry>
+        <stentry class="- topic/stentry ">
+          <p class="- topic/p ">Second Header Very long data entry Very long data entry Very long data entry Very long
+            data entry Very long data entry Very long data entry Very long data entry Very long data entry Very long
+            data entry
+          </p>
+        </stentry>
+        <stentry class="- topic/stentry ">
+          <p class="- topic/p ">Third Header</p>
+        </stentry>
+      </sthead>
+      <strow class="- topic/strow ">
+        <stentry class="- topic/stentry ">
+          <p class="- topic/p ">First row</p>
+        </stentry>
+        <stentry class="- topic/stentry ">
+          <p class="- topic/p ">Data</p>
+        </stentry>
+        <stentry class="- topic/stentry ">
+          <p class="- topic/p ">Very long data entry Very long data entry Very long data entry Very long data entry Very
+            long data entry Very long data entry Very long data entry Very long data entry Very long data entry Very
+            long data entry
+          </p>
+        </stentry>
+      </strow>
+      <strow class="- topic/strow ">
+        <stentry class="- topic/stentry ">
+          <p class="- topic/p ">Second row</p>
+        </stentry>
+        <stentry class="- topic/stentry ">
+          <p class="- topic/p ">
+            <b class="+ topic/ph hi-d/b ">Cell</b>
+          </p>
+        </stentry>
+        <stentry class="- topic/stentry ">
+          <p class="- topic/p ">
+            <i class="+ topic/ph hi-d/i ">Cell</i>
+          </p>
+        </stentry>
+      </strow>
+    </simpletable>
+    <simpletable class="- topic/simpletable ">
+      <sthead class="- topic/sthead ">
+        <stentry class="- topic/stentry ">
+          <p class="- topic/p ">A</p>
+        </stentry>
+        <stentry class="- topic/stentry ">
+          <p class="- topic/p ">B</p>
+        </stentry>
+        <stentry class="- topic/stentry ">
+          <p class="- topic/p ">C</p>
+        </stentry>
+      </sthead>
+      <strow class="- topic/strow ">
+        <stentry class="- topic/stentry ">
+          <p class="- topic/p ">A1</p>
+        </stentry>
+        <stentry class="- topic/stentry ">
+          <p class="- topic/p ">B1</p>
+        </stentry>
+        <stentry class="- topic/stentry ">
+          <p class="- topic/p ">C1</p>
+        </stentry>
+      </strow>
+      <strow class="- topic/strow ">
+        <stentry class="- topic/stentry ">
+          <p class="- topic/p ">A2</p>
+        </stentry>
+        <stentry class="- topic/stentry " colspan="2">
+          <p class="- topic/p ">B2</p>
+        </stentry>
+      </strow>
+      <strow class="- topic/strow ">
+        <stentry class="- topic/stentry " colspan="3">
+          <p class="- topic/p ">A3</p>
+        </stentry>
+      </strow>
+      <strow class="- topic/strow ">
+        <stentry class="- topic/stentry " colspan="2">
+          <p class="- topic/p ">A4</p>
+        </stentry>
+        <stentry class="- topic/stentry ">
+          <p class="- topic/p ">C4</p>
+        </stentry>
+      </strow>
+      <strow class="- topic/strow ">
+        <stentry class="- topic/stentry ">
+          <p class="- topic/p ">A5</p>
+        </stentry>
+      </strow>
+      <strow class="- topic/strow ">
+        <stentry class="- topic/stentry ">
+          <p class="- topic/p ">A6</p>
+        </stentry>
+        <stentry class="- topic/stentry ">
+          <p class="- topic/p ">A7</p>
+        </stentry>
+      </strow>
+    </simpletable>
   </body>
 </topic>
