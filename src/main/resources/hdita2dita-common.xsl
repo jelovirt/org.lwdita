@@ -289,7 +289,8 @@
     <xsl:variable name="cols" as="xs:integer" select="max((descendant::tr/count(*), count(colgroup/col)))"/>
     <table>
       <xsl:apply-templates select="." mode="class"/>
-      <xsl:apply-templates select="@* | caption"/>
+      <xsl:apply-templates select="@*"/>
+      <xsl:apply-templates select="caption"/>
       <tgroup class="- topic/tgroup " cols="{$cols}">
         <xsl:for-each select="1 to $cols">
           <colspec class="- topic/colspec " colname="col{.}"/>
