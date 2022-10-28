@@ -77,6 +77,7 @@ import static org.dita.dost.util.XMLUtils.AttributesBuilder;
 public class CoreNodeRenderer {
 
     private static final String COLUMN_NAME_COL = "col";
+    private static final String ATTRIBUTE_NAME_COLSPAN = "colspan";
 
     private static final Attributes TOPIC_ATTS = new AttributesBuilder().add(ATTRIBUTE_NAME_CLASS, TOPIC_TOPIC.toString())
             .add(DITA_NAMESPACE, ATTRIBUTE_NAME_DITAARCHVERSION, ATTRIBUTE_PREFIX_DITAARCHVERSION + ":" + ATTRIBUTE_NAME_DITAARCHVERSION, "CDATA", "1.2")
@@ -113,6 +114,12 @@ public class CoreNodeRenderer {
     private static final Attributes TBODY_ATTS = buildAtts(TOPIC_TBODY);
     private static final Attributes THEAD_ATTS = buildAtts(TOPIC_THEAD);
     private static final Attributes TR_ATTS = buildAtts(TOPIC_ROW);
+
+    private static final Attributes SIMPLETABLE_ATTS = buildAtts(TOPIC_SIMPLETABLE);
+    private static final Attributes STHEAD_ATTS = buildAtts(TOPIC_STHEAD);
+    private static final Attributes STROW_ATTS = buildAtts(TOPIC_STROW);
+    private static final Attributes STENTRY_ATTS = buildAtts(TOPIC_STENTRY);
+
     private static final Attributes IMAGE_ATTS = buildAtts(TOPIC_IMAGE);
     private static final Attributes XREF_ATTS = buildAtts(TOPIC_XREF);
     private static final Attributes ALT_ATTS = buildAtts(TOPIC_ALT);
@@ -175,7 +182,27 @@ public class CoreNodeRenderer {
      * @return the mapping of nodes this renderer handles to rendering function
      */
     public Map<Class<? extends Node>, NodeRenderingHandler<? extends Node>> getNodeRenderingHandlers() {
-        return Stream.<NodeRenderingHandler>of(
+        return Stream.concat(
+                lwDita
+                    ? Stream.<NodeRenderingHandler>of(
+                        new NodeRenderingHandler<>(TableBlock.class, (node, context, html) -> renderSimpleTableBlock(node, context, html)),
+                        new NodeRenderingHandler<>(TableCaption.class, (node, context, html) -> renderSimpleTableCaption(node, context, html)),
+                        new NodeRenderingHandler<>(TableBody.class, (node, context, html) -> renderSimpleTableBody(node, context, html)),
+                        new NodeRenderingHandler<>(TableHead.class, (node, context, html) -> renderSimpleTableHead(node, context, html)),
+                        new NodeRenderingHandler<>(TableRow.class, (node, context, html) -> renderSimpleTableRow(node, context, html)),
+                        new NodeRenderingHandler<>(TableCell.class, (node, context, html) -> renderSimpleTableCell(node, context, html)),
+                        new NodeRenderingHandler<>(TableSeparator.class, (node, context, html) -> renderSimpleTableSeparator(node, context, html))
+                    )
+                    : Stream.<NodeRenderingHandler>of(
+                        new NodeRenderingHandler<>(TableBlock.class, (node, context, html) -> render(node, context, html)),
+                        new NodeRenderingHandler<>(TableCaption.class, (node, context, html) -> render(node, context, html)),
+                        new NodeRenderingHandler<>(TableBody.class, (node, context, html) -> render(node, context, html)),
+                        new NodeRenderingHandler<>(TableHead.class, (node, context, html) -> render(node, context, html)),
+                        new NodeRenderingHandler<>(TableRow.class, (node, context, html) -> render(node, context, html)),
+                        new NodeRenderingHandler<>(TableCell.class, (node, context, html) -> render(node, context, html)),
+                        new NodeRenderingHandler<>(TableSeparator.class, (node, context, html) -> render(node, context, html))
+                    ),
+                Stream.<NodeRenderingHandler>of(
                         new NodeRenderingHandler<>(Abbreviation.class, (node, context, html) -> render(node, context, html)),
                         new NodeRenderingHandler<>(AbbreviationBlock.class, (node, context, html) -> render(node, context, html)),
                         new NodeRenderingHandler<>(AttributesNode.class, (node, context, html) -> { /* Ignore */ }),
@@ -214,13 +241,6 @@ public class CoreNodeRenderer {
                         new NodeRenderingHandler<>(OrderedList.class, (node, context, html) -> render(node, context, html)),
                         new NodeRenderingHandler<>(Paragraph.class, (node, context, html) -> render(node, context, html)),
                         new NodeRenderingHandler<>(Reference.class, (node, context, html) -> render(node, context, html)),
-                        new NodeRenderingHandler<>(TableBlock.class, (node, context, html) -> render(node, context, html)),
-                        new NodeRenderingHandler<>(TableCaption.class, (node, context, html) -> render(node, context, html)),
-                        new NodeRenderingHandler<>(TableBody.class, (node, context, html) -> render(node, context, html)),
-                        new NodeRenderingHandler<>(TableHead.class, (node, context, html) -> render(node, context, html)),
-                        new NodeRenderingHandler<>(TableRow.class, (node, context, html) -> render(node, context, html)),
-                        new NodeRenderingHandler<>(TableCell.class, (node, context, html) -> render(node, context, html)),
-                        new NodeRenderingHandler<>(TableSeparator.class, (node, context, html) -> render(node, context, html)),
                         new NodeRenderingHandler<>(SoftLineBreak.class, (node, context, html) -> render(node, context, html)),
                         new NodeRenderingHandler<>(StrongEmphasis.class, (node, context, html) -> render(node, context, html)),
                         new NodeRenderingHandler<>(Text.class, (node, context, html) -> render(node, context, html)),
@@ -231,7 +251,7 @@ public class CoreNodeRenderer {
                         new NodeRenderingHandler<>(JekyllTag.class, (node, context, html) -> render(node, context, html)),
                         new NodeRenderingHandler<>(Superscript.class, (node, context, html) -> render(node, context, html)),
                         new NodeRenderingHandler<>(Subscript.class, (node, context, html) -> render(node, context, html))
-                )
+                ))
                 .collect(Collectors.toMap(
                         handler -> handler.getNodeType(),
                         handler -> handler
@@ -1158,6 +1178,8 @@ public class CoreNodeRenderer {
         printTag(node, context, html, HI_D_B, getInlineAttributes(node, B_ATTS));
     }
 
+    // OASIS Table
+
     private void render(final TableBody node, final NodeRendererContext context, final SaxWriter html) {
         printTag(node, context, html, TOPIC_TBODY, TBODY_ATTS);
     }
@@ -1312,6 +1334,162 @@ public class CoreNodeRenderer {
         currentTableColumn = 0;
         printTag(node, context, html, TOPIC_ROW, TR_ATTS);
     }
+
+    // Simple table
+
+    private void renderSimpleTableBlock(final TableBlock node, final NodeRendererContext context, final SaxWriter html) {
+        currentTableNode = node;
+        final Attributes tableAtts;
+        if (!lwDita && isAttributesParagraph(node.getNext())) {
+            final Title header = Title.getFromChildren(node.getNext());
+            final AttributesBuilder builder = new AttributesBuilder(SIMPLETABLE_ATTS);
+            tableAtts = readAttributes(header, builder).build();
+        } else {
+            tableAtts = SIMPLETABLE_ATTS;
+        }
+        html.startElement(TOPIC_SIMPLETABLE, tableAtts);
+        for (final Node child : node.getChildren()) {
+            if (child instanceof TableCaption) {
+                html.startElement(TOPIC_TITLE, TITLE_ATTS);
+                context.renderChildren((TableCaption) child);
+                html.endElement();
+//                render((TableCaption) child, context, html);
+            }
+        }
+//        final int maxCols = findMaxCols(node);
+//        final Attributes atts = new AttributesBuilder(TGROUP_ATTS)
+//                .add(ATTRIBUTE_NAME_COLS, Integer.toString(maxCols))
+//                .build();
+//        html.startElement(TOPIC_TGROUP, atts);
+
+//        for (int i = 0; i < maxCols; i++) {
+//            final AttributesBuilder catts = new AttributesBuilder(COLSPEC_ATTS)
+//                    .add(ATTRIBUTE_NAME_COLNAME, COLUMN_NAME_COL + (i + 1));
+////            switch (col.getAlignment()) {
+////                case Center:
+////                    catts.add(ATTRIBUTE_NAME_ALIGN, "center");
+////                    break;
+////                case Right:
+////                    catts.add(ATTRIBUTE_NAME_ALIGN, "right");
+////                    break;
+////                case Left:
+////                    catts.add(ATTRIBUTE_NAME_ALIGN, "left");
+////                    break;
+////            }
+//            html.startElement(TOPIC_COLSPEC, catts.build());
+//            html.endElement(); // colspec
+//        }
+
+//            final AttributesBuilder catts = new AttributesBuilder(COLSPEC_ATTS)
+//                    .add(ATTRIBUTE_NAME_COLNAME, COLUMN_NAME_COL + counter);
+//            switch (col.getAlignment()) {
+//                case Center:
+//                    catts.add(ATTRIBUTE_NAME_ALIGN, "center");
+//                    break;
+//                case Right:
+//                    catts.add(ATTRIBUTE_NAME_ALIGN, "right");
+//                    break;
+//                case Left:
+//                    catts.add(ATTRIBUTE_NAME_ALIGN, "left");
+//                    break;
+//            }
+//            html.startElement(TOPIC_COLSPEC, catts.build());
+//            html.endElement(); // colspec
+//        for (final Node child : node.getChildren()) {
+//            if (!(child instanceof TableCaptionNode)) {
+//                context.renderChildren(child);
+//            }
+//        }
+        context.renderChildren(node);
+//        html.endElement(); // tgroup
+        html.endElement(); // table
+        currentTableNode = null;
+    }
+
+    private void renderSimpleTableCaption(final TableCaption node, final NodeRendererContext context, final SaxWriter html) {
+        // Pull processed by TableBlock
+//        html.startElement(TOPIC_TITLE, TITLE_ATTS);
+//        context.renderChildren(node);
+//        html.endElement();
+    }
+
+//    @Override
+//    private void render(final TableColumnNode node, final NodeRendererContext context, final DitaWriter html) {
+//        switch (node.getAlignment()) {
+//            case None:
+//                break;
+//            case Left:
+//                tableColumnAlignment = "left";
+//                break;
+//            case Right:
+//                tableColumnAlignment = "right";
+//                break;
+//            case Center:
+//                tableColumnAlignment = "center";
+//                break;
+//            default:
+//                throw new ParseException("Unsupported table column alignment: " + node.getAlignment());
+//        }
+//    }
+
+    private void renderSimpleTableHead(final TableHead node, final NodeRendererContext context, final SaxWriter html) {
+//        printTag(node, context, html, TOPIC_STHEAD, STHEAD_ATTS);
+        context.renderChildren(node);
+    }
+
+    private void renderSimpleTableBody(final TableBody node, final NodeRendererContext context, final SaxWriter html) {
+//        html.startElement(TOPIC_TBODY, TBODY_ATTS);
+        context.renderChildren(node);
+//        html.endElement();
+    }
+
+    private void renderSimpleTableSeparator(TableSeparator node, NodeRendererContext context, SaxWriter html) {
+        // Ignore
+    }
+
+    private void renderSimpleTableRow(final TableRow node, final NodeRendererContext context, final SaxWriter html) {
+        currentTableColumn = 0;
+        if (node.getParent() instanceof TableHead) {
+            printTag(node, context, html, TOPIC_STHEAD, STHEAD_ATTS);
+        } else {
+            printTag(node, context, html, TOPIC_STROW, STROW_ATTS);
+        }
+    }
+
+    private void renderSimpleTableCell(final TableCell node, final NodeRendererContext context, final SaxWriter html) {
+//        final List<TableColumnNode> columns = currentTableNode.getColumns();
+//        final TableColumnNode column = columns.get(Math.min(currentTableColumn, columns.size() - 1));
+//
+        final AttributesBuilder atts = new AttributesBuilder(STENTRY_ATTS);
+//        column.accept(this);
+//        if (node.getAlignment() != null) {
+//            atts.add(ATTRIBUTE_NAME_ALIGN, node.getAlignment().cellAlignment().name().toLowerCase());
+//        }
+        if (node.getSpan() > 1) {
+//            atts.add(ATTRIBUTE_NAME_NAMEST, COLUMN_NAME_COL + Integer.toString(currentTableColumn + 1));
+//            atts.add(ATTRIBUTE_NAME_NAMEEND, COLUMN_NAME_COL + Integer.toString(currentTableColumn + node.getSpan()));
+            atts.add(ATTRIBUTE_NAME_COLSPAN, Integer.toString(node.getSpan()));
+        }
+        html.startElement(TOPIC_STENTRY, atts.build());
+        if (isInline(node.getFirstChild())) {
+            html.startElement(TOPIC_P, P_ATTS);
+            context.renderChildren(node);
+            html.endElement();
+        } else {
+            context.renderChildren(node);
+        }
+        html.endElement();
+
+        currentTableColumn += node.getSpan();
+    }
+
+    private boolean isInline(Node node) {
+        return node instanceof Text
+                || node instanceof Emphasis
+                || node instanceof StrongEmphasis;
+    }
+
+    // Code block
 
     private void render(final CodeBlock node, final NodeRendererContext context, final SaxWriter html) {
         final AttributesBuilder atts = new AttributesBuilder(lwDita ? PRE_ATTS : CODEBLOCK_ATTS)

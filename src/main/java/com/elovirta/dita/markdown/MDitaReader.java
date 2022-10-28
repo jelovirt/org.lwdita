@@ -36,8 +36,8 @@ public class MDitaReader extends MarkdownReader {
                         DefinitionExtension.create(),
                         StrikethroughExtension.create()))
                 .set(DefinitionExtension.TILDE_MARKER, false)
-                .set(TablesExtension.COLUMN_SPANS, false)
-                .set(TablesExtension.APPEND_MISSING_COLUMNS, true)
+                .set(TablesExtension.COLUMN_SPANS, true)
+                .set(TablesExtension.APPEND_MISSING_COLUMNS, false)
                 .set(TablesExtension.DISCARD_EXTRA_COLUMNS, true)
                 .set(TablesExtension.HEADER_SEPARATOR_COLUMN_MATCH, true)
                 .set(DitaRenderer.SHORTDESC_PARAGRAPH, true)

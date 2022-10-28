@@ -35,21 +35,18 @@
       </dlentry>
     </dl>
     <p class="- topic/p ">{audience=novice}</p>
-    <table class="- topic/table ">
-      <tgroup class="- topic/tgroup " cols="1">
-        <colspec class="- topic/colspec " colname="col1"/>
-        <thead class="- topic/thead ">
-          <row class="- topic/row ">
-            <entry class="- topic/entry ">{.red} head</entry>
-          </row>
-        </thead>
-        <tbody class="- topic/tbody ">
-          <row class="- topic/row ">
-            <entry class="- topic/entry ">body</entry>
-          </row>
-        </tbody>
-      </tgroup>
-    </table>
+    <simpletable class="- topic/simpletable ">
+      <sthead class="- topic/sthead ">
+        <stentry class="- topic/stentry ">
+          <p class="- topic/p ">{.red} head</p>
+        </stentry>
+      </sthead>
+      <strow class="- topic/strow ">
+        <stentry class="- topic/stentry ">
+          <p class="- topic/p ">body</p>
+        </stentry>
+      </strow>
+    </simpletable>
     <p class="- topic/p ">{audience=novice}</p>
     <pre class="- topic/pre " outputclass="lang" xml:space="preserve"><ph class="- topic/ph ">code</ph></pre>
   </body>
