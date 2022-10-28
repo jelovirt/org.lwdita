@@ -193,6 +193,19 @@
           <p class="- topic/p ">C4</p>
         </stentry>
       </strow>
+    </simpletable>
+    <simpletable class="- topic/simpletable ">
+      <sthead class="- topic/sthead ">
+        <stentry class="- topic/stentry ">
+          <p class="- topic/p ">A</p>
+        </stentry>
+        <stentry class="- topic/stentry ">
+          <p class="- topic/p ">B</p>
+        </stentry>
+        <stentry class="- topic/stentry ">
+          <p class="- topic/p ">C</p>
+        </stentry>
+      </sthead>
       <strow class="- topic/strow ">
         <stentry class="- topic/stentry ">
           <p class="- topic/p ">A5</p>
