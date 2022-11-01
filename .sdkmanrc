@@ -1,4 +1,4 @@
 # Enable auto-env through the sdkman_auto_env config
 # Add key=value pairs of SDKs to use below
 java=8.0.322-tem
-gradle=5.5
+gradle=7.2
