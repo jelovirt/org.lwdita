@@ -104,9 +104,31 @@ public class MarkdownReader implements XMLReader {
         return false;
     }
 
+    /**
+     * Set the value of a feature flag.
+     *
+     * <dl>
+     *     <dt><code>http://lwdita.org/sax/features/shortdesc-paragraph</code></dt>
+     *     <dd>Treat first paragraph as shortdesc.</dd>
+     *     <dt><code>http://lwdita.org/sax/features/id-from-yaml</code></dt>
+     *     <dd>Read topic ID from YAML header if available.</dd>
+     *     <dt><code>http://lwdita.org/sax/features/mdita</code></dt>
+     *     <dd>Parse as MDITA.</dd>
+     * </dl>
+     */
     @Override
     public void setFeature(String name, boolean value) throws SAXNotRecognizedException, SAXNotSupportedException {
-        // NOOP
+        switch (name) {
+            case "http://lwdita.org/sax/features/shortdesc-paragraph":
+                options.set(DitaRenderer.SHORTDESC_PARAGRAPH, value);
+                break;
+            case "http://lwdita.org/sax/features/id-from-yaml":
+                options.set(DitaRenderer.ID_FROM_YAML, value);
+                break;
+            case "http://lwdita.org/sax/features/mdita":
+                options.set(DitaRenderer.LW_DITA, value);
+                break;
+        }
     }
 
     @Override
