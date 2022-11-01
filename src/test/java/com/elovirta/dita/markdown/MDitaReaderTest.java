@@ -2,6 +2,8 @@ package com.elovirta.dita.markdown;
 
 import org.junit.Ignore;
 import org.junit.Test;
+import org.xml.sax.SAXNotRecognizedException;
+import org.xml.sax.SAXNotSupportedException;
 
 public class MDitaReaderTest extends MarkdownReaderTest {
 
