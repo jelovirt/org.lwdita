@@ -5,6 +5,8 @@ Links
 
 [Markdown with fragment](concept.md#id)
 
+[Something with query](second.html?pos=3)
+
 [DITA](topic.dita)
 
 [HTML](test.html)
