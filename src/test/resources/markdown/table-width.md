@@ -1,0 +1,24 @@
+Tables
+======
+
+<table>
+<colgroup>
+  <col width="25%">
+  <col style=" width: 25% ">
+  <col style="color:pink;width:200px;font-weight:bold">
+</colgroup>
+<thead>
+<tr>
+  <th>A</th>
+  <th>B</th>
+  <th>C</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>A1</td>
+  <td>B1</td>
+  <td>C1</td>
+</tr>
+</tbody>
+</table>

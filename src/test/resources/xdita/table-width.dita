@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<topic xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/" class="- topic/topic "
+  ditaarch:DITAArchVersion="1.2"
+  domains="(topic hi-d) (topic ut-d) (topic indexing-d) (topic hazard-d) (topic abbrev-d) (topic pr-d) (topic sw-d) (topic ui-d)"
+  id="tables">
+  <title class="- topic/title ">Tables</title>
+  <body class="- topic/body ">
+    <simpletable class="- topic/simpletable ">
+      <sthead class="- topic/sthead ">
+        <stentry class="- topic/stentry ">
+          <p class="- topic/p ">A</p>
+        </stentry>
+        <stentry class="- topic/stentry ">
+          <p class="- topic/p ">B</p>
+        </stentry>
+        <stentry class="- topic/stentry ">
+          <p class="- topic/p ">C</p>
+        </stentry>
+      </sthead>
+      <strow class="- topic/strow ">
+        <stentry class="- topic/stentry ">
+          <p class="- topic/p ">A1</p>
+        </stentry>
+        <stentry class="- topic/stentry ">
+          <p class="- topic/p ">B1</p>
+        </stentry>
+        <stentry class="- topic/stentry ">
+          <p class="- topic/p ">C1</p>
+        </stentry>
+      </strow>
+    </simpletable>
+  </body>
+</topic>
