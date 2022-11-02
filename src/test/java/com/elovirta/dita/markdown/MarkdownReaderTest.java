@@ -119,6 +119,11 @@ public class MarkdownReaderTest extends AbstractReaderTest {
     }
 
     @Test
+    public void testTableWidth() throws Exception {
+        run("table-width.md");
+    }
+
+    @Test
     public void testQuote() throws Exception {
         run("quote.md");
     }

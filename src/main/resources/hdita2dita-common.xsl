@@ -286,6 +286,7 @@
   </xsl:template>
 
   <xsl:template match="table">
+    <xsl:variable name="table" select="." as="element()"/>
     <xsl:variable name="cols" as="xs:integer" select="max((descendant::tr/count(*), count(colgroup/col)))"/>
     <table>
       <xsl:apply-templates select="." mode="class"/>
@@ -293,7 +294,26 @@
       <xsl:apply-templates select="caption"/>
       <tgroup class="- topic/tgroup " cols="{$cols}">
         <xsl:for-each select="1 to $cols">
-          <colspec class="- topic/colspec " colname="col{.}"/>
+          <xsl:variable name="width" as="xs:string?">
+            <xsl:variable name="col" select="$table/colgroup/col[current()]" as="element()?"/>
+            <xsl:choose>
+              <xsl:when test="normalize-space($col/@width)">
+                <xsl:value-of select="normalize-space($col/@width)"/>
+              </xsl:when>
+              <xsl:when test="normalize-space($col/@style)">
+                <xsl:variable name="tokens" select="tokenize($col/@style, ';')" as="xs:string*"/>
+                <xsl:variable name="ws" select="$tokens[starts-with(normalize-space(.), 'width')]" as="xs:string?"/>
+                <xsl:if test="exists($ws)">
+                  <xsl:value-of select="substring-after(normalize-space($ws[1]), ':')"/>
+                </xsl:if>
+              </xsl:when>
+            </xsl:choose>
+          </xsl:variable>
+          <colspec class="- topic/colspec " colname="col{.}">
+            <xsl:if test="exists($width)">
+              <xsl:attribute name="colwidth" select="$width"/>
+            </xsl:if>
+          </colspec>
         </xsl:for-each>
         <xsl:choose>
           <xsl:when test="tr[1][th and empty(td)]">
@@ -324,6 +344,12 @@
   </xsl:template>
   <xsl:template match="table/caption | figcaption" mode="class">
     <xsl:attribute name="class">- topic/title </xsl:attribute>
+  </xsl:template>
+  <xsl:template match="thead | tbody">
+    <xsl:element name="{name()}">
+      <xsl:apply-templates select="." mode="class"/>
+      <xsl:apply-templates select="@* | node()"/>
+    </xsl:element>
   </xsl:template>
   <xsl:template match="tr">
     <row>

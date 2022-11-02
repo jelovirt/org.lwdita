@@ -148,6 +148,11 @@ public class HtmlReaderTest extends AbstractReaderTest {
     }
 
     @Test
+    public void testTableWidth() throws Exception {
+        run("table-width.html");
+    }
+
+    @Test
     public void testTask() throws Exception {
         run("task.html");
     }

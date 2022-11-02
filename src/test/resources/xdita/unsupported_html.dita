@@ -192,22 +192,19 @@
     </section>
     <section class="- topic/section " id="table-content">
       <title class="- topic/title ">Table content</title>
-      <table class="- topic/table ">
+      <simpletable class="- topic/simpletable ">
         <title class="- topic/title ">content</title>
-        <tgroup class="- topic/tgroup " cols="1">
-          <colspec class="- topic/colspec " colname="col1"/>
-          <thead class="- topic/thead ">
-            <row class="- topic/row ">
-              <entry class="- topic/entry ">content</entry>
-            </row>
-          </thead>
-          <tbody class="- topic/tbody ">
-            <row class="- topic/row ">
-              <entry class="- topic/entry ">content</entry>
-            </row>
-          </tbody>
-        </tgroup>
-      </table>
+        <sthead class="- topic/sthead ">
+            <stentry class="- topic/stentry ">
+              <p class="- topic/p ">content</p>
+            </stentry>
+        </sthead>
+        <strow class="- topic/strow ">
+          <stentry class="- topic/stentry ">
+            <p class="- topic/p ">content</p>
+          </stentry>
+        </strow>
+      </simpletable>
     </section>
     <section class="- topic/section " id="forms">
       <title class="- topic/title ">Forms</title>

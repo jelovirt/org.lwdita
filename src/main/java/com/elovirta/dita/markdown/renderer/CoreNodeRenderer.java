@@ -167,7 +167,7 @@ public class CoreNodeRenderer {
         this.metadataSerializer = new MetadataSerializerImpl(idFromYaml);
 
         final String stylesheet = lwDita
-                ? "/hdita2dita-common.xsl"
+                ? "/hdita2dita.xsl"
                 : "/hdita2dita-markdown.xsl";
         try (InputStream in = getClass().getResourceAsStream(stylesheet)) {
             tf = (SAXTransformerFactory) TransformerFactory.newInstance();
