@@ -93,6 +93,11 @@ public class HtmlReaderTest extends AbstractReaderTest {
     }
 
     @Test
+    public void testimageSize() throws Exception {
+        run("image-size.html");
+    }
+
+    @Test
     public void testkeys() throws Exception {
         run("keys.html");
     }

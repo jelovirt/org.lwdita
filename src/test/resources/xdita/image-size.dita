@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<topic xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/" class="- topic/topic "
+  ditaarch:DITAArchVersion="1.2"
+  domains="(topic hi-d) (topic ut-d) (topic indexing-d) (topic hazard-d) (topic abbrev-d) (topic pr-d) (topic sw-d) (topic ui-d)"
+  id="images">
+  <title class="- topic/title ">Images</title>
+  <body class="- topic/body ">
+    <image class="- topic/image " height="50px" href="test.jpg" placement="break" width="100px">
+      <alt class="- topic/alt ">Alt</alt>
+    </image>
+  </body>
+</topic>

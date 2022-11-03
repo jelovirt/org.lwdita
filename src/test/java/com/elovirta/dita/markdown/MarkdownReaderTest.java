@@ -94,6 +94,11 @@ public class MarkdownReaderTest extends AbstractReaderTest {
     }
 
     @Test
+    public void testImageSize() throws Exception {
+        run("image-size.md");
+    }
+
+    @Test
     public void testLink() throws Exception {
         run("link.md");
     }

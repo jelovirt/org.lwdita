@@ -23,6 +23,12 @@ public class MDitaReaderTest extends MarkdownReaderTest {
         run("header.md");
     }
 
+    @Ignore
+    @Test
+    public void testImageSize() throws Exception {
+//        run("image-size.md");
+    }
+
     @Override
     @Ignore
     @Test
