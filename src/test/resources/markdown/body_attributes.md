@@ -32,3 +32,7 @@ Definition Term
 ``` {.lang}
 code
 ```
+
+![Alt](test.jpg "Title"){#carrot .juice}
+
+![Alt][img_id]{#key-carrot .juice}

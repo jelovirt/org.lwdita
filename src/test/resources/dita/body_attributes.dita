@@ -47,5 +47,12 @@
       </tgroup>
     </table>
     <codeblock class="+ topic/pre pr-d/codeblock " outputclass="lang" xml:space="preserve">code</codeblock>
+    <fig class="- topic/fig ">
+      <title class="- topic/title ">Title</title>
+      <image class="- topic/image " href="test.jpg" id="carrot" outputclass="juice">
+        <alt class="- topic/alt ">Alt</alt>
+      </image>
+    </fig>
+    <image class="- topic/image " id="key-carrot" keyref="img_id" outputclass="juice" placement="break"/>
   </body>
 </topic>

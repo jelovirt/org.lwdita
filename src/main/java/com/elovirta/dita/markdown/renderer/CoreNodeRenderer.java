@@ -538,7 +538,9 @@ public class CoreNodeRenderer {
     }
 
     private void render(final Image node, final NodeRendererContext context, final SaxWriter html) {
-        writeImage(node, node.getTitle().toString(), null, node.getUrl().toString(), null, context, html);
+        final AttributesBuilder atts = new AttributesBuilder(getInlineAttributes(node, IMAGE_ATTS))
+                .add(ATTRIBUTE_NAME_HREF, node.getUrl().toString());
+        writeImage(node, node.getTitle().toString(), null, atts, context, html);
     }
 
     private void render(final Superscript node, final NodeRendererContext context, final SaxWriter html) {
@@ -549,13 +551,8 @@ public class CoreNodeRenderer {
         printTag(node, context, html, HI_D_SUB, getInlineAttributes(node, SUB_ATTS));
     }
 
-    private void writeImage(Image node, final String title, final String alt, final String url, final String key, final NodeRendererContext context, SaxWriter html) {
-        final AttributesBuilder atts = new AttributesBuilder(IMAGE_ATTS)
-                .add(ATTRIBUTE_NAME_HREF, url);
-        if (key != null) {
-            atts.add(ATTRIBUTE_NAME_KEYREF, key);
-        }
-
+    private void writeImage(Image node, final String title, final String alt, final AttributesBuilder atts,
+                            final NodeRendererContext context, SaxWriter html) {
         if (!title.isEmpty()) {
             html.startElement(TOPIC_FIG, FIG_ATTS);
             html.startElement(TOPIC_TITLE, TITLE_ATTS);
@@ -591,12 +588,8 @@ public class CoreNodeRenderer {
         }
     }
 
-    private void writeImage(ImageRef node, final String title, final String alt, final String url, final String key, final NodeRendererContext context, SaxWriter html) {
-        final AttributesBuilder atts = new AttributesBuilder(IMAGE_ATTS)
-                .add(ATTRIBUTE_NAME_HREF, url);
-        if (key != null) {
-            atts.add(ATTRIBUTE_NAME_KEYREF, key);
-        }
+    private void writeImage(ImageRef node, final String title, final String alt, final AttributesBuilder atts,
+                            final NodeRendererContext context, SaxWriter html) {
         if (!title.isEmpty()) {
             html.startElement(TOPIC_FIG, FIG_ATTS);
             html.startElement(TOPIC_TITLE, TITLE_ATTS);
@@ -989,10 +982,8 @@ public class CoreNodeRenderer {
      */
     private boolean containsImage(final ContentNode node) {
         final Node first = node.getFirstChild();
-        if (first != null && first.getNext() == null) {
-            if (first instanceof Image || first instanceof ImageRef) {
-                return true;
-            }
+        if (first != null && (first instanceof Image || first instanceof ImageRef)) {
+            return first.getNextAnyNot(AttributesNode.class) == null;
         }
         return false;
     }
@@ -1041,7 +1032,12 @@ public class CoreNodeRenderer {
 //            }
             html.endElement();
         } else {
-            writeImage(node, refNode.getTitle().toString(), text, refNode.getUrl().toString(), key, context, html);
+            final AttributesBuilder atts = new AttributesBuilder(getInlineAttributes(node, IMAGE_ATTS))
+                    .add(ATTRIBUTE_NAME_HREF, refNode.getUrl().toString());
+            if (key != null) {
+                atts.add(ATTRIBUTE_NAME_KEYREF, key);
+            }
+            writeImage(node, refNode.getTitle().toString(), text, atts, context, html);
         }
     }
 
