@@ -538,7 +538,7 @@ public class CoreNodeRenderer {
     }
 
     private void render(final Image node, final NodeRendererContext context, final SaxWriter html) {
-        final AttributesBuilder atts = new AttributesBuilder(IMAGE_ATTS)
+        final AttributesBuilder atts = new AttributesBuilder(getInlineAttributes(node, IMAGE_ATTS))
                 .add(ATTRIBUTE_NAME_HREF, node.getUrl().toString());
         writeImage(node, node.getTitle().toString(), null, atts, context, html);
     }
@@ -982,10 +982,8 @@ public class CoreNodeRenderer {
      */
     private boolean containsImage(final ContentNode node) {
         final Node first = node.getFirstChild();
-        if (first != null && first.getNext() == null) {
-            if (first instanceof Image || first instanceof ImageRef) {
-                return true;
-            }
+        if (first != null && (first instanceof Image || first instanceof ImageRef)) {
+            return first.getNextAnyNot(AttributesNode.class) == null;
         }
         return false;
     }
@@ -1034,7 +1032,7 @@ public class CoreNodeRenderer {
 //            }
             html.endElement();
         } else {
-            final AttributesBuilder atts = new AttributesBuilder(IMAGE_ATTS)
+            final AttributesBuilder atts = new AttributesBuilder(getInlineAttributes(node, IMAGE_ATTS))
                     .add(ATTRIBUTE_NAME_HREF, refNode.getUrl().toString());
             if (key != null) {
                 atts.add(ATTRIBUTE_NAME_KEYREF, key);

@@ -49,5 +49,16 @@
     </simpletable>
     <p class="- topic/p ">{audience=novice}</p>
     <pre class="- topic/pre " outputclass="lang" xml:space="preserve"><ph class="- topic/ph ">code</ph></pre>
+    <p class="- topic/p ">
+      <fig class="- topic/fig ">
+        <title class="- topic/title ">Title</title>
+        <image class="- topic/image " href="test.jpg">
+          <alt class="- topic/alt ">Alt</alt>
+        </image>
+      </fig>
+      {#carrot .juice}
+    </p>
+    <p class="- topic/p "><image class="- topic/image " keyref="img_id"/>{#key-carrot .juice}
+    </p>
   </body>
 </topic>
