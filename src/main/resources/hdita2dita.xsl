@@ -19,7 +19,7 @@
     <xsl:choose>
       <xsl:when test="count(body/article) gt 1">
         <dita>
-          <xsl:attribute name="ditaarch:DITAArchVersion">1.3</xsl:attribute>
+          <xsl:attribute name="ditaarch:DITAArchVersion">2.0</xsl:attribute>
           <xsl:apply-templates select="@* | node()"/>
         </dita>        
       </xsl:when>

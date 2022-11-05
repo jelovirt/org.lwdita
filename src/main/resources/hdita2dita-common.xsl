@@ -13,7 +13,7 @@
     <xsl:choose>
       <xsl:when test="count(body/article) gt 1">
         <dita>
-          <xsl:attribute name="ditaarch:DITAArchVersion">1.3</xsl:attribute>
+          <xsl:attribute name="ditaarch:DITAArchVersion">2.0</xsl:attribute>
           <xsl:apply-templates select="@* | node()"/>
         </dita>
       </xsl:when>
@@ -34,7 +34,7 @@
     <xsl:element name="{$name}">
       <xsl:apply-templates select="." mode="class"/>
       <xsl:apply-templates select="." mode="topic"/>
-      <xsl:attribute name="ditaarch:DITAArchVersion">1.3</xsl:attribute>
+      <xsl:attribute name="ditaarch:DITAArchVersion">2.0</xsl:attribute>
       <xsl:apply-templates select="ancestor::*/@xml:lang"/>
       <xsl:apply-templates select="@*"/>
       <xsl:variable name="h" select="(h1, h2, h3, h4, h5, h6)[1]" as="element()?"/>
@@ -634,7 +634,7 @@
     <map>
       <xsl:apply-templates select="." mode="class"/>
       <xsl:apply-templates select="." mode="topic"/>
-      <xsl:attribute name="ditaarch:DITAArchVersion">1.3</xsl:attribute>
+      <xsl:attribute name="ditaarch:DITAArchVersion">2.0</xsl:attribute>
       <xsl:apply-templates select="ancestor::*/@xml:lang"/>
       <xsl:apply-templates select="@* | node()"/>
     </map>
