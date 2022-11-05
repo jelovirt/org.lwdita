@@ -25,7 +25,7 @@
     </section>
     <section class="- topic/section " id="text-content">
       <title class="- topic/title ">Text content</title>
-      <blockquote class="- topic/blockquote ">content</blockquote>
+      content
       <div class="- topic/div ">content</div>
       <dl class="- topic/dl ">
         <dlentry class="- topic/dlentry ">

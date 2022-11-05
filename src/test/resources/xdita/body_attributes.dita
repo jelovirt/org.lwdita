@@ -9,9 +9,7 @@
     </p>
     <p class="- topic/p ">Inline <i class="+ topic/ph hi-d/i ">inline</i>{.red}.
     </p>
-    <lq class="- topic/lq ">
-      <p class="- topic/p ">Quote {.red}</p>
-    </lq>
+    <p class="- topic/p ">Quote {.red}</p>
     <p class="- topic/p ">{audience=novice}</p>
     <ul class="- topic/ul ">
       <li class="- topic/li ">
