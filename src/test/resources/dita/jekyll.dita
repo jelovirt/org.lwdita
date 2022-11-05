@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<topic class="- topic/topic " id="add-remove-or-edit-menu-items-in-your-online-store">
+<topic xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/"
+       ditaarch:DITAArchVersion="2.0"
+       specializations="@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product" class="- topic/topic " id="add-remove-or-edit-menu-items-in-your-online-store">
   <title class="- topic/title ">Add, remove, or edit menu items in your online store</title>
   <body class="- topic/body ">
     <p class="- topic/p ">============================
@@ -17,7 +19,8 @@
       page in your Shopify admin.
     </p>
   </body>
-  <topic class="- topic/topic " id="add-a-menu-item">
+  <topic class="- topic/topic " specializations="@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product"
+         ditaarch:DITAArchVersion="2.0" id="add-a-menu-item">
     <title class="- topic/title ">Add a menu item</title>
     <body class="- topic/body ">
       <p class="- topic/p ">You can add menu items to link to:</p>
@@ -48,7 +51,8 @@
       <required-cleanup class="- topic/required-cleanup " conref="link-to-more-videos.md"/>
     </body>
   </topic>
-  <topic class="- topic/topic " id="steps">
+  <topic class="- topic/topic "
+         ditaarch:DITAArchVersion="2.0" specializations="@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product" id="steps">
     <title class="- topic/title ">Steps:</title>
     <body class="- topic/body ">
       <required-cleanup class="- topic/required-cleanup " conref="admin_sidebar/online-navigation.md"/>
@@ -134,11 +138,13 @@
       </ol>
     </body>
   </topic>
-  <topic class="- topic/topic " id="edit-a-menu-item">
+  <topic class="- topic/topic " specializations="@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product"
+         ditaarch:DITAArchVersion="2.0" id="edit-a-menu-item">
     <title class="- topic/title ">Edit a menu item</title>
     <body class="- topic/body "/>
   </topic>
-  <topic class="- topic/topic " id="steps-1">
+  <topic class="- topic/topic " specializations="@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product"
+         ditaarch:DITAArchVersion="2.0" id="steps-1">
     <title class="- topic/title ">Steps:</title>
     <body class="- topic/body ">
       <required-cleanup class="- topic/required-cleanup " conref="admin_sidebar/online-navigation.md"/>
@@ -180,7 +186,8 @@
       </ol>
     </body>
   </topic>
-  <topic class="- topic/topic " id="change-the-display-order-of-menu-items">
+  <topic class="- topic/topic " specializations="@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product"
+         ditaarch:DITAArchVersion="2.0" id="change-the-display-order-of-menu-items">
     <title class="- topic/title ">Change the display order of menu items</title>
     <body class="- topic/body ">
       <p class="- topic/p ">You can view the display order of menu items on the
@@ -191,7 +198,8 @@
       </p>
     </body>
   </topic>
-  <topic class="- topic/topic " id="steps-2">
+  <topic class="- topic/topic " specializations="@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product"
+         ditaarch:DITAArchVersion="2.0" id="steps-2">
     <title class="- topic/title ">Steps:</title>
     <body class="- topic/body ">
       <required-cleanup class="- topic/required-cleanup " conref="admin_sidebar/online-navigation.md"/>
@@ -214,7 +222,8 @@
       </ol>
     </body>
   </topic>
-  <topic class="- topic/topic " id="remove-a-menu-item">
+  <topic class="- topic/topic " specializations="@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product"
+         ditaarch:DITAArchVersion="2.0" id="remove-a-menu-item">
     <title class="- topic/title ">Remove a menu item</title>
     <body class="- topic/body ">
       <p class="- topic/p ">You can remove a menu item to delete it from your online store navigation. When you remove a
@@ -223,7 +232,8 @@
       </p>
     </body>
   </topic>
-  <topic class="- topic/topic " id="steps-3">
+  <topic class="- topic/topic " specializations="@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product"
+         ditaarch:DITAArchVersion="2.0" id="steps-3">
     <title class="- topic/title ">Steps:</title>
     <body class="- topic/body ">
       <required-cleanup class="- topic/required-cleanup " conref="admin_sidebar/online-navigation.md"/>

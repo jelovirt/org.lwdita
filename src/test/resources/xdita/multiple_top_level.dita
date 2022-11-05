@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<dita>
-  <topic xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/" class="- topic/topic "
-    ditaarch:DITAArchVersion="1.2"
-    domains="(topic hi-d) (topic ut-d) (topic indexing-d) (topic hazard-d) (topic abbrev-d) (topic pr-d) (topic sw-d) (topic ui-d)"
+<dita xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/"
+      ditaarch:DITAArchVersion="2.0"
+      specializations="(topic hi-d)(topic em-d)">
+  <topic class="- topic/topic "
+    ditaarch:DITAArchVersion="2.0"
+    specializations="(topic hi-d)(topic em-d)"
     id="heading-a">
     <title class="- topic/title ">Heading A</title>
     <shortdesc class="- topic/shortdesc ">Content A.</shortdesc>
@@ -13,9 +15,9 @@
       </section>
     </body>
   </topic>
-  <topic xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/" class="- topic/topic "
-    ditaarch:DITAArchVersion="1.2"
-    domains="(topic hi-d) (topic ut-d) (topic indexing-d) (topic hazard-d) (topic abbrev-d) (topic pr-d) (topic sw-d) (topic ui-d)"
+  <topic class="- topic/topic "
+    ditaarch:DITAArchVersion="2.0"
+    specializations="(topic hi-d)(topic em-d)"
     id="heading-b">
     <title class="- topic/title ">Heading B</title>
     <shortdesc class="- topic/shortdesc ">Content B.</shortdesc>

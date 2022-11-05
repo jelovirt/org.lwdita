@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<topic class="- topic/topic " id="keyref">
+<topic xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/"
+       ditaarch:DITAArchVersion="2.0"
+       specializations="@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product" class="- topic/topic " id="keyref">
   <title class="- topic/title ">Keyref</title>
   <body class="- topic/body ">
     <p class="- topic/p ">Foo <ph class="- topic/ph " keyref="bar"/> baz.</p>

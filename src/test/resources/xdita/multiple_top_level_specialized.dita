@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<dita>
+<dita xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/"
+      specializations="(topic hi-d)(topic em-d)"
+      ditaarch:DITAArchVersion="2.0">
   <topic xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/"
-    class="- topic/topic " ditaarch:DITAArchVersion="1.2"
-    domains="(topic) (topic hi-d) (topic ut-d) (topic indexing-d) (topic hazard-d) (topic abbrev-d) (topic pr-d) (topic sw-d) (topic ui-d)"
+    class="- topic/topic " ditaarch:DITAArchVersion="2.0"
+    specializations="(topic hi-d)(topic em-d)"
     id="concept-concept">
     <title class="- topic/title ">Concept {.concept}</title>
     <shortdesc class="- topic/shortdesc ">Content A.</shortdesc>
@@ -14,8 +16,8 @@
     </body>
   </topic>
   <topic xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/"
-    class="- topic/topic " ditaarch:DITAArchVersion="1.2"
-    domains="(topic) (topic hi-d) (topic ut-d) (topic indexing-d) (topic hazard-d) (topic abbrev-d) (topic pr-d) (topic sw-d) (topic ui-d) (topic task strictTaskbody-c)"
+    class="- topic/topic " ditaarch:DITAArchVersion="2.0"
+    specializations="(topic hi-d)(topic em-d)"
     id="task-task">
     <title class="- topic/title ">Task {.task}</title>
     <shortdesc class="- topic/shortdesc ">Content B.</shortdesc>
@@ -27,8 +29,8 @@
     </body>
   </topic>
   <topic xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/"
-    class="- topic/topic " ditaarch:DITAArchVersion="1.2"
-    domains="(topic) (topic hi-d) (topic ut-d) (topic indexing-d) (topic hazard-d) (topic abbrev-d) (topic pr-d) (topic sw-d) (topic ui-d)"
+    class="- topic/topic " ditaarch:DITAArchVersion="2.0"
+    specializations="(topic hi-d)(topic em-d)"
     id="reference-reference">
     <title class="- topic/title ">Reference {.reference}</title>
     <shortdesc class="- topic/shortdesc ">Content C.</shortdesc>
@@ -40,8 +42,8 @@
     </body>
   </topic>
   <topic xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/" class="- topic/topic "
-    ditaarch:DITAArchVersion="1.2"
-    domains="(topic hi-d) (topic ut-d) (topic indexing-d) (topic hazard-d) (topic abbrev-d) (topic pr-d) (topic sw-d) (topic ui-d)"
+    ditaarch:DITAArchVersion="2.0"
+    specializations="(topic hi-d)(topic em-d)"
     id="topic">
     <title class="- topic/title ">Topic</title>
     <shortdesc class="- topic/shortdesc ">Content D.</shortdesc>

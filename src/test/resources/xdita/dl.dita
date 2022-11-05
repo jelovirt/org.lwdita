@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<topic xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/" class="- topic/topic " id="definition-list">
+<topic xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/"
+       ditaarch:DITAArchVersion="2.0"
+       specializations="(topic hi-d)(topic em-d)" class="- topic/topic " id="definition-list">
   <title class="- topic/title ">Definition list</title>
   <body class="- topic/body ">
     <dl class="- topic/dl ">
