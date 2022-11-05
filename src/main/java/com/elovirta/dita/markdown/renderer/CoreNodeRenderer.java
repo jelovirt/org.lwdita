@@ -79,8 +79,9 @@ public class CoreNodeRenderer {
     private static final String COLUMN_NAME_COL = "col";
     private static final String ATTRIBUTE_NAME_COLSPAN = "colspan";
 
-    private static final Attributes TOPIC_ATTS = new AttributesBuilder().add(ATTRIBUTE_NAME_CLASS, TOPIC_TOPIC.toString())
-            .add(DITA_NAMESPACE, ATTRIBUTE_NAME_DITAARCHVERSION, ATTRIBUTE_PREFIX_DITAARCHVERSION + ":" + ATTRIBUTE_NAME_DITAARCHVERSION, "CDATA", "1.2")
+    private static final Attributes TOPIC_ATTS = new AttributesBuilder()
+            .add(ATTRIBUTE_NAME_CLASS, TOPIC_TOPIC.toString())
+            .add(DITA_NAMESPACE, ATTRIBUTE_NAME_DITAARCHVERSION, ATTRIBUTE_PREFIX_DITAARCHVERSION + ":" + ATTRIBUTE_NAME_DITAARCHVERSION, "CDATA", "2.0")
             .add(ATTRIBUTE_NAME_DOMAINS, "(topic hi-d) (topic ut-d) (topic indexing-d) (topic hazard-d) (topic abbrev-d) (topic pr-d) (topic sw-d) (topic ui-d)")
             .build();
     private static final Attributes BODY_ATTS = buildAtts(TOPIC_BODY);
