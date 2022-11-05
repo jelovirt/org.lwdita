@@ -464,7 +464,7 @@ public class CoreNodeRenderer {
 
     private void render(final BlockQuote node, final NodeRendererContext context, final SaxWriter html) {
         if (lwDita) {
-            printTag(node, context, html, TOPIC_P, P_ATTS);
+            context.renderChildren(node);
         } else {
             printTag(node, context, html, TOPIC_LQ, getAttributesFromAttributesNode(node, BLOCKQUOTE_ATTS));
         }

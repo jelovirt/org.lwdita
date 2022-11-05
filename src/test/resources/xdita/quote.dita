@@ -5,16 +5,12 @@
   id="quote">
   <title class="- topic/title ">Quote</title>
   <body class="- topic/body ">
-    <lq class="- topic/lq ">
-      <p class="- topic/p ">This is email And so it this</p>
-      <p class="- topic/p ">Again.</p>
-    </lq>
+    <p class="- topic/p ">This is email And so it this</p>
+    <p class="- topic/p ">Again.</p>
     <ul class="- topic/ul ">
       <li class="- topic/li ">
         <p class="- topic/p ">List</p>
-        <lq class="- topic/lq ">
-          <p class="- topic/p ">Quote in list</p>
-        </lq>
+        <p class="- topic/p ">Quote in list</p>
       </li>
       <li class="- topic/li ">
         <p class="- topic/p ">Second list</p>

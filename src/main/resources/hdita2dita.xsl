@@ -34,6 +34,17 @@
     <xsl:attribute name="specializations">(topic hi-d)(topic em-d)</xsl:attribute>
   </xsl:template>
 
+  <xsl:template match="blockquote">
+<!--    <p>-->
+<!--      <xsl:apply-templates select="." mode="class"/>-->
+<!--      <xsl:apply-templates select="@* | node()"/>-->
+<!--    </p>-->
+    <xsl:apply-templates/>
+  </xsl:template>
+  <xsl:template match="blockquote" mode="class">
+    <xsl:attribute name="class">- topic/p </xsl:attribute>
+  </xsl:template>
+
   <!-- Table -->
 
   <xsl:template match="table">
