@@ -1,47 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<dita xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/">
-  <concept id="concept" class="- topic/topic concept/concept ">
+<dita xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/"
+      ditaarch:DITAArchVersion="2.0"
+      specializations="@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product">
+  <concept id="concept" ditaarch:DITAArchVersion="2.0"
+           specializations="@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product" class="- topic/topic concept/concept ">
     <title class="- topic/title ">Concept </title>
     <conbody class="- topic/body  concept/conbody ">
       <p class="- topic/p ">Content A.</p>
     </conbody>
-    <concept id="heading-a1" class="- topic/topic concept/concept ">
+    <concept id="heading-a1" ditaarch:DITAArchVersion="2.0"
+             specializations="@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product" class="- topic/topic concept/concept ">
       <title class="- topic/title ">Heading A.1</title>
       <conbody class="- topic/body  concept/conbody ">
         <p class="- topic/p ">Content A.1.</p>
       </conbody>
     </concept>
   </concept>
-  <task id="task" class="- topic/topic task/task ">
+  <task id="task" ditaarch:DITAArchVersion="2.0"
+        specializations="@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product" class="- topic/topic task/task ">
     <title class="- topic/title ">Task </title>
     <taskbody class="- topic/body task/taskbody ">
       <context class="- topic/section task/context "><p class="- topic/p ">Content B.</p></context>
     </taskbody>
-    <task id="heading-b1" class="- topic/topic task/task ">
+    <task id="heading-b1" ditaarch:DITAArchVersion="2.0"
+          specializations="@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product" class="- topic/topic task/task ">
       <title class="- topic/title ">Heading B.1</title>
       <taskbody class="- topic/body task/taskbody ">
         <context class="- topic/section task/context "><p class="- topic/p ">Content B.1.</p></context>
       </taskbody>
     </task>
   </task>
-  <reference id="reference" class="- topic/topic       reference/reference ">
+  <reference id="reference" ditaarch:DITAArchVersion="2.0"
+             specializations="@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product" class="- topic/topic       reference/reference ">
     <title class="- topic/title ">Reference </title>
     <refbody class="- topic/body        reference/refbody ">
       <section class="- topic/section "><p class="- topic/p ">Content C.</p></section>
     </refbody>
-    <reference id="heading-c1" class="- topic/topic       reference/reference ">
+    <reference id="heading-c1" ditaarch:DITAArchVersion="2.0"
+               specializations="@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product" class="- topic/topic       reference/reference ">
       <title class="- topic/title ">Heading C.1</title>
       <refbody class="- topic/body        reference/refbody ">
         <section class="- topic/section "><p class="- topic/p ">Content C.1.</p></section>
       </refbody>
     </reference>
   </reference>
-  <topic id="topic" class="- topic/topic ">
+  <topic id="topic" ditaarch:DITAArchVersion="2.0"
+         specializations="@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product" class="- topic/topic ">
     <title class="- topic/title ">Topic</title>
     <body class="- topic/body ">
       <p class="- topic/p ">Content D.</p>
     </body>
-    <topic id="heading-d1" class="- topic/topic ">
+    <topic id="heading-d1" ditaarch:DITAArchVersion="2.0"
+           specializations="@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product" class="- topic/topic ">
       <title class="- topic/title ">Heading D.1</title>
       <body class="- topic/body ">
         <p class="- topic/p ">Content D.1.</p>

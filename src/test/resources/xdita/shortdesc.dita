@@ -1,5 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<topic id="shortdesc" class="- topic/topic ">
+<topic xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/"
+       ditaarch:DITAArchVersion="2.0"
+       specializations="(topic hi-d)(topic em-d)" id="shortdesc" class="- topic/topic ">
   <title class="- topic/title ">Shortdesc</title>
   <shortdesc class="- topic/shortdesc ">Shortdesc.</shortdesc>
   <body class="- topic/body ">

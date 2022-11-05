@@ -82,7 +82,7 @@ public class CoreNodeRenderer {
     private static final Attributes TOPIC_ATTS = new AttributesBuilder()
             .add(ATTRIBUTE_NAME_CLASS, TOPIC_TOPIC.toString())
             .add(DITA_NAMESPACE, ATTRIBUTE_NAME_DITAARCHVERSION, ATTRIBUTE_PREFIX_DITAARCHVERSION + ":" + ATTRIBUTE_NAME_DITAARCHVERSION, "CDATA", "2.0")
-            .add(ATTRIBUTE_NAME_DOMAINS, "(topic hi-d) (topic ut-d) (topic indexing-d) (topic hazard-d) (topic abbrev-d) (topic pr-d) (topic sw-d) (topic ui-d)")
+//            .add(ATTRIBUTE_NAME_DOMAINS, "(topic hi-d) (topic ut-d) (topic indexing-d) (topic hazard-d) (topic abbrev-d) (topic pr-d) (topic sw-d) (topic ui-d)")
             .build();
     private static final Attributes BODY_ATTS = buildAtts(TOPIC_BODY);
     private static final Attributes SECTION_ATTS = buildAtts(TOPIC_SECTION);
@@ -376,7 +376,14 @@ public class CoreNodeRenderer {
 //        }
         final boolean isCompound = hasMultipleTopLevelHeaders(node);
         if (isCompound) {
-            html.startElement(ELEMENT_NAME_DITA, new AttributesImpl());
+            final AttributesBuilder atts = new AttributesBuilder()
+                    .add(DITA_NAMESPACE, ATTRIBUTE_NAME_DITAARCHVERSION, ATTRIBUTE_PREFIX_DITAARCHVERSION + ":" + ATTRIBUTE_NAME_DITAARCHVERSION, "CDATA", "2.0");
+            if (lwDita) {
+                atts.add(ATTRIBUTE_NAME_SPECIALIZATIONS, "(topic hi-d)(topic em-d)");
+            } else {
+                atts.add(ATTRIBUTE_NAME_SPECIALIZATIONS, "@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product");
+            }
+            html.startElement(ELEMENT_NAME_DITA, atts.build());
         }
         context.renderChildren(node);
         if (isCompound) {
@@ -737,7 +744,12 @@ public class CoreNodeRenderer {
             }
             headerLevel = node.getLevel();
 
-            final AttributesBuilder atts = new AttributesBuilder(TOPIC_ATTS);
+            final AttributesBuilder atts = lwDita
+                    ? new AttributesBuilder(TOPIC_ATTS)
+                        .add(ATTRIBUTE_NAME_SPECIALIZATIONS, "(topic hi-d)(topic em-d)")
+                    : new AttributesBuilder(TOPIC_ATTS)
+                        .add(ATTRIBUTE_NAME_SPECIALIZATIONS, "@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product");
+
             final String id = getTopicId(node, header);
             if (id != null) {
                 lastId = id;

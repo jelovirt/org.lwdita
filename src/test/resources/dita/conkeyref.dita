@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<topic class="- topic/topic " id="conkeyref">
+<topic xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/"
+       ditaarch:DITAArchVersion="2.0"
+       specializations="@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product" class="- topic/topic " id="conkeyref">
   <title class="- topic/title ">Conkeyref</title>
   <body class="- topic/body ">
     <p class="- topic/p ">shortdesc</p>

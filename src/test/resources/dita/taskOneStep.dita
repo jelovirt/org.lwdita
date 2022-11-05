@@ -1,4 +1,6 @@
 <task xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/"
+      ditaarch:DITAArchVersion="2.0"
+      specializations="@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product"
   class="- topic/topic task/task " id="task">
   <title class="- topic/title ">Task </title>
   <taskbody class="- topic/body task/taskbody ">

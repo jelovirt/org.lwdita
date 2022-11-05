@@ -1,17 +1,17 @@
 <topic xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/" class="- topic/topic "
-  domains="(topic abbrev-d)                            a(props deliveryTarget)                            (topic equation-d)                            (topic hazard-d)                            (topic hi-d)                            (topic indexing-d)                            (topic markup-d)                            (topic mathml-d)                            (topic pr-d)                            (topic relmgmt-d)                            (topic sw-d)                            (topic svg-d)                            (topic ui-d)                            (topic ut-d)                            (topic markup-d xml-d)   "
-  id="foo" ditaarch:DITAArchVersion="1.3">
+  specializations="@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product"
+  id="foo" ditaarch:DITAArchVersion="2.0">
   <title class="- topic/title ">My header </title>
   <body class="- topic/body "/>
   <topic class="- topic/topic "
-    domains="(topic abbrev-d)                            a(props deliveryTarget)                            (topic equation-d)                            (topic hazard-d)                            (topic hi-d)                            (topic indexing-d)                            (topic markup-d)                            (topic mathml-d)                            (topic pr-d)                            (topic relmgmt-d)                            (topic sw-d)                            (topic svg-d)                            (topic ui-d)                            (topic ut-d)                            (topic markup-d xml-d)   "
-    id="foo-section" platform="osx" audience="novice" ditaarch:DITAArchVersion="1.3">
+    specializations="@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product"
+    id="foo-section" platform="osx" audience="novice" ditaarch:DITAArchVersion="2.0">
     <title class="- topic/title ">My header ##    </title>
     <body class="- topic/body "/>
   </topic>
   <topic class="- topic/topic "
-         domains="(topic abbrev-d)                            a(props deliveryTarget)                            (topic equation-d)                            (topic hazard-d)                            (topic hi-d)                            (topic indexing-d)                            (topic markup-d)                            (topic mathml-d)                            (topic pr-d)                            (topic relmgmt-d)                            (topic sw-d)                            (topic svg-d)                            (topic ui-d)                            (topic ut-d)                            (topic markup-d xml-d)   "
-         id="the-site" ditaarch:DITAArchVersion="1.3" outputclass="main shine">
+         specializations="@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product"
+         id="the-site" ditaarch:DITAArchVersion="2.0" outputclass="main shine">
     <title class="- topic/title ">My other header </title>
     <body class="- topic/body "/>
   </topic>

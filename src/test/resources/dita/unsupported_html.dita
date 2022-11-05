@@ -1,21 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<topic xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/" class="- topic/topic "
+<topic xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/"
+       ditaarch:DITAArchVersion="2.0"
+       specializations="@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product" class="- topic/topic "
        id="html-elements-reference">
   <title class="- topic/title ">HTML elements reference</title>
   <body class="- topic/body "/>
-  <topic class="- topic/topic " id="main-root">
+  <topic class="- topic/topic " ditaarch:DITAArchVersion="2.0"
+         specializations="@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product" id="main-root">
     <title class="- topic/title ">Main root</title>
     <body class="- topic/body "/>
   </topic>
-  <topic class="- topic/topic " id="document-metadata">
+  <topic class="- topic/topic " ditaarch:DITAArchVersion="2.0"
+         specializations="@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product" id="document-metadata">
     <title class="- topic/title ">Document metadata</title>
     <body class="- topic/body "/>
   </topic>
-  <topic class="- topic/topic " id="sectioning-root">
+  <topic class="- topic/topic " ditaarch:DITAArchVersion="2.0"
+         specializations="@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product" id="sectioning-root">
     <title class="- topic/title ">Sectioning root</title>
     <body class="- topic/body "/>
   </topic>
-  <topic class="- topic/topic " id="content-sectioning">
+  <topic class="- topic/topic " ditaarch:DITAArchVersion="2.0"
+         specializations="@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product" id="content-sectioning">
     <title class="- topic/title ">Content sectioning</title>
     <body class="- topic/body ">
       <address class="- topic/address ">content</address>
@@ -26,7 +32,8 @@
       <section class="- topic/section "/>
     </body>
   </topic>
-  <topic class="- topic/topic " id="text-content">
+  <topic class="- topic/topic " ditaarch:DITAArchVersion="2.0"
+         specializations="@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product" id="text-content">
     <title class="- topic/title ">Text content</title>
     <body class="- topic/body ">
       <lq class="- topic/lq ">content</lq>
@@ -53,7 +60,8 @@
       </ul>
     </body>
   </topic>
-  <topic class="- topic/topic " id="inline-text-semantics">
+  <topic class="- topic/topic " ditaarch:DITAArchVersion="2.0"
+         specializations="@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product" id="inline-text-semantics">
     <title class="- topic/title ">Inline text semantics</title>
     <body class="- topic/body ">
       <p class="- topic/p ">
@@ -144,7 +152,8 @@
       </p>
     </body>
   </topic>
-  <topic class="- topic/topic " id="image-and-multimedia">
+  <topic class="- topic/topic " ditaarch:DITAArchVersion="2.0"
+         specializations="@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product" id="image-and-multimedia">
     <title class="- topic/title ">Image and multimedia</title>
     <body class="- topic/body ">
       <p class="- topic/p ">
@@ -162,7 +171,8 @@
       </p>
     </body>
   </topic>
-  <topic class="- topic/topic " id="embedded-content">
+  <topic class="- topic/topic " ditaarch:DITAArchVersion="2.0"
+         specializations="@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product" id="embedded-content">
     <title class="- topic/title ">Embedded content</title>
     <body class="- topic/body ">
       <embed class="- topic/embed "/>
@@ -180,7 +190,8 @@
       <source class="+ topic/param h5m-d/source " name="source"/>
     </body>
   </topic>
-  <topic class="- topic/topic " id="svg-and-mathml">
+  <topic class="- topic/topic " ditaarch:DITAArchVersion="2.0"
+         specializations="@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product" id="svg-and-mathml">
     <title class="- topic/title ">SVG and MathML</title>
     <body class="- topic/body ">
       <p class="- topic/p ">
@@ -189,7 +200,8 @@
       <math class="- topic/math ">content</math>
     </body>
   </topic>
-  <topic class="- topic/topic " id="scripting">
+  <topic class="- topic/topic " ditaarch:DITAArchVersion="2.0"
+         specializations="@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product" id="scripting">
     <title class="- topic/title ">Scripting</title>
     <body class="- topic/body ">
       <p class="- topic/p ">
@@ -198,7 +210,8 @@
       <p class="- topic/p ">content</p>
     </body>
   </topic>
-  <topic class="- topic/topic " id="demarcating-edits">
+  <topic class="- topic/topic " ditaarch:DITAArchVersion="2.0"
+         specializations="@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product" id="demarcating-edits">
     <title class="- topic/title ">Demarcating edits</title>
     <body class="- topic/body ">
       <p class="- topic/p ">
@@ -209,7 +222,8 @@
       </p>
     </body>
   </topic>
-  <topic class="- topic/topic " id="table-content">
+  <topic class="- topic/topic " ditaarch:DITAArchVersion="2.0"
+         specializations="@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product" id="table-content">
     <title class="- topic/title ">Table content</title>
     <body class="- topic/body ">
       <table class="- topic/table ">
@@ -230,7 +244,8 @@
       </table>
     </body>
   </topic>
-  <topic class="- topic/topic " id="forms">
+  <topic class="- topic/topic " ditaarch:DITAArchVersion="2.0"
+         specializations="@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product" id="forms">
     <title class="- topic/title ">Forms</title>
     <body class="- topic/body ">
       <p class="- topic/p ">
@@ -268,7 +283,8 @@
       </p>
     </body>
   </topic>
-  <topic class="- topic/topic " id="interactive-elements">
+  <topic class="- topic/topic " ditaarch:DITAArchVersion="2.0"
+         specializations="@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product" id="interactive-elements">
     <title class="- topic/title ">Interactive elements</title>
     <body class="- topic/body ">
       <details class="- topic/details ">content</details>
@@ -276,7 +292,8 @@
       <summary class="- topic/summary ">content</summary>
     </body>
   </topic>
-  <topic class="- topic/topic " id="web-components">
+  <topic class="- topic/topic " ditaarch:DITAArchVersion="2.0"
+         specializations="@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product" id="web-components">
     <title class="- topic/title ">Web Components</title>
     <body class="- topic/body ">
       <p class="- topic/p ">
@@ -287,7 +304,8 @@
       </p>
     </body>
   </topic>
-  <topic class="- topic/topic " id="obsolete-and-deprecated-elements">
+  <topic class="- topic/topic " ditaarch:DITAArchVersion="2.0"
+         specializations="@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product" id="obsolete-and-deprecated-elements">
     <title class="- topic/title ">Obsolete and deprecated elements</title>
     <body class="- topic/body ">
       <p class="- topic/p ">

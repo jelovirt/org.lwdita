@@ -1,5 +1,6 @@
 <topic xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/"
-       class="- topic/topic "
+       ditaarch:DITAArchVersion="2.0"
+       specializations="@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product" class="- topic/topic "
        id="definition-list">
   <title class="- topic/title ">Definition list</title>
   <body class="- topic/body ">

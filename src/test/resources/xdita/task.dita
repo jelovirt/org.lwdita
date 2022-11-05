@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <topic xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/"
-       class="- topic/topic " ditaarch:DITAArchVersion="1.2"
-       domains="(topic) (topic hi-d) (topic ut-d) (topic indexing-d) (topic hazard-d) (topic abbrev-d) (topic pr-d) (topic sw-d) (topic ui-d) (topic task strictTaskbody-c)"
+       class="- topic/topic " ditaarch:DITAArchVersion="2.0"
+       specializations="(topic hi-d)(topic em-d)"
        id="task-task">
   <title class="- topic/title ">Task {.task}</title>
   <shortdesc class="- topic/shortdesc ">Context</shortdesc>

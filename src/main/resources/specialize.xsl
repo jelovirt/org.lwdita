@@ -13,7 +13,7 @@
   
   <xsl:template match="dita" mode="dispatch">
     <dita>
-      <xsl:apply-templates select="@*"/>
+      <xsl:apply-templates select="@*" mode="dispatch"/>
       <xsl:apply-templates mode="dispatch"/>
     </dita>
   </xsl:template>
@@ -26,6 +26,9 @@
   <xsl:template match="topic[tokenize(@outputclass, '\s+')[. = 'reference']]" mode="dispatch">
     <xsl:apply-templates select="." mode="reference"/>
   </xsl:template>
+  <xsl:template match="@*" mode="dispatch">
+    <xsl:copy/>
+  </xsl:template>
   <xsl:template match="*" mode="dispatch">
     <xsl:apply-templates select="." mode="copy"/>
   </xsl:template>
@@ -34,8 +37,8 @@
 
   <xsl:template match="topic" mode="reference">
     <reference class="- topic/topic reference/reference "
-               domains="(topic reference) (topic hi-d) (topic ut-d) (topic indexing-d) (topic hazard-d) (topic abbrev-d) (topic pr-d) (topic sw-d) (topic ui-d)">
-      <xsl:apply-templates select="@* except (@class | @domains) | node()" mode="#current"/>
+               specializations="@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product">
+      <xsl:apply-templates select="@* except (@class | @specializations) | node()" mode="#current"/>
     </reference>
   </xsl:template>
 
@@ -61,8 +64,8 @@
 
   <xsl:template match="topic" mode="task">
     <task class="- topic/topic task/task "
-          domains="(topic task) (topic hi-d) (topic ut-d) (topic indexing-d) (topic hazard-d) (topic abbrev-d) (topic pr-d) (topic sw-d) (topic ui-d) (topic task strictTaskbody-c)">
-      <xsl:apply-templates select="@* except (@class | @domains) | node()" mode="#current"/>
+          specializations="@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product">
+      <xsl:apply-templates select="@* except (@class | @specializations) | node()" mode="#current"/>
     </task>
   </xsl:template>
 
@@ -147,8 +150,8 @@
 
   <xsl:template match="topic" mode="concept">
     <concept class="- topic/topic concept/concept "
-             domains="(topic concept) (topic hi-d) (topic ut-d) (topic indexing-d) (topic hazard-d) (topic abbrev-d) (topic pr-d) (topic sw-d) (topic ui-d)">
-      <xsl:apply-templates select="@* except (@class | @domains) | node()" mode="#current"/>
+             specializations="@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product">
+      <xsl:apply-templates select="@* except (@class | @specializations) | node()" mode="#current"/>
     </concept>
   </xsl:template>
 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<topic xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/" class="- topic/topic " domains="(topic abbrev-d)                            a(props deliveryTarget)                            (topic equation-d)                            (topic hazard-d)                            (topic hi-d)                            (topic indexing-d)                            (topic markup-d)                            (topic mathml-d)                            (topic pr-d)                            (topic relmgmt-d)                            (topic sw-d)                            (topic svg-d)                            (topic ui-d)                            (topic ut-d)                            (topic markup-d xml-d)   " id="test" ditaarch:DITAArchVersion="1.3">
+<topic xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/" class="- topic/topic " specializations="@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product" id="test" ditaarch:DITAArchVersion="2.0">
   <title class="- topic/title ">Test </title>
   <prolog class="- topic/prolog ">
     <author class="- topic/author ">Author One</author>
@@ -96,7 +96,7 @@ codeblock
 </codeblock><p class="- topic/p ">Fenced:</p><codeblock class="+ topic/pre pr-d/codeblock " id="test__scala-example" outputclass="scala" xml:space="preserve">items.foreach(println)
 </codeblock></section>
   </body>
-  <topic class="- topic/topic " domains="(topic abbrev-d)                            a(props deliveryTarget)                            (topic equation-d)                            (topic hazard-d)                            (topic hi-d)                            (topic indexing-d)                            (topic markup-d)                            (topic mathml-d)                            (topic pr-d)                            (topic relmgmt-d)                            (topic sw-d)                            (topic svg-d)                            (topic ui-d)                            (topic ut-d)                            (topic markup-d xml-d)   " id="images" ditaarch:DITAArchVersion="1.3">
+  <topic class="- topic/topic " specializations="@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product" id="images" ditaarch:DITAArchVersion="2.0">
     <title class="- topic/title ">Images </title>
     <body class="- topic/body ">
       <p class="- topic/p ">An inline <image class="- topic/image " href="test.jpg" placement="inline">
@@ -112,14 +112,14 @@ codeblock
         </image>
       </fig>
     </body>
-    <topic class="- topic/topic " domains="(topic abbrev-d)                            a(props deliveryTarget)                            (topic equation-d)                            (topic hazard-d)                            (topic hi-d)                            (topic indexing-d)                            (topic markup-d)                            (topic mathml-d)                            (topic pr-d)                            (topic relmgmt-d)                            (topic sw-d)                            (topic svg-d)                            (topic ui-d)                            (topic ut-d)                            (topic markup-d xml-d)   " id="key_references" ditaarch:DITAArchVersion="1.3">
+    <topic class="- topic/topic " specializations="@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product" id="key_references" ditaarch:DITAArchVersion="2.0">
       <title class="- topic/title ">Key references </title>
       <body class="- topic/body ">
         <image class="- topic/image " href="" placement="break"></image>
       </body>
     </topic>
   </topic>
-  <topic class="- topic/topic " domains="(topic abbrev-d)                            a(props deliveryTarget)                            (topic equation-d)                            (topic hazard-d)                            (topic hi-d)                            (topic indexing-d)                            (topic markup-d)                            (topic mathml-d)                            (topic pr-d)                            (topic relmgmt-d)                            (topic sw-d)                            (topic svg-d)                            (topic ui-d)                            (topic ut-d)                            (topic markup-d xml-d)   " id="links" ditaarch:DITAArchVersion="1.3">
+  <topic class="- topic/topic " specializations="@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product" id="links" ditaarch:DITAArchVersion="2.0">
     <title class="- topic/title ">Links </title>
     <body class="- topic/body ">
       <ul class="- topic/ul ">
@@ -131,7 +131,7 @@ codeblock
       </ul>
     </body>
   </topic>
-  <topic class="- topic/topic " domains="(topic abbrev-d)                            a(props deliveryTarget)                            (topic equation-d)                            (topic hazard-d)                            (topic hi-d)                            (topic indexing-d)                            (topic markup-d)                            (topic mathml-d)                            (topic pr-d)                            (topic relmgmt-d)                            (topic sw-d)                            (topic svg-d)                            (topic ui-d)                            (topic ut-d)                            (topic markup-d xml-d)   " id="tables" ditaarch:DITAArchVersion="1.3">
+  <topic class="- topic/topic " specializations="@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product" id="tables" ditaarch:DITAArchVersion="2.0">
     <title class="- topic/title ">Tables </title>
     <body class="- topic/body ">
       <table class="- topic/table ">
@@ -203,7 +203,7 @@ codeblock
       </table>
     </body>
   </topic>
-  <topic class="- topic/topic " domains="(topic abbrev-d)                            a(props deliveryTarget)                            (topic equation-d)                            (topic hazard-d)                            (topic hi-d)                            (topic indexing-d)                            (topic markup-d)                            (topic mathml-d)                            (topic pr-d)                            (topic relmgmt-d)                            (topic sw-d)                            (topic svg-d)                            (topic ui-d)                            (topic ut-d)                            (topic markup-d xml-d)   " id="definition_list" ditaarch:DITAArchVersion="1.3">
+  <topic class="- topic/topic " specializations="@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product" id="definition_list" ditaarch:DITAArchVersion="2.0">
     <title class="- topic/title ">Definition list </title>
     <body class="- topic/body ">
       <dl class="- topic/dl ">
@@ -216,7 +216,7 @@ codeblock
       </dl>
     </body>
   </topic>
-  <topic class="- topic/topic " domains="(topic abbrev-d)                            a(props deliveryTarget)                            (topic equation-d)                            (topic hazard-d)                            (topic hi-d)                            (topic indexing-d)                            (topic markup-d)                            (topic mathml-d)                            (topic pr-d)                            (topic relmgmt-d)                            (topic sw-d)                            (topic svg-d)                            (topic ui-d)                            (topic ut-d)                            (topic markup-d xml-d)   " id="quote" ditaarch:DITAArchVersion="1.3">
+  <topic class="- topic/topic " specializations="@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product" id="quote" ditaarch:DITAArchVersion="2.0">
     <title class="- topic/title ">Quote </title>
     <body class="- topic/body ">
       <lq class="- topic/lq "><p class="- topic/p ">This is email And so it this Again.</p></lq>

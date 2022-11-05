@@ -81,8 +81,8 @@ public abstract class AbstractReaderTest {
         final NodeList elems = doc.getElementsByTagName("*");
         for (int i = 0; i < elems.getLength(); i++) {
             final Element elem = (Element) elems.item(i);
-            elem.removeAttribute("domains");
-            elem.removeAttributeNS("http://dita.oasis-open.org/architecture/2005/", "DITAArchVersion");
+//            elem.removeAttribute("domains");
+//            elem.removeAttributeNS("http://dita.oasis-open.org/architecture/2005/", "DITAArchVersion");
         }
         doc.normalizeDocument();
         return doc;

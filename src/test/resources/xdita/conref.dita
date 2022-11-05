@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<topic class="- topic/topic " id="conref">
+<topic xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/"
+       ditaarch:DITAArchVersion="2.0"
+       specializations="(topic hi-d)(topic em-d)" class="- topic/topic " id="conref">
   <title class="- topic/title ">Conref</title>
   <shortdesc class="- topic/shortdesc ">shortdesc</shortdesc>
   <body class="- topic/body ">

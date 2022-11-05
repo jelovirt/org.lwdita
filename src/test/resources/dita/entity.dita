@@ -1,5 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<topic id="entity-title" class="- topic/topic ">
+<topic xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/"
+       ditaarch:DITAArchVersion="2.0"
+       specializations="@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product" id="entity-title" class="- topic/topic ">
   <title class="- topic/title ">Entity™ title</title>
   <body class="- topic/body ">
     <p class="- topic/p ">Entity™.</p>

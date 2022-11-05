@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <topic xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/" class="- topic/topic "
-  ditaarch:DITAArchVersion="1.2"
-  domains="(topic hi-d) (topic ut-d) (topic indexing-d) (topic hazard-d) (topic abbrev-d) (topic pr-d) (topic sw-d) (topic ui-d)"
+  ditaarch:DITAArchVersion="2.0"
+  specializations="(topic hi-d)(topic em-d)"
   id="a">
   <title class="- topic/title ">A</title>
   <body class="- topic/body "/>
-  <topic class="- topic/topic " ditaarch:DITAArchVersion="1.2"
-    domains="(topic hi-d) (topic ut-d) (topic indexing-d) (topic hazard-d) (topic abbrev-d) (topic pr-d) (topic sw-d) (topic ui-d)"
+  <topic class="- topic/topic " ditaarch:DITAArchVersion="2.0"
+    specializations="(topic hi-d)(topic em-d)"
     id="a1">
     <title class="- topic/title ">A.1</title>
     <body class="- topic/body "/>
-    <topic class="- topic/topic " ditaarch:DITAArchVersion="1.2"
-      domains="(topic hi-d) (topic ut-d) (topic indexing-d) (topic hazard-d) (topic abbrev-d) (topic pr-d) (topic sw-d) (topic ui-d)"
+    <topic class="- topic/topic " ditaarch:DITAArchVersion="2.0"
+      specializations="(topic hi-d)(topic em-d)"
       id="a1a">
       <title class="- topic/title ">A.1.a</title>
       <body class="- topic/body ">
@@ -22,16 +22,16 @@
           <title class="- topic/title ">A.1.a.II </title>
         </section>
       </body>
-      <topic class="- topic/topic " ditaarch:DITAArchVersion="1.2"
-        domains="(topic hi-d) (topic ut-d) (topic indexing-d) (topic hazard-d) (topic abbrev-d) (topic pr-d) (topic sw-d) (topic ui-d)"
+      <topic class="- topic/topic " ditaarch:DITAArchVersion="2.0"
+        specializations="(topic hi-d)(topic em-d)"
         id="a1aiii">
         <title class="- topic/title ">A.1.a.III</title>
         <body class="- topic/body "/>
       </topic>
     </topic>
   </topic>
-  <topic class="- topic/topic " ditaarch:DITAArchVersion="1.2"
-    domains="(topic hi-d) (topic ut-d) (topic indexing-d) (topic hazard-d) (topic abbrev-d) (topic pr-d) (topic sw-d) (topic ui-d)"
+  <topic class="- topic/topic " ditaarch:DITAArchVersion="2.0"
+    specializations="(topic hi-d)(topic em-d)"
     id="a2">
     <title class="- topic/title ">A.2</title>
     <body class="- topic/body "/>

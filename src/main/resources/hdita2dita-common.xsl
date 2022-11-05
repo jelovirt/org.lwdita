@@ -13,7 +13,7 @@
     <xsl:choose>
       <xsl:when test="count(body/article) gt 1">
         <dita>
-          <xsl:attribute name="ditaarch:DITAArchVersion">2.0</xsl:attribute>
+          <xsl:apply-templates select="." mode="topic"/>
           <xsl:apply-templates select="@* | node()"/>
         </dita>
       </xsl:when>
@@ -34,7 +34,6 @@
     <xsl:element name="{$name}">
       <xsl:apply-templates select="." mode="class"/>
       <xsl:apply-templates select="." mode="topic"/>
-      <xsl:attribute name="ditaarch:DITAArchVersion">2.0</xsl:attribute>
       <xsl:apply-templates select="ancestor::*/@xml:lang"/>
       <xsl:apply-templates select="@*"/>
       <xsl:variable name="h" select="(h1, h2, h3, h4, h5, h6)[1]" as="element()?"/>
@@ -93,8 +92,9 @@
   </xsl:template>
   -->
 
-  <xsl:template match="article" mode="topic">
-    <xsl:attribute name="domains">(topic abbrev-d) a(props deliveryTarget) (topic equation-d) (topic hazard-d) (topic hi-d) (topic indexing-d) (topic markup-d) (topic mathml-d) (topic pr-d) (topic relmgmt-d) (topic sw-d) (topic svg-d) (topic ui-d) (topic ut-d) (topic markup-d xml-d)</xsl:attribute>
+  <xsl:template match="*" mode="topic">
+    <xsl:attribute name="ditaarch:DITAArchVersion">2.0</xsl:attribute>
+    <xsl:attribute name="specializations">@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product</xsl:attribute>
   </xsl:template>
   <!--
   <xsl:template match="article[@data-hd-class = 'concept']" mode="topic">
@@ -634,7 +634,6 @@
     <map>
       <xsl:apply-templates select="." mode="class"/>
       <xsl:apply-templates select="." mode="topic"/>
-      <xsl:attribute name="ditaarch:DITAArchVersion">2.0</xsl:attribute>
       <xsl:apply-templates select="ancestor::*/@xml:lang"/>
       <xsl:apply-templates select="@* | node()"/>
     </map>
