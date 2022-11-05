@@ -42,6 +42,9 @@
     <parser format="markdown" class="com.elovirta.dita.markdown.MarkdownReader"/>
     <parser format="md" class="com.elovirta.dita.markdown.MarkdownReader"/>
     <parser format="mdita" class="com.elovirta.dita.markdown.MDitaReader"/>
+    <parser format="wikidocs" class="com.elovirta.dita.markdown.MarkdownReader">
+      <feature name="http://lwdita.org/sax/features/shortdesc-paragraph" value="true"/>
+    </parser>
   </feature>
   <extension-point id="dita.xsl.markdown" name="Markdown overrides XSLT import"/>
   <!-- HTML to DITA -->
