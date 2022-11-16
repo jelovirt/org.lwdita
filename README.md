@@ -89,7 +89,7 @@ To build the DITA-OT Markdown plug-in from source:
 Donating
 --------
 
-Support this project and others by [@jelovirt](https://github.com/jelovirt) via [Paypal](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=jarno%40elovirta%2ecom&lc=FI&item_name=Support%20Open%20Source%20work&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donate_LG%2egif%3aNonHosted).
+Support this project and others by [@jelovirt](https://github.com/jelovirt) via [GitHub Sponsors](https://github.com/sponsors/jelovirt).
 
 License
 -------
