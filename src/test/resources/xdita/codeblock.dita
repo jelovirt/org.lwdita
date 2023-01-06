@@ -3,12 +3,12 @@
        ditaarch:DITAArchVersion="2.0"
        specializations="(topic hi-d)(topic em-d)" class="- topic/topic " id="codeblock">
   <title class="- topic/title ">Codeblock</title>
-  <shortdesc class="- topic/shortdesc ">Code example on <ph class="- topic/ph ">for</ph> loop:
+  <shortdesc class="- topic/shortdesc ">Code example on <tt class="+ topic/ph hi-d/tt ">for</tt> loop:
   </shortdesc>
   <body class="- topic/body ">
-    <pre class="- topic/pre " xml:space="preserve"><ph class="- topic/ph ">for i in items:
-    println(i)</ph></pre>
+    <pre class="- topic/pre " xml:space="preserve"><tt class="+ topic/ph hi-d/tt ">for i in items:
+    println(i)</tt></pre>
     <p class="- topic/p ">Fenced block:</p>
-    <pre class="- topic/pre " id="foreach-example" outputclass="scala" xml:space="preserve"><ph class="- topic/ph ">items.foreach(println)</ph></pre>
+    <pre class="- topic/pre " id="foreach-example" outputclass="scala" xml:space="preserve"><tt class="+ topic/ph hi-d/tt ">items.foreach(println)</tt></pre>
   </body>
 </topic>

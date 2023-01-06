@@ -5,7 +5,7 @@
   <title class="- topic/title ">Test</title>
   <shortdesc class="- topic/shortdesc ">Paragraph <i class="+ topic/ph hi-d/i ">emph</i> and <b
       class="+ topic/ph hi-d/b ">strong
-  </b> or <ph class="- topic/ph ">code</ph>.
+  </b> or <tt class="+ topic/ph hi-d/tt ">code</tt>.
   </shortdesc>
   <body class="- topic/body ">
     <p class="- topic/p ">This is a very long line. This is a very long line. This is a very long line. This is a very
@@ -23,8 +23,8 @@
     <p class="- topic/p ">here is <sup class="+ topic/ph hi-d/sup ">super</sup> test
     </p>
     <p class="- topic/p ">here is ~sub~ test</p>
-    <p class="- topic/p ">here is a <ph class="- topic/ph ">code \.</ph>
-      <ph class="- topic/ph ">contains ` backtick</ph> (<ph class="- topic/ph ">two `` backtick</ph>) claim
+    <p class="- topic/p ">here is a <tt class="+ topic/ph hi-d/tt ">code \.</tt>
+      <tt class="+ topic/ph hi-d/tt ">contains ` backtick</tt> (<tt class="+ topic/ph hi-d/tt ">two `` backtick</tt>) claim
     </p>
     <p class="- topic/p ">here --- mdash --- dash</p>
     <p class="- topic/p ">here -- ndash -- dash</p>
