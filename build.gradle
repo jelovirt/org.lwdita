@@ -12,7 +12,7 @@ repositories {
 }
 
 dependencies {
-    implementation group: "org.dita-ot", name: "dost", version: "[3.4,)"
+    implementation group: "org.dita-ot", name: "dost", version: "[3.4,4.0)"
     implementation(group: "com.vladsch.flexmark", name: "flexmark-all", version: "0.62.2") {
         exclude group: 'com.vladsch.flexmark', module: 'flexmark-profile-pegdown'
 //        exclude group: 'com.vladsch.flexmark', module: 'flexmark-ext-abbreviation'

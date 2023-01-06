@@ -442,6 +442,16 @@
     <xsl:attribute name="class">- topic/ph </xsl:attribute>
   </xsl:template>
 
+  <xsl:template match="tt">
+    <tt>
+      <xsl:apply-templates select="." mode="class"/>
+      <xsl:apply-templates select="@* | node()"/>
+    </tt>
+  </xsl:template>
+  <xsl:template match="tt" mode="class">
+    <xsl:attribute name="class">+ topic/ph hi-d/tt </xsl:attribute>
+  </xsl:template>
+
   <xsl:template match="b | strong">
     <b>
       <xsl:apply-templates select="." mode="class"/>

@@ -117,8 +117,8 @@
               </p>
             </li>
           </ul>
-          <p class="- topic/p ">To create an email link, use the format <ph class="- topic/ph ">
-            mailto:youremail@example.com</ph>.
+          <p class="- topic/p ">To create an email link, use the format <tt class="+ topic/ph hi-d/tt ">
+            mailto:youremail@example.com</tt>.
           </p>
         </li>
         <li class="- topic/li ">
@@ -159,7 +159,7 @@
               </p>
             </li>
             <li class="- topic/li ">
-              <p class="- topic/p ">To change the destination of the menu item, click the <ph class="- topic/ph ">x</ph> in
+              <p class="- topic/p ">To change the destination of the menu item, click the <tt class="+ topic/ph hi-d/tt ">x</tt> in
                 the <b class="+ topic/ph hi-d/b ">Link</b> field, and then enter or select a new destination.
               </p>
             </li>

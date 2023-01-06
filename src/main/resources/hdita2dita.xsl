@@ -7,9 +7,9 @@
                 xpath-default-namespace="http://www.w3.org/1999/xhtml"
                 exclude-result-prefixes="xs x">
 
-  <xsl:import href="classpath:///hdita2dita-common.xsl"/>
+  <!-- FIXME: rename to hdita2xdita.xsl -->
 
-  <xsl:output indent="yes"/>
+  <xsl:import href="classpath:///hdita2dita-common.xsl"/>
 
   <xsl:template match="/">
     <xsl:apply-templates select="html"/>

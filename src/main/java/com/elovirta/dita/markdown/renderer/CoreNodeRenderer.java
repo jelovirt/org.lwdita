@@ -101,6 +101,7 @@ public class CoreNodeRenderer {
     private static final Attributes LINE_THROUGH_ATTS = buildAtts(HI_D_LINE_THROUGH);
     private static final Attributes SUP_ATTS = buildAtts(HI_D_SUP);
     private static final Attributes SUB_ATTS = buildAtts(HI_D_SUB);
+    private static final Attributes TT_ATTS = buildAtts(HI_D_TT);
     private static final Attributes TITLE_ATTS = buildAtts(TOPIC_TITLE);
     private static final Attributes SHORTDESC_ATTS = buildAtts(TOPIC_SHORTDESC);
     private static final Attributes PROLOG_ATTS = buildAtts(TOPIC_PROLOG);
@@ -501,7 +502,7 @@ public class CoreNodeRenderer {
 
     private void render(final Code node, final NodeRendererContext context, final SaxWriter html) {
         if (lwDita) {
-            printTag(node, context, html, TOPIC_PH, PH_ATTS);
+            printTag(node, context, html, HI_D_TT, TT_ATTS);
         } else {
             printTag(node, context, html, PR_D_CODEPH, getInlineAttributes(node, CODEPH_ATTS));
         }
@@ -1552,7 +1553,7 @@ public class CoreNodeRenderer {
         html.startElement(lwDita ? TOPIC_PRE : PR_D_CODEBLOCK, atts.build());
         // FIXME: For compatibility with HTML pre/code, should be removed
         if (lwDita) {
-            html.startElement(TOPIC_PH, PH_ATTS);
+            html.startElement(HI_D_TT, TT_ATTS);
         }
         String text = node.getContentChars().toString();
         if (text.endsWith("\n")) {
@@ -1613,7 +1614,7 @@ public class CoreNodeRenderer {
         html.startElement(lwDita ? TOPIC_PRE : PR_D_CODEBLOCK, atts.build());
         // FIXME: For compatibility with HTML pre/code, should be removed
         if (lwDita) {
-            html.startElement(TOPIC_PH, PH_ATTS);
+            html.startElement(HI_D_TT, TT_ATTS);
         }
         String text = node.getContentChars().normalizeEOL();
         if (text.endsWith("\n")) {

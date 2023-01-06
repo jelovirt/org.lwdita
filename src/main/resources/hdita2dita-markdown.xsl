@@ -9,8 +9,6 @@
 
   <xsl:import href="classpath:///hdita2dita-common.xsl"/>
 
-  <xsl:output indent="yes"/>
-
   <xsl:template match="/">
     <xsl:apply-templates select="html/body"/>
   </xsl:template>
@@ -25,14 +23,14 @@
     <xsl:attribute name="class">- topic/title </xsl:attribute>
   </xsl:template>
 
-  <xsl:template match="pre[code]">
+  <xsl:template match="pre[code] | pre[tt]">
     <codeblock>
       <xsl:apply-templates select="." mode="class"/>
       <xsl:attribute name="xml:space">preserve</xsl:attribute>
-      <xsl:apply-templates select="@* | code/node()"/>
+      <xsl:apply-templates select="@* | code/node() | tt/node()"/>
     </codeblock>
   </xsl:template>
-  <xsl:template match="pre[code]" mode="class">
+  <xsl:template match="pre[code] | pre[tt]" mode="class">
     <xsl:attribute name="class">+ topic/pre pr-d/codeblock </xsl:attribute>
   </xsl:template>
 

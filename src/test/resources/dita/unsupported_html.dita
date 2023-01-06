@@ -362,7 +362,7 @@
         <strike class="- topic/strike ">content</strike>
       </p>
       <p class="- topic/p ">
-        <tt class="- topic/tt ">content</tt>
+        <tt class="+ topic/ph hi-d/tt ">content</tt>
       </p>
       <p class="- topic/p ">
         <xmp class="- topic/xmp ">content</xmp>
