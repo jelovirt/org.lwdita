@@ -9,8 +9,6 @@
 
   <xsl:import href="classpath:///hdita2dita-common.xsl"/>
 
-  <xsl:output indent="yes"/>
-
   <xsl:template match="/">
     <xsl:apply-templates select="html/body"/>
   </xsl:template>

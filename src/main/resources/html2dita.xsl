@@ -10,8 +10,6 @@
   <xsl:import href="classpath:///hdita2dita-markdown.xsl"/>
   <xsl:import href="classpath:///specialize.xsl"/>
 
-  <xsl:output indent="yes"/>
-
   <xsl:template match="/">
     <xsl:variable name="dita" as="element()">
       <xsl:apply-templates select="html"/>
