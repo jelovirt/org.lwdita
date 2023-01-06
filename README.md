@@ -86,6 +86,15 @@ To build the DITA-OT Markdown plug-in from source:
 
     The distribution ZIP file is generated under `build/distributions`.
 
+Distribution
+------------
+
+To release and build distribution:
+
+1.  Tag release in `master` branch using semantic version as tag name, e.g. `1.2.3`.
+
+    [GitHub Actions](.github/workflows/dist.yml) will build the distribution ZIP and upload it to GitHub Release for the tag.
+
 Donating
 --------
 
