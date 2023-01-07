@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<plugin id="${id}">
+<plugin id="${id}" version="${version}">
   <!-- DITA to Markdown -->
   <transtype name="markdown" desc="Markdown"/>
   <transtype name="markdown_github" desc="GitHub-flavored Markdown"/>
