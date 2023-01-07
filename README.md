@@ -51,7 +51,7 @@ Requirements
 | LwDITA plug-in | DITA-OT | Java |
 |----------------|---------|------|
 | ≤ 2.5          | 2.4     | 1.8  |
-| ≥ 3.0          | 3.4     | 11   |
+| ≥ 3.0          | 3.4     | 1.8  |
 
 Install
 -------
@@ -86,8 +86,8 @@ To build the DITA-OT Markdown plug-in from source:
 
     The distribution ZIP file is generated under `build/distributions`.
 
-Distribution
-------------
+Release
+-------
 
 To release and build distribution:
 
