@@ -1,8 +1,8 @@
 apply plugin: "java"
 //apply plugin: "maven-publish"
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+sourceCompatibility = 11
+targetCompatibility = 11
 
 group = 'com.elovirta.dita'
 version = "3.4.0"
@@ -13,7 +13,7 @@ repositories {
 
 dependencies {
     implementation group: "org.dita-ot", name: "dost", version: "[3.4,4.0)"
-    implementation(group: "com.vladsch.flexmark", name: "flexmark-all", version: "0.62.2") {
+    implementation(group: "com.vladsch.flexmark", name: "flexmark-all", version: "0.64.0") {
         exclude group: 'com.vladsch.flexmark', module: 'flexmark-profile-pegdown'
 //        exclude group: 'com.vladsch.flexmark', module: 'flexmark-ext-abbreviation'
         exclude group: 'com.vladsch.flexmark', module: 'flexmark-ext-admonition'
