@@ -110,24 +110,24 @@ public class MDitaReaderTest extends MarkdownReaderTest {
 //                        new Event("startPrefixMapping", "ditaarch", 0, 0),
 
                         //# Shortdesc 1:11
-                        new Event("startElement", "topic", 1, 11),
-                        new Event("startElement", "title", 1, 11),
-                        new Event("characters", "Shortdesc", 1, 11),
-                        new Event("endElement", "title",1, 11),
+                        new Event("startElement", "topic", 1, 1),
+                        new Event("startElement", "title", 1, 1),
+                        new Event("characters", "Shortdesc", 1, 1),
+                        new Event("endElement", "title",1, 1),
                         //Shortdesc. 3:10
-                        new Event("startElement", "shortdesc", 3, 11),
-                        new Event("characters", "Shortdesc.",3, 11),
-                        new Event("endElement", "shortdesc", 3, 11),
-                        new Event("startElement", "body", 1, 11),
+                        new Event("startElement", "shortdesc", 3, 1),
+                        new Event("characters", "Shortdesc.",3, 1),
+                        new Event("endElement", "shortdesc", 3, 1),
+                        new Event("startElement", "body", 1, 1),
                         // Paragraph. 5:10
-                        new Event("startElement","p", 5, 10),
-                        new Event("characters", "Paragraph.", 5, 10),
-                        new Event("endElement", "p",5, 10),
-                        new Event("endElement", "body", 5, 10),
-                        new Event("endElement", "topic", 5, 10),
+                        new Event("startElement","p", 5, 1),
+                        new Event("characters", "Paragraph.", 5, 1),
+                        new Event("endElement", "p",5, 1),
+                        new Event("endElement", "body", 5, 1),
+                        new Event("endElement", "topic", 5, 1),
 
 //                        new Event("endPrefixMapping", "ditaarch", 5, 10),
-                        new Event("endDocument", 5, 10)
+                        new Event("endDocument", 5, 1)
                 ),
                 "shortdesc.md");
     }
@@ -140,32 +140,32 @@ public class MDitaReaderTest extends MarkdownReaderTest {
 //                        new Event("startPrefixMapping","ditaarch", 0, 0),
 
                         //# Task {.task} 1:14
-                        new Event("startElement","topic", 1, 14),
-                        new Event("startElement", "title", 1, 14),
-                        new Event("characters", "Task {.task}",1, 14),
-                        new Event("endElement", "title",1, 14),
+                        new Event("startElement","topic", 1, 1),
+                        new Event("startElement", "title", 1, 1),
+                        new Event("characters", "Task {.task}",1, 1),
+                        new Event("endElement", "title",1, 1),
                         // Context 3:8
-                        new Event("startElement", "shortdesc", 3, 8),
-                        new Event("characters", "Context",3, 8),
-                        new Event("endElement", "shortdesc",3, 8),
-                        new Event("startElement",  "body",1, 14),
+                        new Event("startElement", "shortdesc", 3, 1),
+                        new Event("characters", "Context",3, 1),
+                        new Event("endElement", "shortdesc",3, 1),
+                        new Event("startElement",  "body",1, 1),
                         // 1.  Command 5:11
-                        new Event("startElement","ol", 5, 23),
-                        new Event("startElement", "li",5, 23),
-                        new Event("startElement", "p",5, 12),
-                        new Event("characters", "Command",5, 12),
-                        new Event("endElement", "p",5, 12),
+                        new Event("startElement","ol", 5, 1),
+                        new Event("startElement", "li",5, 1),
+                        new Event("startElement", "p",5, 5),
+                        new Event("characters", "Command",5, 5),
+                        new Event("endElement", "p",5, 5),
                         //     Info. 7:10
-                        new Event("startElement", "p",7, 10),
-                        new Event("characters", "Info.",7, 10),
-                        new Event("endElement", "p",7, 10),
-                        new Event("endElement", "li",7, 10),
-                        new Event("endElement", "ol", 7, 10),
-                        new Event("endElement", "body",7, 10),
-                        new Event("endElement", "topic",7, 10),
+                        new Event("startElement", "p",7, 5),
+                        new Event("characters", "Info.",7, 5),
+                        new Event("endElement", "p",7, 5),
+                        new Event("endElement", "li",7, 5),
+                        new Event("endElement", "ol", 7, 5),
+                        new Event("endElement", "body",7, 5),
+                        new Event("endElement", "topic",7, 5),
 
 //                        new Event("endPrefixMapping","ditaarch", 7, 10),
-                        new Event("endDocument", 7, 10)
+                        new Event("endDocument", 7, 5)
                 ),
                 "taskOneStep.md");
     }
