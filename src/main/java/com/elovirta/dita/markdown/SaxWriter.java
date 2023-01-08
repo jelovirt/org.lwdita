@@ -24,6 +24,8 @@ public class SaxWriter {
     }
 
     public void startDocument() {
+        locator.setLineNumber(1);
+        locator.setColumnNumber(1);
         contentHandler.setDocumentLocator(locator);
     }
 
