@@ -178,7 +178,7 @@ public class MarkdownReader implements XMLReader {
         }
     }
 
-    private void validate(Document root)  {
+    private void validate(Document root) {
         int level = 0;
         Node node = root.getFirstChild();
         while (node != null) {

@@ -9,6 +9,7 @@ import org.xml.sax.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.Arrays;
 
 import static org.junit.Assert.assertEquals;
 
@@ -255,69 +256,36 @@ public class MarkdownReaderTest extends AbstractReaderTest {
     }
 
     @Test
-    public void testLocator() throws IOException, SAXException {
-        final XMLReader r = getReader();
-        r.setContentHandler(new ContentHandler() {
-            Locator locator;
-
-            @Override
-            public void setDocumentLocator(Locator locator) {
-                this.locator = locator;
-            }
-
-            @Override
-            public void startDocument() throws SAXException {
-                System.out.println(locator.getLineNumber() + ":" + locator.getColumnNumber());
-            }
-
-            @Override
-            public void endDocument() throws SAXException {
-                System.out.println(locator.getLineNumber() + ":" + locator.getColumnNumber());
-            }
-
-            @Override
-            public void startPrefixMapping(String prefix, String uri) throws SAXException {
-                System.out.println(locator.getLineNumber() + ":" + locator.getColumnNumber());
-            }
-
-            @Override
-            public void endPrefixMapping(String prefix) throws SAXException {
-                System.out.println(locator.getLineNumber() + ":" + locator.getColumnNumber());
-            }
-
-            @Override
-            public void startElement(String uri, String localName, String qName, Attributes atts) throws SAXException {
-                System.out.println(locator.getLineNumber() + ":" + locator.getColumnNumber());
-            }
-
-            @Override
-            public void endElement(String uri, String localName, String qName) throws SAXException {
-                System.out.println(locator.getLineNumber() + ":" + locator.getColumnNumber());
-            }
-
-            @Override
-            public void characters(char[] ch, int start, int length) throws SAXException {
-                System.out.println(locator.getLineNumber() + ":" + locator.getColumnNumber());
-            }
-
-            @Override
-            public void ignorableWhitespace(char[] ch, int start, int length) throws SAXException {
-                System.out.println(locator.getLineNumber() + ":" + locator.getColumnNumber());
-            }
-
-            @Override
-            public void processingInstruction(String target, String data) throws SAXException {
-                System.out.println(locator.getLineNumber() + ":" + locator.getColumnNumber());
-            }
-
-            @Override
-            public void skippedEntity(String name) throws SAXException {
-                System.out.println(locator.getLineNumber() + ":" + locator.getColumnNumber());
-            }
-        });
-        try (InputStream in = getClass().getClassLoader().getResourceAsStream("/" + getSrc() + "shortdesc.md")) {
-            InputSource input = new InputSource(in);
-            r.parse(input);
-        }
+    public void taskOneStep() throws IOException, SAXException {
+        testLocatorParsing(
+            Arrays.asList(
+                    new Event("startDocument", 1, 1),
+                    new Event("startElement","task", 1, 1),
+                    new Event("startElement", "title", 1, 1),
+                    new Event("characters", "Task",1, 1),
+                    new Event("endElement", "title",1, 1),
+                    new Event("startElement",  "taskbody",1, 1),
+                    new Event("startElement", "context", 3, 1),
+                    new Event("startElement", "p", 3, 1),
+                    new Event("characters", "Context",3, 1),
+                    new Event("endElement", "p",3, 1),
+                    new Event("endElement", "context",5, 1),
+                    new Event("startElement","steps", 5, 1),
+                    new Event("startElement", "step",5, 1),
+                    new Event("startElement", "cmd",5, 5),
+                    new Event("characters", "Command",5, 5),
+                    new Event("endElement", "cmd",5, 5),
+                    new Event("startElement", "info",7, 5),
+                    new Event("startElement", "p",7, 5),
+                    new Event("characters", "Info.",7, 5),
+                    new Event("endElement", "p",7, 5),
+                    new Event("endElement", "info",7, 5),
+                    new Event("endElement", "step",7, 5),
+                    new Event("endElement", "steps", 7, 5),
+                    new Event("endElement", "taskbody",7, 5),
+                    new Event("endElement", "task",7, 5),
+                    new Event("endDocument", 7, 5)
+            ),
+            "taskOneStep.md");
     }
 }

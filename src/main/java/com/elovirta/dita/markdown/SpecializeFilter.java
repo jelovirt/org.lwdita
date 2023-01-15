@@ -246,14 +246,14 @@ public class SpecializeFilter extends XMLFilterImpl {
     }
 
     public void doStartElement(String uri, String localName, String qName, Attributes atts) throws SAXException {
-        System.out.printf("<%s>%n", localName);
+//        System.out.printf("<%s>%n", localName);
         super.startElement(uri, localName, qName, atts);
         elementStack.push(localName);
     }
 
     public void doEndElement(String uri, String localName, String qName) throws SAXException {
         final String l = elementStack.pop();
-        System.out.printf("</%s = %s>%n", l, localName);
+//        System.out.printf("</%s = %s>%n", l, localName);
         super.endElement(uri, l, l);
     }
 
