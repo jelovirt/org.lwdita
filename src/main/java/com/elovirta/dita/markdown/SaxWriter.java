@@ -32,7 +32,6 @@ public class SaxWriter {
     private void setLocation(Node node) {
         if (node != null) {
             locator.setLineNumber(node.getLineNumber() + 1);
-//            locator.setColumnNumber(node.getStartOffset());
             locator.setColumnNumber(node.getStartOffset() - node.getStartOfLine() + 1);
         }
     }

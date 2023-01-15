@@ -1,6 +1,5 @@
 package com.elovirta.dita.markdown;
 
-import com.google.common.base.Strings;
 import org.dita.dost.util.Constants;
 import org.dita.dost.util.DitaClass;
 import org.xml.sax.Attributes;
@@ -9,7 +8,6 @@ import org.xml.sax.helpers.AttributesImpl;
 import org.xml.sax.helpers.XMLFilterImpl;
 
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import static javax.xml.XMLConstants.NULL_NS_URI;
 import static org.dita.dost.util.Constants.*;
@@ -31,23 +29,22 @@ public class SpecializeFilter extends XMLFilterImpl {
         RESULT
     }
 
-    /** Topic type stack. Default to topic in case of compound type */
+    /**
+     * Topic type stack. Default to topic in case of compound type
+     */
     private Deque<Type> typeStack = new ArrayDeque<>(Arrays.asList(Type.TOPIC));
-//    private Type type = Type.TOPIC;
     private boolean inBody = false;
     private boolean inStep = false;
     private int paragraphCountInStep = 0;
     private int depth = 0;
     private boolean wrapOpen = false;
     private TaskState taskState = null;
-//    private boolean contextWrapOpen = false;
     private boolean infoWrapOpen = false;
 
     private Deque<String> elementStack = new ArrayDeque<>();
 
     @Override
     public void startElement(String uri, String localName, String qName, Attributes atts) throws SAXException {
-//        System.err.println("#" + localName + " infoWrapOpen="+infoWrapOpen);
         depth++;
 
         if (localName.equals(TOPIC_TOPIC.localName)) {
@@ -119,31 +116,17 @@ public class SpecializeFilter extends XMLFilterImpl {
                         break;
                     default:
                         if (inBody && depth == DEPTH_IN_BODY) {
-//                            switch (localName) {
-//                                case "ol":
-//                                case "ul":
-//                                    if (true) throw new RuntimeException();
-//                                    // No need to wrap
-//                                    if (taskState == TaskState.CONTEXT) {
-//                                        taskState = TaskState.STEPS;
-//                                        doEndElement(uri, TASK_CONTEXT.localName, TASK_CONTEXT.localName);
-//                                    }
-//                                    break;
-//                                default:
                             if (taskState == null) {
                                 AttributesImpl sectionAtts = new AttributesImpl();
                                 sectionAtts.addAttribute(NULL_NS_URI, "class", "class", "CDATA", TASK_CONTEXT.toString());
                                 doStartElement(uri, TASK_CONTEXT.localName, TASK_CONTEXT.localName, sectionAtts);
                                 taskState = TaskState.CONTEXT;
                             }
-//                                    break;
-//                            }
                             doStartElement(uri, localName, qName, atts);
                         } else if (inStep && depth == 5) {
                             switch (localName) {
                                 case "p":
                                     paragraphCountInStep++;
-//                                    System.out.printf("p %d in step%n", paragraphCountInStep);
                                     if (paragraphCountInStep == 1) {
                                         renameStartElement(TASK_CMD, atts);
                                     } else if (paragraphCountInStep == 2 && !infoWrapOpen) {
@@ -162,7 +145,6 @@ public class SpecializeFilter extends XMLFilterImpl {
                                         res.addAttribute(NULL_NS_URI, "class", "class", "CDATA", TASK_INFO.toString());
                                         doStartElement(NULL_NS_URI, TASK_INFO.localName, TASK_INFO.localName, res);
                                         infoWrapOpen = true;
-//                                        doStartElement(uri, localName, qName, atts);
                                     }
                                     doStartElement(uri, localName, qName, atts);
                                     break;
@@ -211,7 +193,6 @@ public class SpecializeFilter extends XMLFilterImpl {
 
     @Override
     public void endElement(String uri, String localName, String qName) throws SAXException {
-//        System.err.println("#/" + localName);
         switch (typeStack.peek()) {
             case TASK:
                 switch (localName) {
@@ -265,14 +246,14 @@ public class SpecializeFilter extends XMLFilterImpl {
     }
 
     public void doStartElement(String uri, String localName, String qName, Attributes atts) throws SAXException {
-//        System.out.printf("%s<%s>%n", Strings.repeat(" ", depth), localName);
+        System.out.printf("<%s>%n", localName);
         super.startElement(uri, localName, qName, atts);
         elementStack.push(localName);
     }
 
     public void doEndElement(String uri, String localName, String qName) throws SAXException {
         final String l = elementStack.pop();
-//        System.out.printf("%s</%s = %s>%n", Strings.repeat(" ", depth), l, localName);
+        System.out.printf("</%s = %s>%n", l, localName);
         super.endElement(uri, l, l);
     }
 
@@ -286,10 +267,6 @@ public class SpecializeFilter extends XMLFilterImpl {
         doStartElement(NULL_NS_URI, cls.localName, cls.localName, res);
     }
 
-    private void renameEndElement(DitaClass cls) throws SAXException {
-        doEndElement(NULL_NS_URI, cls.localName, cls.localName);
-    }
-
     private Collection<String> getOutputclass(Attributes atts) {
         final String outputclass = atts.getValue("outputclass");
         if (outputclass == null) {
@@ -297,82 +274,4 @@ public class SpecializeFilter extends XMLFilterImpl {
         }
         return Arrays.asList(outputclass.trim().split("\\s+"));
     }
-
-/*
-# reference
-body/* -> wrap everything not table or section into section
-
-# concept
-topic -> concept
-body -> conbody
-
-# task
-topic -> task
-body -> taskbody
-body/ol -> steps
-body/ul -> steps-unordered
-
-  <xsl:template match="body" mode="task">
-    <taskbody class="- topic/body task/taskbody ">
-      <xsl:apply-templates select="@* except @class" mode="#current"/>
-      <xsl:for-each-group select="*" group-adjacent="contains(@class, ' topic/ol ') or contains(@class, ' topic/ul ') or contains(@class, ' topic/section ')">
-        <xsl:choose>
-          <xsl:when test="current-grouping-key() and empty(preceding-sibling::*)">
-            <context class="- topic/section task/context ">
-              <xsl:apply-templates select="current-group()/*" mode="#current"/>
-            </context>
-          </xsl:when>
-          <xsl:when test="current-grouping-key()">
-            <xsl:apply-templates select="current-group()" mode="#current"/>
-          </xsl:when>
-          <xsl:when test="current-group()[1]/preceding-sibling::*[contains(@class, ' topic/ol ') or contains(@class, ' topic/ul ')]">
-            <result class="- topic/section task/result ">
-              <xsl:apply-templates select="current-group()" mode="#current"/>
-            </result>
-          </xsl:when>
-          <xsl:otherwise>
-            <context class="- topic/section task/context ">
-              <xsl:apply-templates select="current-group()" mode="#current"/>
-            </context>
-          </xsl:otherwise>
-        </xsl:choose>
-      </xsl:for-each-group>
-    </taskbody>
-  </xsl:template>
-
-
-  <xsl:template match="body/ol/li | body/ul/li" mode="task">
-    <step class="- topic/li task/step ">
-      <xsl:apply-templates select="@* except @class" mode="#current"/>
-
-      <xsl:variable name="first-block" select="*[x:is-block(.)][1]" as="element()?"/>
-      <xsl:variable name="head" select="if (exists($first-block)) then node()[. &lt;&lt; $first-block] else node()" as="node()*"/>
-      <xsl:variable name="tail" select="if (exists($first-block)) then ($first-block | node()[. &gt;&gt; $first-block]) else ()" as="node()*"/>
-      <xsl:choose>
-        <xsl:when test="$head[self::* or normalize-space()]">
-          <cmd class="- topic/ph task/cmd ">
-            <xsl:copy-of select="$head"/>
-          </cmd>
-          <xsl:if test="*">
-            <info class="- topic/itemgroup task/info ">
-              <xsl:apply-templates select="$tail" mode="#current"/>
-            </info>
-          </xsl:if>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:for-each select="$tail[1]">
-            <cmd class="- topic/ph task/cmd ">
-              <xsl:apply-templates select="@* except @class | node()" mode="#current"/>
-            </cmd>
-          </xsl:for-each>
-          <xsl:if test="$tail[position() ge 2][self::* or normalize-space()]">
-            <info class="- topic/itemgroup task/info ">
-              <xsl:apply-templates select="$tail[position() gt 1]" mode="#current"/>
-            </info>
-          </xsl:if>
-        </xsl:otherwise>
-      </xsl:choose>
-    </step>
-  </xsl:template>
- */
 }
