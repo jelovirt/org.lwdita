@@ -2,18 +2,10 @@ package com.elovirta.dita.markdown;
 
 import org.junit.Ignore;
 import org.junit.Test;
-import org.xml.sax.*;
-import org.xml.sax.helpers.DefaultHandler;
+import org.xml.sax.SAXException;
 
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParserFactory;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.Reader;
-import java.io.StringReader;
-import java.util.*;
-
-import static junit.framework.TestCase.assertEquals;
+import java.util.Arrays;
 
 public class MDitaReaderTest extends MarkdownReaderTest {
 
@@ -54,6 +46,7 @@ public class MDitaReaderTest extends MarkdownReaderTest {
     }
 
     @Test
+    @Override
     public void testLocator() throws IOException, SAXException {
         testLocatorParsing(
                 Arrays.asList(

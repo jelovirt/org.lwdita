@@ -1,13 +1,13 @@
 package com.elovirta.dita.markdown;
 
 import com.elovirta.dita.utils.AbstractReaderTest;
-import org.dita.dost.util.SaxCache;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.xml.sax.*;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 import java.util.Arrays;
 
@@ -253,6 +253,29 @@ public class MarkdownReaderTest extends AbstractReaderTest {
     @Test
     public void testAbbreviation() throws Exception {
         run("abbreviation.md");
+    }
+
+    @Test
+    public void testLocator() throws IOException, SAXException {
+        testLocatorParsing(
+                Arrays.asList(
+                        new Event("startDocument", 1, 1),
+                        new Event("startElement", "topic", 1, 1),
+                        new Event("startElement", "title", 1, 1),
+                        new Event("characters", "Shortdesc", 1, 1),
+                        new Event("endElement", "title",1, 1),
+                        new Event("startElement", "body", 1, 1),
+                        new Event("startElement", "p", 3, 1),
+                        new Event("characters", "Shortdesc.",3, 1),
+                        new Event("endElement", "p", 3, 1),
+                        new Event("startElement","p", 5, 1),
+                        new Event("characters", "Paragraph.", 5, 1),
+                        new Event("endElement", "p",5, 1),
+                        new Event("endElement", "body", 5, 1),
+                        new Event("endElement", "topic", 5, 1),
+                        new Event("endDocument", 5, 1)
+                ),
+                "shortdesc.md");
     }
 
     @Test
