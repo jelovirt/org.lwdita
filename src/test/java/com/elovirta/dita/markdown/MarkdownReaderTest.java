@@ -324,21 +324,27 @@ public class MarkdownReaderTest extends AbstractReaderTest {
                         new Event("startElement", "body", 1, 1),
 
                         new Event("startElement", "p", 3, 1),
-                        new Event("characters", "Plain paragraph.",3, 1),
-                        new Event("endElement", "p", 3, 1),
+                        new Event("characters", "Plain ",3, 1),
+                        new Event("startElement", "b", 3, 7),
+                        new Event("startElement", "i", 3, 10),
+                        new Event("characters", "paragraph",3, 10),
+                        new Event("endElement", "i", 3, 22),
+                        new Event("endElement", "b", 3, 26),
+                        new Event("characters", ".",3, 26),
+                        new Event("endElement", "p", 3, 26),
 
                         new Event("startElement","p", 586, 8),
                         new Event("characters", "HTML paragraph.", 761, 15),
                         new Event("endElement", "p",761, 15),
 
-                        new Event("startElement","p", 761, 15),
-                        new Event("startElement","video", 761, 15),
-                        new Event("endElement", "video",761, 15),
-                        new Event("endElement", "p",761, 15),
+                        new Event("startElement","p", 7, 1),
+                        new Event("startElement","video", 7, 1),
+                        new Event("endElement", "video",7, 54),
+                        new Event("endElement", "p",7, 54),
 
-                        new Event("endElement", "body", 761, 15),
-                        new Event("endElement", "topic", 761, 15),
-                        new Event("endDocument", 761, 15)
+                        new Event("endElement", "body", 7, 54),
+                        new Event("endElement", "topic", 7, 54),
+                        new Event("endDocument", 7, 54)
                 ),
                 "html.md");
     }

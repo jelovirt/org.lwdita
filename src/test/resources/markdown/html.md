@@ -1,6 +1,6 @@
 # HTML Block
 
-Plain paragraph.
+Plain <b><i>paragraph</i></b>.
 
 <p>HTML paragraph.</p>
 

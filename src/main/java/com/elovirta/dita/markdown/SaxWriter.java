@@ -29,6 +29,10 @@ public class SaxWriter {
         contentHandler.setDocumentLocator(locator);
     }
 
+    public void setDocumentLocator() {
+        contentHandler.setDocumentLocator(locator);
+    }
+
     public void setLocation(Node node) {
         if (node != null) {
             locator.setLineNumber(node.getLineNumber() + 1);

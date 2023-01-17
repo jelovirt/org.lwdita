@@ -865,6 +865,7 @@ public class CoreNodeRenderer {
         } catch (IOException | SAXException e) {
             throw new ParseException("Failed to parse HTML: " + e.getMessage(), e);
         }
+        html.setDocumentLocator();
     }
 
     /**
@@ -909,6 +910,7 @@ public class CoreNodeRenderer {
                 throw new ParseException("Failed to parse HTML: " + e.getMessage(), e);
             }
         }
+        html.setDocumentLocator();
     }
 
     private static class CacheContentHandler extends XMLFilterImpl {
