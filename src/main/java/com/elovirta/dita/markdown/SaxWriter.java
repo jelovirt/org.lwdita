@@ -29,7 +29,7 @@ public class SaxWriter {
         contentHandler.setDocumentLocator(locator);
     }
 
-    private void setLocation(Node node) {
+    public void setLocation(Node node) {
         if (node != null) {
             locator.setLineNumber(node.getLineNumber() + 1);
             locator.setColumnNumber(node.getStartOffset() - node.getStartOfLine() + 1);

@@ -99,4 +99,9 @@ public class MDitaReaderTest extends MarkdownReaderTest {
                 ),
                 "taskOneStep.md");
     }
+
+    @Test
+    @Override
+    @Ignore
+    public void testHtmlLocator() throws IOException, SAXException {}
 }

@@ -860,6 +860,7 @@ public class CoreNodeRenderer {
         final HtmlParser parser = new HtmlParser();
         parser.setContentHandler(h);
         try {
+            html.setLocation(node);
             parser.parse(new InputSource(new StringReader(text)));
         } catch (IOException | SAXException e) {
             throw new ParseException("Failed to parse HTML: " + e.getMessage(), e);
@@ -883,6 +884,7 @@ public class CoreNodeRenderer {
         h.setResult(new SAXResult(cache));
         final HtmlParser parser = new HtmlParser(XmlViolationPolicy.ALLOW);
         parser.setContentHandler(h);
+        html.setLocation(node);
         if (text.startsWith("</")) {
             final String data = text.replaceAll("/", "") + text;
             try (final StringReader in = new StringReader(data)) {

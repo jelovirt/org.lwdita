@@ -311,4 +311,35 @@ public class MarkdownReaderTest extends AbstractReaderTest {
             ),
             "taskOneStep.md");
     }
+
+    @Test
+    public void testHtmlLocator() throws IOException, SAXException {
+        testLocatorParsing(
+                Arrays.asList(
+                        new Event("startDocument", 1, 1),
+                        new Event("startElement", "topic", 1, 1),
+                        new Event("startElement", "title", 1, 1),
+                        new Event("characters", "HTML Block", 1, 1),
+                        new Event("endElement", "title",1, 1),
+                        new Event("startElement", "body", 1, 1),
+
+                        new Event("startElement", "p", 3, 1),
+                        new Event("characters", "Plain paragraph.",3, 1),
+                        new Event("endElement", "p", 3, 1),
+
+                        new Event("startElement","p", 586, 8),
+                        new Event("characters", "HTML paragraph.", 761, 15),
+                        new Event("endElement", "p",761, 15),
+
+                        new Event("startElement","p", 761, 15),
+                        new Event("startElement","video", 761, 15),
+                        new Event("endElement", "video",761, 15),
+                        new Event("endElement", "p",761, 15),
+
+                        new Event("endElement", "body", 761, 15),
+                        new Event("endElement", "topic", 761, 15),
+                        new Event("endDocument", 761, 15)
+                ),
+                "html.md");
+    }
 }
