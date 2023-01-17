@@ -166,7 +166,7 @@ public class MarkdownReader implements XMLReader {
     @Override
     public void parse(final InputSource input) throws IOException, SAXException {
         char[] markdownContent = getMarkdownContent(input);
-        final BasedSequence sequence = BasedSequenceImpl.of(CharBuffer.wrap(markdownContent));
+        final BasedSequence sequence = BasedSequence.of(CharBuffer.wrap(markdownContent));
 
         try {
             final Document root = p.parse(sequence);
