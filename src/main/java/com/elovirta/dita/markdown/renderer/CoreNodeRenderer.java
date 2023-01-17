@@ -843,6 +843,9 @@ public class CoreNodeRenderer {
                 .replaceAll("\\s+", "_");
     }
 
+    /**
+     * Render HTML block into DITA.
+     */
     private void render(final HtmlBlock node, final NodeRendererContext context, final SaxWriter html) {
         final String text = node.getChars().toString();
         final FragmentContentHandler fragmentFilter = new FragmentContentHandler();
@@ -863,6 +866,11 @@ public class CoreNodeRenderer {
         }
     }
 
+    /**
+     * Render inline HTML start or end tag. Start tags may contain attributes.
+     *
+     * @TODO Parse directly without HtmlParser, especially end tags, and map to DITA with a mapping table in this class.
+     */
     private void render(final HtmlInline node, final NodeRendererContext context, final SaxWriter html) {
         final String text = node.getChars().toString();
         final CacheContentHandler cache = new CacheContentHandler();
@@ -916,25 +924,25 @@ public class CoreNodeRenderer {
         }
     }
 
-    private StartElementEvent parseHtmlInline(final HtmlInline node) {
-        final List<StartElementEvent> events = new ArrayList<>();
-        final HtmlParser parser = new HtmlParser(XmlViolationPolicy.ALLOW);
-        parser.setContentHandler(new XMLFilterImpl() {
-            @Override
-            public void startElement(String uri, String localName, String qName, Attributes atts) throws SAXException {
-                events.add(new StartElementEvent(uri, localName, qName, atts));
-            }
-        });
-        try (final StringReader in = new StringReader(node.getChars().toString())) {
-            parser.parse(new InputSource(in));
-        } catch (IOException | SAXException e) {
-            throw new ParseException("Failed to parse HTML: " + e.getMessage(), e);
-        }
-        if (events.isEmpty()) {
-            return null;
-        }
-        return events.get(0);
-    }
+//    private StartElementEvent parseHtmlInline(final HtmlInline node) {
+//        final List<StartElementEvent> events = new ArrayList<>();
+//        final HtmlParser parser = new HtmlParser(XmlViolationPolicy.ALLOW);
+//        parser.setContentHandler(new XMLFilterImpl() {
+//            @Override
+//            public void startElement(String uri, String localName, String qName, Attributes atts) throws SAXException {
+//                events.add(new StartElementEvent(uri, localName, qName, atts));
+//            }
+//        });
+//        try (final StringReader in = new StringReader(node.getChars().toString())) {
+//            parser.parse(new InputSource(in));
+//        } catch (IOException | SAXException e) {
+//            throw new ParseException("Failed to parse HTML: " + e.getMessage(), e);
+//        }
+//        if (events.isEmpty()) {
+//            return null;
+//        }
+//        return events.get(0);
+//    }
 
     private void render(final ListItem node, final NodeRendererContext context, final SaxWriter html) {
         printTag(node, context, html, TOPIC_LI, LI_ATTS);
@@ -1673,6 +1681,7 @@ public class CoreNodeRenderer {
         html.processingInstruction("linebreak", null);
     }
 
+    /** Map HTML entity to Unicode character. */
     private void render(final HtmlEntity node, final NodeRendererContext context, final SaxWriter html) {
         final BasedSequence chars = node.getChars();
         final String name = chars.subSequence(1, chars.length() - 1).toString().toLowerCase();
