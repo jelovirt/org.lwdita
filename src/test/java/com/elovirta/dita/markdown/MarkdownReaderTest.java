@@ -4,9 +4,12 @@ import com.elovirta.dita.utils.AbstractReaderTest;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 
+import java.io.IOException;
 import java.net.URL;
+import java.util.Arrays;
 
 import static org.junit.Assert.assertEquals;
 
@@ -252,4 +255,97 @@ public class MarkdownReaderTest extends AbstractReaderTest {
         run("abbreviation.md");
     }
 
+    @Test
+    public void testLocator() throws IOException, SAXException {
+        testLocatorParsing(
+                Arrays.asList(
+                        new Event("startDocument", 1, 1),
+                        new Event("startElement", "topic", 1, 1),
+                        new Event("startElement", "title", 1, 1),
+                        new Event("characters", "Shortdesc", 1, 1),
+                        new Event("endElement", "title",1, 1),
+                        new Event("startElement", "body", 1, 1),
+                        new Event("startElement", "p", 3, 1),
+                        new Event("characters", "Shortdesc.",3, 1),
+                        new Event("endElement", "p", 3, 1),
+                        new Event("startElement","p", 5, 1),
+                        new Event("characters", "Paragraph.", 5, 1),
+                        new Event("endElement", "p",5, 1),
+                        new Event("endElement", "body", 5, 1),
+                        new Event("endElement", "topic", 5, 1),
+                        new Event("endDocument", 5, 1)
+                ),
+                "shortdesc.md");
+    }
+
+    @Test
+    public void taskOneStep() throws IOException, SAXException {
+        testLocatorParsing(
+            Arrays.asList(
+                    new Event("startDocument", 1, 1),
+                    new Event("startElement","task", 1, 1),
+                    new Event("startElement", "title", 1, 1),
+                    new Event("characters", "Task",1, 1),
+                    new Event("endElement", "title",1, 1),
+                    new Event("startElement",  "taskbody",1, 1),
+                    new Event("startElement", "context", 3, 1),
+                    new Event("startElement", "p", 3, 1),
+                    new Event("characters", "Context",3, 1),
+                    new Event("endElement", "p",3, 1),
+                    new Event("endElement", "context",5, 1),
+                    new Event("startElement","steps", 5, 1),
+                    new Event("startElement", "step",5, 1),
+                    new Event("startElement", "cmd",5, 5),
+                    new Event("characters", "Command",5, 5),
+                    new Event("endElement", "cmd",5, 5),
+                    new Event("startElement", "info",7, 5),
+                    new Event("startElement", "p",7, 5),
+                    new Event("characters", "Info.",7, 5),
+                    new Event("endElement", "p",7, 5),
+                    new Event("endElement", "info",7, 5),
+                    new Event("endElement", "step",7, 5),
+                    new Event("endElement", "steps", 7, 5),
+                    new Event("endElement", "taskbody",7, 5),
+                    new Event("endElement", "task",7, 5),
+                    new Event("endDocument", 7, 5)
+            ),
+            "taskOneStep.md");
+    }
+
+    @Test
+    public void testHtmlLocator() throws IOException, SAXException {
+        testLocatorParsing(
+                Arrays.asList(
+                        new Event("startDocument", 1, 1),
+                        new Event("startElement", "topic", 1, 1),
+                        new Event("startElement", "title", 1, 1),
+                        new Event("characters", "HTML Block", 1, 1),
+                        new Event("endElement", "title",1, 1),
+                        new Event("startElement", "body", 1, 1),
+
+                        new Event("startElement", "p", 3, 1),
+                        new Event("characters", "Plain ",3, 1),
+                        new Event("startElement", "b", 3, 7),
+                        new Event("startElement", "i", 3, 10),
+                        new Event("characters", "paragraph",3, 10),
+                        new Event("endElement", "i", 3, 22),
+                        new Event("endElement", "b", 3, 26),
+                        new Event("characters", ".",3, 26),
+                        new Event("endElement", "p", 3, 26),
+
+                        new Event("startElement","p", 5, 1),
+                        new Event("characters", "HTML paragraph.", 5, 1),
+                        new Event("endElement", "p",5, 1),
+
+                        new Event("startElement","p", 7, 1),
+                        new Event("startElement","video", 7, 1),
+                        new Event("endElement", "video",7, 54),
+                        new Event("endElement", "p",7, 54),
+
+                        new Event("endElement", "body", 7, 54),
+                        new Event("endElement", "topic", 7, 54),
+                        new Event("endDocument", 7, 54)
+                ),
+                "html.md");
+    }
 }

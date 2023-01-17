@@ -50,11 +50,11 @@ public class MetadataSerializerImpl {
         write(header, TOPIC_PERMISSIONS, "view", html);
         if (header.containsKey(TOPIC_AUDIENCE.localName) || header.containsKey(TOPIC_CATEGORY.localName)
                 || header.containsKey(TOPIC_KEYWORD.localName)) {
-            html.startElement(TOPIC_METADATA, buildAtts(TOPIC_METADATA));
+            html.startElement(node, TOPIC_METADATA, buildAtts(TOPIC_METADATA));
             write(header, TOPIC_AUDIENCE, ATTRIBUTE_NAME_AUDIENCE, html);
             write(header, TOPIC_CATEGORY, html);
             if (header.containsKey(TOPIC_KEYWORD.localName)) {
-                html.startElement(TOPIC_KEYWORDS, buildAtts(TOPIC_KEYWORDS));
+                html.startElement(node, TOPIC_KEYWORDS, buildAtts(TOPIC_KEYWORDS));
                 write(header, TOPIC_KEYWORD, html);
                 html.endElement();
             }
@@ -66,7 +66,7 @@ public class MetadataSerializerImpl {
         final List<String> keys = Sets.difference(header.keySet(), knownKeys).stream().sorted().collect(Collectors.toList());
         for (String key : keys) {
             for (String val : header.get(key)) {
-                html.startElement(TOPIC_DATA.localName, new XMLUtils.AttributesBuilder()
+                html.startElement(node, TOPIC_DATA.localName, new XMLUtils.AttributesBuilder()
                         .add(ATTRIBUTE_NAME_CLASS, TOPIC_DATA.toString())
                         .add(ATTRIBUTE_NAME_NAME, key)
                         .add(ATTRIBUTE_NAME_VALUE, val)
@@ -79,7 +79,7 @@ public class MetadataSerializerImpl {
     private void write(final Map<String, List<String>> header, final DitaClass elem, SaxWriter html) {
         if (header.containsKey(elem.localName)) {
             for (String v : header.get(elem.localName)) {
-                html.startElement(elem, buildAtts(elem));
+                html.startElement(null, elem, buildAtts(elem));
                 if (v != null) {
                     html.characters(v);
                 }
@@ -91,7 +91,7 @@ public class MetadataSerializerImpl {
     private void write(final Map<String, List<String>> header, final DitaClass elem, final String attr, SaxWriter html) {
         if (header.containsKey(elem.localName)) {
             for (String v : header.get(elem.localName)) {
-                html.startElement(elem, new XMLUtils.AttributesBuilder()
+                html.startElement(null, elem, new XMLUtils.AttributesBuilder()
                         .add(ATTRIBUTE_NAME_CLASS, elem.toString())
                         .add(attr, v)
                         .build());

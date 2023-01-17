@@ -1,6 +1,5 @@
 package com.elovirta.dita.markdown;
 
-import com.elovirta.dita.utils.ClasspathURIResolver;
 import com.google.common.annotations.VisibleForTesting;
 import com.vladsch.flexmark.ast.Heading;
 import com.vladsch.flexmark.ast.Text;
@@ -25,17 +24,9 @@ import com.vladsch.flexmark.util.ast.Node;
 import com.vladsch.flexmark.util.data.MutableDataSet;
 import com.vladsch.flexmark.util.sequence.BasedSequence;
 import com.vladsch.flexmark.util.sequence.BasedSequenceImpl;
-import org.dita.dost.util.FileUtils;
-import org.dita.dost.util.URLUtils;
 import org.xml.sax.*;
+import org.xml.sax.helpers.XMLFilterImpl;
 
-import javax.xml.transform.Templates;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.sax.SAXResult;
-import javax.xml.transform.sax.SAXTransformerFactory;
-import javax.xml.transform.sax.TransformerHandler;
-import javax.xml.transform.stream.StreamSource;
 import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -53,8 +44,6 @@ import static org.apache.commons.io.IOUtils.copy;
 public class MarkdownReader implements XMLReader {
 
     final Parser p;
-    private SAXTransformerFactory tf;
-    private Templates t;
     private final MutableDataSet options;
 
     EntityResolver resolver;
@@ -85,13 +74,6 @@ public class MarkdownReader implements XMLReader {
                 .set(TablesExtension.DISCARD_EXTRA_COLUMNS, true)
                 .set(TablesExtension.HEADER_SEPARATOR_COLUMN_MATCH, true)
         );
-        try (InputStream style = getClass().getResourceAsStream("/specialize.xsl")) {
-            tf = (SAXTransformerFactory) TransformerFactory.newInstance();
-            tf.setURIResolver(new ClasspathURIResolver(tf.getURIResolver()));
-            t = tf.newTemplates(new StreamSource(style, "classpath:///specialize.xsl"));
-        } catch (final IOException | TransformerConfigurationException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     public MarkdownReader(final MutableDataSet options) {
@@ -196,7 +178,7 @@ public class MarkdownReader implements XMLReader {
         }
     }
 
-    private void validate(Document root)  {
+    private void validate(Document root) {
         int level = 0;
         Node node = root.getFirstChild();
         while (node != null) {
@@ -326,18 +308,10 @@ public class MarkdownReader implements XMLReader {
 
     private void parseAST(final Document root) throws SAXException {
         ContentHandler res = contentHandler;
-        if (t != null) {
-            final TransformerHandler h;
-            try {
-                h = tf.newTransformerHandler(t);
-            } catch (final TransformerConfigurationException e) {
-                throw new SAXException(e);
-            }
-            h.setResult(new SAXResult(res));
-            res = h;
-        }
+        final XMLFilterImpl specialize = new SpecializeFilter();
+        specialize.setContentHandler(res);
+        res = specialize;
         final DitaRenderer s = new DitaRenderer(options);
         s.render(root, res);
     }
-
 }

@@ -1,8 +1,12 @@
 package com.elovirta.dita.markdown;
 
+import com.vladsch.flexmark.util.ast.Node;
 import org.dita.dost.util.DitaClass;
 import org.xml.sax.ContentHandler;
+import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
+import org.xml.sax.ext.Locator2Impl;
+import org.xml.sax.helpers.XMLFilterImpl;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
@@ -12,21 +16,44 @@ import static javax.xml.XMLConstants.NULL_NS_URI;
 /**
  * Write to SAX ContentHandler.
  */
-public class SaxWriter {
+public class SaxWriter extends XMLFilterImpl {
     public final Deque<String> tagStack = new ArrayDeque<>();
-    public final ContentHandler contentHandler;
+    private final Locator2Impl locator = new Locator2Impl();
 
     public SaxWriter(ContentHandler out) {
-        this.contentHandler = out;
+        setContentHandler(out);
     }
 
-    public void startElement(final DitaClass tag, final org.xml.sax.Attributes atts) {
-        startElement(tag.localName, atts);
+    public void startDocument() {
+        locator.setLineNumber(1);
+        locator.setColumnNumber(1);
+        getContentHandler().setDocumentLocator(locator);
     }
 
-    public void startElement(final String tag, final org.xml.sax.Attributes atts) {
+    @Override
+    public void setDocumentLocator(Locator locator) {
+        // Ignore
+    }
+
+    public void setDocumentLocator() {
+        getContentHandler().setDocumentLocator(locator);
+    }
+
+    public void setLocation(Node node) {
+        if (node != null) {
+            locator.setLineNumber(node.getLineNumber() + 1);
+            locator.setColumnNumber(node.getStartOffset() - node.getStartOfLine() + 1);
+        }
+    }
+
+    public void startElement(final Node node, final DitaClass tag, final org.xml.sax.Attributes atts) {
+        startElement(node, tag.localName, atts);
+    }
+
+    public void startElement(final Node node, final String tag, final org.xml.sax.Attributes atts) {
+        setLocation(node);
         try {
-            contentHandler.startElement(NULL_NS_URI, tag, tag, atts);
+            getContentHandler().startElement(NULL_NS_URI, tag, tag, atts);
         } catch (final SAXException e) {
             throw new ParseException(e);
         }
@@ -45,7 +72,7 @@ public class SaxWriter {
 
     public void endElement(final String tag) {
         try {
-            contentHandler.endElement(NULL_NS_URI, tag, tag);
+            getContentHandler().endElement(NULL_NS_URI, tag, tag);
         } catch (final SAXException e) {
             throw new ParseException(e);
         }
@@ -53,7 +80,7 @@ public class SaxWriter {
 
     public void characters(final char c) {
         try {
-            contentHandler.characters(new char[]{c}, 0, 1);
+            getContentHandler().characters(new char[]{c}, 0, 1);
         } catch (final SAXException e) {
             throw new ParseException(e);
         }
@@ -62,7 +89,7 @@ public class SaxWriter {
     public void characters(final String t) {
         final char[] cs = t.toCharArray();
         try {
-            contentHandler.characters(cs, 0, cs.length);
+            getContentHandler().characters(cs, 0, cs.length);
         } catch (final SAXException e) {
             throw new ParseException(e);
         }
@@ -76,7 +103,7 @@ public class SaxWriter {
 
     public void processingInstruction(String name, String data) {
         try {
-            contentHandler.processingInstruction(name, data != null ? data : "");
+            getContentHandler().processingInstruction(name, data != null ? data : "");
         } catch (final SAXException e) {
             throw new ParseException(e);
         }

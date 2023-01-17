@@ -384,7 +384,7 @@ public class CoreNodeRenderer {
             } else {
                 atts.add(ATTRIBUTE_NAME_SPECIALIZATIONS, "@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product");
             }
-            html.startElement(ELEMENT_NAME_DITA, atts.build());
+            html.startElement(node, ELEMENT_NAME_DITA, atts.build());
         }
         context.renderChildren(node);
         if (isCompound) {
@@ -412,7 +412,7 @@ public class CoreNodeRenderer {
         if (node.getTag().toString().equals("include")) {
             final AttributesBuilder atts = new AttributesBuilder(REQUIRED_CLEANUP_ATTS)
                     .add(ATTRIBUTE_NAME_CONREF, node.getParameters().toString());
-            html.startElement(TOPIC_REQUIRED_CLEANUP, atts.build());
+            html.startElement(node, TOPIC_REQUIRED_CLEANUP, atts.build());
             html.endElement();
         }
     }
@@ -421,7 +421,7 @@ public class CoreNodeRenderer {
         if (node.getChars().charAt(0) == '<') {
             final AttributesBuilder atts = getLinkAttributes(node.getText().toString());
 
-            html.startElement(TOPIC_XREF, getInlineAttributes(node, atts.build()));
+            html.startElement(node, TOPIC_XREF, getInlineAttributes(node, atts.build()));
             html.characters(node.getText().toString());
             html.endElement();
         } else {
@@ -441,7 +441,7 @@ public class CoreNodeRenderer {
                     .add(ATTRIBUTE_NAME_TYPE, "fn")
                     .add(ATTRIBUTE_NAME_HREF, String.format("#%s/%s", lastId, id))
                     .build();
-            html.startElement(TOPIC_XREF, atts);
+            html.startElement(node, TOPIC_XREF, atts);
             html.endElement();
         } else {
             footnotes.add(id);
@@ -449,7 +449,7 @@ public class CoreNodeRenderer {
                     .add("callout", callout)
                     .add(ATTRIBUTE_NAME_ID, id)
                     .build();
-            html.startElement(TOPIC_FN, atts);
+            html.startElement(node, TOPIC_FN, atts);
             Node child = node.getFootnoteBlock().getFirstChild();
             while (child != null) {
                 context.renderChildren(child);
@@ -509,7 +509,7 @@ public class CoreNodeRenderer {
     }
 
     private void render(final DefinitionList node, final NodeRendererContext context, final SaxWriter html) {
-        html.startElement(TOPIC_DL, getAttributesFromAttributesNode(node, DL_ATTS));
+        html.startElement(node, TOPIC_DL, getAttributesFromAttributesNode(node, DL_ATTS));
         DitaClass previous = null;
 //        for (final Node child : node.getChildren()) {
 //            if (previous == null) {
@@ -530,10 +530,10 @@ public class CoreNodeRenderer {
 
     private void render(final DefinitionTerm node, final NodeRendererContext context, final SaxWriter html) {
         if (node.getPrevious() == null || !(node.getPrevious() instanceof DefinitionTerm)) {
-            html.startElement(TOPIC_DLENTRY, DLENTRY_ATTS);
+            html.startElement(node, TOPIC_DLENTRY, DLENTRY_ATTS);
         }
 //        printTag(node, context, html, TOPIC_DT, DT_ATTS);
-        html.startElement(TOPIC_DT, DT_ATTS);
+        html.startElement(node, TOPIC_DT, DT_ATTS);
         Node child = node.getFirstChild();
         while (child != null) {
             Node next = child.getNext();
@@ -567,13 +567,13 @@ public class CoreNodeRenderer {
     private void writeImage(Image node, final String title, final String alt, final AttributesBuilder atts,
                             final NodeRendererContext context, SaxWriter html) {
         if (!title.isEmpty()) {
-            html.startElement(TOPIC_FIG, FIG_ATTS);
-            html.startElement(TOPIC_TITLE, TITLE_ATTS);
+            html.startElement(node, TOPIC_FIG, FIG_ATTS);
+            html.startElement(node, TOPIC_TITLE, TITLE_ATTS);
             html.characters(title);
             html.endElement();
-            html.startElement(TOPIC_IMAGE, atts.build());
+            html.startElement(node, TOPIC_IMAGE, atts.build());
             if (hasChildren(node)) {
-                html.startElement(TOPIC_ALT, ALT_ATTS);
+                html.startElement(node, TOPIC_ALT, ALT_ATTS);
                 if (alt != null) {
                     html.characters(alt);
                 } else {
@@ -587,9 +587,9 @@ public class CoreNodeRenderer {
             if (onlyImageChild) {
                 atts.add("placement", "break");
             }
-            html.startElement(TOPIC_IMAGE, atts.build());
+            html.startElement(node, TOPIC_IMAGE, atts.build());
             if (hasChildren(node)) {
-                html.startElement(TOPIC_ALT, ALT_ATTS);
+                html.startElement(node, TOPIC_ALT, ALT_ATTS);
                 if (alt != null) {
                     html.characters(alt);
                 } else {
@@ -604,13 +604,13 @@ public class CoreNodeRenderer {
     private void writeImage(ImageRef node, final String title, final String alt, final AttributesBuilder atts,
                             final NodeRendererContext context, SaxWriter html) {
         if (!title.isEmpty()) {
-            html.startElement(TOPIC_FIG, FIG_ATTS);
-            html.startElement(TOPIC_TITLE, TITLE_ATTS);
+            html.startElement(node, TOPIC_FIG, FIG_ATTS);
+            html.startElement(node, TOPIC_TITLE, TITLE_ATTS);
             html.characters(title);
             html.endElement();
-            html.startElement(TOPIC_IMAGE, atts.build());
+            html.startElement(node, TOPIC_IMAGE, atts.build());
             if (hasChildren(node)) {
-                html.startElement(TOPIC_ALT, ALT_ATTS);
+                html.startElement(node, TOPIC_ALT, ALT_ATTS);
                 if (alt != null) {
                     html.characters(alt);
                 } else {
@@ -624,9 +624,9 @@ public class CoreNodeRenderer {
             if (onlyImageChild) {
                 atts.add("placement", "break");
             }
-            html.startElement(TOPIC_IMAGE, atts.build());
+            html.startElement(node, TOPIC_IMAGE, atts.build());
             if (hasChildren(node)) {
-                html.startElement(TOPIC_ALT, ALT_ATTS);
+                html.startElement(node, TOPIC_ALT, ALT_ATTS);
                 if (alt != null) {
                     html.characters(alt);
                 } else {
@@ -735,9 +735,9 @@ public class CoreNodeRenderer {
                     atts.add("outputclass", String.join(" ", classes));
                 }
             }
-            html.startElement(cls, atts.build());
+            html.startElement(node, cls, atts.build());
             inSection = true;
-            html.startElement(TOPIC_TITLE, TITLE_ATTS);
+            html.startElement(node, TOPIC_TITLE, TITLE_ATTS);
             context.renderChildren(node);
             html.endElement(); // title
         } else {
@@ -768,24 +768,24 @@ public class CoreNodeRenderer {
                     atts.add(attr.getKey(), attr.getValue());
                 }
             }
-            html.startElement(TOPIC_TOPIC, atts.build());
-            html.startElement(TOPIC_TITLE, TITLE_ATTS);
+            html.startElement(node, TOPIC_TOPIC, atts.build());
+            html.startElement(node, TOPIC_TITLE, TITLE_ATTS);
             context.renderChildren(node);
             html.endElement(); // title
             if (shortdescParagraph && node.getNext() instanceof Paragraph) {
-                html.startElement(TOPIC_SHORTDESC, SHORTDESC_ATTS);
+                html.startElement(node.getNext(), TOPIC_SHORTDESC, SHORTDESC_ATTS);
                 context.renderChildren(node.getNext());
                 html.endElement(); // shortdesc
             }
             if (node.getLevel() == 1) {
                 final Node firstChild = node.getDocument().getFirstChild();
                 if (firstChild instanceof YamlFrontMatterBlock) {
-                    html.startElement(TOPIC_PROLOG, PROLOG_ATTS);
+                    html.startElement(firstChild, TOPIC_PROLOG, PROLOG_ATTS);
                     metadataSerializer.render((YamlFrontMatterBlock) firstChild, context, html);
                     html.endElement();
                 }
             }
-            html.startElement(TOPIC_BODY, BODY_ATTS);
+            html.startElement(node, TOPIC_BODY, BODY_ATTS);
         }
     }
 
@@ -820,7 +820,7 @@ public class CoreNodeRenderer {
     }
 
     private void outputMetadata(Map<String, Object> documentMetadata, SaxWriter html) {
-        html.startElement(TOPIC_PROLOG, PROLOG_ATTS);
+        html.startElement(null, TOPIC_PROLOG, PROLOG_ATTS);
 //        metadataSerializer.write(documentMetadata);
         html.endElement();
     }
@@ -842,10 +842,13 @@ public class CoreNodeRenderer {
                 .replaceAll("\\s+", "_");
     }
 
+    /**
+     * Render HTML block into DITA.
+     */
     private void render(final HtmlBlock node, final NodeRendererContext context, final SaxWriter html) {
         final String text = node.getChars().toString();
         final FragmentContentHandler fragmentFilter = new FragmentContentHandler();
-        fragmentFilter.setContentHandler(html.contentHandler);
+        fragmentFilter.setContentHandler(html);
         final TransformerHandler h;
         try {
             h = tf.newTransformerHandler(t);
@@ -856,12 +859,19 @@ public class CoreNodeRenderer {
         final HtmlParser parser = new HtmlParser();
         parser.setContentHandler(h);
         try {
+            html.setLocation(node);
             parser.parse(new InputSource(new StringReader(text)));
         } catch (IOException | SAXException e) {
             throw new ParseException("Failed to parse HTML: " + e.getMessage(), e);
         }
+        html.setDocumentLocator();
     }
 
+    /**
+     * Render inline HTML start or end tag. Start tags may contain attributes.
+     *
+     * @TODO Parse directly without HtmlParser, especially end tags, and map to DITA with a mapping table in this class.
+     */
     private void render(final HtmlInline node, final NodeRendererContext context, final SaxWriter html) {
         final String text = node.getChars().toString();
         final CacheContentHandler cache = new CacheContentHandler();
@@ -874,13 +884,14 @@ public class CoreNodeRenderer {
         h.setResult(new SAXResult(cache));
         final HtmlParser parser = new HtmlParser(XmlViolationPolicy.ALLOW);
         parser.setContentHandler(h);
+        html.setLocation(node);
         if (text.startsWith("</")) {
             final String data = text.replaceAll("/", "") + text;
             try (final StringReader in = new StringReader(data)) {
                 parser.parse(new InputSource(in));
                 for (SaxEvent event : cache.events) {
                     if (event instanceof EndElementEvent) {
-                        event.write(html.contentHandler);
+                        event.write(html);
                     }
                 }
             } catch (IOException | SAXException e) {
@@ -891,13 +902,14 @@ public class CoreNodeRenderer {
                 parser.parse(new InputSource(in));
                 for (SaxEvent event : cache.events) {
                     if (event instanceof StartElementEvent) {
-                        event.write(html.contentHandler);
+                        event.write(html);
                     }
                 }
             } catch (IOException | SAXException e) {
                 throw new ParseException("Failed to parse HTML: " + e.getMessage(), e);
             }
         }
+        html.setDocumentLocator();
     }
 
     private static class CacheContentHandler extends XMLFilterImpl {
@@ -915,25 +927,25 @@ public class CoreNodeRenderer {
         }
     }
 
-    private StartElementEvent parseHtmlInline(final HtmlInline node) {
-        final List<StartElementEvent> events = new ArrayList<>();
-        final HtmlParser parser = new HtmlParser(XmlViolationPolicy.ALLOW);
-        parser.setContentHandler(new XMLFilterImpl() {
-            @Override
-            public void startElement(String uri, String localName, String qName, Attributes atts) throws SAXException {
-                events.add(new StartElementEvent(uri, localName, qName, atts));
-            }
-        });
-        try (final StringReader in = new StringReader(node.getChars().toString())) {
-            parser.parse(new InputSource(in));
-        } catch (IOException | SAXException e) {
-            throw new ParseException("Failed to parse HTML: " + e.getMessage(), e);
-        }
-        if (events.isEmpty()) {
-            return null;
-        }
-        return events.get(0);
-    }
+//    private StartElementEvent parseHtmlInline(final HtmlInline node) {
+//        final List<StartElementEvent> events = new ArrayList<>();
+//        final HtmlParser parser = new HtmlParser(XmlViolationPolicy.ALLOW);
+//        parser.setContentHandler(new XMLFilterImpl() {
+//            @Override
+//            public void startElement(String uri, String localName, String qName, Attributes atts) throws SAXException {
+//                events.add(new StartElementEvent(uri, localName, qName, atts));
+//            }
+//        });
+//        try (final StringReader in = new StringReader(node.getChars().toString())) {
+//            parser.parse(new InputSource(in));
+//        } catch (IOException | SAXException e) {
+//            throw new ParseException("Failed to parse HTML: " + e.getMessage(), e);
+//        }
+//        if (events.isEmpty()) {
+//            return null;
+//        }
+//        return events.get(0);
+//    }
 
     private void render(final ListItem node, final NodeRendererContext context, final SaxWriter html) {
         printTag(node, context, html, TOPIC_LI, LI_ATTS);
@@ -943,7 +955,7 @@ public class CoreNodeRenderer {
         final AttributesBuilder atts = getLinkAttributes("mailto:" + node.getText());
         atts.add(ATTRIBUTE_NAME_FORMAT, "email");
 
-        html.startElement(TOPIC_XREF, getInlineAttributes(node, atts.build()));
+        html.startElement(node, TOPIC_XREF, getInlineAttributes(node, atts.build()));
         context.renderChildren(node);
         html.endElement();
     }
@@ -1044,7 +1056,7 @@ public class CoreNodeRenderer {
             if (onlyImageChild) {
                 atts.add("placement", "break");
             }
-            html.startElement(TOPIC_IMAGE, getInlineAttributes(node, atts.build()));
+            html.startElement(node, TOPIC_IMAGE, getInlineAttributes(node, atts.build()));
 //            if (node.getReference() != null) {
 //                context.renderChildren(node);
 //            }
@@ -1066,14 +1078,14 @@ public class CoreNodeRenderer {
         if (refNode == null) { // "fake" reference link
             final AttributesBuilder atts = new AttributesBuilder(XREF_ATTS)
                     .add(ATTRIBUTE_NAME_KEYREF, key);
-            html.startElement(TOPIC_XREF, atts.build());
+            html.startElement(node, TOPIC_XREF, atts.build());
             if (!node.getText().toString().isEmpty()) {
                 html.characters(node.getText().toString());
             }
             html.endElement();
         } else {
             final AttributesBuilder atts = getLinkAttributes(refNode.getUrl().toString());
-            html.startElement(TOPIC_XREF, atts.build());
+            html.startElement(node, TOPIC_XREF, atts.build());
             if (!refNode.getTitle().toString().isEmpty()) {
                 html.characters(refNode.getTitle().toString());
             } else {
@@ -1097,7 +1109,7 @@ public class CoreNodeRenderer {
 //            html.endElement();
 //        } else {
         final AttributesBuilder atts = getLinkAttributes(node.getUrl().toString());
-        html.startElement(TOPIC_XREF, getInlineAttributes(node, atts.build()));
+        html.startElement(node, TOPIC_XREF, getInlineAttributes(node, atts.build()));
 //            if (!refNode.getTitle().toString().isEmpty()) {
 //                html.characters(refNode.toString());
 //            } else {
@@ -1218,7 +1230,7 @@ public class CoreNodeRenderer {
             atts.add(ATTRIBUTE_NAME_NAMEST, COLUMN_NAME_COL + Integer.toString(currentTableColumn + 1));
             atts.add(ATTRIBUTE_NAME_NAMEEND, COLUMN_NAME_COL + Integer.toString(currentTableColumn + node.getSpan()));
         }
-        html.startElement(TOPIC_ENTRY, atts.build());
+        html.startElement(node, TOPIC_ENTRY, atts.build());
         context.renderChildren(node);
         html.endElement();
 
@@ -1260,10 +1272,10 @@ public class CoreNodeRenderer {
         } else {
             tableAtts = TABLE_ATTS;
         }
-        html.startElement(TOPIC_TABLE, tableAtts);
+        html.startElement(node, TOPIC_TABLE, tableAtts);
         for (final Node child : node.getChildren()) {
             if (child instanceof TableCaption) {
-                html.startElement(TOPIC_TITLE, TITLE_ATTS);
+                html.startElement(child, TOPIC_TITLE, TITLE_ATTS);
                 context.renderChildren((TableCaption) child);
                 html.endElement();
 //                render((TableCaption) child, context, html);
@@ -1273,7 +1285,7 @@ public class CoreNodeRenderer {
         final Attributes atts = new AttributesBuilder(TGROUP_ATTS)
                 .add(ATTRIBUTE_NAME_COLS, Integer.toString(maxCols))
                 .build();
-        html.startElement(TOPIC_TGROUP, atts);
+        html.startElement(node, TOPIC_TGROUP, atts);
 
         for (int i = 0; i < maxCols; i++) {
             final AttributesBuilder catts = new AttributesBuilder(COLSPEC_ATTS)
@@ -1289,7 +1301,7 @@ public class CoreNodeRenderer {
 //                    catts.add(ATTRIBUTE_NAME_ALIGN, "left");
 //                    break;
 //            }
-            html.startElement(TOPIC_COLSPEC, catts.build());
+            html.startElement(node, TOPIC_COLSPEC, catts.build());
             html.endElement(); // colspec
         }
 
@@ -1361,10 +1373,10 @@ public class CoreNodeRenderer {
         } else {
             tableAtts = SIMPLETABLE_ATTS;
         }
-        html.startElement(TOPIC_SIMPLETABLE, tableAtts);
+        html.startElement(node, TOPIC_SIMPLETABLE, tableAtts);
         for (final Node child : node.getChildren()) {
             if (child instanceof TableCaption) {
-                html.startElement(TOPIC_TITLE, TITLE_ATTS);
+                html.startElement(child, TOPIC_TITLE, TITLE_ATTS);
                 context.renderChildren((TableCaption) child);
                 html.endElement();
 //                render((TableCaption) child, context, html);
@@ -1484,9 +1496,9 @@ public class CoreNodeRenderer {
 //            atts.add(ATTRIBUTE_NAME_NAMEEND, COLUMN_NAME_COL + Integer.toString(currentTableColumn + node.getSpan()));
             atts.add(ATTRIBUTE_NAME_COLSPAN, Integer.toString(node.getSpan()));
         }
-        html.startElement(TOPIC_STENTRY, atts.build());
+        html.startElement(node, TOPIC_STENTRY, atts.build());
         if (isInline(node.getFirstChild())) {
-            html.startElement(TOPIC_P, P_ATTS);
+            html.startElement(node, TOPIC_P, P_ATTS);
             context.renderChildren(node);
             html.endElement();
         } else {
@@ -1523,7 +1535,7 @@ public class CoreNodeRenderer {
 //                atts.add("outputclass", String.join(" ", metadata.classes));
 //            }
 //        }
-        html.startElement(lwDita ? TOPIC_PRE : PR_D_CODEBLOCK, atts.build());
+        html.startElement(node, lwDita ? TOPIC_PRE : PR_D_CODEBLOCK, atts.build());
         String text = node.getChars().toString();
         if (text.endsWith("\n")) {
             text = text.substring(0, text.length() - 1);
@@ -1550,10 +1562,10 @@ public class CoreNodeRenderer {
 //                atts.add("outputclass", String.join(" ", metadata.classes));
 //            }
 //        }
-        html.startElement(lwDita ? TOPIC_PRE : PR_D_CODEBLOCK, atts.build());
+        html.startElement(node, lwDita ? TOPIC_PRE : PR_D_CODEBLOCK, atts.build());
         // FIXME: For compatibility with HTML pre/code, should be removed
         if (lwDita) {
-            html.startElement(HI_D_TT, TT_ATTS);
+            html.startElement(node, HI_D_TT, TT_ATTS);
         }
         String text = node.getContentChars().toString();
         if (text.endsWith("\n")) {
@@ -1611,10 +1623,10 @@ public class CoreNodeRenderer {
             }
         }
 
-        html.startElement(lwDita ? TOPIC_PRE : PR_D_CODEBLOCK, atts.build());
+        html.startElement(node, lwDita ? TOPIC_PRE : PR_D_CODEBLOCK, atts.build());
         // FIXME: For compatibility with HTML pre/code, should be removed
         if (lwDita) {
-            html.startElement(HI_D_TT, TT_ATTS);
+            html.startElement(node, HI_D_TT, TT_ATTS);
         }
         String text = node.getContentChars().normalizeEOL();
         if (text.endsWith("\n")) {
@@ -1672,6 +1684,7 @@ public class CoreNodeRenderer {
         html.processingInstruction("linebreak", null);
     }
 
+    /** Map HTML entity to Unicode character. */
     private void render(final HtmlEntity node, final NodeRendererContext context, final SaxWriter html) {
         final BasedSequence chars = node.getChars();
         final String name = chars.subSequence(1, chars.length() - 1).toString().toLowerCase();
@@ -1724,13 +1737,13 @@ public class CoreNodeRenderer {
 //    }
 
     private void printTag(Text node, NodeRendererContext context, SaxWriter html, final DitaClass tag, final Attributes atts) {
-        html.startElement(tag, atts);
+        html.startElement(node, tag, atts);
         html.characters(node.getChars().toString());
         html.endElement();
     }
 
     private void printTag(Node node, NodeRendererContext context, SaxWriter html, final DitaClass tag, final Attributes atts) {
-        html.startElement(tag, atts);
+        html.startElement(node, tag, atts);
         context.renderChildren(node);
         html.endElement();
     }
@@ -1829,7 +1842,7 @@ public class CoreNodeRenderer {
                 if (expansion != null && !expansion.isEmpty()) {
                     atts.add(ATTRIBUTE_NAME_OTHERPROPS, expansion);
                 }
-                html.startElement(TOPIC_PH, atts.build());
+                html.startElement(null, TOPIC_PH, atts.build());
                 html.characters(abbr);
                 html.endElement();
                 ix = sx + abbr.length();
@@ -1839,4 +1852,12 @@ public class CoreNodeRenderer {
             html.characters(string);
         }
     }
+//
+//    private void setLocation(Node node, NodeRendererContext context) {
+//        final Locator2Impl locator = context.getLocator();
+//        if (locator != null) {
+//            locator.setLineNumber(node.getLineNumber() + 1);
+//            locator.setColumnNumber(node.getStartOffset());
+//        }
+//    }
 }

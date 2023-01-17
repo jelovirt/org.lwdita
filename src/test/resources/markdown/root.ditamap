@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE map PUBLIC "-//OASIS//DTD DITA Map//EN" "map.dtd">
+<map>
+  <topicref href="ast.md" format="markdown"/>
+  <topicref href="codeblock.md" format="markdown"/>
+  <topicref href="comment.md" format="markdown"/>
+  <topicref href="concept.md" format="markdown"/>
+  <topicref href="conkeyref.md" format="markdown"/>
+  <topicref href="conref.md" format="markdown"/>
+  <topicref href="dl.md" format="markdown"/>
+  <topicref href="entity.md" format="markdown"/>
+  <topicref href="escape.md" format="markdown"/>
+  <topicref href="footnote.md" format="markdown"/>
+  <topicref href="header.md" format="markdown"/>
+  <topicref href="header_attributes.md" format="markdown"/>
+  <topicref href="html.md" format="markdown"/>
+  <topicref href="image.md" format="markdown"/>
+  <topicref href="inline.md" format="markdown"/>
+  <topicref href="invalid_header.md" format="markdown"/>
+  <topicref href="invalid_section_header.md" format="markdown"/>
+  <topicref href="jekyll.md" format="markdown"/>
+  <topicref href="keyref.md" format="markdown"/>
+  <topicref href="keys.md" format="markdown"/>
+  <topicref href="linebreak.md" format="markdown"/>
+  <topicref href="link.md" format="markdown"/>
+  <topicref href="multiple_top_level.md" format="markdown"/>
+  <topicref href="multiple_top_level_specialized.md" format="markdown"/>
+  <topicref href="nested.md" format="markdown"/>
+  <topicref href="ol.md" format="markdown"/>
+  <topicref href="pandoc_header.md" format="markdown"/>
+  <topicref href="quote.md" format="markdown"/>
+  <topicref href="reference.md" format="markdown"/>
+  <topicref href="short.md" format="markdown"/>
+  <topicref href="shortdesc.md" format="markdown"/>
+  <topicref href="table.md" format="markdown"/>
+  <topicref href="task.md" format="markdown"/>
+  <topicref href="taskOneStep.md" format="markdown"/>
+  <topicref href="test.md" format="markdown"/>
+  <topicref href="testBOM.md" format="markdown"/>
+  <topicref href="testNoBOM.md" format="markdown"/>
+  <topicref href="ul.md" format="markdown"/>
+  <topicref href="yaml.md" format="markdown"/>
+
+</map>

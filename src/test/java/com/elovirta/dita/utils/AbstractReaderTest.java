@@ -1,13 +1,13 @@
 package com.elovirta.dita.utils;
 
+import com.elovirta.dita.markdown.MDitaReaderTest;
 import junit.framework.AssertionFailedError;
 import org.custommonkey.xmlunit.XMLAssert;
 import org.custommonkey.xmlunit.XMLUnit;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
-import org.xml.sax.InputSource;
-import org.xml.sax.XMLReader;
+import org.xml.sax.*;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -18,8 +18,15 @@ import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.sax.SAXSource;
 import javax.xml.transform.stream.StreamResult;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
+import java.util.ArrayDeque;
+import java.util.Deque;
+import java.util.List;
+import java.util.Objects;
+
+import static junit.framework.TestCase.assertEquals;
 
 public abstract class AbstractReaderTest {
 
@@ -95,6 +102,132 @@ public abstract class AbstractReaderTest {
         XMLUnit.setNormalizeWhitespace(true);
         XMLUnit.setNormalize(true);
         XMLUnit.setIgnoreComments(true);
+    }
+    
+    protected static class Event {
+        public final String type;
+        public final String data;
+        public final int line;
+        public final int column;
+
+        public Event(String type, int line, int column) {
+            this(type, null, line, column);
+        }
+        public Event(String type, String data, int line, int column) {
+            this.type = type;
+            this.data = data;
+            this.line = line;
+            this.column = column;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            Event event = (Event) o;
+
+            if (line != event.line) return false;
+            if (column != event.column) return false;
+            if (!type.equals(event.type)) return false;
+            return Objects.equals(data, event.data);
+        }
+
+        @Override
+        public int hashCode() {
+            int result = type.hashCode();
+            result = 31 * result + (data != null ? data.hashCode() : 0);
+            result = 31 * result + line;
+            result = 31 * result + column;
+            return result;
+        }
+
+        @Override
+        public String toString() {
+            return "Event{" +
+                    "type='" + type + '\'' +
+                    ", data='" + data + '\'' +
+                    ", line=" + line +
+                    ", column=" + column +
+                    '}';
+        }
+    }
+    
+    protected void testLocatorParsing(final List<Event> exp, final String file) throws IOException, SAXException {
+        final XMLReader r = getReader();
+        r.setContentHandler(new LocatorContentHandler(new ArrayDeque<>(exp)));
+        try (InputStream in = getClass().getClassLoader().getResourceAsStream(getSrc() + file)) {
+            InputSource input = new InputSource(in);
+            r.parse(input);
+        }
+    }
+
+    static class LocatorContentHandler implements ContentHandler {
+        private final Deque<Event> exp;
+        private Locator locator;
+
+        private LocatorContentHandler(Deque<Event> exp) {
+            this.exp = exp;
+        }
+
+        private void assertEvent(String name, String data) {
+            assertEquals(exp.pop(), new Event(name, data, locator.getLineNumber(), locator.getColumnNumber()));
+        }
+
+        @Override
+        public void setDocumentLocator(Locator locator) {
+            this.locator = locator;
+        }
+
+        @Override
+        public void startDocument() throws SAXException {
+            assertEvent("startDocument", null);
+        }
+
+        @Override
+        public void endDocument() throws SAXException {
+            assertEvent("endDocument", null);
+        }
+
+        @Override
+        public void startPrefixMapping(String prefix, String uri) throws SAXException {
+//            assertEvent("startPrefixMapping", prefix);
+        }
+
+        @Override
+        public void endPrefixMapping(String prefix) throws SAXException {
+//            assertEvent("endPrefixMapping", prefix);
+        }
+
+        @Override
+        public void startElement(String uri, String localName, String qName, Attributes atts) throws SAXException {
+            assertEvent("startElement", localName);
+        }
+
+        @Override
+        public void endElement(String uri, String localName, String qName) throws SAXException {
+            assertEvent("endElement", localName);
+        }
+
+        @Override
+        public void characters(char[] ch, int start, int length) throws SAXException {
+            assertEvent("characters", new String(ch, start, length));
+        }
+
+        @Override
+        public void ignorableWhitespace(char[] ch, int start, int length) throws SAXException {
+            assertEvent("ignorableWhitespace", new String(ch, start, length));
+        }
+
+        @Override
+        public void processingInstruction(String target, String data) throws SAXException {
+            assertEvent("processingInstruction", target);
+        }
+
+        @Override
+        public void skippedEntity(String name) throws SAXException {
+            assertEvent("skippedEntity", name);
+        }
     }
 
 }

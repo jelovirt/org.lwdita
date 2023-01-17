@@ -139,12 +139,13 @@ public class DitaRenderer {
         @Override
         public void render(Node node) {
             try {
-                saxWriter.contentHandler.startDocument();
-                saxWriter.contentHandler.startPrefixMapping(ATTRIBUTE_PREFIX_DITAARCHVERSION, DITA_NAMESPACE);
+                saxWriter.startDocument();
+                saxWriter.getContentHandler().startDocument();
+                saxWriter.getContentHandler().startPrefixMapping(ATTRIBUTE_PREFIX_DITAARCHVERSION, DITA_NAMESPACE);
                 renderNode(node, this);
                 saxWriter.close();
-                saxWriter.contentHandler.endPrefixMapping(ATTRIBUTE_PREFIX_DITAARCHVERSION);
-                saxWriter.contentHandler.endDocument();
+                saxWriter.getContentHandler().endPrefixMapping(ATTRIBUTE_PREFIX_DITAARCHVERSION);
+                saxWriter.getContentHandler().endDocument();
             } catch (SAXException e) {
                 throw new RuntimeException(e);
             }
