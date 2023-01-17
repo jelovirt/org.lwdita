@@ -44,7 +44,6 @@ import org.dita.dost.util.SaxCache.StartElementEvent;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-import org.xml.sax.ext.Locator2Impl;
 import org.xml.sax.helpers.AttributesImpl;
 import org.xml.sax.helpers.XMLFilterImpl;
 
@@ -849,7 +848,7 @@ public class CoreNodeRenderer {
     private void render(final HtmlBlock node, final NodeRendererContext context, final SaxWriter html) {
         final String text = node.getChars().toString();
         final FragmentContentHandler fragmentFilter = new FragmentContentHandler();
-        fragmentFilter.setContentHandler(html.contentHandler);
+        fragmentFilter.setContentHandler(html);
         final TransformerHandler h;
         try {
             h = tf.newTransformerHandler(t);
@@ -892,7 +891,7 @@ public class CoreNodeRenderer {
                 parser.parse(new InputSource(in));
                 for (SaxEvent event : cache.events) {
                     if (event instanceof EndElementEvent) {
-                        event.write(html.contentHandler);
+                        event.write(html);
                     }
                 }
             } catch (IOException | SAXException e) {
@@ -903,7 +902,7 @@ public class CoreNodeRenderer {
                 parser.parse(new InputSource(in));
                 for (SaxEvent event : cache.events) {
                     if (event instanceof StartElementEvent) {
-                        event.write(html.contentHandler);
+                        event.write(html);
                     }
                 }
             } catch (IOException | SAXException e) {
