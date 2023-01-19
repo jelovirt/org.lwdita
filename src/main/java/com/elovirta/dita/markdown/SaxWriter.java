@@ -84,9 +84,9 @@ public class SaxWriter extends XMLFilterImpl {
         endElement(tag);
     }
 
-//    public void endElement(final DitaClass cls) {
-//        endElement(cls.localName);
-//    }
+    public void endElement(final DitaClass cls) {
+        endElement(cls.localName);
+    }
 
     public void endElement(final String tag) {
         try {
