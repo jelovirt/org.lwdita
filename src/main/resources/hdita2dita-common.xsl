@@ -492,10 +492,10 @@
   </xsl:template>
 
   <xsl:template match="u">
-    <sub>
+    <u>
       <xsl:apply-templates select="." mode="class"/>
       <xsl:apply-templates select="@* | node()"/>
-    </sub>
+    </u>
   </xsl:template>
   <xsl:template match="u" mode="class">
     <xsl:attribute name="class">+ topic/ph hi-d/u </xsl:attribute>

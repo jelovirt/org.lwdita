@@ -128,7 +128,7 @@
         <time class="- topic/time ">content</time>
       </p>
       <p class="- topic/p ">
-        <sub class="+ topic/ph hi-d/u ">content</sub>
+        <u class="+ topic/ph hi-d/u ">content</u>
       </p>
       <p class="- topic/p ">
         <var class="- topic/var ">content</var>
