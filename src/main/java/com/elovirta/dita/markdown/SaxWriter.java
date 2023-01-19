@@ -2,6 +2,7 @@ package com.elovirta.dita.markdown;
 
 import com.vladsch.flexmark.util.ast.Node;
 import org.dita.dost.util.DitaClass;
+import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
@@ -24,6 +25,7 @@ public class SaxWriter extends XMLFilterImpl {
         setContentHandler(out);
     }
 
+    @Override
     public void startDocument() {
         locator.setLineNumber(1);
         locator.setColumnNumber(1);
@@ -33,6 +35,24 @@ public class SaxWriter extends XMLFilterImpl {
     @Override
     public void setDocumentLocator(Locator locator) {
         // Ignore
+    }
+
+    @Override
+    public void startElement(String uri, String localName, String qName, Attributes atts) throws SAXException {
+        getContentHandler().startElement(uri, localName, qName, atts);
+        tagStack.addFirst(localName);
+    }
+
+    @Override
+    public void endElement(String uri, String localName, String qName) throws SAXException {
+        if (tagStack.isEmpty()) {
+            throw new IllegalStateException("Empty tag stack");
+        }
+        final String tag = tagStack.removeFirst();
+        if (!tag.equals(localName)) {
+            throw new IllegalStateException(String.format("Expected end tag %s but was %s", tag, localName));
+        }
+        getContentHandler().endElement(uri, localName, qName);
     }
 
     public void setDocumentLocator() {
@@ -46,33 +66,31 @@ public class SaxWriter extends XMLFilterImpl {
         }
     }
 
-    public void startElement(final Node node, final DitaClass tag, final org.xml.sax.Attributes atts) {
+    public void startElement(final Node node, final DitaClass tag, final Attributes atts) {
         startElement(node, tag.localName, atts);
     }
 
-    public void startElement(final Node node, final String tag, final org.xml.sax.Attributes atts) {
+    public void startElement(final Node node, final String tag, final Attributes atts) {
         setLocation(node);
         try {
-            getContentHandler().startElement(NULL_NS_URI, tag, tag, atts);
+            startElement(NULL_NS_URI, tag, tag, atts);
         } catch (final SAXException e) {
             throw new ParseException(e);
         }
-        tagStack.addFirst(tag);
     }
 
     public void endElement() {
-        if (!tagStack.isEmpty()) {
-            endElement(tagStack.removeFirst());
-        }
+        final String tag = tagStack.peekFirst();
+        endElement(tag);
     }
 
-    public void endElement(final DitaClass tag) {
-        endElement(tag.localName);
-    }
+//    public void endElement(final DitaClass cls) {
+//        endElement(cls.localName);
+//    }
 
     public void endElement(final String tag) {
         try {
-            getContentHandler().endElement(NULL_NS_URI, tag, tag);
+            endElement(NULL_NS_URI, tag, tag);
         } catch (final SAXException e) {
             throw new ParseException(e);
         }
