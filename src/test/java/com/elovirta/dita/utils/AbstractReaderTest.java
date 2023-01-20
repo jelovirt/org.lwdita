@@ -1,6 +1,5 @@
 package com.elovirta.dita.utils;
 
-import com.elovirta.dita.markdown.MDitaReaderTest;
 import junit.framework.AssertionFailedError;
 import org.custommonkey.xmlunit.XMLAssert;
 import org.custommonkey.xmlunit.XMLUnit;
@@ -103,7 +102,7 @@ public abstract class AbstractReaderTest {
         XMLUnit.setNormalize(true);
         XMLUnit.setIgnoreComments(true);
     }
-    
+
     protected static class Event {
         public final String type;
         public final String data;
@@ -113,6 +112,7 @@ public abstract class AbstractReaderTest {
         public Event(String type, int line, int column) {
             this(type, null, line, column);
         }
+
         public Event(String type, String data, int line, int column) {
             this.type = type;
             this.data = data;
@@ -152,7 +152,7 @@ public abstract class AbstractReaderTest {
                     '}';
         }
     }
-    
+
     protected void testLocatorParsing(final List<Event> exp, final String file) throws IOException, SAXException {
         final XMLReader r = getReader();
         r.setContentHandler(new LocatorContentHandler(new ArrayDeque<>(exp)));

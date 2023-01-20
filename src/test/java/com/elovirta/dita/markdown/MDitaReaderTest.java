@@ -54,14 +54,14 @@ public class MDitaReaderTest extends MarkdownReaderTest {
                         new Event("startElement", "topic", 1, 1),
                         new Event("startElement", "title", 1, 1),
                         new Event("characters", "Shortdesc", 1, 1),
-                        new Event("endElement", "title",1, 1),
+                        new Event("endElement", "title", 1, 1),
                         new Event("startElement", "shortdesc", 3, 1),
-                        new Event("characters", "Shortdesc.",3, 1),
+                        new Event("characters", "Shortdesc.", 3, 1),
                         new Event("endElement", "shortdesc", 3, 1),
                         new Event("startElement", "body", 1, 1),
-                        new Event("startElement","p", 5, 1),
+                        new Event("startElement", "p", 5, 1),
                         new Event("characters", "Paragraph.", 5, 1),
-                        new Event("endElement", "p",5, 1),
+                        new Event("endElement", "p", 5, 1),
                         new Event("endElement", "body", 5, 1),
                         new Event("endElement", "topic", 5, 1),
                         new Event("endDocument", 5, 1)
@@ -75,26 +75,26 @@ public class MDitaReaderTest extends MarkdownReaderTest {
         testLocatorParsing(
                 Arrays.asList(
                         new Event("startDocument", 1, 1),
-                        new Event("startElement","topic", 1, 1),
+                        new Event("startElement", "topic", 1, 1),
                         new Event("startElement", "title", 1, 1),
-                        new Event("characters", "Task {.task}",1, 1),
-                        new Event("endElement", "title",1, 1),
+                        new Event("characters", "Task {.task}", 1, 1),
+                        new Event("endElement", "title", 1, 1),
                         new Event("startElement", "shortdesc", 3, 1),
-                        new Event("characters", "Context",3, 1),
-                        new Event("endElement", "shortdesc",3, 1),
-                        new Event("startElement",  "body",1, 1),
-                        new Event("startElement","ol", 5, 1),
-                        new Event("startElement", "li",5, 1),
-                        new Event("startElement", "p",5, 5),
-                        new Event("characters", "Command",5, 5),
-                        new Event("endElement", "p",5, 5),
-                        new Event("startElement", "p",7, 5),
-                        new Event("characters", "Info.",7, 5),
-                        new Event("endElement", "p",7, 5),
-                        new Event("endElement", "li",7, 5),
+                        new Event("characters", "Context", 3, 1),
+                        new Event("endElement", "shortdesc", 3, 1),
+                        new Event("startElement", "body", 1, 1),
+                        new Event("startElement", "ol", 5, 1),
+                        new Event("startElement", "li", 5, 1),
+                        new Event("startElement", "p", 5, 5),
+                        new Event("characters", "Command", 5, 5),
+                        new Event("endElement", "p", 5, 5),
+                        new Event("startElement", "p", 7, 5),
+                        new Event("characters", "Info.", 7, 5),
+                        new Event("endElement", "p", 7, 5),
+                        new Event("endElement", "li", 7, 5),
                         new Event("endElement", "ol", 7, 5),
-                        new Event("endElement", "body",7, 5),
-                        new Event("endElement", "topic",7, 5),
+                        new Event("endElement", "body", 7, 5),
+                        new Event("endElement", "topic", 7, 5),
                         new Event("endDocument", 7, 5)
                 ),
                 "taskOneStep.md");
@@ -103,5 +103,6 @@ public class MDitaReaderTest extends MarkdownReaderTest {
     @Test
     @Override
     @Ignore
-    public void testHtmlLocator() throws IOException, SAXException {}
+    public void testHtmlLocator() throws IOException, SAXException {
+    }
 }

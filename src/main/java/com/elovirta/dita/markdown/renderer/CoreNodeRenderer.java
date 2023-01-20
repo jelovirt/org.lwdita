@@ -878,32 +878,32 @@ public class CoreNodeRenderer {
 
     static {
         htmlToDita = Stream.of(
-                    new SimpleImmutableEntry<String, DitaClass>("span", TOPIC_PH),
-                    new SimpleImmutableEntry<String, DitaClass>("code", PR_D_CODEPH),
-                    new SimpleImmutableEntry<String, DitaClass>("s", HI_D_LINE_THROUGH),
-                    new SimpleImmutableEntry<String, DitaClass>("tt", HI_D_TT),
-                    new SimpleImmutableEntry<String, DitaClass>("b", HI_D_B),
-                    new SimpleImmutableEntry<String, DitaClass>("strong", HI_D_B),
-                    new SimpleImmutableEntry<String, DitaClass>("i", HI_D_I),
-                    new SimpleImmutableEntry<String, DitaClass>("em", HI_D_I),
-                    new SimpleImmutableEntry<String, DitaClass>("sub", HI_D_SUB),
-                    new SimpleImmutableEntry<String, DitaClass>("sup", HI_D_SUP),
-                    new SimpleImmutableEntry<String, DitaClass>("u", HI_D_U)
+                        new SimpleImmutableEntry<String, DitaClass>("span", TOPIC_PH),
+                        new SimpleImmutableEntry<String, DitaClass>("code", PR_D_CODEPH),
+                        new SimpleImmutableEntry<String, DitaClass>("s", HI_D_LINE_THROUGH),
+                        new SimpleImmutableEntry<String, DitaClass>("tt", HI_D_TT),
+                        new SimpleImmutableEntry<String, DitaClass>("b", HI_D_B),
+                        new SimpleImmutableEntry<String, DitaClass>("strong", HI_D_B),
+                        new SimpleImmutableEntry<String, DitaClass>("i", HI_D_I),
+                        new SimpleImmutableEntry<String, DitaClass>("em", HI_D_I),
+                        new SimpleImmutableEntry<String, DitaClass>("sub", HI_D_SUB),
+                        new SimpleImmutableEntry<String, DitaClass>("sup", HI_D_SUP),
+                        new SimpleImmutableEntry<String, DitaClass>("u", HI_D_U)
                 )
                 .flatMap(CoreNodeRenderer::createHtmlToDita)
                 .collect(Collectors.toUnmodifiableMap(Entry::getKey, Entry::getValue));
         hditaToXdita = Stream.<Entry<String, DitaClass>>of(
-                    new SimpleImmutableEntry<String, DitaClass>("span", TOPIC_PH),
-                    new SimpleImmutableEntry<String, DitaClass>("code", TOPIC_PH),
-                    new SimpleImmutableEntry<String, DitaClass>("s", TOPIC_PH),
-                    new SimpleImmutableEntry<String, DitaClass>("tt", HI_D_TT),
-                    new SimpleImmutableEntry<String, DitaClass>("b", HI_D_B),
-                    new SimpleImmutableEntry<String, DitaClass>("strong", HI_D_B),
-                    new SimpleImmutableEntry<String, DitaClass>("i", HI_D_I),
-                    new SimpleImmutableEntry<String, DitaClass>("em", HI_D_I),
-                    new SimpleImmutableEntry<String, DitaClass>("sub", HI_D_SUB),
-                    new SimpleImmutableEntry<String, DitaClass>("sup", HI_D_SUP),
-                    new SimpleImmutableEntry<String, DitaClass>("u", HI_D_U)
+                        new SimpleImmutableEntry<String, DitaClass>("span", TOPIC_PH),
+                        new SimpleImmutableEntry<String, DitaClass>("code", TOPIC_PH),
+                        new SimpleImmutableEntry<String, DitaClass>("s", TOPIC_PH),
+                        new SimpleImmutableEntry<String, DitaClass>("tt", HI_D_TT),
+                        new SimpleImmutableEntry<String, DitaClass>("b", HI_D_B),
+                        new SimpleImmutableEntry<String, DitaClass>("strong", HI_D_B),
+                        new SimpleImmutableEntry<String, DitaClass>("i", HI_D_I),
+                        new SimpleImmutableEntry<String, DitaClass>("em", HI_D_I),
+                        new SimpleImmutableEntry<String, DitaClass>("sub", HI_D_SUB),
+                        new SimpleImmutableEntry<String, DitaClass>("sup", HI_D_SUP),
+                        new SimpleImmutableEntry<String, DitaClass>("u", HI_D_U)
                 )
                 .flatMap(CoreNodeRenderer::createHtmlToDita)
                 .collect(Collectors.toUnmodifiableMap(Entry::getKey, Entry::getValue));
