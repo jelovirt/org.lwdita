@@ -38,14 +38,10 @@ import nu.validator.htmlparser.common.XmlViolationPolicy;
 import nu.validator.htmlparser.sax.HtmlParser;
 import org.apache.commons.io.FilenameUtils;
 import org.dita.dost.util.DitaClass;
-import org.dita.dost.util.SaxCache.EndElementEvent;
-import org.dita.dost.util.SaxCache.SaxEvent;
-import org.dita.dost.util.SaxCache.StartElementEvent;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.AttributesImpl;
-import org.xml.sax.helpers.XMLFilterImpl;
 
 import javax.xml.transform.Templates;
 import javax.xml.transform.TransformerConfigurationException;
@@ -872,8 +868,8 @@ public class CoreNodeRenderer {
     private static Stream<Entry<String, Entry<DitaClass, Attributes>>> createHtmlToDita(Entry<String, DitaClass> e) {
         final Entry<DitaClass, Attributes> value = new SimpleImmutableEntry(e.getValue(), buildAtts(e.getValue()));
         return Stream.of(
-                new SimpleImmutableEntry<String, Entry<DitaClass, Attributes>>("<" + e.getKey() + ">", value),
-                new SimpleImmutableEntry<String, Entry<DitaClass, Attributes>>("</" + e.getKey() + ">", value)
+                new SimpleImmutableEntry("<" + e.getKey() + ">", value),
+                new SimpleImmutableEntry("</" + e.getKey() + ">", value)
         );
     }
 
@@ -882,41 +878,39 @@ public class CoreNodeRenderer {
 
     static {
         htmlToDita = Stream.of(
-                    new SimpleImmutableEntry("span", TOPIC_PH),
-                    new SimpleImmutableEntry("code", PR_D_CODEPH),
-                    new SimpleImmutableEntry("s", HI_D_LINE_THROUGH),
-                    new SimpleImmutableEntry("tt", HI_D_TT),
-                    new SimpleImmutableEntry("b", HI_D_B),
-                    new SimpleImmutableEntry("strong", HI_D_B),
-                    new SimpleImmutableEntry("i", HI_D_I),
-                    new SimpleImmutableEntry("em", HI_D_I),
-                    new SimpleImmutableEntry("sub", HI_D_SUB),
-                    new SimpleImmutableEntry("sup", HI_D_SUP),
-                    new SimpleImmutableEntry("u", HI_D_U)
+                    new SimpleImmutableEntry<String, DitaClass>("span", TOPIC_PH),
+                    new SimpleImmutableEntry<String, DitaClass>("code", PR_D_CODEPH),
+                    new SimpleImmutableEntry<String, DitaClass>("s", HI_D_LINE_THROUGH),
+                    new SimpleImmutableEntry<String, DitaClass>("tt", HI_D_TT),
+                    new SimpleImmutableEntry<String, DitaClass>("b", HI_D_B),
+                    new SimpleImmutableEntry<String, DitaClass>("strong", HI_D_B),
+                    new SimpleImmutableEntry<String, DitaClass>("i", HI_D_I),
+                    new SimpleImmutableEntry<String, DitaClass>("em", HI_D_I),
+                    new SimpleImmutableEntry<String, DitaClass>("sub", HI_D_SUB),
+                    new SimpleImmutableEntry<String, DitaClass>("sup", HI_D_SUP),
+                    new SimpleImmutableEntry<String, DitaClass>("u", HI_D_U)
                 )
                 .flatMap(CoreNodeRenderer::createHtmlToDita)
-                .collect(Collectors.toUnmodifiableMap(e -> e.getKey(), e -> e.getValue()));
-        hditaToXdita = Stream.of(
-                    new SimpleImmutableEntry("span", TOPIC_PH),
-                    new SimpleImmutableEntry("code", TOPIC_PH),
-                    new SimpleImmutableEntry("s", TOPIC_PH),
-                    new SimpleImmutableEntry("tt", HI_D_TT),
-                    new SimpleImmutableEntry("b", HI_D_B),
-                    new SimpleImmutableEntry("strong", HI_D_B),
-                    new SimpleImmutableEntry("i", HI_D_I),
-                    new SimpleImmutableEntry("em", HI_D_I),
-                    new SimpleImmutableEntry("sub", HI_D_SUB),
-                    new SimpleImmutableEntry("sup", HI_D_SUP),
-                    new SimpleImmutableEntry("u", HI_D_U)
+                .collect(Collectors.toUnmodifiableMap(Entry::getKey, Entry::getValue));
+        hditaToXdita = Stream.<Entry<String, DitaClass>>of(
+                    new SimpleImmutableEntry<String, DitaClass>("span", TOPIC_PH),
+                    new SimpleImmutableEntry<String, DitaClass>("code", TOPIC_PH),
+                    new SimpleImmutableEntry<String, DitaClass>("s", TOPIC_PH),
+                    new SimpleImmutableEntry<String, DitaClass>("tt", HI_D_TT),
+                    new SimpleImmutableEntry<String, DitaClass>("b", HI_D_B),
+                    new SimpleImmutableEntry<String, DitaClass>("strong", HI_D_B),
+                    new SimpleImmutableEntry<String, DitaClass>("i", HI_D_I),
+                    new SimpleImmutableEntry<String, DitaClass>("em", HI_D_I),
+                    new SimpleImmutableEntry<String, DitaClass>("sub", HI_D_SUB),
+                    new SimpleImmutableEntry<String, DitaClass>("sup", HI_D_SUP),
+                    new SimpleImmutableEntry<String, DitaClass>("u", HI_D_U)
                 )
                 .flatMap(CoreNodeRenderer::createHtmlToDita)
-                .collect(Collectors.toUnmodifiableMap(e -> e.getKey(), e -> e.getValue()));
+                .collect(Collectors.toUnmodifiableMap(Entry::getKey, Entry::getValue));
     }
 
     /**
      * Render inline HTML start or end tag. Start tags may contain attributes.
-     *
-     * @TODO Parse directly without HtmlParser, especially end tags, and map to DITA with a mapping table in this class.
      */
     private void render(final HtmlInline node, final NodeRendererContext context, final SaxWriter html) {
         final String text = node.getChars().toString();
@@ -932,78 +926,33 @@ public class CoreNodeRenderer {
             return;
         }
 
-        final CacheContentHandler cache = new CacheContentHandler();
         final TransformerHandler h;
         try {
             h = tf.newTransformerHandler(t);
         } catch (final TransformerConfigurationException e) {
             throw new RuntimeException(e);
         }
-        h.setResult(new SAXResult(cache));
         final HtmlParser parser = new HtmlParser(XmlViolationPolicy.ALLOW);
         parser.setContentHandler(h);
         html.setLocation(node);
         if (text.startsWith("</")) {
+            h.setResult(new SAXResult(new EndElementHandler(html)));
             final String data = text.replaceAll("/", "") + text;
             try (final StringReader in = new StringReader(data)) {
                 parser.parse(new InputSource(in));
-                for (SaxEvent event : cache.events) {
-                    if (event instanceof EndElementEvent) {
-                        event.write(html);
-                    }
-                }
             } catch (IOException | SAXException e) {
                 throw new ParseException("Failed to parse HTML: " + e.getMessage(), e);
             }
         } else {
+            h.setResult(new SAXResult(new StartElementHandler(html)));
             try (final StringReader in = new StringReader(text)) {
                 parser.parse(new InputSource(in));
-                for (SaxEvent event : cache.events) {
-                    if (event instanceof StartElementEvent) {
-                        event.write(html);
-                    }
-                }
             } catch (IOException | SAXException e) {
                 throw new ParseException("Failed to parse HTML: " + e.getMessage(), e);
             }
         }
         html.setDocumentLocator();
     }
-
-    private static class CacheContentHandler extends XMLFilterImpl {
-
-        final List<SaxEvent> events = new ArrayList<>();
-
-        @Override
-        public void startElement(String uri, String localName, String qName, Attributes atts) throws SAXException {
-            events.add(new StartElementEvent(uri, localName, qName, atts));
-        }
-
-        @Override
-        public void endElement(String uri, String localName, String qName) throws SAXException {
-            events.add(new EndElementEvent(uri, localName, qName));
-        }
-    }
-
-//    private StartElementEvent parseHtmlInline(final HtmlInline node) {
-//        final List<StartElementEvent> events = new ArrayList<>();
-//        final HtmlParser parser = new HtmlParser(XmlViolationPolicy.ALLOW);
-//        parser.setContentHandler(new XMLFilterImpl() {
-//            @Override
-//            public void startElement(String uri, String localName, String qName, Attributes atts) throws SAXException {
-//                events.add(new StartElementEvent(uri, localName, qName, atts));
-//            }
-//        });
-//        try (final StringReader in = new StringReader(node.getChars().toString())) {
-//            parser.parse(new InputSource(in));
-//        } catch (IOException | SAXException e) {
-//            throw new ParseException("Failed to parse HTML: " + e.getMessage(), e);
-//        }
-//        if (events.isEmpty()) {
-//            return null;
-//        }
-//        return events.get(0);
-//    }
 
     private void render(final ListItem node, final NodeRendererContext context, final SaxWriter html) {
         printTag(node, context, html, TOPIC_LI, LI_ATTS);

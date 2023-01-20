@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+/**
+ * HTML entity mapping to Unicode characters.
+ */
 class Entities {
 
     static final Properties ENTITIES;
@@ -16,6 +19,4 @@ class Entities {
             throw new RuntimeException(e);
         }
     }
-
-
 }
