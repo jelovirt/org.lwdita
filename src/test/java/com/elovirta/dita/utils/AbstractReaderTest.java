@@ -1,12 +1,12 @@
 package com.elovirta.dita.utils;
 
-import junit.framework.AssertionFailedError;
-import org.custommonkey.xmlunit.XMLAssert;
-import org.custommonkey.xmlunit.XMLUnit;
+import org.opentest4j.AssertionFailedError;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.*;
+import org.xmlunit.builder.DiffBuilder;
+import org.xmlunit.diff.Diff;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -25,7 +25,8 @@ import java.util.Deque;
 import java.util.List;
 import java.util.Objects;
 
-import static junit.framework.TestCase.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public abstract class AbstractReaderTest {
 
@@ -74,9 +75,15 @@ public abstract class AbstractReaderTest {
             exp = db.parse(in);
         }
 
-        resetXMLUnit();
         try {
-            XMLAssert.assertXMLEqual(clean(exp), clean(act));
+            final Diff diff = DiffBuilder
+                    .compare(clean(act))
+                    .withTest(clean(exp))
+                    .ignoreWhitespace()
+                    .ignoreComments()
+                    .normalizeWhitespace()
+                    .checkForIdentical().build();
+            assertFalse(diff.hasDifferences());
         } catch (AssertionFailedError e) {
             transformerFactory.newTransformer().transform(new DOMSource(act), new StreamResult(System.out));
             throw e;
@@ -92,15 +99,6 @@ public abstract class AbstractReaderTest {
         }
         doc.normalizeDocument();
         return doc;
-    }
-
-    void resetXMLUnit() {
-        XMLUnit.setControlEntityResolver(null);
-        XMLUnit.setTestEntityResolver(null);
-        XMLUnit.setIgnoreWhitespace(true);
-        XMLUnit.setNormalizeWhitespace(true);
-        XMLUnit.setNormalize(true);
-        XMLUnit.setIgnoreComments(true);
     }
 
     protected static class Event {

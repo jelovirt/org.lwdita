@@ -1,7 +1,7 @@
 package com.elovirta.dita.markdown;
 
 import com.elovirta.dita.utils.ClasspathURIResolver;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
@@ -9,7 +9,7 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 import java.io.*;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class AstToMarkdownTest {
 
