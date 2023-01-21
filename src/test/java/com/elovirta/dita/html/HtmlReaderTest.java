@@ -1,8 +1,8 @@
 package com.elovirta.dita.html;
 
 import com.elovirta.dita.utils.AbstractReaderTest;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.xml.sax.XMLReader;
 
 public class HtmlReaderTest extends AbstractReaderTest {
@@ -107,7 +107,7 @@ public class HtmlReaderTest extends AbstractReaderTest {
         run("link.html");
     }
 
-    @Ignore
+    @Disabled
     @Test
     public void testMultipleTopLevel() throws Exception {
         run("multiple_top_level.html");
@@ -167,7 +167,7 @@ public class HtmlReaderTest extends AbstractReaderTest {
         run("taskOneStep.html");
     }
 
-    @Ignore
+    @Disabled
     @Test
     public void testtopic() throws Exception {
         run("topic.html");
@@ -178,7 +178,7 @@ public class HtmlReaderTest extends AbstractReaderTest {
         run("ul.html");
     }
 
-    @Ignore
+    @Disabled
     @Test
     public void testyaml() throws Exception {
         run("yaml.html");

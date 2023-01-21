@@ -1,8 +1,8 @@
 package com.elovirta.dita.markdown;
 
 import com.elovirta.dita.utils.AbstractReaderTest;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
@@ -11,7 +11,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Arrays;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class MarkdownReaderTest extends AbstractReaderTest {
 
@@ -35,20 +36,20 @@ public class MarkdownReaderTest extends AbstractReaderTest {
         run("header.md");
     }
 
-    @Ignore
+    @Disabled
     @Test
     public void testPandocHeader() throws Exception {
         run("pandoc_header.md");
     }
 
-    @Test(expected = RuntimeException.class)
-    public void testInvalidHeader() throws Exception {
-        run("invalid_header.md");
+    @Test
+    public void testInvalidHeader() {
+        assertThrows(RuntimeException.class, () -> run("invalid_header.md"));
     }
 
-    @Test(expected = RuntimeException.class)
-    public void testInvalidSectionHeader() throws Exception {
-        run("invalid_section_header.md");
+    @Test
+    public void testInvalidSectionHeader() {
+        assertThrows(RuntimeException.class, () -> run("invalid_section_header.md"));
     }
 
     @Test

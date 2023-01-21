@@ -1,14 +1,16 @@
 package com.elovirta.dita.markdown;
 
 import com.elovirta.dita.utils.ClasspathURIResolver;
-import junit.framework.AssertionFailedError;
-import org.custommonkey.xmlunit.XMLAssert;
-import org.custommonkey.xmlunit.XMLUnit;
-import org.junit.Test;
+import org.dita.dost.util.XMLUtils;
+import org.junit.jupiter.api.Test;
+import org.opentest4j.AssertionFailedError;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+import org.xmlunit.builder.DiffBuilder;
+import org.xmlunit.diff.Diff;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -20,6 +22,9 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class DitaToAstTest {
 
@@ -27,10 +32,18 @@ public class DitaToAstTest {
     public void testAst() throws Exception {
         final Document act = run("dita/ast.dita");
         final Document exp = read("ast/dita2ast.xml");
-        resetXMLUnit();
         try {
-            XMLAssert.assertXMLEqual(clean(exp), clean(act));
+            final Diff diff = DiffBuilder
+                    .compare(clean(act))
+                    .withTest(clean(exp))
+                    .normalizeWhitespace()
+                    .ignoreWhitespace()
+                    .ignoreComments()
+                    .checkForIdentical()
+                    .build();
+            assertFalse(diff.hasDifferences());
         } catch (AssertionFailedError e) {
+            TransformerFactory.newInstance().newTransformer().transform(new DOMSource(exp), new StreamResult(System.out));
             TransformerFactory.newInstance().newTransformer().transform(new DOMSource(act), new StreamResult(System.out));
             throw e;
         }
@@ -49,6 +62,12 @@ public class DitaToAstTest {
     }
 
     private Document clean(Document doc) {
+        final List<Node> roots = XMLUtils.toList(doc.getChildNodes());
+        for (Node node : roots) {
+            if (node.getNodeType() == Node.PROCESSING_INSTRUCTION_NODE) {
+                doc.removeChild(node);
+            }
+        }
         final NodeList elems = doc.getElementsByTagName("*");
         for (int i = 0; i < elems.getLength(); i++) {
             final Element elem = (Element) elems.item(i);
@@ -57,15 +76,6 @@ public class DitaToAstTest {
         }
         doc.normalizeDocument();
         return doc;
-    }
-
-    void resetXMLUnit() {
-        XMLUnit.setControlEntityResolver(null);
-        XMLUnit.setTestEntityResolver(null);
-        XMLUnit.setIgnoreWhitespace(true);
-        XMLUnit.setNormalizeWhitespace(true);
-        XMLUnit.setNormalize(true);
-        XMLUnit.setIgnoreComments(true);
     }
 
     private Document read(final String input) throws IOException {

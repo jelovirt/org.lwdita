@@ -1,11 +1,13 @@
 package com.elovirta.dita.markdown;
 
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.xml.sax.SAXException;
 
 import java.io.IOException;
 import java.util.Arrays;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class MDitaReaderTest extends MarkdownReaderTest {
 
@@ -20,26 +22,26 @@ public class MDitaReaderTest extends MarkdownReaderTest {
     }
 
     @Override
-    @Test(expected = ParseException.class)
-    public void testHeader() throws Exception {
-        run("header.md");
+    @Test
+    public void testHeader() {
+        assertThrows(ParseException.class, () -> run("header.md"));
     }
 
-    @Ignore
+    @Disabled
     @Test
     public void testImageSize() throws Exception {
 //        run("image-size.md");
     }
 
     @Override
-    @Ignore
+    @Disabled
     @Test
     public void testGitHubWiki() throws Exception {
 //        run("missing_root_header.md");
     }
 
     @Override
-    @Ignore
+    @Disabled
     @Test
     public void testGitHubWikiWithYaml() throws Exception {
 //        run("missing_root_header_with_yaml.md");
@@ -102,7 +104,7 @@ public class MDitaReaderTest extends MarkdownReaderTest {
 
     @Test
     @Override
-    @Ignore
+    @Disabled
     public void testHtmlLocator() throws IOException, SAXException {
     }
 }
