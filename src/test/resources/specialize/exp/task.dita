@@ -20,6 +20,7 @@
         </cmd>
         <info class="- topic/itemgroup task/info ">
           <p class="- topic/p ">Info.</p>
+          <p class="- topic/p ">Info.</p>
         </info>
       </step>
       <step class="- topic/li task/step ">
@@ -27,9 +28,6 @@
           <b class="+ topic/ph hi-d/b ">Command</b>
           tail
         </cmd>
-        <info class="- topic/itemgroup task/info ">
-          <p class="- topic/p ">Info.</p>
-        </info>
       </step>
       <step class="- topic/li task/step ">
         <cmd class="- topic/ph task/cmd ">head

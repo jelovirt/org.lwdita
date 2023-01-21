@@ -14,7 +14,9 @@ import javax.xml.parsers.SAXParserFactory;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMResult;
+import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.sax.SAXSource;
+import javax.xml.transform.stream.StreamResult;
 import java.io.InputStream;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -42,14 +44,17 @@ public class SpecializeFilterTest {
              InputStream expIn = getClass().getResourceAsStream("/specialize/exp/" + name + ".dita")) {
             transformer.transform(new SAXSource(filter, new InputSource(srcIn)), new DOMResult(act));
             final Document exp = documentBuilder.parse(expIn);
-            final Diff build = DiffBuilder
+            final Diff diff = DiffBuilder
                     .compare(act)
                     .withTest(exp)
                     .normalizeWhitespace()
                     .ignoreWhitespace()
                     .checkForIdentical()
                     .build();
-            assertFalse(build.hasDifferences());
+            if (diff.hasDifferences()) {
+                transformer.transform(new DOMSource(act), new StreamResult(System.out));
+            }
+            assertFalse(diff.hasDifferences());
         }
     }
 }

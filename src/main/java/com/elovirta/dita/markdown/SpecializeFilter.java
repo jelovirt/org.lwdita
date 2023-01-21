@@ -23,7 +23,13 @@ public class SpecializeFilter extends XMLFilterImpl {
         REFERENCE
     }
 
+    private enum ReferenceState {
+        BODY,
+        SECTION
+    }
+
     private enum TaskState {
+        BODY,
         CONTEXT,
         STEPS,
         RESULT
@@ -33,12 +39,12 @@ public class SpecializeFilter extends XMLFilterImpl {
      * Topic type stack. Default to topic in case of compound type
      */
     private Deque<Type> typeStack = new ArrayDeque<>(Arrays.asList(Type.TOPIC));
-    private boolean inBody = false;
     private boolean inStep = false;
     private int paragraphCountInStep = 0;
     private int depth = 0;
     private boolean wrapOpen = false;
     private TaskState taskState = null;
+    private ReferenceState referenceState = null;
     private boolean infoWrapOpen = false;
 
     private Deque<String> elementStack = new ArrayDeque<>();
@@ -81,11 +87,11 @@ public class SpecializeFilter extends XMLFilterImpl {
                         taskState = null;
                         break;
                     case "body":
-                        inBody = true;
+                        taskState = TaskState.BODY;
                         renameStartElement(TASK_TASKBODY, atts);
                         break;
                     case "ol":
-                        if (inBody && depth == DEPTH_IN_BODY) {
+                        if (depth == DEPTH_IN_BODY) {
                             if (taskState == TaskState.CONTEXT) {
                                 doEndElement(uri, TASK_CONTEXT.localName, TASK_CONTEXT.localName);
                             }
@@ -96,7 +102,7 @@ public class SpecializeFilter extends XMLFilterImpl {
                         }
                         break;
                     case "ul":
-                        if (inBody && depth == DEPTH_IN_BODY) {
+                        if (depth == DEPTH_IN_BODY) {
                             if (taskState == TaskState.CONTEXT) {
                                 doEndElement(uri, TASK_CONTEXT.localName, TASK_CONTEXT.localName);
                             }
@@ -107,7 +113,7 @@ public class SpecializeFilter extends XMLFilterImpl {
                         }
                         break;
                     case "li":
-                        if (inBody && depth == 4) {
+                        if (depth == 4) {
                             renameStartElement(TASK_STEP, atts);
                             inStep = true;
                         } else {
@@ -115,8 +121,8 @@ public class SpecializeFilter extends XMLFilterImpl {
                         }
                         break;
                     default:
-                        if (inBody && depth == DEPTH_IN_BODY) {
-                            if (taskState == null) {
+                        if (depth == DEPTH_IN_BODY) {
+                            if (taskState == TaskState.BODY) {
                                 AttributesImpl sectionAtts = new AttributesImpl();
                                 sectionAtts.addAttribute(NULL_NS_URI, "class", "class", "CDATA", TASK_CONTEXT.toString());
                                 doStartElement(uri, TASK_CONTEXT.localName, TASK_CONTEXT.localName, sectionAtts);
@@ -157,27 +163,30 @@ public class SpecializeFilter extends XMLFilterImpl {
             case REFERENCE:
                 switch (localName) {
                     case "topic":
+                        referenceState = null;
                         renameStartElement(REFERENCE_REFERENCE, atts);
                         break;
                     case "body":
-                        inBody = true;
                         renameStartElement(REFERENCE_REFBODY, atts);
+                        referenceState = ReferenceState.BODY;
                         break;
                     default:
-                        if (inBody && depth == DEPTH_IN_BODY) {
+                        if (depth == DEPTH_IN_BODY) {
                             switch (localName) {
                                 case "table":
                                 case "section":
-                                    if (wrapOpen) {
-                                        wrapOpen = false;
+                                    if (referenceState == ReferenceState.SECTION) {
+                                        referenceState = ReferenceState.BODY;
                                         doEndElement(uri, "section", "section");
                                     }
                                     break;
                                 default:
-                                    wrapOpen = true;
-                                    AttributesImpl sectionAtts = new AttributesImpl();
-                                    sectionAtts.addAttribute(NULL_NS_URI, "class", "class", "CDATA", "- topic/section ");
-                                    doStartElement(uri, "section", "section", sectionAtts);
+                                    if (referenceState == ReferenceState.BODY) {
+                                        AttributesImpl sectionAtts = new AttributesImpl();
+                                        sectionAtts.addAttribute(NULL_NS_URI, "class", "class", "CDATA", "- topic/section ");
+                                        doStartElement(uri, "section", "section", sectionAtts);
+                                        referenceState = ReferenceState.SECTION;
+                                    }
                                     break;
                             }
                             doStartElement(uri, localName, qName, atts);
@@ -201,7 +210,6 @@ public class SpecializeFilter extends XMLFilterImpl {
                             taskState = null;
                             doEndElement(uri, TASK_CONTEXT.localName, TASK_CONTEXT.localName);
                         }
-                        inBody = false;
                         doEndElement(uri, localName, qName);
                         break;
                     case "li":
@@ -222,12 +230,11 @@ public class SpecializeFilter extends XMLFilterImpl {
             case REFERENCE:
                 switch (localName) {
                     case "body":
-                        if (wrapOpen) {
-                            wrapOpen = false;
+                        if (referenceState == ReferenceState.SECTION) {
+                            referenceState = null;
                             doEndElement(uri, TOPIC_SECTION.localName, TOPIC_SECTION.localName);
                         }
                         doEndElement(uri, localName, qName);
-                        inBody = false;
                         break;
                     default:
                         doEndElement(uri, localName, qName);
