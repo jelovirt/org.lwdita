@@ -1,0 +1,63 @@
+<topic xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/"
+       ditaarch:DITAArchVersion="2.0"
+       specializations="@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product"
+       class="- topic/topic " id="task"
+       outputclass="task">
+  <title class="- topic/title ">Task</title>
+  <body class="- topic/body ">
+    <p class="- topic/p ">Context</p>
+    <ol class="- topic/ol ">
+      <li class="- topic/li ">
+        <p class="- topic/ph ">Command</p>
+        <p class="- topic/p ">Info.</p>
+      </li>
+      <li class="- topic/li ">
+        <p class="- topic/ph ">
+          <b class="+ topic/ph hi-d/b ">Command</b>
+        </p>
+        <p class="- topic/p ">Info.</p>
+      </li>
+      <li class="- topic/li ">
+        <p class="- topic/ph ">
+          <b class="+ topic/ph hi-d/b ">Command</b>
+          tail
+        </p>
+        <p class="- topic/p ">Info.</p>
+      </li>
+      <li class="- topic/li ">
+        <p class="- topic/ph ">head
+          <b class="+ topic/ph hi-d/b ">Command</b>
+        </p>
+        <p class="- topic/p ">Info.</p>
+      </li>
+      <li class="- topic/li ">
+        <p class="- topic/ph ">head <b class="+ topic/ph hi-d/b ">Command</b> tail
+        </p>
+        <p class="- topic/p ">Info.</p>
+      </li>
+      <li class="- topic/li ">
+        <p class="- topic/ph ">Command</p>
+      </li>
+      <li class="- topic/li ">
+        <p class="- topic/ph ">
+          <b class="+ topic/ph hi-d/b ">Command</b>
+        </p>
+      </li>
+      <li class="- topic/li ">
+        <p class="- topic/ph ">
+          <b class="+ topic/ph hi-d/b ">Command</b>
+          tail
+        </p>
+      </li>
+      <li class="- topic/li ">
+        <p class="- topic/ph ">head
+          <b class="+ topic/ph hi-d/b ">Command</b>
+        </p>
+      </li>
+      <li class="- topic/li ">
+        <p class="- topic/ph ">head <b class="+ topic/ph hi-d/b ">Command</b> tail
+        </p>
+      </li>
+    </ol>
+  </body>
+</topic>
