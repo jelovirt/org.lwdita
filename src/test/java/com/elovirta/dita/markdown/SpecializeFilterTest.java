@@ -11,6 +11,7 @@ import org.xmlunit.diff.Diff;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.SAXParserFactory;
+import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMResult;
@@ -33,7 +34,16 @@ public class SpecializeFilterTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"concept", "reference", "task"})
+    @ValueSource(strings = {
+            "concept",
+            "reference",
+            "task",
+            "task_cmd_with_info",
+            "task_context",
+            "task_context_with_two_p",
+            "task_two_p_in_info",
+            "task_inline_in_cmd"
+    })
     public void test(String name) throws Exception {
         final SpecializeFilter filter = new SpecializeFilter();
         filter.setParent(parserFactory.newSAXParser().getXMLReader());
@@ -52,6 +62,7 @@ public class SpecializeFilterTest {
                     .checkForIdentical()
                     .build();
             if (diff.hasDifferences()) {
+                transformer.setOutputProperty(OutputKeys.INDENT, "yes");
                 transformer.transform(new DOMSource(act), new StreamResult(System.out));
             }
             assertFalse(diff.hasDifferences());

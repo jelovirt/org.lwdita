@@ -5,29 +5,17 @@
        outputclass="task">
   <title class="- topic/title ">Task</title>
   <body class="- topic/body ">
-    <p class="- topic/p ">Context</p>
     <ol class="- topic/ol ">
       <li class="- topic/li ">
-        <p class="- topic/p ">head
+        <p class="- topic/p ">
+          head
           <b class="+ topic/ph hi-d/b ">Command</b>
         </p>
-        <p class="- topic/p ">Info.</p>
-      </li>
-      <li class="- topic/li ">
-        <p class="- topic/p ">head <b class="+ topic/ph hi-d/b ">Command</b> tail
-        </p>
-        <p class="- topic/p ">Info.</p>
-      </li>
-      <li class="- topic/li ">
-        <p class="- topic/p ">Command</p>
       </li>
       <li class="- topic/li ">
         <p class="- topic/p ">
           <b class="+ topic/ph hi-d/b ">Command</b>
-        </p>
-      </li>
-      <li class="- topic/li ">
-        <p class="- topic/p ">head <b class="+ topic/ph hi-d/b ">Command</b> tail
+          tail
         </p>
       </li>
     </ol>
