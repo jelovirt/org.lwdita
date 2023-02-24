@@ -32,6 +32,7 @@ public class SpecializeFilter extends XMLFilterImpl {
         BODY,
         CONTEXT,
         STEPS,
+        STEP,
         RESULT
     }
 
@@ -39,7 +40,6 @@ public class SpecializeFilter extends XMLFilterImpl {
      * Topic type stack. Default to topic in case of compound type
      */
     private Deque<Type> typeStack = new ArrayDeque<>(Arrays.asList(Type.TOPIC));
-    private boolean inStep = false;
     private int paragraphCountInStep = 0;
     private int depth = 0;
     private boolean wrapOpen = false;
@@ -113,9 +113,9 @@ public class SpecializeFilter extends XMLFilterImpl {
                         }
                         break;
                     case "li":
-                        if (depth == 4) {
+                        if (taskState == TaskState.STEPS && depth == 4) {
                             renameStartElement(TASK_STEP, atts);
-                            inStep = true;
+                            taskState = TaskState.STEP;
                         } else {
                             doStartElement(uri, localName, qName, atts);
                         }
@@ -129,7 +129,7 @@ public class SpecializeFilter extends XMLFilterImpl {
                                 taskState = TaskState.CONTEXT;
                             }
                             doStartElement(uri, localName, qName, atts);
-                        } else if (inStep && depth == 5) {
+                        } else if (taskState == TaskState.STEP && depth == 5) {
                             switch (localName) {
                                 case "p":
                                     paragraphCountInStep++;
@@ -213,8 +213,8 @@ public class SpecializeFilter extends XMLFilterImpl {
                         doEndElement(uri, localName, qName);
                         break;
                     case "li":
-                        if (inStep && depth == 4) {
-                            inStep = false;
+                        if (taskState == TaskState.STEP && depth == 4) {
+                            taskState = TaskState.STEPS;
                             paragraphCountInStep = 0;
                             if (infoWrapOpen) {
                                 doEndElement(NULL_NS_URI, TASK_INFO.localName, TASK_INFO.localName);
