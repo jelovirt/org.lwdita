@@ -213,13 +213,13 @@ public class SpecializeFilter extends XMLFilterImpl {
                         doEndElement(uri, localName, qName);
                         break;
                     case "li":
+                        if (taskState == TaskState.STEP && infoWrapOpen && depth == 4) {
+                            doEndElement(NULL_NS_URI, TASK_INFO.localName, TASK_INFO.localName);
+                        }
                         if (taskState == TaskState.STEP && depth == 4) {
-                            taskState = TaskState.STEPS;
                             paragraphCountInStep = 0;
-                            if (infoWrapOpen) {
-                                doEndElement(NULL_NS_URI, TASK_INFO.localName, TASK_INFO.localName);
-                                infoWrapOpen = false;
-                            }
+                            infoWrapOpen = false;
+                            taskState = TaskState.STEPS;
                         }
                         doEndElement(uri, localName, qName);
                         break;
