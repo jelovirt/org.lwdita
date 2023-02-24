@@ -125,6 +125,15 @@ public class SpecializeFilterTest {
             buf.append("<p class='- topic/p '>Context</p>");
         }
         buf.append("<ol class='- topic/ol '>");
+        generateStepSrc(buf, info, inline);
+        buf.append("</ol>");
+        buf.append("</body>");
+        buf.append("</topic>");
+
+        return new StringReader(buf.toString());
+    }
+
+    private void generateStepSrc(StringBuilder buf, int info, int inline) {
         buf.append("<li class='- topic/li '>");
         buf.append("<p class='- topic/p '>");
         if (inline > 0) {
@@ -145,11 +154,6 @@ public class SpecializeFilterTest {
             buf.append("<p class='- topic/p '>Info.</p>");
         }
         buf.append("</li>");
-        buf.append("</ol>");
-        buf.append("</body>");
-        buf.append("</topic>");
-
-        return new StringReader(buf.toString());
     }
 
     private Reader generateExp(int context, int info, int inline) {
@@ -165,6 +169,15 @@ public class SpecializeFilterTest {
             buf.append("</context>");
         }
         buf.append("<steps class='- topic/ol task/steps '>");
+        generateStepExp(buf, info, inline);
+        buf.append("</steps>");
+        buf.append("</taskbody>");
+        buf.append("</task>");
+
+        return new StringReader(buf.toString());
+    }
+
+    private void generateStepExp(StringBuilder buf, int info, int inline) {
         buf.append("<step class='- topic/li task/step '>");
         buf.append("<cmd class='- topic/ph task/cmd '>");
         if (inline > 0) {
@@ -189,10 +202,5 @@ public class SpecializeFilterTest {
             buf.append("</info>");
         }
         buf.append("</step>");
-        buf.append("</steps>");
-        buf.append("</taskbody>");
-        buf.append("</task>");
-
-        return new StringReader(buf.toString());
     }
 }
