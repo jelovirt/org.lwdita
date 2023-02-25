@@ -1,0 +1,43 @@
+<reference xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/"
+           ditaarch:DITAArchVersion="2.0"
+           specializations="@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product"
+           class="- topic/topic reference/reference " id="reference">
+  <title class="- topic/title ">Reference</title>
+  <refbody class="- topic/body reference/refbody ">
+    <section class="- topic/section ">
+      <p class="- topic/p ">This is reference.</p>
+    </section>
+  </refbody>
+  <reference xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/"
+             ditaarch:DITAArchVersion="2.0"
+             specializations="@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product"
+             class="- topic/topic reference/reference " id="reference2">
+    <title class="- topic/title ">Reference</title>
+    <refbody class="- topic/body reference/refbody ">
+      <section class="- topic/section ">
+        <p class="- topic/p ">This is reference.</p>
+        <p class="- topic/p ">This is reference.</p>
+      </section>
+    </refbody>
+  </reference>
+  <reference xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/"
+             ditaarch:DITAArchVersion="2.0"
+             specializations="@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product"
+             class="- topic/topic reference/reference " id="reference3">
+    <title class="- topic/title ">Reference</title>
+    <refbody class="- topic/body reference/refbody ">
+      <table class="- topic/table ">
+        <tgroup class="- topic/tgroup " cols="1">
+          <tbody class="- topic/tbody ">
+            <row class="- topic/row ">
+              <entry class="- topic/entry ">Entry</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+      <section class="- topic/section ">
+        <p class="- topic/p ">This is reference.</p>
+      </section>
+    </refbody>
+  </reference>
+</reference>

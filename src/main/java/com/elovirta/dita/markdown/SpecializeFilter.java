@@ -23,9 +23,17 @@ public class SpecializeFilter extends XMLFilterImpl {
         REFERENCE
     }
 
+    private enum ReferenceState {
+        BODY,
+        SECTION
+    }
+
     private enum TaskState {
+        BODY,
         CONTEXT,
         STEPS,
+        STEP,
+        INFO,
         RESULT
     }
 
@@ -33,13 +41,10 @@ public class SpecializeFilter extends XMLFilterImpl {
      * Topic type stack. Default to topic in case of compound type
      */
     private Deque<Type> typeStack = new ArrayDeque<>(Arrays.asList(Type.TOPIC));
-    private boolean inBody = false;
-    private boolean inStep = false;
     private int paragraphCountInStep = 0;
     private int depth = 0;
-    private boolean wrapOpen = false;
     private TaskState taskState = null;
-    private boolean infoWrapOpen = false;
+    private ReferenceState referenceState = null;
 
     private Deque<String> elementStack = new ArrayDeque<>();
 
@@ -63,131 +68,16 @@ public class SpecializeFilter extends XMLFilterImpl {
 
         switch (typeStack.peek()) {
             case CONCEPT:
-                switch (localName) {
-                    case "topic":
-                        renameStartElement(Constants.CONCEPT_CONCEPT, atts);
-                        break;
-                    case "body":
-                        renameStartElement(Constants.CONCEPT_CONBODY, atts);
-                        break;
-                    default:
-                        doStartElement(uri, localName, qName, atts);
-                }
+                startElementConcept(uri, localName, qName, atts);
                 break;
             case TASK:
-                switch (localName) {
-                    case "topic":
-                        renameStartElement(TASK_TASK, atts);
-                        taskState = null;
-                        break;
-                    case "body":
-                        inBody = true;
-                        renameStartElement(TASK_TASKBODY, atts);
-                        break;
-                    case "ol":
-                        if (inBody && depth == DEPTH_IN_BODY) {
-                            if (taskState == TaskState.CONTEXT) {
-                                doEndElement(uri, TASK_CONTEXT.localName, TASK_CONTEXT.localName);
-                            }
-                            taskState = TaskState.STEPS;
-                            renameStartElement(Constants.TASK_STEPS, atts);
-                        } else {
-                            doStartElement(uri, localName, qName, atts);
-                        }
-                        break;
-                    case "ul":
-                        if (inBody && depth == DEPTH_IN_BODY) {
-                            if (taskState == TaskState.CONTEXT) {
-                                doEndElement(uri, TASK_CONTEXT.localName, TASK_CONTEXT.localName);
-                            }
-                            taskState = TaskState.STEPS;
-                            renameStartElement(TASK_STEPS_UNORDERED, atts);
-                        } else {
-                            doStartElement(uri, localName, qName, atts);
-                        }
-                        break;
-                    case "li":
-                        if (inBody && depth == 4) {
-                            renameStartElement(TASK_STEP, atts);
-                            inStep = true;
-                        } else {
-                            doStartElement(uri, localName, qName, atts);
-                        }
-                        break;
-                    default:
-                        if (inBody && depth == DEPTH_IN_BODY) {
-                            if (taskState == null) {
-                                AttributesImpl sectionAtts = new AttributesImpl();
-                                sectionAtts.addAttribute(NULL_NS_URI, "class", "class", "CDATA", TASK_CONTEXT.toString());
-                                doStartElement(uri, TASK_CONTEXT.localName, TASK_CONTEXT.localName, sectionAtts);
-                                taskState = TaskState.CONTEXT;
-                            }
-                            doStartElement(uri, localName, qName, atts);
-                        } else if (inStep && depth == 5) {
-                            switch (localName) {
-                                case "p":
-                                    paragraphCountInStep++;
-                                    if (paragraphCountInStep == 1) {
-                                        renameStartElement(TASK_CMD, atts);
-                                    } else if (paragraphCountInStep == 2 && !infoWrapOpen) {
-                                        AttributesImpl res = new AttributesImpl(atts);
-                                        res.addAttribute(NULL_NS_URI, "class", "class", "CDATA", TASK_INFO.toString());
-                                        doStartElement(NULL_NS_URI, TASK_INFO.localName, TASK_INFO.localName, res);
-                                        infoWrapOpen = true;
-                                        doStartElement(uri, localName, qName, atts);
-                                    } else {
-                                        doStartElement(uri, localName, qName, atts);
-                                    }
-                                    break;
-                                default:
-                                    if (!infoWrapOpen) {
-                                        AttributesImpl res = new AttributesImpl(atts);
-                                        res.addAttribute(NULL_NS_URI, "class", "class", "CDATA", TASK_INFO.toString());
-                                        doStartElement(NULL_NS_URI, TASK_INFO.localName, TASK_INFO.localName, res);
-                                        infoWrapOpen = true;
-                                    }
-                                    doStartElement(uri, localName, qName, atts);
-                                    break;
-                            }
-                        } else {
-                            doStartElement(uri, localName, qName, atts);
-                        }
-                }
+                startElementTask(uri, localName, qName, atts);
                 break;
             case REFERENCE:
-                switch (localName) {
-                    case "topic":
-                        renameStartElement(REFERENCE_REFERENCE, atts);
-                        break;
-                    case "body":
-                        inBody = true;
-                        renameStartElement(REFERENCE_REFBODY, atts);
-                        break;
-                    default:
-                        if (inBody && depth == DEPTH_IN_BODY) {
-                            switch (localName) {
-                                case "table":
-                                case "section":
-                                    if (wrapOpen) {
-                                        wrapOpen = false;
-                                        doEndElement(uri, "section", "section");
-                                    }
-                                    break;
-                                default:
-                                    wrapOpen = true;
-                                    AttributesImpl sectionAtts = new AttributesImpl();
-                                    sectionAtts.addAttribute(NULL_NS_URI, "class", "class", "CDATA", "- topic/section ");
-                                    doStartElement(uri, "section", "section", sectionAtts);
-                                    break;
-                            }
-                            doStartElement(uri, localName, qName, atts);
-                        } else {
-                            doStartElement(uri, localName, qName, atts);
-                        }
-                }
+                startElementReference(uri, localName, qName, atts);
                 break;
             default:
-                doStartElement(uri, localName, qName, atts);
+                throw new IllegalStateException();
         }
     }
 
@@ -195,47 +85,16 @@ public class SpecializeFilter extends XMLFilterImpl {
     public void endElement(String uri, String localName, String qName) throws SAXException {
         switch (typeStack.peek()) {
             case TASK:
-                switch (localName) {
-                    case "body":
-                        if (taskState == TaskState.CONTEXT) {
-                            taskState = null;
-                            doEndElement(uri, TASK_CONTEXT.localName, TASK_CONTEXT.localName);
-                        }
-                        inBody = false;
-                        doEndElement(uri, localName, qName);
-                        break;
-                    case "li":
-                        if (inStep && depth == 4) {
-                            inStep = false;
-                            paragraphCountInStep = 0;
-                            if (infoWrapOpen) {
-                                doEndElement(NULL_NS_URI, TASK_INFO.localName, TASK_INFO.localName);
-                                infoWrapOpen = false;
-                            }
-                        }
-                        doEndElement(uri, localName, qName);
-                        break;
-                    default:
-                        doEndElement(uri, localName, qName);
-                }
+                endElementTask(uri, localName, qName);
                 break;
             case REFERENCE:
-                switch (localName) {
-                    case "body":
-                        if (wrapOpen) {
-                            wrapOpen = false;
-                            doEndElement(uri, TOPIC_SECTION.localName, TOPIC_SECTION.localName);
-                        }
-                        doEndElement(uri, localName, qName);
-                        inBody = false;
-                        break;
-                    default:
-                        doEndElement(uri, localName, qName);
-                }
+                endElementReference(uri, localName, qName);
                 break;
             case CONCEPT:
+                endElementConcept(uri, localName, qName);
+                break;
             default:
-                doEndElement(uri, localName, qName);
+                throw new IllegalStateException();
         }
 
         if (localName.equals(TOPIC_TOPIC.localName)) {
@@ -243,6 +102,179 @@ public class SpecializeFilter extends XMLFilterImpl {
         }
 
         depth--;
+    }
+
+    private void startElementConcept(String uri, String localName, String qName, Attributes atts) throws SAXException {
+        switch (localName) {
+            case "topic":
+                renameStartElement(Constants.CONCEPT_CONCEPT, atts);
+                break;
+            case "body":
+                renameStartElement(Constants.CONCEPT_CONBODY, atts);
+                break;
+            default:
+                doStartElement(uri, localName, qName, atts);
+        }
+    }
+
+    private void endElementConcept(String uri, String localName, String qName) throws SAXException {
+        doEndElement(uri, localName, qName);
+    }
+
+    private void startElementTask(String uri, String localName, String qName, Attributes atts) throws SAXException {
+        switch (localName) {
+            case "topic":
+                renameStartElement(TASK_TASK, atts);
+                taskState = null;
+                break;
+            case "body":
+                taskState = TaskState.BODY;
+                renameStartElement(TASK_TASKBODY, atts);
+                break;
+            case "ol":
+                if (depth == DEPTH_IN_BODY) {
+                    if (taskState == TaskState.CONTEXT) {
+                        doEndElement(uri, TASK_CONTEXT.localName, TASK_CONTEXT.localName);
+                    }
+                    taskState = TaskState.STEPS;
+                    renameStartElement(Constants.TASK_STEPS, atts);
+                } else {
+                    doStartElement(uri, localName, qName, atts);
+                }
+                break;
+            case "ul":
+                if (depth == DEPTH_IN_BODY) {
+                    if (taskState == TaskState.CONTEXT) {
+                        doEndElement(uri, TASK_CONTEXT.localName, TASK_CONTEXT.localName);
+                    }
+                    taskState = TaskState.STEPS;
+                    renameStartElement(TASK_STEPS_UNORDERED, atts);
+                } else {
+                    doStartElement(uri, localName, qName, atts);
+                }
+                break;
+            case "li":
+                if (taskState == TaskState.STEPS && depth == 4) {
+                    renameStartElement(TASK_STEP, atts);
+                    taskState = TaskState.STEP;
+                } else {
+                    doStartElement(uri, localName, qName, atts);
+                }
+                break;
+            default:
+                if (depth == DEPTH_IN_BODY) {
+                    if (taskState == TaskState.BODY) {
+                        AttributesImpl sectionAtts = new AttributesImpl();
+                        sectionAtts.addAttribute(NULL_NS_URI, "class", "class", "CDATA", TASK_CONTEXT.toString());
+                        doStartElement(uri, TASK_CONTEXT.localName, TASK_CONTEXT.localName, sectionAtts);
+                        taskState = TaskState.CONTEXT;
+                    }
+                    doStartElement(uri, localName, qName, atts);
+                } else if ((taskState == TaskState.STEP || taskState == TaskState.INFO) && depth == 5) {
+                    switch (localName) {
+                        case "p":
+                            paragraphCountInStep++;
+                            if (paragraphCountInStep == 1) {
+                                renameStartElement(TASK_CMD, atts);
+                            } else if (paragraphCountInStep == 2 && taskState != TaskState.INFO) {
+                                AttributesImpl res = new AttributesImpl(atts);
+                                res.addAttribute(NULL_NS_URI, "class", "class", "CDATA", TASK_INFO.toString());
+                                doStartElement(NULL_NS_URI, TASK_INFO.localName, TASK_INFO.localName, res);
+                                taskState = TaskState.INFO;
+                                doStartElement(uri, localName, qName, atts);
+                            } else {
+                                doStartElement(uri, localName, qName, atts);
+                            }
+                            break;
+                        default:
+                            if (taskState != TaskState.INFO) {
+                                AttributesImpl res = new AttributesImpl(atts);
+                                res.addAttribute(NULL_NS_URI, "class", "class", "CDATA", TASK_INFO.toString());
+                                doStartElement(NULL_NS_URI, TASK_INFO.localName, TASK_INFO.localName, res);
+                                taskState = TaskState.INFO;
+                            }
+                            doStartElement(uri, localName, qName, atts);
+                            break;
+                    }
+                } else {
+                    doStartElement(uri, localName, qName, atts);
+                }
+        }
+    }
+
+    private void endElementTask(String uri, String localName, String qName) throws SAXException {
+        switch (localName) {
+            case "body":
+                if (taskState == TaskState.CONTEXT) {
+                    taskState = null;
+                    doEndElement(uri, TASK_CONTEXT.localName, TASK_CONTEXT.localName);
+                }
+                doEndElement(uri, localName, qName);
+                break;
+            case "li":
+                if (taskState == TaskState.INFO && depth == 4) {
+                    doEndElement(NULL_NS_URI, TASK_INFO.localName, TASK_INFO.localName);
+                    taskState = TaskState.STEP;
+                }
+                if (taskState == TaskState.STEP && depth == 4) {
+                    paragraphCountInStep = 0;
+                    taskState = TaskState.STEPS;
+                }
+                doEndElement(uri, localName, qName);
+                break;
+            default:
+                doEndElement(uri, localName, qName);
+        }
+    }
+
+    private void startElementReference(String uri, String localName, String qName, Attributes atts) throws SAXException {
+        switch (localName) {
+            case "topic":
+                referenceState = null;
+                renameStartElement(REFERENCE_REFERENCE, atts);
+                break;
+            case "body":
+                renameStartElement(REFERENCE_REFBODY, atts);
+                referenceState = ReferenceState.BODY;
+                break;
+            default:
+                if (depth == DEPTH_IN_BODY) {
+                    switch (localName) {
+                        case "table":
+                        case "section":
+                            if (referenceState == ReferenceState.SECTION) {
+                                referenceState = ReferenceState.BODY;
+                                doEndElement(uri, "section", "section");
+                            }
+                            break;
+                        default:
+                            if (referenceState == ReferenceState.BODY) {
+                                AttributesImpl sectionAtts = new AttributesImpl();
+                                sectionAtts.addAttribute(NULL_NS_URI, "class", "class", "CDATA", "- topic/section ");
+                                doStartElement(uri, "section", "section", sectionAtts);
+                                referenceState = ReferenceState.SECTION;
+                            }
+                            break;
+                    }
+                    doStartElement(uri, localName, qName, atts);
+                } else {
+                    doStartElement(uri, localName, qName, atts);
+                }
+        }
+    }
+
+    private void endElementReference(String uri, String localName, String qName) throws SAXException {
+        switch (localName) {
+            case "body":
+                if (referenceState == ReferenceState.SECTION) {
+                    referenceState = null;
+                    doEndElement(uri, TOPIC_SECTION.localName, TOPIC_SECTION.localName);
+                }
+                doEndElement(uri, localName, qName);
+                break;
+            default:
+                doEndElement(uri, localName, qName);
+        }
     }
 
     public void doStartElement(String uri, String localName, String qName, Attributes atts) throws SAXException {

@@ -1,0 +1,38 @@
+<topic xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/"
+       ditaarch:DITAArchVersion="2.0"
+       specializations="@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product"
+       outputclass="reference"
+       class="- topic/topic " id="reference">
+  <title class="- topic/title ">Reference</title>
+  <body class="- topic/body ">
+    <p class="- topic/p ">This is reference.</p>
+  </body>
+  <topic xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/"
+         ditaarch:DITAArchVersion="2.0"
+         specializations="@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product"
+         class="- topic/topic " id="reference2">
+    <title class="- topic/title ">Reference</title>
+    <body class="- topic/body ">
+      <p class="- topic/p ">This is reference.</p>
+      <p class="- topic/p ">This is reference.</p>
+    </body>
+  </topic>
+  <topic xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/"
+         ditaarch:DITAArchVersion="2.0"
+         specializations="@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product"
+         class="- topic/topic " id="reference3">
+    <title class="- topic/title ">Reference</title>
+    <body class="- topic/body ">
+      <table class="- topic/table ">
+        <tgroup class="- topic/tgroup " cols="1">
+          <tbody class="- topic/tbody ">
+            <row class="- topic/row ">
+              <entry class="- topic/entry ">Entry</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+      <p class="- topic/p ">This is reference.</p>
+    </body>
+  </topic>
+</topic>
