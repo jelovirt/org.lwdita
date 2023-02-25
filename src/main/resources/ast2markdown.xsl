@@ -175,7 +175,7 @@
       <xsl:for-each select="tr">
         <xsl:text>|</xsl:text>
         <xsl:for-each select="tablecell">
-          <xsl:call-template name="process-inline-contents"/>
+          <xsl:call-template name="process-tablecell-contents"/>
           <xsl:text>|</xsl:text>
         </xsl:for-each>
         <xsl:value-of select="$linefeed"/>
@@ -187,7 +187,7 @@
           <xsl:variable name="colnum" as="xs:integer" select="position()"/>
           <xsl:variable name="align" select="ancestor::table[1]/col[$colnum]/@align"/>
           <xsl:variable name="content">
-            <xsl:call-template name="process-inline-contents"/>
+            <xsl:call-template name="process-tablecell-contents"/>
           </xsl:variable>
           <xsl:value-of select="if ($align = ('left', 'center')) then ':' else ''"/>
           <xsl:variable name="extra-width" as="xs:integer">
@@ -210,7 +210,7 @@
         <xsl:text>|</xsl:text>
         <xsl:for-each select="tablecell">
           <!--xsl:apply-templates mode="ast"/-->
-          <xsl:call-template name="process-inline-contents"/>
+          <xsl:call-template name="process-tablecell-contents"/>
           <xsl:text>|</xsl:text>
         </xsl:for-each>
         <xsl:value-of select="$linefeed"/>
@@ -218,7 +218,20 @@
     </xsl:for-each>
     <xsl:value-of select="$linefeed"/>
   </xsl:template>
-  
+
+  <xsl:template name="process-tablecell-contents">
+    <xsl:choose>
+      <xsl:when test="para and count(*) eq 1 and not(text()[normalize-space()])">
+        <xsl:for-each select="para">
+          <xsl:call-template name="process-inline-contents"/>
+        </xsl:for-each>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:call-template name="process-inline-contents"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
   <!-- Inline -->
   
   <xsl:template match="strong" mode="ast">
