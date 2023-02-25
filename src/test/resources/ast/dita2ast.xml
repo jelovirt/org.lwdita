@@ -20,7 +20,7 @@ codeblock</codeblock>
         </li>
       </orderedlist>
       <para>Asterisk \* bracket \[foo\].</para>
-      <para>\\\`\*\_\{\}\[\]\(\)\&gt;\#+-.!</para>
+      <para>\\\`\*\_\{\}\[\]\(\)\&gt;\#+-.!&lt;></para>
       <para>Hyphen:</para>
       <bulletlist>
         <li>

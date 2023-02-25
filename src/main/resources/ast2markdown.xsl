@@ -314,14 +314,14 @@
   </xsl:template>
   
   <xsl:template match="text()" mode="ast">
-    <xsl:variable name="regexp" as="xs:string" select="string-join(('[', '*_', '\\`\{}\[\]()>#|' , ']'))"/>
+    <xsl:variable name="regexp" as="xs:string" select="string-join(('[', '*_', '\\`\{}\[\]()#|' , ']'))"/>
     <xsl:analyze-string select="." regex="{$regexp}">
       <xsl:matching-substring>
         <xsl:text>\</xsl:text>
         <xsl:value-of select="."/>
       </xsl:matching-substring>
       <xsl:non-matching-substring>
-        <xsl:value-of select="."/>
+        <xsl:value-of select="replace(replace(replace(., '&amp;', '&amp;amp;'), '&gt;', '&amp;gt;'), '&lt;', '&amp;lt;')"/>
       </xsl:non-matching-substring>
     </xsl:analyze-string>
   </xsl:template>
