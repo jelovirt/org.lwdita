@@ -17,7 +17,7 @@ None *emph \* \*\* \_ \_\_ __strong \* \*\* \_ \_\_ strong__ emph* none **strong
 
 Asterisk \* bracket \[foo\].
 
-\\\`\*\_\{\}\[\]\(\)\>\#+-.!
+\\\`\*\_\{\}\[\]\(\)&gt;\#+-.!&lt;&gt;&amp;
 
 Hyphen:
 

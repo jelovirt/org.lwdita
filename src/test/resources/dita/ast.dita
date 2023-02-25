@@ -34,7 +34,7 @@ codeblock</codeblock>
       </ol>
     </p>
     <p class="- topic/p ">Asterisk \* bracket \[foo\].</p>
-    <p class="- topic/p ">\\\`\*\_\{\}\[\]\(\)\&gt;\#+-.!</p>
+    <p class="- topic/p ">\\\`\*\_\{\}\[\]\(\)\&gt;\#+-.!&lt;></p>
     <p class="- topic/p ">Hyphen:</p>
     <ul class="- topic/ul ">
       <li class="- topic/li "><p class="- topic/p ">hyphen list list list list list list list list list list list list list list list list list list list list

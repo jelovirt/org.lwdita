@@ -5,7 +5,7 @@
     <header level="1" id="escape">Escape</header>
     <div>
       <para>Asterisk * bracket [foo].</para>
-      <para>\`*_{}[]()&gt;#+-.!</para>
+      <para>\`*_{}[]()&gt;#+-.!&lt;></para>
     </div>
   </div>
 </pandoc>

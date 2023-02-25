@@ -36,7 +36,7 @@
         very long line. This is a very long line. This is a very long line. This is a very long line.</para>
       <para>None <emph>emph * ** _ __ <strong>strong * ** _ __ strong</strong> emph</emph> none <strong>strong * ** _ __ <emph>emph * ** _ __ emph</emph> strong</strong> none.</para>
       <para>Asterisk * bracket [foo].   </para>
-      <para>\`*_{}[]()&gt;#+-.!</para>
+      <para>\`*_{}[]()&gt;#+-.!&lt;>&amp;</para>
       <para>Hyphen:</para>
       <bulletlist>
         <li>
