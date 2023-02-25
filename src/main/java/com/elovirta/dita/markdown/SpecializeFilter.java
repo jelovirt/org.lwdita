@@ -77,7 +77,7 @@ public class SpecializeFilter extends XMLFilterImpl {
                 startElementReference(uri, localName, qName, atts);
                 break;
             default:
-                throw new IllegalStateException();
+                doStartElement(uri, localName, qName, atts);
         }
     }
 
@@ -94,7 +94,7 @@ public class SpecializeFilter extends XMLFilterImpl {
                 endElementConcept(uri, localName, qName);
                 break;
             default:
-                throw new IllegalStateException();
+                doEndElement(uri, localName, qName);
         }
 
         if (localName.equals(TOPIC_TOPIC.localName)) {
