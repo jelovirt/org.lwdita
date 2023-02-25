@@ -1,10 +1,11 @@
 package com.elovirta.dita.html;
 
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
+import com.elovirta.dita.utils.AbstractReaderTest;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.xml.sax.XMLReader;
 
-public class HDitaReaderTest extends HtmlReaderTest {
+public class HDitaReaderTest extends AbstractReaderTest {
 
     @Override
     public XMLReader getReader() {
@@ -21,61 +22,46 @@ public class HDitaReaderTest extends HtmlReaderTest {
         return "xdita/";
     }
 
-    @Test
-    public void testHdita() throws Exception {
-        run("hdita.html");
-    }
 
-    @Test
-    public void testMultipleTopLevel() throws Exception {
-        run("multiple_top_level.html");
-    }
-
-    @Disabled
-    @Test
-    public void testheader_attributes() throws Exception {
-        run("header_attributes.html");
-    }
-
-    @Disabled
-    @Test
-    public void testbody_attributes() throws Exception {
-        run("body_attributes.html");
-    }
-
-    @Disabled("specialization not supported by LwDITA")
-    @Test
-    public void testMultipleTopLevelSpecialized() throws Exception {
-        run("multiple_top_level_specialized.html");
-    }
-
-    @Disabled
-    @Test
-    public void testheader() throws Exception {
-        run("header.html");
-    }
-
-    @Disabled("specialization not supported by LwDITA")
-    @Test
-    public void testreference() throws Exception {
-        run("reference.html");
-    }
-
-    @Disabled("specialization not supported by LwDITA")
-    @Test
-    public void testconcept() throws Exception {
-        run("concept.html");
-    }
-
-    @Disabled("specialization not supported by LwDITA")
-    @Test
-    public void testTask() throws Exception {
-        run("task.html");
-    }
-
-    @Disabled("specialization not supported by LwDITA")
-    @Test
-    public void testTaskOneStep() throws Exception {
-        run("taskOneStep.html");
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "codeblock.html",
+            "comment.html",
+            "conkeyref.html",
+            "conref.html",
+            "dl.html",
+            "entity.html",
+            "escape.html",
+            "hdita.html",
+            "html.html",
+            "image-size.html",
+            "image.html",
+            "inline.html",
+            "keyref.html",
+            "keys.html",
+            "linebreak.html",
+            "link.html",
+            "multiple_top_level.html",
+            "ol.html",
+            "quote.html",
+            "short.html",
+            "shortdesc.html",
+            "table-width.html",
+            "table.html",
+            "ul.html",
+//            "body_attributes.html",
+//            "concept.html",
+//            "header.html",
+//            "header_attributes.html",
+//            "multiple_top_level_specialized.html",
+//            "pandoc_header.html",
+//            "reference.html",
+//            "task.html",
+//            "taskOneStep.html",
+//            "topic.html",
+//            "yaml.html",
+    })
+    public void test(String file) throws Exception {
+        run(file);
     }
 }

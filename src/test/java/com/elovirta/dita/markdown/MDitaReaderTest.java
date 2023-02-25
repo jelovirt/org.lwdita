@@ -1,7 +1,10 @@
 package com.elovirta.dita.markdown;
 
+import com.elovirta.dita.utils.AbstractReaderTest;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.xml.sax.SAXException;
 
 import java.io.IOException;
@@ -9,7 +12,7 @@ import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class MDitaReaderTest extends MarkdownReaderTest {
+public class MDitaReaderTest extends AbstractReaderTest {
 
     @Override
     public MarkdownReader getReader() {
@@ -22,33 +25,68 @@ public class MDitaReaderTest extends MarkdownReaderTest {
     }
 
     @Override
-    @Test
-    public void testHeader() {
-        assertThrows(ParseException.class, () -> run("header.md"));
+    public String getSrc() {
+        return "markdown/";
     }
 
-    @Disabled
-    @Test
-    public void testImageSize() throws Exception {
-//        run("image-size.md");
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "abbreviation.md",
+            "body_attributes.md",
+            "codeblock.md",
+            "comment.md",
+            "concept.md",
+            "conkeyref.md",
+            "conref.md",
+            "dl.md",
+            "entity.md",
+            "escape.md",
+            "footnote.md",
+            "header_attributes.md",
+            "html.md",
+            "image.md",
+            "inline.md",
+            "jekyll.md",
+            "keyref.md",
+            "keys.md",
+            "linebreak.md",
+            "link.md",
+            "multiple_top_level.md",
+            "multiple_top_level_specialized.md",
+            "ol.md",
+            "quote.md",
+            "reference.md",
+            "short.md",
+            "shortdesc.md",
+            "table-width.md",
+            "table.md",
+            "task.md",
+            "taskOneStep.md",
+            "testBOM.md",
+            "testNoBOM.md",
+            "ul.md",
+            "unsupported_html.md",
+            "yaml.md",
+//            "image-size.md",
+//            "missing_root_header.md",
+//            "missing_root_header_with_yaml.md",
+//            "pandoc_header.md",
+    })
+    public void test(String file) throws Exception {
+        run(file);
     }
 
-    @Override
-    @Disabled
-    @Test
-    public void testGitHubWiki() throws Exception {
-//        run("missing_root_header.md");
-    }
-
-    @Override
-    @Disabled
-    @Test
-    public void testGitHubWikiWithYaml() throws Exception {
-//        run("missing_root_header_with_yaml.md");
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "header.md",
+            "invalid_header.md",
+            "invalid_section_header.md",
+    })
+    public void test_fail(String file) {
+        assertThrows(RuntimeException.class, () -> run(file));
     }
 
     @Test
-    @Override
     public void testLocator() throws IOException, SAXException {
         testLocatorParsing(
                 Arrays.asList(
@@ -72,7 +110,6 @@ public class MDitaReaderTest extends MarkdownReaderTest {
     }
 
     @Test
-    @Override
     public void taskOneStep() throws IOException, SAXException {
         testLocatorParsing(
                 Arrays.asList(
@@ -100,11 +137,5 @@ public class MDitaReaderTest extends MarkdownReaderTest {
                         new Event("endDocument", 7, 5)
                 ),
                 "taskOneStep.md");
-    }
-
-    @Test
-    @Override
-    @Disabled
-    public void testHtmlLocator() throws IOException, SAXException {
     }
 }

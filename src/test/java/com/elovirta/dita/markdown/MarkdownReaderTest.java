@@ -1,8 +1,9 @@
 package com.elovirta.dita.markdown;
 
 import com.elovirta.dita.utils.AbstractReaderTest;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
@@ -31,145 +32,61 @@ public class MarkdownReaderTest extends AbstractReaderTest {
         return "markdown/";
     }
 
-    @Test
-    public void testHeader() throws Exception {
-        run("header.md");
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "abbreviation.md",
+            "body_attributes.md",
+            "codeblock.md",
+            "comment.md",
+            "concept.md",
+            "conkeyref.md",
+            "conref.md",
+            "dl.md",
+            "entity.md",
+            "escape.md",
+            "footnote.md",
+            "header.md",
+            "header_attributes.md",
+            "html.md",
+            "image-size.md",
+            "image.md",
+            "inline.md",
+            "jekyll.md",
+            "keyref.md",
+            "keys.md",
+            "linebreak.md",
+            "link.md",
+            "missing_root_header.md",
+            "missing_root_header_with_yaml.md",
+            "multiple_top_level.md",
+            "multiple_top_level_specialized.md",
+            "ol.md",
+            "quote.md",
+            "reference.md",
+            "short.md",
+            "shortdesc.md",
+            "table-width.md",
+            "table.md",
+            "task.md",
+            "taskOneStep.md",
+            "testBOM.md",
+            "testNoBOM.md",
+            "ul.md",
+            "unsupported_html.md",
+            "yaml.md",
+//            "pandoc_header.md",
+    })
+    public void test(String file) throws Exception {
+        run(file);
     }
 
-    @Disabled
-    @Test
-    public void testPandocHeader() throws Exception {
-        run("pandoc_header.md");
-    }
-
-    @Test
-    public void testInvalidHeader() {
-        assertThrows(RuntimeException.class, () -> run("invalid_header.md"));
-    }
-
-    @Test
-    public void testInvalidSectionHeader() {
-        assertThrows(RuntimeException.class, () -> run("invalid_section_header.md"));
-    }
-
-    @Test
-    public void testGitHubWiki() throws Exception {
-        run("missing_root_header.md");
-    }
-
-    @Test
-    public void testGitHubWikiWithYaml() throws Exception {
-        run("missing_root_header_with_yaml.md");
-    }
-
-    @Test
-    public void testHeaderAttributes() throws Exception {
-        run("header_attributes.md");
-    }
-
-    @Test
-    public void testBodyAttributes() throws Exception {
-        run("body_attributes.md");
-    }
-
-    @Test
-    public void testConcept() throws Exception {
-        run("concept.md");
-    }
-
-    @Test
-    public void testTask() throws Exception {
-        run("task.md");
-    }
-
-    @Test
-    public void testTaskOneStep() throws Exception {
-        run("taskOneStep.md");
-    }
-
-    @Test
-    public void testReference() throws Exception {
-        run("reference.md");
-    }
-
-    @Test
-    public void testImage() throws Exception {
-        run("image.md");
-    }
-
-    @Test
-    public void testImageSize() throws Exception {
-        run("image-size.md");
-    }
-
-    @Test
-    public void testLink() throws Exception {
-        run("link.md");
-    }
-
-    @Test
-    public void testUl() throws Exception {
-        run("ul.md");
-    }
-
-    @Test
-    public void testOl() throws Exception {
-        run("ol.md");
-    }
-
-    @Test
-    public void testInline() throws Exception {
-        run("inline.md");
-    }
-
-    @Test
-    public void testTable() throws Exception {
-        run("table.md");
-    }
-
-    @Test
-    public void testTableWidth() throws Exception {
-        run("table-width.md");
-    }
-
-    @Test
-    public void testQuote() throws Exception {
-        run("quote.md");
-    }
-
-    @Test
-    public void testEscape() throws Exception {
-        run("escape.md");
-    }
-
-    @Test
-    public void testDl() throws Exception {
-        run("dl.md");
-    }
-
-    @Test
-    public void testCodeblock() throws Exception {
-        run("codeblock.md");
-    }
-
-    @Test
-    public void testMultipleTopLevel() throws Exception {
-        run("multiple_top_level.md");
-    }
-
-    @Test
-    public void testMultipleTopLevelSpecialized() throws Exception {
-        run("multiple_top_level_specialized.md");
-    }
-
-    @Test
-    public void testNoBOM() throws Exception {
-        run("testNoBOM.md");
-    }
-
-    @Test
-    public void testBOM() throws Exception {
-        run("testBOM.md");
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "invalid_header.md",
+            "invalid_section_header.md"
+    })
+    public void test_fail(String file) {
+        assertThrows(RuntimeException.class, () -> run(file));
     }
 
     @Test
@@ -179,81 +96,6 @@ public class MarkdownReaderTest extends AbstractReaderTest {
         final InputSource i = new InputSource(in.toString());
         final char[] content = new MarkdownReader().getMarkdownContent(i);
         assertEquals('W', content[0]);
-    }
-
-    @Test
-    public void testShort() throws Exception {
-        run("short.md");
-    }
-
-    @Test
-    public void testShortdesc() throws Exception {
-        run("shortdesc.md");
-    }
-
-    @Test
-    public void testLinebreak() throws Exception {
-        run("linebreak.md");
-    }
-
-    @Test
-    public void testYaml() throws Exception {
-        run("yaml.md");
-    }
-
-    @Test
-    public void testKeys() throws Exception {
-        run("keys.md");
-    }
-
-    @Test
-    public void testEntity() throws Exception {
-        run("entity.md");
-    }
-
-    @Test
-    public void testComment() throws Exception {
-        run("comment.md");
-    }
-
-    @Test
-    public void testHtml() throws Exception {
-        run("html.md");
-    }
-
-    @Test
-    public void testUnsupportedHtml() throws Exception {
-        run("unsupported_html.md");
-    }
-
-    @Test
-    public void testConref() throws Exception {
-        run("conref.md");
-    }
-
-    @Test
-    public void testKeyref() throws Exception {
-        run("keyref.md");
-    }
-
-    @Test
-    public void testConkeyref() throws Exception {
-        run("conkeyref.md");
-    }
-
-    @Test
-    public void testFootnote() throws Exception {
-        run("footnote.md");
-    }
-
-    @Test
-    public void testJekyll() throws Exception {
-        run("jekyll.md");
-    }
-
-    @Test
-    public void testAbbreviation() throws Exception {
-        run("abbreviation.md");
     }
 
     @Test
