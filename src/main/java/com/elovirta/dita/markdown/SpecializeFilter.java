@@ -33,6 +33,7 @@ public class SpecializeFilter extends XMLFilterImpl {
         CONTEXT,
         STEPS,
         STEP,
+        INFO,
         RESULT
     }
 
@@ -42,10 +43,8 @@ public class SpecializeFilter extends XMLFilterImpl {
     private Deque<Type> typeStack = new ArrayDeque<>(Arrays.asList(Type.TOPIC));
     private int paragraphCountInStep = 0;
     private int depth = 0;
-    private boolean wrapOpen = false;
     private TaskState taskState = null;
     private ReferenceState referenceState = null;
-    private boolean infoWrapOpen = false;
 
     private Deque<String> elementStack = new ArrayDeque<>();
 
@@ -129,28 +128,28 @@ public class SpecializeFilter extends XMLFilterImpl {
                                 taskState = TaskState.CONTEXT;
                             }
                             doStartElement(uri, localName, qName, atts);
-                        } else if (taskState == TaskState.STEP && depth == 5) {
+                        } else if ((taskState == TaskState.STEP || taskState == TaskState.INFO) && depth == 5) {
                             switch (localName) {
                                 case "p":
                                     paragraphCountInStep++;
                                     if (paragraphCountInStep == 1) {
                                         renameStartElement(TASK_CMD, atts);
-                                    } else if (paragraphCountInStep == 2 && !infoWrapOpen) {
+                                    } else if (paragraphCountInStep == 2 && taskState != TaskState.INFO) {
                                         AttributesImpl res = new AttributesImpl(atts);
                                         res.addAttribute(NULL_NS_URI, "class", "class", "CDATA", TASK_INFO.toString());
                                         doStartElement(NULL_NS_URI, TASK_INFO.localName, TASK_INFO.localName, res);
-                                        infoWrapOpen = true;
+                                        taskState = TaskState.INFO;
                                         doStartElement(uri, localName, qName, atts);
                                     } else {
                                         doStartElement(uri, localName, qName, atts);
                                     }
                                     break;
                                 default:
-                                    if (!infoWrapOpen) {
+                                    if (taskState != TaskState.INFO) {
                                         AttributesImpl res = new AttributesImpl(atts);
                                         res.addAttribute(NULL_NS_URI, "class", "class", "CDATA", TASK_INFO.toString());
                                         doStartElement(NULL_NS_URI, TASK_INFO.localName, TASK_INFO.localName, res);
-                                        infoWrapOpen = true;
+                                        taskState = TaskState.INFO;
                                     }
                                     doStartElement(uri, localName, qName, atts);
                                     break;
@@ -213,12 +212,12 @@ public class SpecializeFilter extends XMLFilterImpl {
                         doEndElement(uri, localName, qName);
                         break;
                     case "li":
-                        if (taskState == TaskState.STEP && infoWrapOpen && depth == 4) {
+                        if (taskState == TaskState.INFO && depth == 4) {
                             doEndElement(NULL_NS_URI, TASK_INFO.localName, TASK_INFO.localName);
+                            taskState = TaskState.STEP;
                         }
                         if (taskState == TaskState.STEP && depth == 4) {
                             paragraphCountInStep = 0;
-                            infoWrapOpen = false;
                             taskState = TaskState.STEPS;
                         }
                         doEndElement(uri, localName, qName);
