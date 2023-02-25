@@ -242,7 +242,7 @@ codeblock
             <thead>
               <tr>
                 <tablecell>Right</tablecell>
-                <tablecell>Left</tablecell>
+                <tablecell><para>Left</para></tablecell>
                 <tablecell>Default</tablecell>
                 <tablecell>Center</tablecell>
               </tr>
@@ -250,7 +250,7 @@ codeblock
             <tbody>
               <tr>
                 <tablecell>12</tablecell>
-                <tablecell>12</tablecell>
+                <tablecell><para>12</para></tablecell>
                 <tablecell>12</tablecell>
                 <tablecell>12</tablecell>
               </tr>
