@@ -31,8 +31,10 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.CharBuffer;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.ServiceLoader;
 
 import static java.util.Arrays.asList;
 import static org.apache.commons.io.IOUtils.copy;
@@ -42,7 +44,7 @@ import static org.apache.commons.io.IOUtils.copy;
  */
 public class MarkdownReader implements XMLReader {
 
-    final Parser p;
+//    final Parser p;
     private final MutableDataSet options;
 
     EntityResolver resolver;
@@ -53,7 +55,27 @@ public class MarkdownReader implements XMLReader {
      * @see <a href="https://github.com/vsch/flexmark-java/wiki/Extensions">Extensions</a>
      */
     public MarkdownReader() {
-        this(new MutableDataSet()
+//        this(new MutableDataSet()
+//                .set(Parser.EXTENSIONS, asList(
+//                        AbbreviationExtension.create(),
+//                        AnchorLinkExtension.create(),
+//                        AttributesExtension.create(),
+//                        FootnoteExtension.create(),
+//                        InsExtension.create(),
+//                        JekyllTagExtension.create(),
+//                        SuperscriptExtension.create(),
+//                        TablesExtension.create(),
+//                        AutolinkExtension.create(),
+//                        YamlFrontMatterExtension.create(),
+//                        DefinitionExtension.create(),
+//                        StrikethroughSubscriptExtension.create()))
+//                .set(DefinitionExtension.TILDE_MARKER, false)
+//                .set(TablesExtension.COLUMN_SPANS, true)
+//                .set(TablesExtension.APPEND_MISSING_COLUMNS, false)
+//                .set(TablesExtension.DISCARD_EXTRA_COLUMNS, true)
+//                .set(TablesExtension.HEADER_SEPARATOR_COLUMN_MATCH, true)
+//        );
+        this.options =new MutableDataSet()
                 .set(Parser.EXTENSIONS, asList(
                         AbbreviationExtension.create(),
                         AnchorLinkExtension.create(),
@@ -71,13 +93,12 @@ public class MarkdownReader implements XMLReader {
                 .set(TablesExtension.COLUMN_SPANS, true)
                 .set(TablesExtension.APPEND_MISSING_COLUMNS, false)
                 .set(TablesExtension.DISCARD_EXTRA_COLUMNS, true)
-                .set(TablesExtension.HEADER_SEPARATOR_COLUMN_MATCH, true)
-        );
+                .set(TablesExtension.HEADER_SEPARATOR_COLUMN_MATCH, true);
     }
 
     public MarkdownReader(final MutableDataSet options) {
         this.options = options;
-        this.p = Parser.builder(options).build();
+//        this.p = Parser.builder(options).build();
     }
 
     @Override
@@ -165,16 +186,61 @@ public class MarkdownReader implements XMLReader {
     @Override
     public void parse(final InputSource input) throws IOException, SAXException {
         char[] markdownContent = getMarkdownContent(input);
+        final URI schema = getSchema(markdownContent);
+        final Parser parser = getParser(schema);
         final BasedSequence sequence = BasedSequence.of(CharBuffer.wrap(markdownContent));
 
         try {
-            final Document root = p.parse(sequence);
+            final Document root = parser.parse(sequence);
             final Document cleaned = clean(root, input);
             validate(cleaned);
             parseAST(cleaned);
         } catch (ParseException e) {
             throw new SAXException("Failed to parse Markdown: " + e.getMessage(), e);
         }
+    }
+
+    private static final ServiceLoader<Schema> schemaLoader = ServiceLoader.load(Schema.class);
+
+    private Parser getParser(URI schema) {
+        if (schema != null) {
+            return schemaLoader.stream()
+                    .filter(p -> p.get().getUri().contains(schema))
+                    .findAny()
+                    .map(s -> Parser.builder(s.get().getOptions()).build())
+                    .orElse(Parser.builder(options).build());
+        } else {
+            return Parser.builder(options).build();
+        }
+    }
+
+    private static final char[] POSIX_SCHEMA_PREFIX = new char[]{
+            '-', '-', '-', '\n', '$', 's', 'c', 'h', 'e', 'm', 'a', ':'};
+    private static final char[] WINDOWS_SCHEMA_PREFIX = new char[]{
+            '-', '-', '-', '\n', '$', 's', 'c', 'h', 'e', 'm', 'a', ':'};
+
+    /** FIXME: replace with better parser that uses simple state machine. */
+    private URI getSchema(char[] data) {
+        if (data.length > POSIX_SCHEMA_PREFIX.length &&
+                Arrays.equals(data, 0, POSIX_SCHEMA_PREFIX.length,
+                        POSIX_SCHEMA_PREFIX, 0, POSIX_SCHEMA_PREFIX.length)) {
+            int start = POSIX_SCHEMA_PREFIX.length;
+            for (int i = start; i < data.length || i < 256; i++) {
+                if (data[i] == '\r' || data[i] == '\n') {
+                    return URI.create(new String(data, start, i - start).trim());
+                }
+            }
+        } else if (data.length > WINDOWS_SCHEMA_PREFIX.length &&
+                Arrays.equals(data, 0, WINDOWS_SCHEMA_PREFIX.length,
+                        WINDOWS_SCHEMA_PREFIX, 0, WINDOWS_SCHEMA_PREFIX.length)) {
+            int start = POSIX_SCHEMA_PREFIX.length;
+            for (int i = start; i < data.length || i < 256; i++) {
+                if (data[i] == '\r' || data[i] == '\n') {
+                    return URI.create(new String(data, start, i - start).trim());
+                }
+            }
+        }
+        return null;
     }
 
     private void validate(Document root) {
@@ -258,9 +324,9 @@ public class MarkdownReader implements XMLReader {
         final CharArrayWriter out = new CharArrayWriter();
         if (input.getByteStream() != null) {
             final String encoding = input.getEncoding() != null ? input.getEncoding() : "UTF-8";
-            try (InputStream is = "UTF-8".equalsIgnoreCase(encoding)
+            try (BufferedInputStream is = "UTF-8".equalsIgnoreCase(encoding)
                     ? consumeBOM(input.getByteStream())
-                    : input.getByteStream();
+                    : new BufferedInputStream(input.getByteStream());
                  Reader in = new InputStreamReader(is, encoding)) {
                 copy(in, out);
             }
@@ -276,9 +342,9 @@ public class MarkdownReader implements XMLReader {
                 throw new IllegalArgumentException(e);
             }
             final String encoding = input.getEncoding() != null ? input.getEncoding() : "UTF-8";
-            try (InputStream is = "UTF-8".equalsIgnoreCase(encoding)
+            try (BufferedInputStream is = "UTF-8".equalsIgnoreCase(encoding)
                     ? consumeBOM(inUrl.openStream())
-                    : inUrl.openStream();
+                    : new BufferedInputStream(inUrl.openStream());
                  Reader in = new InputStreamReader(is, encoding)) {
                 copy(in, out);
             }
@@ -292,7 +358,7 @@ public class MarkdownReader implements XMLReader {
      * @param in the original input stream
      * @return An input stream without a possible BOM
      */
-    private InputStream consumeBOM(final InputStream in) throws IOException {
+    private BufferedInputStream consumeBOM(final InputStream in) throws IOException {
         final BufferedInputStream bin = new BufferedInputStream(in);
         bin.mark(3);
         try {

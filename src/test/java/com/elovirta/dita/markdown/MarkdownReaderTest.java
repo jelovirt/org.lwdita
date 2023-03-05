@@ -75,6 +75,7 @@ public class MarkdownReaderTest extends AbstractReaderTest {
             "unsupported_html.md",
             "yaml.md",
 //            "pandoc_header.md",
+            "schema.md",
     })
     public void test(String file) throws Exception {
         run(file);
