@@ -1,10 +1,7 @@
 package com.elovirta.dita.markdown;
 
 import com.google.common.annotations.VisibleForTesting;
-import com.vladsch.flexmark.ast.Heading;
-import com.vladsch.flexmark.ast.Text;
 import com.vladsch.flexmark.ext.abbreviation.AbbreviationExtension;
-import com.vladsch.flexmark.ext.anchorlink.AnchorLink;
 import com.vladsch.flexmark.ext.anchorlink.AnchorLinkExtension;
 import com.vladsch.flexmark.ext.attributes.AttributesExtension;
 import com.vladsch.flexmark.ext.autolink.AutolinkExtension;
@@ -15,16 +12,11 @@ import com.vladsch.flexmark.ext.ins.InsExtension;
 import com.vladsch.flexmark.ext.jekyll.tag.JekyllTagExtension;
 import com.vladsch.flexmark.ext.superscript.SuperscriptExtension;
 import com.vladsch.flexmark.ext.tables.TablesExtension;
-import com.vladsch.flexmark.ext.yaml.front.matter.AbstractYamlFrontMatterVisitor;
-import com.vladsch.flexmark.ext.yaml.front.matter.YamlFrontMatterBlock;
 import com.vladsch.flexmark.ext.yaml.front.matter.YamlFrontMatterExtension;
 import com.vladsch.flexmark.parser.Parser;
-import com.vladsch.flexmark.util.ast.Document;
-import com.vladsch.flexmark.util.ast.Node;
 import com.vladsch.flexmark.util.data.MutableDataSet;
 import com.vladsch.flexmark.util.sequence.BasedSequence;
 import org.xml.sax.*;
-import org.xml.sax.helpers.XMLFilterImpl;
 
 import java.io.*;
 import java.net.URI;
@@ -32,8 +24,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.CharBuffer;
 import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 import java.util.ServiceLoader;
 
 import static java.util.Arrays.asList;
@@ -44,7 +35,7 @@ import static org.apache.commons.io.IOUtils.copy;
  */
 public class MarkdownReader implements XMLReader {
 
-//    final Parser p;
+    //    final Parser p;
     private final MutableDataSet options;
 
     EntityResolver resolver;
@@ -75,7 +66,7 @@ public class MarkdownReader implements XMLReader {
 //                .set(TablesExtension.DISCARD_EXTRA_COLUMNS, true)
 //                .set(TablesExtension.HEADER_SEPARATOR_COLUMN_MATCH, true)
 //        );
-        this.options =new MutableDataSet()
+        this.options = new MutableDataSet()
                 .set(Parser.EXTENSIONS, asList(
                         AbbreviationExtension.create(),
                         AnchorLinkExtension.create(),
@@ -185,32 +176,26 @@ public class MarkdownReader implements XMLReader {
 
     @Override
     public void parse(final InputSource input) throws IOException, SAXException {
-        char[] markdownContent = getMarkdownContent(input);
+        final char[] markdownContent = getMarkdownContent(input);
         final URI schema = getSchema(markdownContent);
-        final Parser parser = getParser(schema);
         final BasedSequence sequence = BasedSequence.of(CharBuffer.wrap(markdownContent));
 
-        try {
-            final Document root = parser.parse(sequence);
-            final Document cleaned = clean(root, input);
-            validate(cleaned);
-            parseAST(cleaned);
-        } catch (ParseException e) {
-            throw new SAXException("Failed to parse Markdown: " + e.getMessage(), e);
-        }
+        final MarkdownParser markdownParser = getParser(schema);
+        markdownParser.setContentHandler(contentHandler);
+        markdownParser.convert(sequence, Optional.ofNullable(input.getSystemId()).map(URI::create).orElse(null));
     }
 
     private static final ServiceLoader<Schema> schemaLoader = ServiceLoader.load(Schema.class);
 
-    private Parser getParser(URI schema) {
+    private MarkdownParser getParser(URI schema) {
         if (schema != null) {
             return schemaLoader.stream()
-                    .filter(p -> p.get().getUri().contains(schema))
+                    .filter(p -> p.get().getScheme().contains(schema))
                     .findAny()
-                    .map(s -> Parser.builder(s.get().getOptions()).build())
-                    .orElse(Parser.builder(options).build());
+                    .map(s -> s.get().createMarkdownParser())
+                    .orElse(new BaseMarkdownParser(options));
         } else {
-            return Parser.builder(options).build();
+            return new BaseMarkdownParser(options);
         }
     }
 
@@ -219,7 +204,9 @@ public class MarkdownReader implements XMLReader {
     private static final char[] WINDOWS_SCHEMA_PREFIX = new char[]{
             '-', '-', '-', '\n', '$', 's', 'c', 'h', 'e', 'm', 'a', ':'};
 
-    /** FIXME: replace with better parser that uses simple state machine. */
+    /**
+     * FIXME: replace with better parser that uses a simple state machine.
+     */
     private URI getSchema(char[] data) {
         if (data.length > POSIX_SCHEMA_PREFIX.length &&
                 Arrays.equals(data, 0, POSIX_SCHEMA_PREFIX.length,
@@ -241,77 +228,6 @@ public class MarkdownReader implements XMLReader {
             }
         }
         return null;
-    }
-
-    private void validate(Document root) {
-        int level = 0;
-        Node node = root.getFirstChild();
-        while (node != null) {
-            if (node instanceof Heading) {
-                Heading heading = (Heading) node;
-                if (heading.getLevel() > level + 1) {
-                    throw new ParseException("Header level raised from " + level + " to " + heading.getLevel() + " without intermediate header level");
-                }
-                level = heading.getLevel();
-            }
-            node = node.getNext();
-        }
-    }
-
-    private Document clean(Document root, InputSource input) {
-        final boolean lwDita = DitaRenderer.LW_DITA.getFrom(options);
-        if (!lwDita) {
-            if (isWiki(root)) {
-                final YamlFrontMatterBlock yaml = root.getFirstChild() instanceof YamlFrontMatterBlock
-                        ? (YamlFrontMatterBlock) root.getFirstChild()
-                        : null;
-                String title = getTextFromFile(input.getSystemId());
-                final Heading heading = new Heading();
-                if (yaml != null) {
-                    final AbstractYamlFrontMatterVisitor v = new AbstractYamlFrontMatterVisitor();
-                    v.visit(root);
-                    final Map<String, List<String>> metadata = v.getData();
-                    final List<String> ids = metadata.get("id");
-                    if (ids != null && !ids.isEmpty()) {
-                        heading.setAnchorRefId(ids.get(0));
-                    }
-                    final List<String> titles = metadata.get("title");
-                    if (titles != null && !titles.isEmpty()) {
-                        title = titles.get(0);
-                        if ((title.charAt(0) == '\'' && title.charAt(title.length() - 1) == '\'') ||
-                                (title.charAt(0) == '"' && title.charAt(title.length() - 1) == '"')) {
-                            title = title.substring(1, title.length() - 1);
-                        }
-                    }
-                }
-                heading.setLevel(1);
-                final AnchorLink anchorLink = new AnchorLink();
-                anchorLink.appendChild(new Text(title));
-                heading.appendChild(anchorLink);
-                root.prependChild(heading);
-            }
-        }
-        return root;
-    }
-
-    private static boolean isWiki(Document root) {
-        Node firstChild = root.getFirstChild();
-        if (firstChild == null) {
-            return false;
-        }
-        if (firstChild instanceof YamlFrontMatterBlock) {
-            firstChild = firstChild.getNext();
-        }
-        return !(firstChild instanceof Heading && ((Heading) firstChild).getLevel() == 1);
-    }
-
-    private String getTextFromFile(String file) {
-        final String path = URI.create(file).getPath();
-        final String name = path.substring(path.lastIndexOf("/") + 1);
-        final String title = name.lastIndexOf(".") != -1
-                ? name.substring(0, name.lastIndexOf("."))
-                : name;
-        return title.replace('_', ' ').replace('-', ' ');
     }
 
     @Override
@@ -369,14 +285,5 @@ public class MarkdownReader implements XMLReader {
             bin.reset();
         }
         return bin;
-    }
-
-    private void parseAST(final Document root) throws SAXException {
-        ContentHandler res = contentHandler;
-        final XMLFilterImpl specialize = new SpecializeFilter();
-        specialize.setContentHandler(res);
-        res = specialize;
-        final DitaRenderer s = new DitaRenderer(options);
-        s.render(root, res);
     }
 }

@@ -22,15 +22,15 @@ import static java.util.Arrays.asList;
 
 public class TestSchema implements Schema {
     @Override
-    public Set<URI> getUri() {
+    public Set<URI> getScheme() {
         return Set.of(
                 URI.create("urn:oasis:names:tc:dita:xsd:topic.xsd")
         );
     }
 
     @Override
-    public MutableDataSet getOptions() {
-        return new MutableDataSet()
+    public MarkdownParser createMarkdownParser() {
+        final MutableDataSet options = new MutableDataSet()
                 .set(Parser.EXTENSIONS, asList(
                         AbbreviationExtension.create(),
                         AnchorLinkExtension.create(),
@@ -50,5 +50,6 @@ public class TestSchema implements Schema {
                 .set(TablesExtension.DISCARD_EXTRA_COLUMNS, true)
                 .set(TablesExtension.HEADER_SEPARATOR_COLUMN_MATCH, true)
                 .set(DitaRenderer.SHORTDESC_PARAGRAPH, true);
+        return new BaseMarkdownParser(options);
     }
 }
