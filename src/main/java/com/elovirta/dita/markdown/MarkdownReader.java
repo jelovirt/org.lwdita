@@ -35,7 +35,6 @@ import static org.apache.commons.io.IOUtils.copy;
  */
 public class MarkdownReader implements XMLReader {
 
-    //    final Parser p;
     private final MutableDataSet options;
 
     EntityResolver resolver;
@@ -46,27 +45,7 @@ public class MarkdownReader implements XMLReader {
      * @see <a href="https://github.com/vsch/flexmark-java/wiki/Extensions">Extensions</a>
      */
     public MarkdownReader() {
-//        this(new MutableDataSet()
-//                .set(Parser.EXTENSIONS, asList(
-//                        AbbreviationExtension.create(),
-//                        AnchorLinkExtension.create(),
-//                        AttributesExtension.create(),
-//                        FootnoteExtension.create(),
-//                        InsExtension.create(),
-//                        JekyllTagExtension.create(),
-//                        SuperscriptExtension.create(),
-//                        TablesExtension.create(),
-//                        AutolinkExtension.create(),
-//                        YamlFrontMatterExtension.create(),
-//                        DefinitionExtension.create(),
-//                        StrikethroughSubscriptExtension.create()))
-//                .set(DefinitionExtension.TILDE_MARKER, false)
-//                .set(TablesExtension.COLUMN_SPANS, true)
-//                .set(TablesExtension.APPEND_MISSING_COLUMNS, false)
-//                .set(TablesExtension.DISCARD_EXTRA_COLUMNS, true)
-//                .set(TablesExtension.HEADER_SEPARATOR_COLUMN_MATCH, true)
-//        );
-        this.options = new MutableDataSet()
+        this(new MutableDataSet()
                 .set(Parser.EXTENSIONS, asList(
                         AbbreviationExtension.create(),
                         AnchorLinkExtension.create(),
@@ -84,12 +63,13 @@ public class MarkdownReader implements XMLReader {
                 .set(TablesExtension.COLUMN_SPANS, true)
                 .set(TablesExtension.APPEND_MISSING_COLUMNS, false)
                 .set(TablesExtension.DISCARD_EXTRA_COLUMNS, true)
-                .set(TablesExtension.HEADER_SEPARATOR_COLUMN_MATCH, true);
+                .set(TablesExtension.HEADER_SEPARATOR_COLUMN_MATCH, true)
+                .set(DitaRenderer.SPECIALIZATION, true)
+        );
     }
 
     public MarkdownReader(final MutableDataSet options) {
         this.options = options;
-//        this.p = Parser.builder(options).build();
     }
 
     @Override
@@ -107,6 +87,8 @@ public class MarkdownReader implements XMLReader {
      *     <dd>Read topic ID from YAML header if available.</dd>
      *     <dt><code>http://lwdita.org/sax/features/mdita</code></dt>
      *     <dd>Parse as MDITA.</dd>
+     *     <dt><code>http://lwdita.org/sax/features/specialization</code></dt>
+     *     <dd>Support concept, task, and reference specialization from header class.</dd>
      * </dl>
      */
     @Override
@@ -120,6 +102,9 @@ public class MarkdownReader implements XMLReader {
                 break;
             case "http://lwdita.org/sax/features/mdita":
                 options.set(DitaRenderer.LW_DITA, value);
+                break;
+            case "http://lwdita.org/sax/features/specialization":
+                options.set(DitaRenderer.SPECIALIZATION, value);
                 break;
         }
     }

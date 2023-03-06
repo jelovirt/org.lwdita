@@ -65,8 +65,8 @@ public class BaseMarkdownParser implements MarkdownParser {
     }
 
     private Document clean(Document root, URI input) {
-        final boolean lwDita = DitaRenderer.LW_DITA.getFrom(options);
-        if (!lwDita) {
+        final boolean specialization = DitaRenderer.SPECIALIZATION.get(options);
+        if (specialization) {
             if (isWiki(root)) {
                 final YamlFrontMatterBlock yaml = root.getFirstChild() instanceof YamlFrontMatterBlock
                         ? (YamlFrontMatterBlock) root.getFirstChild()
