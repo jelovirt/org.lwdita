@@ -185,14 +185,14 @@ public class MarkdownReader implements XMLReader {
         markdownParser.convert(sequence, Optional.ofNullable(input.getSystemId()).map(URI::create).orElse(null));
     }
 
-    private static final ServiceLoader<Schema> schemaLoader = ServiceLoader.load(Schema.class);
+    private static final ServiceLoader<SchemaProvider> schemaLoader = ServiceLoader.load(SchemaProvider.class);
 
     private MarkdownParser getParser(URI schema) {
         if (schema != null) {
             return schemaLoader.stream()
-                    .filter(p -> p.get().getScheme().contains(schema))
+                    .filter(p -> p.get().isSupportedSchema(schema))
                     .findAny()
-                    .map(s -> s.get().createMarkdownParser())
+                    .map(s -> s.get().createMarkdownParser(schema))
                     .orElse(new BaseMarkdownParser(options));
         } else {
             return new BaseMarkdownParser(options);

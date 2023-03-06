@@ -16,20 +16,19 @@ import com.vladsch.flexmark.parser.Parser;
 import com.vladsch.flexmark.util.data.MutableDataSet;
 
 import java.net.URI;
-import java.util.Set;
 
 import static java.util.Arrays.asList;
 
-public class TestSchema implements Schema {
+public class TestSchemaProvider implements SchemaProvider {
+    private static final URI SCHEMA = URI.create("urn:oasis:names:tc:dita:xsd:topic.xsd");
+
     @Override
-    public Set<URI> getScheme() {
-        return Set.of(
-                URI.create("urn:oasis:names:tc:dita:xsd:topic.xsd")
-        );
+    public boolean isSupportedSchema(URI schema) {
+        return SCHEMA.equals(schema);
     }
 
     @Override
-    public MarkdownParser createMarkdownParser() {
+    public MarkdownParser createMarkdownParser(URI schema) {
         final MutableDataSet options = new MutableDataSet()
                 .set(Parser.EXTENSIONS, asList(
                         AbbreviationExtension.create(),
