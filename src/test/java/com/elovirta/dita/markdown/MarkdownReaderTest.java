@@ -9,6 +9,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 
 import java.io.IOException;
+import java.net.URI;
 import java.net.URL;
 import java.util.Arrays;
 
@@ -191,5 +192,16 @@ public class MarkdownReaderTest extends AbstractReaderTest {
                         new Event("endDocument", 7, 54)
                 ),
                 "html.md");
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "---\n$schema: urn:test\n",
+            "---\r\n$schema: urn:test\n",
+            "---\n$schema:  urn:test  \n",
+    })
+    public void getSchema(String input) {
+        final MarkdownReader markdownReader = new MarkdownReader();
+        assertEquals(URI.create("urn:test"), markdownReader.getSchema(input.toCharArray()));
     }
 }

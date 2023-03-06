@@ -187,12 +187,12 @@ public class MarkdownReader implements XMLReader {
     private static final char[] POSIX_SCHEMA_PREFIX = new char[]{
             '-', '-', '-', '\n', '$', 's', 'c', 'h', 'e', 'm', 'a', ':'};
     private static final char[] WINDOWS_SCHEMA_PREFIX = new char[]{
-            '-', '-', '-', '\n', '$', 's', 'c', 'h', 'e', 'm', 'a', ':'};
+            '-', '-', '-', '\r', '\n', '$', 's', 'c', 'h', 'e', 'm', 'a', ':'};
 
     /**
      * FIXME: replace with better parser that uses a simple state machine.
      */
-    private URI getSchema(char[] data) {
+    public URI getSchema(char[] data) {
         if (data.length > POSIX_SCHEMA_PREFIX.length &&
                 Arrays.equals(data, 0, POSIX_SCHEMA_PREFIX.length,
                         POSIX_SCHEMA_PREFIX, 0, POSIX_SCHEMA_PREFIX.length)) {
@@ -205,7 +205,7 @@ public class MarkdownReader implements XMLReader {
         } else if (data.length > WINDOWS_SCHEMA_PREFIX.length &&
                 Arrays.equals(data, 0, WINDOWS_SCHEMA_PREFIX.length,
                         WINDOWS_SCHEMA_PREFIX, 0, WINDOWS_SCHEMA_PREFIX.length)) {
-            int start = POSIX_SCHEMA_PREFIX.length;
+            int start = WINDOWS_SCHEMA_PREFIX.length;
             for (int i = start; i < data.length || i < 256; i++) {
                 if (data[i] == '\r' || data[i] == '\n') {
                     return URI.create(new String(data, start, i - start).trim());
