@@ -197,8 +197,10 @@ public class MarkdownReaderTest extends AbstractReaderTest {
     @ParameterizedTest
     @ValueSource(strings = {
             "---\n$schema: urn:test\n",
-            "---\r\n$schema: urn:test\n",
+            "---\r\n$schema: urn:test\r\n",
             "---\n$schema:  urn:test  \n",
+            "---\n$schema: \"urn:test\"\n",
+            "---\n$schema: 'urn:test'\n",
     })
     public void getSchema(String input) {
         final MarkdownReader markdownReader = new MarkdownReader();

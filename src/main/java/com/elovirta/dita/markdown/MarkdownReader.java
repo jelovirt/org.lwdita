@@ -26,6 +26,8 @@ import java.nio.CharBuffer;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.ServiceLoader;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static java.util.Arrays.asList;
 import static org.apache.commons.io.IOUtils.copy;
@@ -184,33 +186,16 @@ public class MarkdownReader implements XMLReader {
         }
     }
 
-    private static final char[] POSIX_SCHEMA_PREFIX = new char[]{
-            '-', '-', '-', '\n', '$', 's', 'c', 'h', 'e', 'm', 'a', ':'};
-    private static final char[] WINDOWS_SCHEMA_PREFIX = new char[]{
-            '-', '-', '-', '\r', '\n', '$', 's', 'c', 'h', 'e', 'm', 'a', ':'};
+    private static final Pattern schemaPattern = Pattern.compile("^---[\r\n]+\\$schema: +(.+?)[\r\n]");
 
-    /**
-     * FIXME: replace with better parser that uses a simple state machine.
-     */
     public URI getSchema(char[] data) {
-        if (data.length > POSIX_SCHEMA_PREFIX.length &&
-                Arrays.equals(data, 0, POSIX_SCHEMA_PREFIX.length,
-                        POSIX_SCHEMA_PREFIX, 0, POSIX_SCHEMA_PREFIX.length)) {
-            int start = POSIX_SCHEMA_PREFIX.length;
-            for (int i = start; i < data.length || i < 256; i++) {
-                if (data[i] == '\r' || data[i] == '\n') {
-                    return URI.create(new String(data, start, i - start).trim());
-                }
-            }
-        } else if (data.length > WINDOWS_SCHEMA_PREFIX.length &&
-                Arrays.equals(data, 0, WINDOWS_SCHEMA_PREFIX.length,
-                        WINDOWS_SCHEMA_PREFIX, 0, WINDOWS_SCHEMA_PREFIX.length)) {
-            int start = WINDOWS_SCHEMA_PREFIX.length;
-            for (int i = start; i < data.length || i < 256; i++) {
-                if (data[i] == '\r' || data[i] == '\n') {
-                    return URI.create(new String(data, start, i - start).trim());
-                }
-            }
+        final Matcher matcher = schemaPattern.matcher(CharBuffer.wrap(data));
+        if (matcher.find()) {
+            final String value = matcher.group(1)
+                    .replaceAll("^'(.+)'$", "$1")
+                    .replaceAll("^\"(.+)\"$", "$1")
+                    .trim();
+            return URI.create(value);
         }
         return null;
     }
