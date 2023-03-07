@@ -42,9 +42,11 @@ public class BaseMarkdownParser implements MarkdownParser {
 
     private void parseAST(final Document root) {
         ContentHandler res = contentHandler;
-        final XMLFilterImpl specialize = new SpecializeFilter();
-        specialize.setContentHandler(res);
-        res = specialize;
+        if (DitaRenderer.SPECIALIZATION.get(options)) {
+            final XMLFilterImpl specialize = new SpecializeFilter();
+            specialize.setContentHandler(res);
+            res = specialize;
+        }
         final DitaRenderer s = new DitaRenderer(options);
         s.render(root, res);
     }
