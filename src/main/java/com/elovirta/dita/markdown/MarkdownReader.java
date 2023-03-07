@@ -37,6 +37,9 @@ import static org.apache.commons.io.IOUtils.copy;
  */
 public class MarkdownReader implements XMLReader {
 
+    private static final Pattern schemaPattern = Pattern.compile("^---[\r\n]+\\$schema: +(.+?)[\r\n]");
+    private static final ServiceLoader<SchemaProvider> schemaLoader = ServiceLoader.load(SchemaProvider.class);
+
     private final MutableDataSet options;
 
     EntityResolver resolver;
@@ -67,6 +70,7 @@ public class MarkdownReader implements XMLReader {
                 .set(TablesExtension.DISCARD_EXTRA_COLUMNS, true)
                 .set(TablesExtension.HEADER_SEPARATOR_COLUMN_MATCH, true)
                 .set(DitaRenderer.SPECIALIZATION, true)
+                .set(DitaRenderer.WIKI, true)
         );
     }
 
@@ -172,7 +176,10 @@ public class MarkdownReader implements XMLReader {
         markdownParser.convert(sequence, Optional.ofNullable(input.getSystemId()).map(URI::create).orElse(null));
     }
 
-    private static final ServiceLoader<SchemaProvider> schemaLoader = ServiceLoader.load(SchemaProvider.class);
+    @Override
+    public void parse(final String systemId) throws IOException, SAXException {
+        parse(new InputSource(systemId));
+    }
 
     private MarkdownParser getParser(URI schema) {
         if (schema != null) {
@@ -186,9 +193,8 @@ public class MarkdownReader implements XMLReader {
         }
     }
 
-    private static final Pattern schemaPattern = Pattern.compile("^---[\r\n]+\\$schema: +(.+?)[\r\n]");
-
-    public URI getSchema(char[] data) {
+    @VisibleForTesting
+    URI getSchema(char[] data) {
         final Matcher matcher = schemaPattern.matcher(CharBuffer.wrap(data));
         if (matcher.find()) {
             final String value = matcher.group(1)
@@ -198,11 +204,6 @@ public class MarkdownReader implements XMLReader {
             return URI.create(value);
         }
         return null;
-    }
-
-    @Override
-    public void parse(final String systemId) throws IOException, SAXException {
-        parse(new InputSource(systemId));
     }
 
     @VisibleForTesting

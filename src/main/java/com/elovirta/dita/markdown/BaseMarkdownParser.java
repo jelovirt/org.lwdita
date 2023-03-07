@@ -30,7 +30,7 @@ public class BaseMarkdownParser implements MarkdownParser {
     public void convert(BasedSequence sequence, URI input) throws ParseException {
         final Parser parser = Parser.builder(options).build();
         final Document root = parser.parse(sequence);
-        final Document cleaned = clean(root, input);
+        final Document cleaned = generateMissingHeader(root, input);
         validate(cleaned);
         parseAST(cleaned);
     }
@@ -66,42 +66,45 @@ public class BaseMarkdownParser implements MarkdownParser {
         }
     }
 
-    private Document clean(Document root, URI input) {
-        final boolean specialization = DitaRenderer.SPECIALIZATION.get(options);
-        if (specialization) {
-            if (isWiki(root)) {
-                final YamlFrontMatterBlock yaml = root.getFirstChild() instanceof YamlFrontMatterBlock
-                        ? (YamlFrontMatterBlock) root.getFirstChild()
-                        : null;
-                String title = getTextFromFile(input);
-                final Heading heading = new Heading();
-                if (yaml != null) {
-                    final AbstractYamlFrontMatterVisitor v = new AbstractYamlFrontMatterVisitor();
-                    v.visit(root);
-                    final Map<String, List<String>> metadata = v.getData();
-                    final List<String> ids = metadata.get("id");
-                    if (ids != null && !ids.isEmpty()) {
-                        heading.setAnchorRefId(ids.get(0));
-                    }
-                    final List<String> titles = metadata.get("title");
-                    if (titles != null && !titles.isEmpty()) {
-                        title = titles.get(0);
-                        if ((title.charAt(0) == '\'' && title.charAt(title.length() - 1) == '\'') ||
-                                (title.charAt(0) == '"' && title.charAt(title.length() - 1) == '"')) {
-                            title = title.substring(1, title.length() - 1);
-                        }
+    /**
+     * If document doesn't start with H1, generate H1 from YAML metadata or file name.
+     */
+    private Document generateMissingHeader(Document root, URI input) {
+        if (DitaRenderer.WIKI.get(options) && isWiki(root)) {
+            final YamlFrontMatterBlock yaml = root.getFirstChild() instanceof YamlFrontMatterBlock
+                    ? (YamlFrontMatterBlock) root.getFirstChild()
+                    : null;
+            String title = getTextFromFile(input);
+            final Heading heading = new Heading();
+            if (yaml != null) {
+                final AbstractYamlFrontMatterVisitor v = new AbstractYamlFrontMatterVisitor();
+                v.visit(root);
+                final Map<String, List<String>> metadata = v.getData();
+                final List<String> ids = metadata.get("id");
+                if (ids != null && !ids.isEmpty()) {
+                    heading.setAnchorRefId(ids.get(0));
+                }
+                final List<String> titles = metadata.get("title");
+                if (titles != null && !titles.isEmpty()) {
+                    title = titles.get(0);
+                    if ((title.charAt(0) == '\'' && title.charAt(title.length() - 1) == '\'') ||
+                            (title.charAt(0) == '"' && title.charAt(title.length() - 1) == '"')) {
+                        title = title.substring(1, title.length() - 1);
                     }
                 }
-                heading.setLevel(1);
-                final AnchorLink anchorLink = new AnchorLink();
-                anchorLink.appendChild(new Text(title));
-                heading.appendChild(anchorLink);
-                root.prependChild(heading);
             }
+            heading.setLevel(1);
+            final AnchorLink anchorLink = new AnchorLink();
+            anchorLink.appendChild(new Text(title));
+            heading.appendChild(anchorLink);
+            root.prependChild(heading);
         }
         return root;
     }
 
+    /**
+     * Check if document doesn't start with H1, excluding optional YAML header.
+     */
     private static boolean isWiki(Document root) {
         Node firstChild = root.getFirstChild();
         if (firstChild == null) {
