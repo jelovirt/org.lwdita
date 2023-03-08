@@ -12,6 +12,7 @@ import com.elovirta.dita.utils.FragmentContentHandler;
 import com.vladsch.flexmark.ast.*;
 import com.vladsch.flexmark.ext.abbreviation.Abbreviation;
 import com.vladsch.flexmark.ext.abbreviation.AbbreviationBlock;
+import com.vladsch.flexmark.ext.admonition.AdmonitionBlock;
 import com.vladsch.flexmark.ext.anchorlink.AnchorLink;
 import com.vladsch.flexmark.ext.attributes.AttributesNode;
 import com.vladsch.flexmark.ext.definition.DefinitionItem;
@@ -85,6 +86,7 @@ public class CoreNodeRenderer {
     private static final Attributes BODY_ATTS = buildAtts(TOPIC_BODY);
     private static final Attributes SECTION_ATTS = buildAtts(TOPIC_SECTION);
     private static final Attributes EXAMPLE_ATTS = buildAtts(TOPIC_EXAMPLE);
+    private static final Attributes NOTE_ATTS = buildAtts(TOPIC_NOTE);
     private static final Attributes FN_ATTS = buildAtts(TOPIC_FN);
     private static final Attributes LI_ATTS = buildAtts(TOPIC_LI);
     private static final Attributes P_ATTS = buildAtts(TOPIC_P);
@@ -205,6 +207,7 @@ public class CoreNodeRenderer {
                         Stream.<NodeRenderingHandler>of(
                                 new NodeRenderingHandler<>(Abbreviation.class, (node, context, html) -> render(node, context, html)),
                                 new NodeRenderingHandler<>(AbbreviationBlock.class, (node, context, html) -> render(node, context, html)),
+                                new NodeRenderingHandler<>(AdmonitionBlock.class, (node, context, html) -> render(node, context, html)),
                                 new NodeRenderingHandler<>(AttributesNode.class, (node, context, html) -> { /* Ignore */ }),
                                 new NodeRenderingHandler<>(YamlFrontMatterBlock.class, (node, context, html) -> render(node, context, html)),
                                 new NodeRenderingHandler<>(Footnote.class, (node, context, html) -> render(node, context, html)),
@@ -396,6 +399,38 @@ public class CoreNodeRenderer {
 
     private void render(final AbbreviationBlock node, final NodeRendererContext context, final SaxWriter html) {
         // Ignore
+    }
+
+    private void render(final AdmonitionBlock node, final NodeRendererContext context, final SaxWriter html) {
+        final String type = node.getInfo().toString();
+        final AttributesBuilder atts = new AttributesBuilder(NOTE_ATTS);
+        switch (type) {
+            case "note":
+            case "tip":
+            case "fastpath":
+            case "restriction":
+            case "important":
+            case "remember":
+            case "attention":
+            case "caution":
+            case "notice":
+            case "danger":
+            case "warning":
+            case "trouble":
+                atts.add("type", type);
+                break;
+            default:
+                atts.add("type", "other").add("othertype", type);
+                break;
+        }
+        html.startElement(node, TOPIC_NOTE, atts.build());
+        if (!node.getTitle().isEmpty()) {
+            html.startElement(node, TOPIC_P, P_ATTS);
+            html.characters(node.getTitle().toString());
+            html.endElement();
+        }
+        context.renderChildren(node);
+        html.endElement();
     }
 
     private void render(AnchorLink node, final NodeRendererContext context, final SaxWriter html) {

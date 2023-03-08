@@ -2,6 +2,7 @@ package com.elovirta.dita.markdown;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.vladsch.flexmark.ext.abbreviation.AbbreviationExtension;
+import com.vladsch.flexmark.ext.admonition.AdmonitionExtension;
 import com.vladsch.flexmark.ext.anchorlink.AnchorLinkExtension;
 import com.vladsch.flexmark.ext.attributes.AttributesExtension;
 import com.vladsch.flexmark.ext.autolink.AutolinkExtension;
@@ -53,6 +54,7 @@ public class MarkdownReader implements XMLReader {
         this(new MutableDataSet()
                 .set(Parser.EXTENSIONS, asList(
                         AbbreviationExtension.create(),
+                        AdmonitionExtension.create(),
                         AnchorLinkExtension.create(),
                         AttributesExtension.create(),
                         FootnoteExtension.create(),

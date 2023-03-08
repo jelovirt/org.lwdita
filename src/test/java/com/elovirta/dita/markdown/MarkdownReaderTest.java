@@ -36,6 +36,7 @@ public class MarkdownReaderTest extends AbstractReaderTest {
     @ParameterizedTest
     @ValueSource(strings = {
             "abbreviation.md",
+            "admonition.md",
             "body_attributes.md",
             "codeblock.md",
             "comment.md",
