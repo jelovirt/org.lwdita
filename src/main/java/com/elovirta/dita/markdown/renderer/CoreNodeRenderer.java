@@ -9,6 +9,8 @@ import com.elovirta.dita.markdown.ParseException;
 import com.elovirta.dita.markdown.SaxWriter;
 import com.elovirta.dita.utils.ClasspathURIResolver;
 import com.elovirta.dita.utils.FragmentContentHandler;
+import com.google.common.base.Supplier;
+import com.google.common.base.Suppliers;
 import com.vladsch.flexmark.ast.*;
 import com.vladsch.flexmark.ext.abbreviation.Abbreviation;
 import com.vladsch.flexmark.ext.abbreviation.AbbreviationBlock;
@@ -138,8 +140,8 @@ public class CoreNodeRenderer {
         sections.put(TOPIC_EXAMPLE.localName, TOPIC_EXAMPLE);
     }
 
-    private final SAXTransformerFactory tf;
-    private final Templates t;
+    private final Supplier<SAXTransformerFactory> transformerFactorySupplier;
+    private final Supplier<Templates> templatesSupplier;
 
     //    private final Map<String, Object> documentMetadata;
     private final Map<String, ReferenceNode> references = new HashMap<>();
@@ -168,16 +170,22 @@ public class CoreNodeRenderer {
         this.lwDita = DitaRenderer.LW_DITA.getFrom(options);
         this.metadataSerializer = new MetadataSerializerImpl(idFromYaml);
 
-        final String stylesheet = lwDita
-                ? "/hdita2dita.xsl"
-                : "/hdita2dita-markdown.xsl";
-        try (InputStream in = getClass().getResourceAsStream(stylesheet)) {
-            tf = (SAXTransformerFactory) TransformerFactory.newInstance();
+        transformerFactorySupplier = Suppliers.memoize(() -> {
+            final SAXTransformerFactory tf = (SAXTransformerFactory) TransformerFactory.newInstance();
             tf.setURIResolver(new ClasspathURIResolver(tf.getURIResolver()));
-            t = tf.newTemplates(new StreamSource(in, "classpath://" + stylesheet));
-        } catch (IOException | TransformerConfigurationException e) {
-            throw new RuntimeException(e);
-        }
+            return tf;
+        });
+        templatesSupplier = Suppliers.memoize(() -> {
+            final SAXTransformerFactory tf = transformerFactorySupplier.get();
+            final String stylesheet = lwDita
+                    ? "/hdita2dita.xsl"
+                    : "/hdita2dita-markdown.xsl";
+            try (InputStream in = getClass().getResourceAsStream(stylesheet)) {
+                return tf.newTemplates(new StreamSource(in, "classpath://" + stylesheet));
+            } catch (IOException | TransformerConfigurationException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 
     /**
@@ -884,7 +892,7 @@ public class CoreNodeRenderer {
         fragmentFilter.setContentHandler(html);
         final TransformerHandler h;
         try {
-            h = tf.newTransformerHandler(t);
+            h = transformerFactorySupplier.get().newTransformerHandler(templatesSupplier.get());
         } catch (final TransformerConfigurationException e) {
             throw new RuntimeException(e);
         }
@@ -963,7 +971,7 @@ public class CoreNodeRenderer {
 
         final TransformerHandler h;
         try {
-            h = tf.newTransformerHandler(t);
+            h = transformerFactorySupplier.get().newTransformerHandler(templatesSupplier.get());
         } catch (final TransformerConfigurationException e) {
             throw new RuntimeException(e);
         }
