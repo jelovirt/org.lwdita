@@ -9,9 +9,12 @@ import com.elovirta.dita.markdown.ParseException;
 import com.elovirta.dita.markdown.SaxWriter;
 import com.elovirta.dita.utils.ClasspathURIResolver;
 import com.elovirta.dita.utils.FragmentContentHandler;
+import com.google.common.base.Supplier;
+import com.google.common.base.Suppliers;
 import com.vladsch.flexmark.ast.*;
 import com.vladsch.flexmark.ext.abbreviation.Abbreviation;
 import com.vladsch.flexmark.ext.abbreviation.AbbreviationBlock;
+import com.vladsch.flexmark.ext.admonition.AdmonitionBlock;
 import com.vladsch.flexmark.ext.anchorlink.AnchorLink;
 import com.vladsch.flexmark.ext.attributes.AttributesNode;
 import com.vladsch.flexmark.ext.definition.DefinitionItem;
@@ -85,6 +88,7 @@ public class CoreNodeRenderer {
     private static final Attributes BODY_ATTS = buildAtts(TOPIC_BODY);
     private static final Attributes SECTION_ATTS = buildAtts(TOPIC_SECTION);
     private static final Attributes EXAMPLE_ATTS = buildAtts(TOPIC_EXAMPLE);
+    private static final Attributes NOTE_ATTS = buildAtts(TOPIC_NOTE);
     private static final Attributes FN_ATTS = buildAtts(TOPIC_FN);
     private static final Attributes LI_ATTS = buildAtts(TOPIC_LI);
     private static final Attributes P_ATTS = buildAtts(TOPIC_P);
@@ -136,8 +140,8 @@ public class CoreNodeRenderer {
         sections.put(TOPIC_EXAMPLE.localName, TOPIC_EXAMPLE);
     }
 
-    private final SAXTransformerFactory tf;
-    private final Templates t;
+    private final Supplier<SAXTransformerFactory> transformerFactorySupplier;
+    private final Supplier<Templates> templatesSupplier;
 
     //    private final Map<String, Object> documentMetadata;
     private final Map<String, ReferenceNode> references = new HashMap<>();
@@ -166,16 +170,22 @@ public class CoreNodeRenderer {
         this.lwDita = DitaRenderer.LW_DITA.getFrom(options);
         this.metadataSerializer = new MetadataSerializerImpl(idFromYaml);
 
-        final String stylesheet = lwDita
-                ? "/hdita2dita.xsl"
-                : "/hdita2dita-markdown.xsl";
-        try (InputStream in = getClass().getResourceAsStream(stylesheet)) {
-            tf = (SAXTransformerFactory) TransformerFactory.newInstance();
+        transformerFactorySupplier = Suppliers.memoize(() -> {
+            final SAXTransformerFactory tf = (SAXTransformerFactory) TransformerFactory.newInstance();
             tf.setURIResolver(new ClasspathURIResolver(tf.getURIResolver()));
-            t = tf.newTemplates(new StreamSource(in, "classpath://" + stylesheet));
-        } catch (IOException | TransformerConfigurationException e) {
-            throw new RuntimeException(e);
-        }
+            return tf;
+        });
+        templatesSupplier = Suppliers.memoize(() -> {
+            final SAXTransformerFactory tf = transformerFactorySupplier.get();
+            final String stylesheet = lwDita
+                    ? "/hdita2dita.xsl"
+                    : "/hdita2dita-markdown.xsl";
+            try (InputStream in = getClass().getResourceAsStream(stylesheet)) {
+                return tf.newTemplates(new StreamSource(in, "classpath://" + stylesheet));
+            } catch (IOException | TransformerConfigurationException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 
     /**
@@ -205,6 +215,7 @@ public class CoreNodeRenderer {
                         Stream.<NodeRenderingHandler>of(
                                 new NodeRenderingHandler<>(Abbreviation.class, (node, context, html) -> render(node, context, html)),
                                 new NodeRenderingHandler<>(AbbreviationBlock.class, (node, context, html) -> render(node, context, html)),
+                                new NodeRenderingHandler<>(AdmonitionBlock.class, (node, context, html) -> render(node, context, html)),
                                 new NodeRenderingHandler<>(AttributesNode.class, (node, context, html) -> { /* Ignore */ }),
                                 new NodeRenderingHandler<>(YamlFrontMatterBlock.class, (node, context, html) -> render(node, context, html)),
                                 new NodeRenderingHandler<>(Footnote.class, (node, context, html) -> render(node, context, html)),
@@ -396,6 +407,38 @@ public class CoreNodeRenderer {
 
     private void render(final AbbreviationBlock node, final NodeRendererContext context, final SaxWriter html) {
         // Ignore
+    }
+
+    private void render(final AdmonitionBlock node, final NodeRendererContext context, final SaxWriter html) {
+        final String type = node.getInfo().toString();
+        final AttributesBuilder atts = new AttributesBuilder(NOTE_ATTS);
+        switch (type) {
+            case "note":
+            case "tip":
+            case "fastpath":
+            case "restriction":
+            case "important":
+            case "remember":
+            case "attention":
+            case "caution":
+            case "notice":
+            case "danger":
+            case "warning":
+            case "trouble":
+                atts.add("type", type);
+                break;
+            default:
+                atts.add("type", "other").add("othertype", type);
+                break;
+        }
+        html.startElement(node, TOPIC_NOTE, atts.build());
+        if (!node.getTitle().isEmpty()) {
+            html.startElement(node, TOPIC_P, P_ATTS);
+            html.characters(node.getTitle().toString());
+            html.endElement();
+        }
+        context.renderChildren(node);
+        html.endElement();
     }
 
     private void render(AnchorLink node, final NodeRendererContext context, final SaxWriter html) {
@@ -677,12 +720,6 @@ public class CoreNodeRenderer {
     }
 
     private void render(final Heading node, final NodeRendererContext context, final SaxWriter html) {
-        if (lwDita && node.getLevel() > 2) {
-            throw new ParseException("LwDITA does not support level " + node.getLevel() + " header: " + node.getText());
-        }
-//        if (node.getLevel() > headerLevel + 1) {
-//            throw new ParseException("Header level raised from " + headerLevel + " to " + node.getLevel() + " without intermediate header level");
-//        }
         final StringBuilder buf = new StringBuilder();
         node.getAstExtra(buf);
         Title header = null;
@@ -719,7 +756,7 @@ public class CoreNodeRenderer {
         }
         if (isSection) {
             if (node.getLevel() <= headerLevel) {
-                throw new ParseException("Level " + node.getLevel() + " section title must be higher level than parent topic title " + headerLevel);
+                throw new ParseException(String.format("Level %d section title must be higher level than parent topic title %d", node.getLevel(), headerLevel));
             }
             final AttributesBuilder atts = new AttributesBuilder().add(ATTRIBUTE_NAME_CLASS, cls.toString());
             final String id = getSectionId(node, header);
@@ -849,7 +886,7 @@ public class CoreNodeRenderer {
         fragmentFilter.setContentHandler(html);
         final TransformerHandler h;
         try {
-            h = tf.newTransformerHandler(t);
+            h = transformerFactorySupplier.get().newTransformerHandler(templatesSupplier.get());
         } catch (final TransformerConfigurationException e) {
             throw new RuntimeException(e);
         }
@@ -928,7 +965,7 @@ public class CoreNodeRenderer {
 
         final TransformerHandler h;
         try {
-            h = tf.newTransformerHandler(t);
+            h = transformerFactorySupplier.get().newTransformerHandler(templatesSupplier.get());
         } catch (final TransformerConfigurationException e) {
             throw new RuntimeException(e);
         }

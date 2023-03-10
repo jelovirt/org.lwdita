@@ -16,7 +16,7 @@ dependencies {
     implementation(group: "com.vladsch.flexmark", name: "flexmark-all", version: "0.64.0") {
         exclude group: 'com.vladsch.flexmark', module: 'flexmark-profile-pegdown'
 //        exclude group: 'com.vladsch.flexmark', module: 'flexmark-ext-abbreviation'
-        exclude group: 'com.vladsch.flexmark', module: 'flexmark-ext-admonition'
+//        exclude group: 'com.vladsch.flexmark', module: 'flexmark-ext-admonition'
 //        exclude group: 'com.vladsch.flexmark', module: 'flexmark-ext-anchorlink'
         exclude group: 'com.vladsch.flexmark', module: 'flexmark-ext-aside'
         exclude group: 'com.vladsch.flexmark', module: 'flexmark-ext-emoji'

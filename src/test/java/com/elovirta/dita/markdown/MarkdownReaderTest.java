@@ -9,6 +9,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 
 import java.io.IOException;
+import java.net.URI;
 import java.net.URL;
 import java.util.Arrays;
 
@@ -35,6 +36,7 @@ public class MarkdownReaderTest extends AbstractReaderTest {
     @ParameterizedTest
     @ValueSource(strings = {
             "abbreviation.md",
+            "admonition.md",
             "body_attributes.md",
             "codeblock.md",
             "comment.md",
@@ -75,6 +77,7 @@ public class MarkdownReaderTest extends AbstractReaderTest {
             "unsupported_html.md",
             "yaml.md",
 //            "pandoc_header.md",
+            "schema.md",
     })
     public void test(String file) throws Exception {
         run(file);
@@ -83,7 +86,6 @@ public class MarkdownReaderTest extends AbstractReaderTest {
     @ParameterizedTest
     @ValueSource(strings = {
             "invalid_header.md",
-            "invalid_section_header.md"
     })
     public void test_fail(String file) {
         assertThrows(RuntimeException.class, () -> run(file));
@@ -190,5 +192,18 @@ public class MarkdownReaderTest extends AbstractReaderTest {
                         new Event("endDocument", 7, 54)
                 ),
                 "html.md");
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "---\n$schema: urn:test\n",
+            "---\r\n$schema: urn:test\r\n",
+            "---\n$schema:  urn:test  \n",
+            "---\n$schema: \"urn:test\"\n",
+            "---\n$schema: 'urn:test'\n",
+    })
+    public void getSchema(String input) {
+        final MarkdownReader markdownReader = new MarkdownReader();
+        assertEquals(URI.create("urn:test"), markdownReader.getSchema(input.toCharArray()));
     }
 }

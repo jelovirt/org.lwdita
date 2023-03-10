@@ -43,6 +43,7 @@ public class MDitaReader extends MarkdownReader {
                 .set(DitaRenderer.SHORTDESC_PARAGRAPH, true)
                 .set(DitaRenderer.ID_FROM_YAML, true)
                 .set(DitaRenderer.LW_DITA, true)
+                .set(DitaRenderer.SPECIALIZATION, false)
         );
     }
 

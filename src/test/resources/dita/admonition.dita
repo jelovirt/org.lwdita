@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<topic xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/" class="- topic/topic "
+       ditaarch:DITAArchVersion="2.0" id="admonition"
+       specializations="@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product">
+  <title class="- topic/title ">Admonition</title>
+  <body class="- topic/body ">
+    <p class="- topic/p ">Block-Styled Side Content</p>
+    <note class="- topic/note " othertype="qualifier" type="other">
+      <p class="- topic/p ">Optional Title</p>
+      <p class="- topic/p ">block content</p>
+      <p class="- topic/p ">block content</p>
+    </note>
+    <p class="- topic/p ">No-Heading Content</p>
+    <note class="- topic/note " othertype="qualifier" type="other">
+      <p class="- topic/p ">block content</p>
+    </note>
+    <note class="- topic/note " othertype="qualifier" type="other">
+      <p class="- topic/p ">block content</p>
+    </note>
+    <p class="- topic/p ">Collapsible Block-Styled Side Content:</p>
+    <p class="- topic/p ">Collapsed by default</p>
+    <note class="- topic/note " othertype="qualifier" type="other">
+      <p class="- topic/p ">Optional Title</p>
+      <p class="- topic/p ">block content</p>
+    </note>
+    <p class="- topic/p ">Open by default</p>
+    <note class="- topic/note " othertype="qualifier" type="other">
+      <p class="- topic/p ">Optional Title</p>
+      <p class="- topic/p ">block content</p>
+    </note>
+    <note class="- topic/note " type="note">
+      <p class="- topic/p ">block content</p>
+    </note>
+    <note class="- topic/note " type="tip">
+      <p class="- topic/p ">block content</p>
+    </note>
+    <note class="- topic/note " type="fastpath">
+      <p class="- topic/p ">block content</p>
+    </note>
+    <note class="- topic/note " type="restriction">
+      <p class="- topic/p ">block content</p>
+    </note>
+    <note class="- topic/note " type="important">
+      <p class="- topic/p ">block content</p>
+    </note>
+    <note class="- topic/note " type="remember">
+      <p class="- topic/p ">block content</p>
+    </note>
+    <note class="- topic/note " type="attention">
+      <p class="- topic/p ">block content</p>
+    </note>
+    <note class="- topic/note " type="caution">
+      <p class="- topic/p ">block content</p>
+    </note>
+    <note class="- topic/note " type="notice">
+      <p class="- topic/p ">block content</p>
+    </note>
+    <note class="- topic/note " type="danger">
+      <p class="- topic/p ">block content</p>
+    </note>
+    <note class="- topic/note " type="warning">
+      <p class="- topic/p ">block content</p>
+    </note>
+    <note class="- topic/note " type="trouble">
+      <p class="- topic/p ">block content</p>
+    </note>
+  </body>
+</topic>
