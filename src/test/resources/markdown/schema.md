@@ -1,5 +1,5 @@
 ---
-$schema: urn:oasis:names:tc:dita:xsd:topic.xsd
+$schema: urn:example:names:tc:dita:xsd:topic.xsd
 ---
 
 # Title

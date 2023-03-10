@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<topic xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/" class="- topic/topic "
+       ditaarch:DITAArchVersion="2.0" id="title"
+       specializations="@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product">
+  <title class="- topic/title ">Title</title>
+  <prolog class="- topic/prolog "/>
+  <body class="- topic/body ">
+    <p class="- topic/p ">Shortdesc.</p>
+    <p class="- topic/p ">Paragraph.</p>
+  </body>
+</topic>

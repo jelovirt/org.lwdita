@@ -78,6 +78,7 @@ public class MarkdownReaderTest extends AbstractReaderTest {
             "yaml.md",
 //            "pandoc_header.md",
             "schema.md",
+            "schema_unrecognized.md",
     })
     public void test(String file) throws Exception {
         run(file);

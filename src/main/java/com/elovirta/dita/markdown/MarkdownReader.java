@@ -185,11 +185,14 @@ public class MarkdownReader implements XMLReader {
 
     private MarkdownParser getParser(URI schema) {
         if (schema != null) {
-            return schemaLoader.stream()
+            final Optional<MarkdownParser> markdownParser = schemaLoader.stream()
                     .filter(p -> p.get().isSupportedSchema(schema))
                     .findAny()
-                    .map(s -> s.get().createMarkdownParser(schema))
-                    .orElse(new MarkdownParserImpl(options.toImmutable()));
+                    .map(s -> s.get().createMarkdownParser(schema));
+            if (markdownParser.isEmpty()) {
+                System.err.printf("ERROR: Markdown schema %s not recognized, using default Markdown parser%n", schema);
+            }
+            return markdownParser.orElse(new MarkdownParserImpl(options.toImmutable()));
         } else {
             return new MarkdownParserImpl(options.toImmutable());
         }
