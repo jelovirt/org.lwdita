@@ -31,11 +31,13 @@ import com.vladsch.flexmark.ext.tables.*;
 import com.vladsch.flexmark.ext.typographic.TypographicQuotes;
 import com.vladsch.flexmark.ext.yaml.front.matter.AbstractYamlFrontMatterVisitor;
 import com.vladsch.flexmark.ext.yaml.front.matter.YamlFrontMatterBlock;
+import com.vladsch.flexmark.parser.Parser;
 import com.vladsch.flexmark.util.ast.ContentNode;
 import com.vladsch.flexmark.util.ast.Document;
 import com.vladsch.flexmark.util.ast.Node;
 import com.vladsch.flexmark.util.ast.ReferenceNode;
 import com.vladsch.flexmark.util.data.DataHolder;
+import com.vladsch.flexmark.util.misc.Extension;
 import com.vladsch.flexmark.util.sequence.BasedSequence;
 import nu.validator.htmlparser.common.XmlViolationPolicy;
 import nu.validator.htmlparser.sax.HtmlParser;
@@ -720,12 +722,6 @@ public class CoreNodeRenderer {
     }
 
     private void render(final Heading node, final NodeRendererContext context, final SaxWriter html) {
-        if (lwDita && node.getLevel() > 2) {
-            throw new ParseException("LwDITA does not support level " + node.getLevel() + " header: " + node.getText());
-        }
-//        if (node.getLevel() > headerLevel + 1) {
-//            throw new ParseException("Header level raised from " + headerLevel + " to " + node.getLevel() + " without intermediate header level");
-//        }
         final StringBuilder buf = new StringBuilder();
         node.getAstExtra(buf);
         Title header = null;
@@ -762,7 +758,7 @@ public class CoreNodeRenderer {
         }
         if (isSection) {
             if (node.getLevel() <= headerLevel) {
-                throw new ParseException("Level " + node.getLevel() + " section title must be higher level than parent topic title " + headerLevel);
+                throw new ParseException(String.format("Level %d section title must be higher level than parent topic title %d", node.getLevel(), headerLevel));
             }
             final AttributesBuilder atts = new AttributesBuilder().add(ATTRIBUTE_NAME_CLASS, cls.toString());
             final String id = getSectionId(node, header);

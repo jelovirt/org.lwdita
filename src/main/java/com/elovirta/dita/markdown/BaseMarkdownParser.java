@@ -52,13 +52,18 @@ public class BaseMarkdownParser implements MarkdownParser {
     }
 
     private void validate(Document root) {
+        final boolean lwdita = DitaRenderer.LW_DITA.getFrom(options);
+
         int level = 0;
         Node node = root.getFirstChild();
         while (node != null) {
             if (node instanceof Heading) {
                 Heading heading = (Heading) node;
+                if (lwdita && heading.getLevel() > 2) {
+                    throw new ParseException(String.format("LwDITA does not support level %d header: %s", heading.getLevel(), heading.getText()));
+                }
                 if (heading.getLevel() > level + 1) {
-                    throw new ParseException("Header level raised from " + level + " to " + heading.getLevel() + " without intermediate header level");
+                    throw new ParseException(String.format("Header level raised from %d to %d without intermediate header level", level, heading.getLevel()));
                 }
                 level = heading.getLevel();
             }
