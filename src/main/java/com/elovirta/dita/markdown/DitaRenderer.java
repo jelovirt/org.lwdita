@@ -89,7 +89,7 @@ public class DitaRenderer {
     private final DitaRendererOptions ditaOptions;
     private final DataHolder options;
 
-    DitaRenderer(MutableDataSet builder) {
+    DitaRenderer(DataSet builder) {
         this.options = new DataSet(builder);
         this.ditaOptions = new DitaRendererOptions(this.options);
     }

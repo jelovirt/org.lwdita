@@ -24,7 +24,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.CharBuffer;
-import java.util.Arrays;
 import java.util.Optional;
 import java.util.ServiceLoader;
 import java.util.regex.Matcher;
@@ -189,9 +188,9 @@ public class MarkdownReader implements XMLReader {
                     .filter(p -> p.get().isSupportedSchema(schema))
                     .findAny()
                     .map(s -> s.get().createMarkdownParser(schema))
-                    .orElse(new BaseMarkdownParser(options));
+                    .orElse(new MarkdownParserImpl(options));
         } else {
-            return new BaseMarkdownParser(options);
+            return new MarkdownParserImpl(options);
         }
     }
 

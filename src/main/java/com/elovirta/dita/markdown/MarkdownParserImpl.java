@@ -8,7 +8,7 @@ import com.vladsch.flexmark.ext.yaml.front.matter.YamlFrontMatterBlock;
 import com.vladsch.flexmark.parser.Parser;
 import com.vladsch.flexmark.util.ast.Document;
 import com.vladsch.flexmark.util.ast.Node;
-import com.vladsch.flexmark.util.data.MutableDataSet;
+import com.vladsch.flexmark.util.data.DataSet;
 import com.vladsch.flexmark.util.sequence.BasedSequence;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.helpers.XMLFilterImpl;
@@ -17,12 +17,15 @@ import java.net.URI;
 import java.util.List;
 import java.util.Map;
 
-public class BaseMarkdownParser implements MarkdownParser {
+/**
+ * Base class for parsing Markdown to DITA.
+ */
+public class MarkdownParserImpl implements MarkdownParser {
 
-    private final MutableDataSet options;
+    private final DataSet options;
     private ContentHandler contentHandler;
 
-    BaseMarkdownParser(MutableDataSet options) {
+    public MarkdownParserImpl(DataSet options) {
         this.options = options;
     }
 
@@ -30,9 +33,9 @@ public class BaseMarkdownParser implements MarkdownParser {
     public void convert(BasedSequence sequence, URI input) throws ParseException {
         final Parser parser = Parser.builder(options).build();
         final Document root = parser.parse(sequence);
-        final Document cleaned = generateMissingHeader(root, input);
+        final Document cleaned = preprocess(root, input);
         validate(cleaned);
-        parseAST(cleaned);
+        render(cleaned);
     }
 
     @Override
@@ -40,7 +43,12 @@ public class BaseMarkdownParser implements MarkdownParser {
         this.contentHandler = handler;
     }
 
-    private void parseAST(final Document root) {
+    /**
+     * Render AST to DITA events.
+     *
+     * @param root document AST
+     */
+    protected void render(final Document root) {
         ContentHandler res = contentHandler;
         if (DitaRenderer.SPECIALIZATION.get(options)) {
             final XMLFilterImpl specialize = new SpecializeFilter();
@@ -51,7 +59,13 @@ public class BaseMarkdownParser implements MarkdownParser {
         s.render(root, res);
     }
 
-    private void validate(Document root) {
+    /**
+     * Validate AST.
+     *
+     * @param root document AST
+     * @throws ParseException if document is not valid
+     */
+    protected void validate(Document root) {
         final boolean lwdita = DitaRenderer.LW_DITA.getFrom(options);
 
         int level = 0;
@@ -72,9 +86,11 @@ public class BaseMarkdownParser implements MarkdownParser {
     }
 
     /**
+     * Preprocess AST before validation and rendition.
+     * <p>
      * If document doesn't start with H1, generate H1 from YAML metadata or file name.
      */
-    private Document generateMissingHeader(Document root, URI input) {
+    protected Document preprocess(Document root, URI input) {
         if (DitaRenderer.WIKI.get(options) && isWiki(root)) {
             final YamlFrontMatterBlock yaml = root.getFirstChild() instanceof YamlFrontMatterBlock
                     ? (YamlFrontMatterBlock) root.getFirstChild()
