@@ -25,6 +25,9 @@ public class DitaRenderer {
     public static final DataKey<Boolean> ID_FROM_YAML = new DataKey<>("ID_FROM_YAML", false);
     public static final DataKey<Boolean> LW_DITA = new DataKey<>("LW_DITA", false);
     public static final DataKey<Boolean> SPECIALIZATION = new DataKey<>("SPECIALIZATION", false);
+    public static final DataKey<Boolean> SPECIALIZATION_CONCEPT = new DataKey<>("SPECIALIZATION_CONCEPT", false);
+    public static final DataKey<Boolean> SPECIALIZATION_TASK = new DataKey<>("SPECIALIZATION_TASK", false);
+    public static final DataKey<Boolean> SPECIALIZATION_REFERENCE = new DataKey<>("SPECIALIZATION_REFERENCE", false);
     public static final DataKey<Boolean> WIKI = new DataKey<>("WIKI", false);
     public static final DataKey<String> SOFT_BREAK = new DataKey<>("SOFT_BREAK", "\n");
     public static final DataKey<String> HARD_BREAK = new DataKey<>("HARD_BREAK", "<br />\n");

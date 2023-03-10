@@ -15,6 +15,7 @@ import com.vladsch.flexmark.ext.superscript.SuperscriptExtension;
 import com.vladsch.flexmark.ext.tables.TablesExtension;
 import com.vladsch.flexmark.ext.yaml.front.matter.YamlFrontMatterExtension;
 import com.vladsch.flexmark.parser.Parser;
+import com.vladsch.flexmark.util.data.DataSet;
 import com.vladsch.flexmark.util.data.MutableDataSet;
 import com.vladsch.flexmark.util.sequence.BasedSequence;
 import org.xml.sax.*;
@@ -75,8 +76,8 @@ public class MarkdownReader implements XMLReader {
         );
     }
 
-    public MarkdownReader(final MutableDataSet options) {
-        this.options = options;
+    public MarkdownReader(final DataSet options) {
+        this.options = new MutableDataSet(options);
     }
 
     @Override
@@ -188,9 +189,9 @@ public class MarkdownReader implements XMLReader {
                     .filter(p -> p.get().isSupportedSchema(schema))
                     .findAny()
                     .map(s -> s.get().createMarkdownParser(schema))
-                    .orElse(new MarkdownParserImpl(options));
+                    .orElse(new MarkdownParserImpl(options.toImmutable()));
         } else {
-            return new MarkdownParserImpl(options);
+            return new MarkdownParserImpl(options.toImmutable());
         }
     }
 

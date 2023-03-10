@@ -54,6 +54,18 @@ public class MarkdownParserImpl implements MarkdownParser {
             final XMLFilterImpl specialize = new SpecializeFilter();
             specialize.setContentHandler(res);
             res = specialize;
+        } else if (DitaRenderer.SPECIALIZATION_CONCEPT.get(options)) {
+            final XMLFilterImpl specialize = new SpecializeFilter(SpecializeFilter.Type.CONCEPT);
+            specialize.setContentHandler(res);
+            res = specialize;
+        } else if (DitaRenderer.SPECIALIZATION_TASK.get(options)) {
+            final XMLFilterImpl specialize = new SpecializeFilter(SpecializeFilter.Type.TASK);
+            specialize.setContentHandler(res);
+            res = specialize;
+        } else if (DitaRenderer.SPECIALIZATION_REFERENCE.get(options)) {
+            final XMLFilterImpl specialize = new SpecializeFilter(SpecializeFilter.Type.REFERENCE);
+            specialize.setContentHandler(res);
+            res = specialize;
         }
         final DitaRenderer s = new DitaRenderer(options);
         s.render(root, res);
