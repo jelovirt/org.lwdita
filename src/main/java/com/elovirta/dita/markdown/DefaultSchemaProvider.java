@@ -24,15 +24,19 @@ import static java.util.Arrays.asList;
 /**
  * Schema provider for:
  *
- * <ul>
- *   <li>{@code urn:oasis:names:tc:dita:xsd:topic.xsd}</li>
- *   <li>{@code urn:oasis:names:tc:dita:xsd:topic.rng}</li>
- *   <li>{@code urn:oasis:names:tc:dita:xsd:concept.xsd}</li>
- *   <li>{@code urn:oasis:names:tc:dita:xsd:concept.rng}</li>
- *   <li>{@code urn:oasis:names:tc:dita:xsd:task.xsd}</li>
- *   <li>{@code urn:oasis:names:tc:dita:xsd:task.rng}</li>
- *   <li>{@code urn:oasis:names:tc:dita:xsd:reference.xsd}</li>
- *   <li>{@code urn:oasis:names:tc:dita:xsd:reference.rng}</li>
+ * <dl>
+ *   <dt>{@code urn:oasis:names:tc:dita:xsd:topic.xsd}</dt>
+ *   <dt>{@code urn:oasis:names:tc:dita:xsd:topic.rng}</dt>
+ *   <dd>Topic</dd>
+ *   <dt>{@code urn:oasis:names:tc:dita:xsd:concept.xsd}</dt>
+ *   <dt>{@code urn:oasis:names:tc:dita:xsd:concept.rng}</dt>
+ *   <dd>Concept</dd>
+ *   <dt>{@code urn:oasis:names:tc:dita:xsd:task.xsd}</dt>
+ *   <dt>{@code urn:oasis:names:tc:dita:xsd:task.rng}</dt>
+ *   <dd>Task</dd>
+ *   <dt>{@code urn:oasis:names:tc:dita:xsd:reference.xsd}</dt>
+ *   <dt>{@code urn:oasis:names:tc:dita:xsd:reference.rng}</dt>
+ *   <dd>Reference</dd>
  * </ul>
  */
 public class DefaultSchemaProvider implements SchemaProvider {
