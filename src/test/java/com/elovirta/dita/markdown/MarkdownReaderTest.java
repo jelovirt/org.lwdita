@@ -86,7 +86,6 @@ public class MarkdownReaderTest extends AbstractReaderTest {
     @ParameterizedTest
     @ValueSource(strings = {
             "invalid_header.md",
-            "invalid_section_header.md"
     })
     public void test_fail(String file) {
         assertThrows(RuntimeException.class, () -> run(file));

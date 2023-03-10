@@ -43,6 +43,7 @@ public class MDitaReaderTest extends AbstractReaderTest {
             "escape.md",
             "footnote.md",
             "header_attributes.md",
+            "invalid_section_header.md",
             "html.md",
             "image.md",
             "inline.md",
@@ -80,10 +81,10 @@ public class MDitaReaderTest extends AbstractReaderTest {
     @ValueSource(strings = {
             "header.md",
             "invalid_header.md",
-            "invalid_section_header.md",
+            "invalid_header_third.md",
     })
     public void test_fail(String file) {
-        assertThrows(RuntimeException.class, () -> run(file));
+        assertThrows(ParseException.class, () -> run(file));
     }
 
     @Test
