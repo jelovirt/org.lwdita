@@ -19,12 +19,14 @@ import com.vladsch.flexmark.util.data.DataSet;
 import com.vladsch.flexmark.util.data.MutableDataSet;
 import com.vladsch.flexmark.util.sequence.BasedSequence;
 import org.xml.sax.*;
+import org.xml.sax.helpers.LocatorImpl;
 
 import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.CharBuffer;
+import java.util.Map;
 import java.util.Optional;
 import java.util.ServiceLoader;
 import java.util.regex.Matcher;
@@ -170,7 +172,7 @@ public class MarkdownReader implements XMLReader {
     @Override
     public void parse(final InputSource input) throws IOException, SAXException {
         final char[] markdownContent = getMarkdownContent(input);
-        final URI schema = getSchema(markdownContent);
+        final Map.Entry<URI, Locator> schema = getSchema(markdownContent, input);
         final BasedSequence sequence = BasedSequence.of(CharBuffer.wrap(markdownContent));
 
         final MarkdownParser markdownParser = getParser(schema);
@@ -183,14 +185,20 @@ public class MarkdownReader implements XMLReader {
         parse(new InputSource(systemId));
     }
 
-    private MarkdownParser getParser(URI schema) {
+    private MarkdownParser getParser(Map.Entry<URI, Locator> schema) throws SAXException {
         if (schema != null) {
+            final URI value = schema.getKey();
             final Optional<MarkdownParser> markdownParser = schemaLoader.stream()
-                    .filter(p -> p.get().isSupportedSchema(schema))
+                    .filter(p -> p.get().isSupportedSchema(value))
                     .findAny()
-                    .map(s -> s.get().createMarkdownParser(schema));
+                    .map(s -> s.get().createMarkdownParser(value));
             if (markdownParser.isEmpty()) {
-                System.err.printf("ERROR: Markdown schema %s not recognized, using default Markdown parser%n", schema);
+                if (errorHandler != null) {
+                    errorHandler.error(new SAXParseException(
+                            String.format("Markdown schema %s not recognized, using default Markdown parser", value),
+                            schema.getValue()
+                    ));
+                }
             }
             return markdownParser.orElse(new MarkdownParserImpl(options.toImmutable()));
         } else {
@@ -199,14 +207,40 @@ public class MarkdownReader implements XMLReader {
     }
 
     @VisibleForTesting
-    URI getSchema(char[] data) {
+    Map.Entry<URI, Locator> getSchema(char[] data, InputSource input) throws SAXParseException {
         final Matcher matcher = schemaPattern.matcher(CharBuffer.wrap(data));
-        if (matcher.find()) {
+        if (matcher.find() && matcher.group(1) != null) {
             final String value = matcher.group(1)
                     .replaceAll("^'(.+)'$", "$1")
                     .replaceAll("^\"(.+)\"$", "$1")
                     .trim();
-            return URI.create(value);
+
+            final LocatorImpl locator = new LocatorImpl();
+            locator.setSystemId(input.getSystemId());
+            locator.setPublicId(input.getPublicId());
+            for (int i = 0, row = 1, col = 1, end = matcher.end(1); i < data.length; i++) {
+                if (i == end) {
+                    locator.setLineNumber(row);
+                    locator.setColumnNumber(col);
+                    break;
+                }
+                if (data[i] == '\n') {
+                    row++;
+                    col = 1;
+                } else if (data[i] == '\r') {
+                    // ignore
+                } else {
+                    col++;
+                }
+            }
+
+            try {
+                final URI schema = new URI(value);
+                return Map.entry(schema, locator);
+            } catch (URISyntaxException e) {
+                throw new SAXParseException(String.format("Failed to parse schema URI %s ", value), locator, e);
+            }
+
         }
         return null;
     }

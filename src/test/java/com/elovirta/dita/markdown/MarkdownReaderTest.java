@@ -4,17 +4,18 @@ import com.elovirta.dita.utils.AbstractReaderTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-import org.xml.sax.XMLReader;
+import org.xml.sax.*;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class MarkdownReaderTest extends AbstractReaderTest {
 
@@ -78,10 +79,53 @@ public class MarkdownReaderTest extends AbstractReaderTest {
             "yaml.md",
 //            "pandoc_header.md",
             "schema.md",
-            "schema_unrecognized.md",
     })
     public void test(String file) throws Exception {
         run(file);
+    }
+
+    @Test
+    public void test_schemaParseFailure() throws Exception {
+        final List<SAXParseException> errors = new ArrayList<>();
+        final XMLReader reader = getReader();
+        reader.setErrorHandler(new ErrorHandler() {
+            @Override
+            public void warning(SAXParseException exception) throws SAXException {
+            }
+
+            @Override
+            public void error(SAXParseException exception) throws SAXException {
+                errors.add(exception);
+            }
+
+            @Override
+            public void fatalError(SAXParseException exception) throws SAXException {
+            }
+        });
+
+        try (final InputStream in = getClass().getResourceAsStream("/markdown/schema_unrecognized.md")) {
+            final InputSource input = new InputSource(in);
+            input.setSystemId("classpath:///schema_unrecognized.md");
+            reader.parse(input);
+        }
+
+        assertEquals(1, errors.size());
+        final SAXParseException act = errors.get(0);
+        assertEquals(null, act.getPublicId());
+        assertEquals("classpath:///schema_unrecognized.md", act.getSystemId());
+        assertEquals(2, act.getLineNumber());
+        assertEquals(56, act.getColumnNumber());
+    }
+
+    @Test
+    public void test_schemaParseFailure_withoutErrorHandler() throws Exception {
+        final XMLReader reader = getReader();
+
+        try (final InputStream in = getClass().getResourceAsStream("/" + getSrc() + "schema_unrecognized.md")) {
+            final InputSource input = new InputSource(in);
+            input.setSystemId("classpath:///schema_unrecognized.md");
+            reader.parse(input);
+        }
     }
 
     @ParameterizedTest
@@ -203,8 +247,33 @@ public class MarkdownReaderTest extends AbstractReaderTest {
             "---\n$schema: \"urn:test\"\n",
             "---\n$schema: 'urn:test'\n",
     })
-    public void getSchema(String input) {
+    public void getSchema(String data) throws SAXParseException {
         final MarkdownReader markdownReader = new MarkdownReader();
-        assertEquals(URI.create("urn:test"), markdownReader.getSchema(input.toCharArray()));
+        final InputSource input = new InputSource("file:/foo/bar.md");
+
+        final Map.Entry<URI, Locator> act = markdownReader.getSchema(data.toCharArray(), input);
+
+        assertEquals(URI.create("urn:test"), act.getKey());
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "---\n$schema: urn: test\n",
+            "---\r\n$schema: urn: test\r\n",
+    })
+    public void getSchema_failure(String data) {
+        final MarkdownReader markdownReader = new MarkdownReader();
+        final InputSource input = new InputSource("file:/foo/bar.md");
+
+
+        try {
+            markdownReader.getSchema(data.toCharArray(), input);
+            fail();
+        } catch (SAXParseException e) {
+            assertEquals(null, e.getPublicId());
+            assertEquals("file:/foo/bar.md", e.getSystemId());
+            assertEquals(2, e.getLineNumber());
+            assertEquals(19, e.getColumnNumber());
+        }
     }
 }
