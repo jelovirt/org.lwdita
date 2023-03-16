@@ -99,10 +99,10 @@ public class MarkdownParserImpl implements MarkdownParser {
             if (node instanceof Heading) {
                 Heading heading = (Heading) node;
                 if (lwdita && heading.getLevel() > 2) {
-                    throw new ParseException(String.format("LwDITA does not support level %d header: %s", heading.getLevel(), heading.getText()));
+                    throw new ParseException(String.format("LwDITA does not support level %d heading: %s", heading.getLevel(), heading.getText()));
                 }
                 if (heading.getLevel() > level + 1) {
-                    throw new ParseException(String.format("Header level raised from %d to %d without intermediate header level", level, heading.getLevel()));
+                    throw new ParseException(String.format("Heading level raised from %d to %d without intermediate heading level", level, heading.getLevel()));
                 }
                 level = heading.getLevel();
             }

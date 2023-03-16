@@ -55,7 +55,7 @@ public class MarkdownReader implements XMLReader {
      *     <dt><code>http://lwdita.org/sax/features/mdita</code></dt>
      *     <dd>Parse as MDITA.</dd>
      *     <dt><code>http://lwdita.org/sax/features/specialization</code></dt>
-     *     <dd>Support concept, task, and reference specialization from header class.</dd>
+     *     <dd>Support concept, task, and reference specialization from heading class.</dd>
      *     <dt><code>http://lwdita.org/sax/features/specialization-concept</code></dt>
      *     <dd>Generate DITA concept output.</dd>
      *     <dt><code>http://lwdita.org/sax/features/specialization-task</code></dt>
