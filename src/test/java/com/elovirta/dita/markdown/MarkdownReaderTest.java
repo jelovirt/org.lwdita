@@ -1,6 +1,21 @@
 package com.elovirta.dita.markdown;
 
 import com.elovirta.dita.utils.AbstractReaderTest;
+import com.vladsch.flexmark.ext.abbreviation.AbbreviationExtension;
+import com.vladsch.flexmark.ext.admonition.AdmonitionExtension;
+import com.vladsch.flexmark.ext.anchorlink.AnchorLinkExtension;
+import com.vladsch.flexmark.ext.attributes.AttributesExtension;
+import com.vladsch.flexmark.ext.autolink.AutolinkExtension;
+import com.vladsch.flexmark.ext.definition.DefinitionExtension;
+import com.vladsch.flexmark.ext.footnotes.FootnoteExtension;
+import com.vladsch.flexmark.ext.gfm.strikethrough.StrikethroughSubscriptExtension;
+import com.vladsch.flexmark.ext.ins.InsExtension;
+import com.vladsch.flexmark.ext.jekyll.tag.JekyllTagExtension;
+import com.vladsch.flexmark.ext.superscript.SuperscriptExtension;
+import com.vladsch.flexmark.ext.tables.TablesExtension;
+import com.vladsch.flexmark.ext.yaml.front.matter.YamlFrontMatterExtension;
+import com.vladsch.flexmark.parser.Parser;
+import com.vladsch.flexmark.util.data.MutableDataSet;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -15,13 +30,16 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import static java.util.Arrays.asList;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class MarkdownReaderTest extends AbstractReaderTest {
 
+    private XMLReader r = new MarkdownReader();
+
     @Override
     public XMLReader getReader() {
-        return new MarkdownReader();
+        return r;
     }
 
     @Override
@@ -82,6 +100,62 @@ public class MarkdownReaderTest extends AbstractReaderTest {
     })
     public void test(String file) throws Exception {
         run(file);
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "missing_root_header.md",
+            "missing_root_header_with_yaml.md",
+    })
+    public void test_missingHeader(String file) throws Exception {
+        reader = new MarkdownReader(new MutableDataSet()
+                .set(Parser.EXTENSIONS, asList(
+                        AbbreviationExtension.create(),
+                        AdmonitionExtension.create(),
+                        AnchorLinkExtension.create(),
+                        AttributesExtension.create(),
+                        FootnoteExtension.create(),
+                        InsExtension.create(),
+                        JekyllTagExtension.create(),
+                        SuperscriptExtension.create(),
+                        TablesExtension.create(),
+                        AutolinkExtension.create(),
+                        YamlFrontMatterExtension.create(),
+                        DefinitionExtension.create(),
+                        StrikethroughSubscriptExtension.create()))
+                .set(DefinitionExtension.TILDE_MARKER, false)
+                .set(TablesExtension.COLUMN_SPANS, true)
+                .set(TablesExtension.APPEND_MISSING_COLUMNS, false)
+                .set(TablesExtension.DISCARD_EXTRA_COLUMNS, true)
+                .set(TablesExtension.HEADER_SEPARATOR_COLUMN_MATCH, true)
+                .set(DitaRenderer.SPECIALIZATION, true));
+        final List<SAXParseException> warnings = new ArrayList<>();
+        reader.setErrorHandler(new ErrorHandler() {
+            @Override
+            public void warning(SAXParseException exception) throws SAXException {
+                warnings.add(exception);
+            }
+
+            @Override
+            public void error(SAXParseException exception) throws SAXException {
+                throw exception;
+            }
+
+            @Override
+            public void fatalError(SAXParseException exception) throws SAXException {
+                throw exception;
+            }
+        });
+
+        run(file);
+
+        assertEquals(1, warnings.size());
+        final SAXParseException e = warnings.get(0);
+        assertEquals("Document content doesn't start with heading", e.getMessage());
+        assertEquals("classpath:/markdown/" + file, e.getSystemId());
+        assertEquals(null, e.getPublicId());
+        assertEquals(1, e.getLineNumber());
+        assertEquals(1, e.getColumnNumber());
     }
 
     @Test
@@ -262,12 +336,10 @@ public class MarkdownReaderTest extends AbstractReaderTest {
             "---\r\n$schema: urn: test\r\n",
     })
     public void getSchema_failure(String data) {
-        final MarkdownReader markdownReader = new MarkdownReader();
         final InputSource input = new InputSource("file:/foo/bar.md");
 
-
         try {
-            markdownReader.getSchema(data.toCharArray(), input);
+            ((MarkdownReader) reader).getSchema(data.toCharArray(), input);
             fail();
         } catch (SAXParseException e) {
             assertEquals(null, e.getPublicId());
