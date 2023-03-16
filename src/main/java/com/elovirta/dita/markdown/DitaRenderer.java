@@ -29,6 +29,7 @@ public class DitaRenderer {
     public static final DataKey<Boolean> SPECIALIZATION_TASK = new DataKey<>("SPECIALIZATION_TASK", false);
     public static final DataKey<Boolean> SPECIALIZATION_REFERENCE = new DataKey<>("SPECIALIZATION_REFERENCE", false);
     public static final DataKey<Boolean> WIKI = new DataKey<>("WIKI", false);
+    public static final DataKey<Boolean> FIX_ROOT_HEADING = new DataKey<>("FIXUP_ROOT_HEADING", false);
     public static final DataKey<String> SOFT_BREAK = new DataKey<>("SOFT_BREAK", "\n");
     public static final DataKey<String> HARD_BREAK = new DataKey<>("HARD_BREAK", "<br />\n");
     public static final NullableDataKey<String> STRONG_EMPHASIS_STYLE_HTML_OPEN = new NullableDataKey<>("STRONG_EMPHASIS_STYLE_HTML_OPEN");

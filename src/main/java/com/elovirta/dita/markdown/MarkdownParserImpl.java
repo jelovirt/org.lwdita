@@ -119,7 +119,7 @@ public class MarkdownParserImpl implements MarkdownParser {
         if (DitaRenderer.WIKI.get(options) && isWiki(root)) {
             generateRootHeading(root, input);
         }
-        if (isWiki(root)) {
+        if (DitaRenderer.FIX_ROOT_HEADING.get(options) && isWiki(root)) {
             if (errorHandler != null) {
                 errorHandler.warning(new SAXParseException("Document content doesn't start with heading", null, input.toString(), 1, 1));
             }

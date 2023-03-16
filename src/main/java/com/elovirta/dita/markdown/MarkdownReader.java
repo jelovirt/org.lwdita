@@ -15,6 +15,7 @@ import com.vladsch.flexmark.ext.superscript.SuperscriptExtension;
 import com.vladsch.flexmark.ext.tables.TablesExtension;
 import com.vladsch.flexmark.ext.yaml.front.matter.YamlFrontMatterExtension;
 import com.vladsch.flexmark.parser.Parser;
+import com.vladsch.flexmark.util.data.DataKey;
 import com.vladsch.flexmark.util.data.DataSet;
 import com.vladsch.flexmark.util.data.MutableDataSet;
 import com.vladsch.flexmark.util.sequence.BasedSequence;
@@ -42,6 +43,39 @@ public class MarkdownReader implements XMLReader {
 
     private static final Pattern schemaPattern = Pattern.compile("^---[\r\n]+\\$schema: +(.+?)[\r\n]");
     private static final ServiceLoader<SchemaProvider> schemaLoader = ServiceLoader.load(SchemaProvider.class);
+
+    /**
+     * Supported features mapped to options.
+     *
+     * <dl>
+     *     <dt><code>http://lwdita.org/sax/features/shortdesc-paragraph</code></dt>
+     *     <dd>Treat first paragraph as shortdesc.</dd>
+     *     <dt><code>http://lwdita.org/sax/features/id-from-yaml</code></dt>
+     *     <dd>Read topic ID from YAML header if available.</dd>
+     *     <dt><code>http://lwdita.org/sax/features/mdita</code></dt>
+     *     <dd>Parse as MDITA.</dd>
+     *     <dt><code>http://lwdita.org/sax/features/specialization</code></dt>
+     *     <dd>Support concept, task, and reference specialization from header class.</dd>
+     *     <dt><code>http://lwdita.org/sax/features/specialization-concept</code></dt>
+     *     <dd>Generate DITA concept output.</dd>
+     *     <dt><code>http://lwdita.org/sax/features/specialization-task</code></dt>
+     *     <dd>Generate DITA task output.</dd>
+     *     <dt><code>http://lwdita.org/sax/features/specialization-reference</code></dt>
+     *     <dd>Generate DITA referenc output.</dd>
+     *     <dt><code>http://lwdita.org/sax/features/fix-root-heading</code></dt>
+     *     <dd>Fix missing root heading by reading title from either YAML heading or filename.</dd>
+     * </dl>
+     */
+    private static final Map<String, DataKey<Boolean>> FEATURES = Map.of(
+            "http://lwdita.org/sax/features/shortdesc-paragraph", DitaRenderer.SHORTDESC_PARAGRAPH,
+            "http://lwdita.org/sax/features/id-from-yaml", DitaRenderer.ID_FROM_YAML,
+            "http://lwdita.org/sax/features/mdita", DitaRenderer.LW_DITA,
+            "http://lwdita.org/sax/features/specialization", DitaRenderer.SPECIALIZATION,
+            "http://lwdita.org/sax/features/specialization-concept", DitaRenderer.SPECIALIZATION_CONCEPT,
+            "http://lwdita.org/sax/features/specialization-task", DitaRenderer.SPECIALIZATION_TASK,
+            "http://lwdita.org/sax/features/specialization-reference", DitaRenderer.SPECIALIZATION_REFERENCE,
+            "http://lwdita.org/sax/features/fix-root-heading", DitaRenderer.FIX_ROOT_HEADING
+    );
 
     private final MutableDataSet options;
 
@@ -84,38 +118,46 @@ public class MarkdownReader implements XMLReader {
 
     @Override
     public boolean getFeature(String name) throws SAXNotRecognizedException, SAXNotSupportedException {
-        return false;
+        switch (name) {
+            case "http://xml.org/sax/features/namespaces":
+                return true;
+            case "http://xml.org/sax/features/namespace-prefixes":
+                return false;
+            default:
+                final DataKey<Boolean> option = FEATURES.get(name);
+                if (option != null) {
+                    return option.get(options);
+                } else {
+                    throw new SAXNotRecognizedException("Unrecognized feature " + name);
+                }
+        }
     }
 
     /**
      * Set the value of a feature flag.
      *
-     * <dl>
-     *     <dt><code>http://lwdita.org/sax/features/shortdesc-paragraph</code></dt>
-     *     <dd>Treat first paragraph as shortdesc.</dd>
-     *     <dt><code>http://lwdita.org/sax/features/id-from-yaml</code></dt>
-     *     <dd>Read topic ID from YAML header if available.</dd>
-     *     <dt><code>http://lwdita.org/sax/features/mdita</code></dt>
-     *     <dd>Parse as MDITA.</dd>
-     *     <dt><code>http://lwdita.org/sax/features/specialization</code></dt>
-     *     <dd>Support concept, task, and reference specialization from header class.</dd>
-     * </dl>
+     * @see #FEATURES
      */
     @Override
     public void setFeature(String name, boolean value) throws SAXNotRecognizedException, SAXNotSupportedException {
         switch (name) {
-            case "http://lwdita.org/sax/features/shortdesc-paragraph":
-                options.set(DitaRenderer.SHORTDESC_PARAGRAPH, value);
+            case "http://xml.org/sax/features/namespaces":
+                if (!value) {
+                    throw new SAXNotSupportedException("Unsupported value " + value + " for " + name);
+                }
                 break;
-            case "http://lwdita.org/sax/features/id-from-yaml":
-                options.set(DitaRenderer.ID_FROM_YAML, value);
+            case "http://xml.org/sax/features/namespace-prefixes":
+                if (value) {
+                    throw new SAXNotSupportedException("Unsupported value " + value + " for " + name);
+                }
                 break;
-            case "http://lwdita.org/sax/features/mdita":
-                options.set(DitaRenderer.LW_DITA, value);
-                break;
-            case "http://lwdita.org/sax/features/specialization":
-                options.set(DitaRenderer.SPECIALIZATION, value);
-                break;
+            default:
+                final DataKey option = FEATURES.get(name);
+                if (option != null) {
+                    options.set(option, value);
+                } else {
+                    throw new SAXNotRecognizedException("Unrecognized feature " + name);
+                }
         }
     }
 
