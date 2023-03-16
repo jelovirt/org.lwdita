@@ -64,6 +64,7 @@ public class DefaultSchemaProvider implements SchemaProvider {
                 .set(TablesExtension.DISCARD_EXTRA_COLUMNS, true)
                 .set(TablesExtension.HEADER_SEPARATOR_COLUMN_MATCH, true)
                 .set(DitaRenderer.SHORTDESC_PARAGRAPH, true)
+                .set(DitaRenderer.ID_FROM_YAML, true)
                 .toImmutable();
         final DataSet optionsConcept = new MutableDataSet(options)
                 .set(DitaRenderer.SPECIALIZATION_CONCEPT, true)

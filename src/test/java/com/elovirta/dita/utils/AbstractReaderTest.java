@@ -66,6 +66,22 @@ public abstract class AbstractReaderTest {
             final Transformer t = transformerFactory.newTransformer();
             final InputSource i = new InputSource(in);
             i.setSystemId(URI.create("classpath:/" + input).toString());
+            r.setErrorHandler(new ErrorHandler() {
+                @Override
+                public void warning(SAXParseException exception) throws SAXException {
+                    System.err.println("WARN: " + exception.getMessage());
+                }
+
+                @Override
+                public void error(SAXParseException exception) throws SAXException {
+                    throw exception;
+                }
+
+                @Override
+                public void fatalError(SAXParseException exception) throws SAXException {
+                    throw exception;
+                }
+            });
             t.transform(new SAXSource(r, i), new DOMResult(act));
         }
 

@@ -177,6 +177,7 @@ public class MarkdownReader implements XMLReader {
 
         final MarkdownParser markdownParser = getParser(schema);
         markdownParser.setContentHandler(contentHandler);
+        markdownParser.setErrorHandler(errorHandler);
         markdownParser.convert(sequence, Optional.ofNullable(input.getSystemId()).map(URI::create).orElse(null));
     }
 
