@@ -33,8 +33,8 @@ import java.util.ServiceLoader;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static com.google.common.io.CharStreams.copy;
 import static java.util.Arrays.asList;
-import static org.apache.commons.io.IOUtils.copy;
 
 /**
  * XMLReader implementation for Markdown.
