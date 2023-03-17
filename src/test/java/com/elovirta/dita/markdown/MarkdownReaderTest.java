@@ -1,18 +1,7 @@
 package com.elovirta.dita.markdown;
 
 import com.elovirta.dita.utils.AbstractReaderTest;
-import com.vladsch.flexmark.ext.abbreviation.AbbreviationExtension;
-import com.vladsch.flexmark.ext.admonition.AdmonitionExtension;
-import com.vladsch.flexmark.ext.anchorlink.AnchorLinkExtension;
-import com.vladsch.flexmark.ext.attributes.AttributesExtension;
-import com.vladsch.flexmark.ext.autolink.AutolinkExtension;
-import com.vladsch.flexmark.ext.definition.DefinitionExtension;
-import com.vladsch.flexmark.ext.footnotes.FootnoteExtension;
-import com.vladsch.flexmark.ext.gfm.strikethrough.StrikethroughSubscriptExtension;
-import com.vladsch.flexmark.ext.ins.InsExtension;
-import com.vladsch.flexmark.ext.jekyll.tag.JekyllTagExtension;
-import com.vladsch.flexmark.ext.superscript.SuperscriptExtension;
-import com.vladsch.flexmark.ext.tables.TablesExtension;
+import com.elovirta.dita.utils.TestErrorHandler;
 import com.vladsch.flexmark.ext.yaml.front.matter.YamlFrontMatterExtension;
 import com.vladsch.flexmark.parser.Parser;
 import com.vladsch.flexmark.util.data.MutableDataSet;
@@ -25,12 +14,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 
-import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class MarkdownReaderTest extends AbstractReaderTest {
@@ -96,7 +83,7 @@ public class MarkdownReaderTest extends AbstractReaderTest {
             "unsupported_html.md",
             "yaml.md",
 //            "pandoc_header.md",
-            "schema.md",
+            "schema/example.md",
     })
     public void test(String file) throws Exception {
         run(file);
@@ -109,48 +96,15 @@ public class MarkdownReaderTest extends AbstractReaderTest {
     })
     public void test_missingHeader(String file) throws Exception {
         reader = new MarkdownReader(new MutableDataSet()
-                .set(Parser.EXTENSIONS, asList(
-                        AbbreviationExtension.create(),
-                        AdmonitionExtension.create(),
-                        AnchorLinkExtension.create(),
-                        AttributesExtension.create(),
-                        FootnoteExtension.create(),
-                        InsExtension.create(),
-                        JekyllTagExtension.create(),
-                        SuperscriptExtension.create(),
-                        TablesExtension.create(),
-                        AutolinkExtension.create(),
-                        YamlFrontMatterExtension.create(),
-                        DefinitionExtension.create(),
-                        StrikethroughSubscriptExtension.create()))
-                .set(DefinitionExtension.TILDE_MARKER, false)
-                .set(TablesExtension.COLUMN_SPANS, true)
-                .set(TablesExtension.APPEND_MISSING_COLUMNS, false)
-                .set(TablesExtension.DISCARD_EXTRA_COLUMNS, true)
-                .set(TablesExtension.HEADER_SEPARATOR_COLUMN_MATCH, true)
-                .set(DitaRenderer.SPECIALIZATION, true));
-        final List<SAXParseException> warnings = new ArrayList<>();
-        reader.setErrorHandler(new ErrorHandler() {
-            @Override
-            public void warning(SAXParseException exception) throws SAXException {
-                warnings.add(exception);
-            }
-
-            @Override
-            public void error(SAXParseException exception) throws SAXException {
-                throw exception;
-            }
-
-            @Override
-            public void fatalError(SAXParseException exception) throws SAXException {
-                throw exception;
-            }
-        });
+                .set(Parser.EXTENSIONS, singletonList(YamlFrontMatterExtension.create()))
+                .set(DitaRenderer.FIX_ROOT_HEADING, true));
+        final TestErrorHandler errorHandler = new TestErrorHandler();
+        reader.setErrorHandler(errorHandler);
 
         run(file);
 
-        assertEquals(1, warnings.size());
-        final SAXParseException e = warnings.get(0);
+        assertEquals(1, errorHandler.warnings.size());
+        final SAXParseException e = errorHandler.warnings.get(0);
         assertEquals("Document content doesn't start with heading", e.getMessage());
         assertEquals("classpath:/markdown/" + file, e.getSystemId());
         assertEquals(null, e.getPublicId());
@@ -160,33 +114,20 @@ public class MarkdownReaderTest extends AbstractReaderTest {
 
     @Test
     public void test_schemaParseFailure() throws Exception {
-        final List<SAXParseException> errors = new ArrayList<>();
         final XMLReader reader = getReader();
-        reader.setErrorHandler(new ErrorHandler() {
-            @Override
-            public void warning(SAXParseException exception) throws SAXException {
-            }
+        final TestErrorHandler errorHandler = new TestErrorHandler();
+        reader.setErrorHandler(errorHandler);
 
-            @Override
-            public void error(SAXParseException exception) throws SAXException {
-                errors.add(exception);
-            }
-
-            @Override
-            public void fatalError(SAXParseException exception) throws SAXException {
-            }
-        });
-
-        try (final InputStream in = getClass().getResourceAsStream("/markdown/schema_unrecognized.md")) {
+        try (final InputStream in = getClass().getResourceAsStream("/markdown/schema/unrecognized.md")) {
             final InputSource input = new InputSource(in);
-            input.setSystemId("classpath:///schema_unrecognized.md");
+            input.setSystemId("classpath:///schema/unrecognized.md");
             reader.parse(input);
         }
 
-        assertEquals(1, errors.size());
-        final SAXParseException act = errors.get(0);
+        assertEquals(1, errorHandler.errors.size());
+        final SAXParseException act = errorHandler.errors.get(0);
         assertEquals(null, act.getPublicId());
-        assertEquals("classpath:///schema_unrecognized.md", act.getSystemId());
+        assertEquals("classpath:///schema/unrecognized.md", act.getSystemId());
         assertEquals(2, act.getLineNumber());
         assertEquals(56, act.getColumnNumber());
     }
@@ -195,9 +136,9 @@ public class MarkdownReaderTest extends AbstractReaderTest {
     public void test_schemaParseFailure_withoutErrorHandler() throws Exception {
         final XMLReader reader = getReader();
 
-        try (final InputStream in = getClass().getResourceAsStream("/" + getSrc() + "schema_unrecognized.md")) {
+        try (final InputStream in = getClass().getResourceAsStream("/" + getSrc() + "schema/unrecognized.md")) {
             final InputSource input = new InputSource(in);
-            input.setSystemId("classpath:///schema_unrecognized.md");
+            input.setSystemId("classpath:///schema/unrecognized.md");
             reader.parse(input);
         }
     }
