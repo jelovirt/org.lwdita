@@ -16,7 +16,7 @@ public class SpecializeFilter extends XMLFilterImpl {
 
     private static int DEPTH_IN_BODY = 3;
 
-    private enum Type {
+    public enum Type {
         TOPIC,
         CONCEPT,
         TASK,
@@ -37,6 +37,8 @@ public class SpecializeFilter extends XMLFilterImpl {
         RESULT
     }
 
+    private final Type forceType;
+
     /**
      * Topic type stack. Default to topic in case of compound type
      */
@@ -48,21 +50,34 @@ public class SpecializeFilter extends XMLFilterImpl {
 
     private Deque<String> elementStack = new ArrayDeque<>();
 
+    public SpecializeFilter() {
+        this(null);
+    }
+
+    public SpecializeFilter(Type forceType) {
+        super();
+        this.forceType = forceType;
+    }
+
     @Override
     public void startElement(String uri, String localName, String qName, Attributes atts) throws SAXException {
         depth++;
 
         if (localName.equals(TOPIC_TOPIC.localName)) {
             depth = 1;
-            final Collection<String> outputclasses = getOutputclass(atts);
-            if (outputclasses.contains(CONCEPT_CONCEPT.localName)) {
-                typeStack.push(Type.CONCEPT);
-            } else if (outputclasses.contains(TASK_TASK.localName)) {
-                typeStack.push(Type.TASK);
-            } else if (outputclasses.contains(REFERENCE_REFERENCE.localName)) {
-                typeStack.push(Type.REFERENCE);
+            if (forceType != null) {
+                typeStack.push(forceType);
             } else {
-                typeStack.push(typeStack.peek());
+                final Collection<String> outputclasses = getOutputclass(atts);
+                if (outputclasses.contains(CONCEPT_CONCEPT.localName)) {
+                    typeStack.push(Type.CONCEPT);
+                } else if (outputclasses.contains(TASK_TASK.localName)) {
+                    typeStack.push(Type.TASK);
+                } else if (outputclasses.contains(REFERENCE_REFERENCE.localName)) {
+                    typeStack.push(Type.REFERENCE);
+                } else {
+                    typeStack.push(typeStack.peek());
+                }
             }
         }
 

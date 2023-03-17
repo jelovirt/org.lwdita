@@ -2,8 +2,8 @@
 $schema: urn:oasis:names:tc:dita:xsd:topic.xsd
 ---
 
-# Title
+# Topic
 
 Shortdesc.
 
-Paragraph.
+This is a topic.

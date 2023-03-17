@@ -15,22 +15,26 @@ import com.vladsch.flexmark.ext.superscript.SuperscriptExtension;
 import com.vladsch.flexmark.ext.tables.TablesExtension;
 import com.vladsch.flexmark.ext.yaml.front.matter.YamlFrontMatterExtension;
 import com.vladsch.flexmark.parser.Parser;
+import com.vladsch.flexmark.util.data.DataKey;
+import com.vladsch.flexmark.util.data.DataSet;
 import com.vladsch.flexmark.util.data.MutableDataSet;
 import com.vladsch.flexmark.util.sequence.BasedSequence;
 import org.xml.sax.*;
+import org.xml.sax.helpers.LocatorImpl;
 
 import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.CharBuffer;
+import java.util.Map;
 import java.util.Optional;
 import java.util.ServiceLoader;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static com.google.common.io.CharStreams.copy;
 import static java.util.Arrays.asList;
-import static org.apache.commons.io.IOUtils.copy;
 
 /**
  * XMLReader implementation for Markdown.
@@ -39,6 +43,39 @@ public class MarkdownReader implements XMLReader {
 
     private static final Pattern schemaPattern = Pattern.compile("^---[\r\n]+\\$schema: +(.+?)[\r\n]");
     private static final ServiceLoader<SchemaProvider> schemaLoader = ServiceLoader.load(SchemaProvider.class);
+
+    /**
+     * Supported features mapped to options.
+     *
+     * <dl>
+     *     <dt><code>http://lwdita.org/sax/features/shortdesc-paragraph</code></dt>
+     *     <dd>Treat first paragraph as shortdesc.</dd>
+     *     <dt><code>http://lwdita.org/sax/features/id-from-yaml</code></dt>
+     *     <dd>Read topic ID from YAML header if available.</dd>
+     *     <dt><code>http://lwdita.org/sax/features/mdita</code></dt>
+     *     <dd>Parse as MDITA.</dd>
+     *     <dt><code>http://lwdita.org/sax/features/specialization</code></dt>
+     *     <dd>Support concept, task, and reference specialization from heading class.</dd>
+     *     <dt><code>http://lwdita.org/sax/features/specialization-concept</code></dt>
+     *     <dd>Generate DITA concept output.</dd>
+     *     <dt><code>http://lwdita.org/sax/features/specialization-task</code></dt>
+     *     <dd>Generate DITA task output.</dd>
+     *     <dt><code>http://lwdita.org/sax/features/specialization-reference</code></dt>
+     *     <dd>Generate DITA referenc output.</dd>
+     *     <dt><code>http://lwdita.org/sax/features/fix-root-heading</code></dt>
+     *     <dd>Fix missing root heading by reading title from either YAML heading or filename.</dd>
+     * </dl>
+     */
+    private static final Map<String, DataKey<Boolean>> FEATURES = Map.of(
+            "http://lwdita.org/sax/features/shortdesc-paragraph", DitaRenderer.SHORTDESC_PARAGRAPH,
+            "http://lwdita.org/sax/features/id-from-yaml", DitaRenderer.ID_FROM_YAML,
+            "http://lwdita.org/sax/features/mdita", DitaRenderer.LW_DITA,
+            "http://lwdita.org/sax/features/specialization", DitaRenderer.SPECIALIZATION,
+            "http://lwdita.org/sax/features/specialization-concept", DitaRenderer.SPECIALIZATION_CONCEPT,
+            "http://lwdita.org/sax/features/specialization-task", DitaRenderer.SPECIALIZATION_TASK,
+            "http://lwdita.org/sax/features/specialization-reference", DitaRenderer.SPECIALIZATION_REFERENCE,
+            "http://lwdita.org/sax/features/fix-root-heading", DitaRenderer.FIX_ROOT_HEADING
+    );
 
     private final MutableDataSet options;
 
@@ -75,44 +112,52 @@ public class MarkdownReader implements XMLReader {
         );
     }
 
-    public MarkdownReader(final MutableDataSet options) {
-        this.options = options;
+    public MarkdownReader(final DataSet options) {
+        this.options = new MutableDataSet(options);
     }
 
     @Override
     public boolean getFeature(String name) throws SAXNotRecognizedException, SAXNotSupportedException {
-        return false;
+        switch (name) {
+            case "http://xml.org/sax/features/namespaces":
+                return true;
+            case "http://xml.org/sax/features/namespace-prefixes":
+                return false;
+            default:
+                final DataKey<Boolean> option = FEATURES.get(name);
+                if (option != null) {
+                    return option.get(options);
+                } else {
+                    throw new SAXNotRecognizedException("Unrecognized feature " + name);
+                }
+        }
     }
 
     /**
      * Set the value of a feature flag.
      *
-     * <dl>
-     *     <dt><code>http://lwdita.org/sax/features/shortdesc-paragraph</code></dt>
-     *     <dd>Treat first paragraph as shortdesc.</dd>
-     *     <dt><code>http://lwdita.org/sax/features/id-from-yaml</code></dt>
-     *     <dd>Read topic ID from YAML header if available.</dd>
-     *     <dt><code>http://lwdita.org/sax/features/mdita</code></dt>
-     *     <dd>Parse as MDITA.</dd>
-     *     <dt><code>http://lwdita.org/sax/features/specialization</code></dt>
-     *     <dd>Support concept, task, and reference specialization from header class.</dd>
-     * </dl>
+     * @see #FEATURES
      */
     @Override
     public void setFeature(String name, boolean value) throws SAXNotRecognizedException, SAXNotSupportedException {
         switch (name) {
-            case "http://lwdita.org/sax/features/shortdesc-paragraph":
-                options.set(DitaRenderer.SHORTDESC_PARAGRAPH, value);
+            case "http://xml.org/sax/features/namespaces":
+                if (!value) {
+                    throw new SAXNotSupportedException("Unsupported value " + value + " for " + name);
+                }
                 break;
-            case "http://lwdita.org/sax/features/id-from-yaml":
-                options.set(DitaRenderer.ID_FROM_YAML, value);
+            case "http://xml.org/sax/features/namespace-prefixes":
+                if (value) {
+                    throw new SAXNotSupportedException("Unsupported value " + value + " for " + name);
+                }
                 break;
-            case "http://lwdita.org/sax/features/mdita":
-                options.set(DitaRenderer.LW_DITA, value);
-                break;
-            case "http://lwdita.org/sax/features/specialization":
-                options.set(DitaRenderer.SPECIALIZATION, value);
-                break;
+            default:
+                final DataKey option = FEATURES.get(name);
+                if (option != null) {
+                    options.set(option, value);
+                } else {
+                    throw new SAXNotRecognizedException("Unrecognized feature " + name);
+                }
         }
     }
 
@@ -169,11 +214,12 @@ public class MarkdownReader implements XMLReader {
     @Override
     public void parse(final InputSource input) throws IOException, SAXException {
         final char[] markdownContent = getMarkdownContent(input);
-        final URI schema = getSchema(markdownContent);
+        final Map.Entry<URI, Locator> schema = getSchema(markdownContent, input);
         final BasedSequence sequence = BasedSequence.of(CharBuffer.wrap(markdownContent));
 
         final MarkdownParser markdownParser = getParser(schema);
         markdownParser.setContentHandler(contentHandler);
+        markdownParser.setErrorHandler(errorHandler);
         markdownParser.convert(sequence, Optional.ofNullable(input.getSystemId()).map(URI::create).orElse(null));
     }
 
@@ -182,27 +228,62 @@ public class MarkdownReader implements XMLReader {
         parse(new InputSource(systemId));
     }
 
-    private MarkdownParser getParser(URI schema) {
+    private MarkdownParser getParser(Map.Entry<URI, Locator> schema) throws SAXException {
         if (schema != null) {
-            return schemaLoader.stream()
-                    .filter(p -> p.get().isSupportedSchema(schema))
+            final URI value = schema.getKey();
+            final Optional<MarkdownParser> markdownParser = schemaLoader.stream()
+                    .filter(p -> p.get().isSupportedSchema(value))
                     .findAny()
-                    .map(s -> s.get().createMarkdownParser(schema))
-                    .orElse(new MarkdownParserImpl(options));
+                    .map(s -> s.get().createMarkdownParser(value));
+            if (markdownParser.isEmpty()) {
+                if (errorHandler != null) {
+                    errorHandler.error(new SAXParseException(
+                            String.format("Markdown schema %s not recognized, using default Markdown parser", value),
+                            schema.getValue()
+                    ));
+                }
+            }
+            return markdownParser.orElse(new MarkdownParserImpl(options.toImmutable()));
         } else {
-            return new MarkdownParserImpl(options);
+            return new MarkdownParserImpl(options.toImmutable());
         }
     }
 
     @VisibleForTesting
-    URI getSchema(char[] data) {
+    Map.Entry<URI, Locator> getSchema(char[] data, InputSource input) throws SAXParseException {
         final Matcher matcher = schemaPattern.matcher(CharBuffer.wrap(data));
-        if (matcher.find()) {
+        if (matcher.find() && matcher.group(1) != null) {
             final String value = matcher.group(1)
                     .replaceAll("^'(.+)'$", "$1")
                     .replaceAll("^\"(.+)\"$", "$1")
                     .trim();
-            return URI.create(value);
+
+            final LocatorImpl locator = new LocatorImpl();
+            locator.setSystemId(input.getSystemId());
+            locator.setPublicId(input.getPublicId());
+            for (int i = 0, row = 1, col = 1, end = matcher.end(1); i < data.length; i++) {
+                if (i == end) {
+                    locator.setLineNumber(row);
+                    locator.setColumnNumber(col);
+                    break;
+                }
+                if (data[i] == '\n') {
+                    row++;
+                    col = 1;
+                } else if (data[i] == '\r') {
+                    // ignore
+                } else {
+                    col++;
+                }
+            }
+
+            try {
+                final URI schema = new URI(value);
+                return Map.entry(schema, locator);
+            } catch (URISyntaxException e) {
+                throw new SAXParseException(String.format("Failed to parse schema URI %s ", value), locator, e);
+            }
+
         }
         return null;
     }

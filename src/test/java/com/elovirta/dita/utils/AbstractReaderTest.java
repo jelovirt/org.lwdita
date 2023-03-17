@@ -1,5 +1,6 @@
 package com.elovirta.dita.utils;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.opentest4j.AssertionFailedError;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -32,7 +33,13 @@ public abstract class AbstractReaderTest {
 
     private final TransformerFactory transformerFactory = TransformerFactory.newInstance();
     private final DocumentBuilder db;
-    private final XMLReader r;
+
+    protected XMLReader reader;
+
+    @BeforeEach
+    void setUpReader() {
+        reader = getReader();
+    }
 
     public abstract XMLReader getReader();
 
@@ -49,7 +56,6 @@ public abstract class AbstractReaderTest {
             final DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
             builderFactory.setNamespaceAware(true);
             db = builderFactory.newDocumentBuilder();
-            r = getReader();
         } catch (ParserConfigurationException e) {
             throw new RuntimeException(e);
         }
@@ -66,7 +72,7 @@ public abstract class AbstractReaderTest {
             final Transformer t = transformerFactory.newTransformer();
             final InputSource i = new InputSource(in);
             i.setSystemId(URI.create("classpath:/" + input).toString());
-            t.transform(new SAXSource(r, i), new DOMResult(act));
+            t.transform(new SAXSource(reader, i), new DOMResult(act));
         }
 
         final Document exp;
@@ -152,11 +158,10 @@ public abstract class AbstractReaderTest {
     }
 
     protected void testLocatorParsing(final List<Event> exp, final String file) throws IOException, SAXException {
-        final XMLReader r = getReader();
-        r.setContentHandler(new LocatorContentHandler(new ArrayDeque<>(exp)));
+        reader.setContentHandler(new LocatorContentHandler(new ArrayDeque<>(exp)));
         try (InputStream in = getClass().getClassLoader().getResourceAsStream(getSrc() + file)) {
             InputSource input = new InputSource(in);
-            r.parse(input);
+            reader.parse(input);
         }
     }
 

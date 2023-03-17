@@ -11,6 +11,9 @@ import com.vladsch.flexmark.util.ast.Node;
 import com.vladsch.flexmark.util.data.DataSet;
 import com.vladsch.flexmark.util.sequence.BasedSequence;
 import org.xml.sax.ContentHandler;
+import org.xml.sax.ErrorHandler;
+import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
 import org.xml.sax.helpers.XMLFilterImpl;
 
 import java.net.URI;
@@ -24,6 +27,7 @@ public class MarkdownParserImpl implements MarkdownParser {
 
     private final DataSet options;
     private ContentHandler contentHandler;
+    private ErrorHandler errorHandler;
 
     public MarkdownParserImpl(DataSet options) {
         this.options = options;
@@ -33,14 +37,23 @@ public class MarkdownParserImpl implements MarkdownParser {
     public void convert(BasedSequence sequence, URI input) throws ParseException {
         final Parser parser = Parser.builder(options).build();
         final Document root = parser.parse(sequence);
-        final Document cleaned = preprocess(root, input);
-        validate(cleaned);
-        render(cleaned);
+        try {
+            final Document cleaned = preprocess(root, input);
+            validate(cleaned);
+            render(cleaned);
+        } catch (SAXException e) {
+            throw new ParseException(e);
+        }
     }
 
     @Override
     public void setContentHandler(final ContentHandler handler) {
         this.contentHandler = handler;
+    }
+
+    @Override
+    public void setErrorHandler(ErrorHandler errorHandler) {
+        this.errorHandler = errorHandler;
     }
 
     /**
@@ -52,6 +65,18 @@ public class MarkdownParserImpl implements MarkdownParser {
         ContentHandler res = contentHandler;
         if (DitaRenderer.SPECIALIZATION.get(options)) {
             final XMLFilterImpl specialize = new SpecializeFilter();
+            specialize.setContentHandler(res);
+            res = specialize;
+        } else if (DitaRenderer.SPECIALIZATION_CONCEPT.get(options)) {
+            final XMLFilterImpl specialize = new SpecializeFilter(SpecializeFilter.Type.CONCEPT);
+            specialize.setContentHandler(res);
+            res = specialize;
+        } else if (DitaRenderer.SPECIALIZATION_TASK.get(options)) {
+            final XMLFilterImpl specialize = new SpecializeFilter(SpecializeFilter.Type.TASK);
+            specialize.setContentHandler(res);
+            res = specialize;
+        } else if (DitaRenderer.SPECIALIZATION_REFERENCE.get(options)) {
+            final XMLFilterImpl specialize = new SpecializeFilter(SpecializeFilter.Type.REFERENCE);
             specialize.setContentHandler(res);
             res = specialize;
         }
@@ -74,10 +99,10 @@ public class MarkdownParserImpl implements MarkdownParser {
             if (node instanceof Heading) {
                 Heading heading = (Heading) node;
                 if (lwdita && heading.getLevel() > 2) {
-                    throw new ParseException(String.format("LwDITA does not support level %d header: %s", heading.getLevel(), heading.getText()));
+                    throw new ParseException(String.format("LwDITA does not support level %d heading: %s", heading.getLevel(), heading.getText()));
                 }
                 if (heading.getLevel() > level + 1) {
-                    throw new ParseException(String.format("Header level raised from %d to %d without intermediate header level", level, heading.getLevel()));
+                    throw new ParseException(String.format("Heading level raised from %d to %d without intermediate heading level", level, heading.getLevel()));
                 }
                 level = heading.getLevel();
             }
@@ -90,37 +115,47 @@ public class MarkdownParserImpl implements MarkdownParser {
      * <p>
      * If document doesn't start with H1, generate H1 from YAML metadata or file name.
      */
-    protected Document preprocess(Document root, URI input) {
+    protected Document preprocess(Document root, URI input) throws SAXException {
         if (DitaRenderer.WIKI.get(options) && isWiki(root)) {
-            final YamlFrontMatterBlock yaml = root.getFirstChild() instanceof YamlFrontMatterBlock
-                    ? (YamlFrontMatterBlock) root.getFirstChild()
-                    : null;
-            String title = getTextFromFile(input);
-            final Heading heading = new Heading();
-            if (yaml != null) {
-                final AbstractYamlFrontMatterVisitor v = new AbstractYamlFrontMatterVisitor();
-                v.visit(root);
-                final Map<String, List<String>> metadata = v.getData();
-                final List<String> ids = metadata.get("id");
-                if (ids != null && !ids.isEmpty()) {
-                    heading.setAnchorRefId(ids.get(0));
-                }
-                final List<String> titles = metadata.get("title");
-                if (titles != null && !titles.isEmpty()) {
-                    title = titles.get(0);
-                    if ((title.charAt(0) == '\'' && title.charAt(title.length() - 1) == '\'') ||
-                            (title.charAt(0) == '"' && title.charAt(title.length() - 1) == '"')) {
-                        title = title.substring(1, title.length() - 1);
-                    }
-                }
+            generateRootHeading(root, input);
+        }
+        if (DitaRenderer.FIX_ROOT_HEADING.get(options) && isWiki(root)) {
+            if (errorHandler != null) {
+                errorHandler.warning(new SAXParseException("Document content doesn't start with heading", null, input.toString(), 1, 1));
             }
-            heading.setLevel(1);
-            final AnchorLink anchorLink = new AnchorLink();
-            anchorLink.appendChild(new Text(title));
-            heading.appendChild(anchorLink);
-            root.prependChild(heading);
+            generateRootHeading(root, input);
         }
         return root;
+    }
+
+    private void generateRootHeading(Document root, URI input) {
+        final YamlFrontMatterBlock yaml = root.getFirstChild() instanceof YamlFrontMatterBlock
+                ? (YamlFrontMatterBlock) root.getFirstChild()
+                : null;
+        String title = getTextFromFile(input);
+        final Heading heading = new Heading();
+        if (yaml != null) {
+            final AbstractYamlFrontMatterVisitor v = new AbstractYamlFrontMatterVisitor();
+            v.visit(root);
+            final Map<String, List<String>> metadata = v.getData();
+            final List<String> ids = metadata.get("id");
+            if (ids != null && !ids.isEmpty()) {
+                heading.setAnchorRefId(ids.get(0));
+            }
+            final List<String> titles = metadata.get("title");
+            if (titles != null && !titles.isEmpty()) {
+                title = titles.get(0);
+                if ((title.charAt(0) == '\'' && title.charAt(title.length() - 1) == '\'') ||
+                        (title.charAt(0) == '"' && title.charAt(title.length() - 1) == '"')) {
+                    title = title.substring(1, title.length() - 1);
+                }
+            }
+        }
+        heading.setLevel(1);
+        final AnchorLink anchorLink = new AnchorLink();
+        anchorLink.appendChild(new Text(title));
+        heading.appendChild(anchorLink);
+        root.prependChild(heading);
     }
 
     /**

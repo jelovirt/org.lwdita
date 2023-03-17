@@ -13,9 +13,11 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class MDitaReaderTest extends AbstractReaderTest {
 
+    private MarkdownReader r = new MDitaReader();
+
     @Override
     public MarkdownReader getReader() {
-        return new MDitaReader();
+        return r;
     }
 
     @Override

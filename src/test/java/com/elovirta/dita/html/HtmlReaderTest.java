@@ -7,9 +7,11 @@ import org.xml.sax.XMLReader;
 
 public class HtmlReaderTest extends AbstractReaderTest {
 
+    private XMLReader r = new HtmlReader();
+
     @Override
     public XMLReader getReader() {
-        return new HtmlReader();
+        return r;
     }
 
     @Override

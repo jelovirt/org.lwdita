@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<concept xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/" class="- topic/topic concept/concept "
+         ditaarch:DITAArchVersion="2.0" id="concept"
+         specializations="@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product">
+  <title class="- topic/title ">Concept</title>
+  <shortdesc class="- topic/shortdesc ">Shortdesc.</shortdesc>
+  <prolog class="- topic/prolog "/>
+  <conbody class="- topic/body concept/conbody ">
+    <p class="- topic/p ">This is a concept.</p>
+  </conbody>
+</concept>

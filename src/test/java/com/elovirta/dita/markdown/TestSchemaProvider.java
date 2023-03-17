@@ -21,7 +21,7 @@ import java.net.URI;
 import static java.util.Arrays.asList;
 
 public class TestSchemaProvider implements SchemaProvider {
-    private static final URI SCHEMA = URI.create("urn:oasis:names:tc:dita:xsd:topic.xsd");
+    private static final URI SCHEMA = URI.create("urn:example:names:tc:dita:xsd:topic.xsd");
     private static final DataSet OPTIONS = new MutableDataSet()
             .set(Parser.EXTENSIONS, asList(
                     AbbreviationExtension.create(),

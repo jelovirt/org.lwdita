@@ -7,9 +7,11 @@ import org.xml.sax.XMLReader;
 
 public class HDitaReaderTest extends AbstractReaderTest {
 
+    private XMLReader r = new HDitaReader();
+
     @Override
     public XMLReader getReader() {
-        return new HDitaReader();
+        return r;
     }
 
     @Override

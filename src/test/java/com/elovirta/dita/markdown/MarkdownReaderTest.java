@@ -1,26 +1,32 @@
 package com.elovirta.dita.markdown;
 
 import com.elovirta.dita.utils.AbstractReaderTest;
+import com.elovirta.dita.utils.TestErrorHandler;
+import com.vladsch.flexmark.ext.yaml.front.matter.YamlFrontMatterExtension;
+import com.vladsch.flexmark.parser.Parser;
+import com.vladsch.flexmark.util.data.MutableDataSet;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-import org.xml.sax.XMLReader;
+import org.xml.sax.*;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URL;
 import java.util.Arrays;
+import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static java.util.Collections.singletonList;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class MarkdownReaderTest extends AbstractReaderTest {
 
+    private XMLReader r = new MarkdownReader();
+
     @Override
     public XMLReader getReader() {
-        return new MarkdownReader();
+        return r;
     }
 
     @Override
@@ -77,10 +83,68 @@ public class MarkdownReaderTest extends AbstractReaderTest {
             "unsupported_html.md",
             "yaml.md",
 //            "pandoc_header.md",
-            "schema.md",
+            "schema/concept.md",
+            "schema/example.md",
+            "schema/reference.md",
+            "schema/task.md",
+            "schema/topic.md",
     })
     public void test(String file) throws Exception {
         run(file);
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "missing_root_header.md",
+            "missing_root_header_with_yaml.md",
+    })
+    public void test_missingHeader(String file) throws Exception {
+        reader = new MarkdownReader(new MutableDataSet()
+                .set(Parser.EXTENSIONS, singletonList(YamlFrontMatterExtension.create()))
+                .set(DitaRenderer.FIX_ROOT_HEADING, true));
+        final TestErrorHandler errorHandler = new TestErrorHandler();
+        reader.setErrorHandler(errorHandler);
+
+        run(file);
+
+        assertEquals(1, errorHandler.warnings.size());
+        final SAXParseException e = errorHandler.warnings.get(0);
+        assertEquals("Document content doesn't start with heading", e.getMessage());
+        assertEquals("classpath:/markdown/" + file, e.getSystemId());
+        assertEquals(null, e.getPublicId());
+        assertEquals(1, e.getLineNumber());
+        assertEquals(1, e.getColumnNumber());
+    }
+
+    @Test
+    public void test_schemaParseFailure() throws Exception {
+        final XMLReader reader = getReader();
+        final TestErrorHandler errorHandler = new TestErrorHandler();
+        reader.setErrorHandler(errorHandler);
+
+        try (final InputStream in = getClass().getResourceAsStream("/markdown/schema/unrecognized.md")) {
+            final InputSource input = new InputSource(in);
+            input.setSystemId("classpath:///schema/unrecognized.md");
+            reader.parse(input);
+        }
+
+        assertEquals(1, errorHandler.errors.size());
+        final SAXParseException act = errorHandler.errors.get(0);
+        assertEquals(null, act.getPublicId());
+        assertEquals("classpath:///schema/unrecognized.md", act.getSystemId());
+        assertEquals(2, act.getLineNumber());
+        assertEquals(56, act.getColumnNumber());
+    }
+
+    @Test
+    public void test_schemaParseFailure_withoutErrorHandler() throws Exception {
+        final XMLReader reader = getReader();
+
+        try (final InputStream in = getClass().getResourceAsStream("/" + getSrc() + "schema/unrecognized.md")) {
+            final InputSource input = new InputSource(in);
+            input.setSystemId("classpath:///schema/unrecognized.md");
+            reader.parse(input);
+        }
     }
 
     @ParameterizedTest
@@ -202,8 +266,31 @@ public class MarkdownReaderTest extends AbstractReaderTest {
             "---\n$schema: \"urn:test\"\n",
             "---\n$schema: 'urn:test'\n",
     })
-    public void getSchema(String input) {
+    public void getSchema(String data) throws SAXParseException {
         final MarkdownReader markdownReader = new MarkdownReader();
-        assertEquals(URI.create("urn:test"), markdownReader.getSchema(input.toCharArray()));
+        final InputSource input = new InputSource("file:/foo/bar.md");
+
+        final Map.Entry<URI, Locator> act = markdownReader.getSchema(data.toCharArray(), input);
+
+        assertEquals(URI.create("urn:test"), act.getKey());
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "---\n$schema: urn: test\n",
+            "---\r\n$schema: urn: test\r\n",
+    })
+    public void getSchema_failure(String data) {
+        final InputSource input = new InputSource("file:/foo/bar.md");
+
+        try {
+            ((MarkdownReader) reader).getSchema(data.toCharArray(), input);
+            fail();
+        } catch (SAXParseException e) {
+            assertEquals(null, e.getPublicId());
+            assertEquals("file:/foo/bar.md", e.getSystemId());
+            assertEquals(2, e.getLineNumber());
+            assertEquals(19, e.getColumnNumber());
+        }
     }
 }

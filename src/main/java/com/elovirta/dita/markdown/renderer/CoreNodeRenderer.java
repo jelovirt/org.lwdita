@@ -11,6 +11,7 @@ import com.elovirta.dita.utils.ClasspathURIResolver;
 import com.elovirta.dita.utils.FragmentContentHandler;
 import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
+import com.google.common.io.Files;
 import com.vladsch.flexmark.ast.*;
 import com.vladsch.flexmark.ext.abbreviation.Abbreviation;
 import com.vladsch.flexmark.ext.abbreviation.AbbreviationBlock;
@@ -39,7 +40,6 @@ import com.vladsch.flexmark.util.data.DataHolder;
 import com.vladsch.flexmark.util.sequence.BasedSequence;
 import nu.validator.htmlparser.common.XmlViolationPolicy;
 import nu.validator.htmlparser.sax.HtmlParser;
-import org.apache.commons.io.FilenameUtils;
 import org.dita.dost.util.DitaClass;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
@@ -1803,7 +1803,7 @@ public class CoreNodeRenderer {
             final URI uri = toURI(href);
             String format = null;
             if (uri.getPath() != null) {
-                final String ext = FilenameUtils.getExtension(uri.getPath()).toLowerCase();
+                final String ext = Files.getFileExtension(uri.getPath()).toLowerCase();
                 switch (ext) {
                     case ATTR_FORMAT_VALUE_DITA:
                     case "xml":
