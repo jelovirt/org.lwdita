@@ -1,11 +1,11 @@
 apply plugin: "java"
-//apply plugin: "maven-publish"
+apply plugin: "maven-publish"
 
 sourceCompatibility = 11
 targetCompatibility = 11
 
 group = 'com.elovirta.dita'
-version = "4.0.0"
+version = "5.0.0"
 
 repositories {
     mavenCentral()
@@ -77,13 +77,13 @@ dependencies {
 }
 
 task dist(type: Zip) {
-    from (jar) {
+    from(jar) {
         into "lib"
     }
-    from (configurations.runtimeClasspath.allArtifacts.files) {
+    from(configurations.runtimeClasspath.allArtifacts.files) {
         into "lib"
     }
-    from (configurations.runtimeClasspath) {
+    from(configurations.runtimeClasspath) {
         include { details -> details.file.name.contains('flexmark') }
         exclude { details -> details.file.name.contains('flexmark-all') }
 //        exclude { details -> details.file.name.contains('flexmark-ext-emoji') }
@@ -98,8 +98,8 @@ task dist(type: Zip) {
     from("src/main") {
         include "plugin.xml"
         expand(
-            id: project.name,
-            version: project.version
+                id: project.name,
+                version: project.version
         )
     }
     from("src/main") {
@@ -126,8 +126,26 @@ task dist(type: Zip) {
     from(".") {
         include "NOTICES"
         expand(
-            year: new Date().format('yyyy')
+                year: new Date().format('yyyy')
         )
     }
     archiveName "${project.name}-${project.version}.zip"
+}
+
+publishing {
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = "https://maven.pkg.github.com/jelovirt/org.lwdita"
+            credentials {
+                username = System.getenv("GITHUB_ACTOR")
+                password = System.getenv("GITHUB_TOKEN")
+            }
+        }
+    }
+    publications {
+        gpr(MavenPublication) {
+            from(components.java)
+        }
+    }
 }
