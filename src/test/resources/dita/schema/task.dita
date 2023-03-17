@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<task xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/" class="- topic/topic task/task "
+      ditaarch:DITAArchVersion="2.0" id="task"
+      specializations="@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product">
+  <title class="- topic/title ">Task</title>
+  <shortdesc class="- topic/shortdesc ">Shortdesc.</shortdesc>
+  <prolog class="- topic/prolog "/>
+  <taskbody class="- topic/body task/taskbody ">
+    <context class="- topic/section task/context ">
+      <p class="- topic/p ">Context.</p>
+    </context>
+    <steps class="- topic/ol task/steps ">
+      <step class="- topic/li task/step ">
+        <cmd class="- topic/ph task/cmd ">Command.</cmd>
+        <info class="- topic/itemgroup task/info ">
+          <p class="- topic/p ">Info.</p>
+        </info>
+      </step>
+    </steps>
+  </taskbody>
+</task>
