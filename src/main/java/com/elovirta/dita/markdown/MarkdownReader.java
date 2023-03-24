@@ -54,6 +54,10 @@ public class MarkdownReader implements XMLReader {
      *     <dd>Read topic ID from YAML header if available.</dd>
      *     <dt><code>http://lwdita.org/sax/features/mdita</code></dt>
      *     <dd>Parse as MDITA.</dd>
+     *     <dt><code>http://lwdita.org/sax/features/mdita-extended-profile</code></dt>
+     *     <dd>Parse as MDITA extended profile.</dd>
+     *     <dt><code>http://lwdita.org/sax/features/mdita-core-profile</code></dt>
+     *     <dd>Parse as MDITA core profile.</dd>
      *     <dt><code>http://lwdita.org/sax/features/specialization</code></dt>
      *     <dd>Support concept, task, and reference specialization from heading class.</dd>
      *     <dt><code>http://lwdita.org/sax/features/specialization-concept</code></dt>
@@ -70,6 +74,8 @@ public class MarkdownReader implements XMLReader {
             "http://lwdita.org/sax/features/shortdesc-paragraph", DitaRenderer.SHORTDESC_PARAGRAPH,
             "http://lwdita.org/sax/features/id-from-yaml", DitaRenderer.ID_FROM_YAML,
             "http://lwdita.org/sax/features/mdita", DitaRenderer.LW_DITA,
+            "http://lwdita.org/sax/features/mdita-extended-profile", DitaRenderer.MDITA_EXTENDED_PROFILE,
+            "http://lwdita.org/sax/features/mdita-core-profile", DitaRenderer.MDITA_CORE_PROFILE,
             "http://lwdita.org/sax/features/specialization", DitaRenderer.SPECIALIZATION,
             "http://lwdita.org/sax/features/specialization-concept", DitaRenderer.SPECIALIZATION_CONCEPT,
             "http://lwdita.org/sax/features/specialization-task", DitaRenderer.SPECIALIZATION_TASK,

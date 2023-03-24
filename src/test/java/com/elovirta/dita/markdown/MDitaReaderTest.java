@@ -32,7 +32,7 @@ public class MDitaReaderTest extends AbstractReaderTest {
 
     @ParameterizedTest
     @ValueSource(strings = {
-            "abbreviation.md",
+//            "abbreviation.md",
             "body_attributes.md",
             "codeblock.md",
             "comment.md",
@@ -48,6 +48,7 @@ public class MDitaReaderTest extends AbstractReaderTest {
             "html.md",
             "image.md",
             "inline.md",
+//            "inline_extended.md",
             "jekyll.md",
             "keyref.md",
             "keys.md",

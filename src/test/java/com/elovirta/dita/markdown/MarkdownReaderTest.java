@@ -59,6 +59,7 @@ public class MarkdownReaderTest extends AbstractReaderTest {
             "image-size.md",
             "image.md",
             "inline.md",
+            "inline_extended.md",
             "jekyll.md",
             "keyref.md",
             "keys.md",
