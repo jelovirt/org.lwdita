@@ -23,7 +23,10 @@ public class DitaRenderer {
 
     public static final DataKey<Boolean> SHORTDESC_PARAGRAPH = new DataKey<>("SHORTDESC_PARAGRAPH", false);
     public static final DataKey<Boolean> ID_FROM_YAML = new DataKey<>("ID_FROM_YAML", false);
-    // FIXME: Make this an alias for MDITA_EXTENDED_PROFILE
+    /**
+     * @deprecated use {@link #MDITA_EXTENDED_PROFILE} instead.
+     */
+    @Deprecated
     public static final DataKey<Boolean> LW_DITA = new DataKey<>("LW_DITA", false);
     public static final DataKey<Boolean> MDITA_CORE_PROFILE = new DataKey<>("MDITA_CORE_PROFILE", false);
     public static final DataKey<Boolean> MDITA_EXTENDED_PROFILE = new DataKey<>("MDITA_EXTENDED_PROFILE", false);
@@ -97,7 +100,10 @@ public class DitaRenderer {
     private final DataHolder options;
 
     DitaRenderer(DataSet builder) {
-        this.options = new DataSet(builder);
+        this.options = new MutableDataSet(builder)
+                // Support legacy LW_DITA as an alias for MDITA_EXTENDED_PROFILE
+                .set(MDITA_EXTENDED_PROFILE, LW_DITA.get(builder) || MDITA_EXTENDED_PROFILE.get(builder))
+                .toImmutable();
         this.ditaOptions = new DitaRendererOptions(this.options);
     }
 

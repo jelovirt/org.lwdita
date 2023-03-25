@@ -73,7 +73,7 @@ public class MarkdownReader implements XMLReader {
     private static final Map<String, DataKey<Boolean>> FEATURES = Map.of(
             "http://lwdita.org/sax/features/shortdesc-paragraph", DitaRenderer.SHORTDESC_PARAGRAPH,
             "http://lwdita.org/sax/features/id-from-yaml", DitaRenderer.ID_FROM_YAML,
-            "http://lwdita.org/sax/features/mdita", DitaRenderer.LW_DITA,
+            "http://lwdita.org/sax/features/mdita", DitaRenderer.MDITA_EXTENDED_PROFILE,
             "http://lwdita.org/sax/features/mdita-extended-profile", DitaRenderer.MDITA_EXTENDED_PROFILE,
             "http://lwdita.org/sax/features/mdita-core-profile", DitaRenderer.MDITA_CORE_PROFILE,
             "http://lwdita.org/sax/features/specialization", DitaRenderer.SPECIALIZATION,

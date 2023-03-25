@@ -91,9 +91,9 @@ public class MarkdownParserImpl implements MarkdownParser {
      * @throws ParseException if document is not valid
      */
     protected void validate(Document root) {
-        final boolean mditaCoreProfile = DitaRenderer.MDITA_CORE_PROFILE.getFrom(options)
+        final boolean mditaCoreProfile = DitaRenderer.MDITA_CORE_PROFILE.getFrom(options);
+        final boolean mditaExtendedProfile = DitaRenderer.MDITA_EXTENDED_PROFILE.getFrom(options)
                 || DitaRenderer.LW_DITA.getFrom(options);
-        final boolean mditaExtendedProfile = DitaRenderer.MDITA_EXTENDED_PROFILE.getFrom(options);
 
         int level = 0;
         Node node = root.getFirstChild();
