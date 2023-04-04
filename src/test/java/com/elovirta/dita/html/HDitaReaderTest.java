@@ -39,6 +39,7 @@ public class HDitaReaderTest extends AbstractReaderTest {
             "image-size.html",
             "image.html",
             "inline.html",
+//            "inline_extended.html",
             "keyref.html",
             "keys.html",
             "linebreak.html",

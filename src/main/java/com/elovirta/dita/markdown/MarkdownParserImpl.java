@@ -91,14 +91,16 @@ public class MarkdownParserImpl implements MarkdownParser {
      * @throws ParseException if document is not valid
      */
     protected void validate(Document root) {
-        final boolean lwdita = DitaRenderer.LW_DITA.getFrom(options);
+        final boolean mditaCoreProfile = DitaRenderer.MDITA_CORE_PROFILE.getFrom(options);
+        final boolean mditaExtendedProfile = DitaRenderer.MDITA_EXTENDED_PROFILE.getFrom(options)
+                || DitaRenderer.LW_DITA.getFrom(options);
 
         int level = 0;
         Node node = root.getFirstChild();
         while (node != null) {
             if (node instanceof Heading) {
                 Heading heading = (Heading) node;
-                if (lwdita && heading.getLevel() > 2) {
+                if ((mditaCoreProfile || mditaExtendedProfile) && heading.getLevel() > 2) {
                     throw new ParseException(String.format("LwDITA does not support level %d heading: %s", heading.getLevel(), heading.getText()));
                 }
                 if (heading.getLevel() > level + 1) {

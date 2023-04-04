@@ -148,9 +148,10 @@ public class CoreNodeRenderer {
     private final Map<String, String> abbreviations = new HashMap<>();
     private final MetadataSerializerImpl metadataSerializer;
 
-    private final Boolean shortdescParagraph;
-    private final Boolean idFromYaml;
-    private final Boolean lwDita;
+    private final boolean shortdescParagraph;
+    private final boolean idFromYaml;
+    private final boolean mditaExtendedProfile;
+    private final boolean mditaCoreProfile;
 
     private TableBlock currentTableNode;
     private int currentTableColumn;
@@ -167,7 +168,8 @@ public class CoreNodeRenderer {
     public CoreNodeRenderer(DataHolder options) {
         this.shortdescParagraph = DitaRenderer.SHORTDESC_PARAGRAPH.getFrom(options);
         this.idFromYaml = DitaRenderer.ID_FROM_YAML.getFrom(options);
-        this.lwDita = DitaRenderer.LW_DITA.getFrom(options);
+        this.mditaExtendedProfile = DitaRenderer.MDITA_EXTENDED_PROFILE.getFrom(options);
+        this.mditaCoreProfile = DitaRenderer.MDITA_CORE_PROFILE.getFrom(options);
         this.metadataSerializer = new MetadataSerializerImpl(idFromYaml);
 
         transformerFactorySupplier = Suppliers.memoize(() -> {
@@ -177,7 +179,7 @@ public class CoreNodeRenderer {
         });
         templatesSupplier = Suppliers.memoize(() -> {
             final SAXTransformerFactory tf = transformerFactorySupplier.get();
-            final String stylesheet = lwDita
+            final String stylesheet = (mditaCoreProfile || mditaExtendedProfile)
                     ? "/hdita2dita.xsl"
                     : "/hdita2dita-markdown.xsl";
             try (InputStream in = getClass().getResourceAsStream(stylesheet)) {
@@ -192,81 +194,81 @@ public class CoreNodeRenderer {
      * @return the mapping of nodes this renderer handles to rendering function
      */
     public Map<Class<? extends Node>, NodeRenderingHandler<? extends Node>> getNodeRenderingHandlers() {
-        return Stream.concat(
-                        lwDita
-                                ? Stream.<NodeRenderingHandler>of(
-                                new NodeRenderingHandler<>(TableBlock.class, (node, context, html) -> renderSimpleTableBlock(node, context, html)),
-                                new NodeRenderingHandler<>(TableCaption.class, (node, context, html) -> renderSimpleTableCaption(node, context, html)),
-                                new NodeRenderingHandler<>(TableBody.class, (node, context, html) -> renderSimpleTableBody(node, context, html)),
-                                new NodeRenderingHandler<>(TableHead.class, (node, context, html) -> renderSimpleTableHead(node, context, html)),
-                                new NodeRenderingHandler<>(TableRow.class, (node, context, html) -> renderSimpleTableRow(node, context, html)),
-                                new NodeRenderingHandler<>(TableCell.class, (node, context, html) -> renderSimpleTableCell(node, context, html)),
-                                new NodeRenderingHandler<>(TableSeparator.class, (node, context, html) -> renderSimpleTableSeparator(node, context, html))
-                        )
-                                : Stream.<NodeRenderingHandler>of(
-                                new NodeRenderingHandler<>(TableBlock.class, (node, context, html) -> render(node, context, html)),
-                                new NodeRenderingHandler<>(TableCaption.class, (node, context, html) -> render(node, context, html)),
-                                new NodeRenderingHandler<>(TableBody.class, (node, context, html) -> render(node, context, html)),
-                                new NodeRenderingHandler<>(TableHead.class, (node, context, html) -> render(node, context, html)),
-                                new NodeRenderingHandler<>(TableRow.class, (node, context, html) -> render(node, context, html)),
-                                new NodeRenderingHandler<>(TableCell.class, (node, context, html) -> render(node, context, html)),
-                                new NodeRenderingHandler<>(TableSeparator.class, (node, context, html) -> render(node, context, html))
-                        ),
-                        Stream.<NodeRenderingHandler>of(
-                                new NodeRenderingHandler<>(Abbreviation.class, (node, context, html) -> render(node, context, html)),
-                                new NodeRenderingHandler<>(AbbreviationBlock.class, (node, context, html) -> render(node, context, html)),
-                                new NodeRenderingHandler<>(AdmonitionBlock.class, (node, context, html) -> render(node, context, html)),
-                                new NodeRenderingHandler<>(AttributesNode.class, (node, context, html) -> { /* Ignore */ }),
-                                new NodeRenderingHandler<>(YamlFrontMatterBlock.class, (node, context, html) -> render(node, context, html)),
-                                new NodeRenderingHandler<>(Footnote.class, (node, context, html) -> render(node, context, html)),
-                                new NodeRenderingHandler<>(FootnoteBlock.class, (node, context, html) -> render(node, context, html)),
-                                new NodeRenderingHandler<>(AutoLink.class, (node, context, html) -> render(node, context, html)),
-                                new NodeRenderingHandler<>(BlockQuote.class, (node, context, html) -> render(node, context, html)),
-                                new NodeRenderingHandler<>(BulletList.class, (node, context, html) -> render(node, context, html)),
-                                new NodeRenderingHandler<>(Code.class, (node, context, html) -> render(node, context, html)),
-                                new NodeRenderingHandler<>(CodeBlock.class, (node, context, html) -> render(node, context, html)),
-                                new NodeRenderingHandler<>(DefinitionList.class, (node, context, html) -> render(node, context, html)),
-                                new NodeRenderingHandler<>(DefinitionTerm.class, (node, context, html) -> render(node, context, html)),
-                                new NodeRenderingHandler<>(DefinitionItem.class, (node, context, html) -> render(node, context, html)),
-                                new NodeRenderingHandler<>(Document.class, (node, context, html) -> render(node, context, html)),
-                                new NodeRenderingHandler<>(Emphasis.class, (node, context, html) -> render(node, context, html)),
-                                new NodeRenderingHandler<>(FencedCodeBlock.class, (node, context, html) -> render(node, context, html)),
-                                new NodeRenderingHandler<>(HardLineBreak.class, (node, context, html) -> render(node, context, html)),
-                                new NodeRenderingHandler<>(Heading.class, (node, context, html) -> render(node, context, html)),
-                                new NodeRenderingHandler<>(HtmlBlock.class, (node, context, html) -> render(node, context, html)),
-                                new NodeRenderingHandler<>(HtmlCommentBlock.class, (node, context, html) -> render(node, context, html)),
-                                new NodeRenderingHandler<>(HtmlInnerBlock.class, (node, context, html) -> render(node, context, html)),
-                                new NodeRenderingHandler<>(HtmlInnerBlockComment.class, (node, context, html) -> render(node, context, html)),
-                                new NodeRenderingHandler<>(HtmlEntity.class, (node, context, html) -> render(node, context, html)),
-                                new NodeRenderingHandler<>(HtmlInline.class, (node, context, html) -> render(node, context, html)),
-                                new NodeRenderingHandler<>(HtmlInlineComment.class, (node, context, html) -> render(node, context, html)),
-                                new NodeRenderingHandler<>(Image.class, (node, context, html) -> render(node, context, html)),
-                                new NodeRenderingHandler<>(ImageRef.class, (node, context, html) -> render(node, context, html)),
-                                new NodeRenderingHandler<>(IndentedCodeBlock.class, (node, context, html) -> render(node, context, html)),
-                                new NodeRenderingHandler<>(Link.class, (node, context, html) -> render(node, context, html)),
-                                new NodeRenderingHandler<>(Strikethrough.class, (node, context, html) -> render(node, context, html)),
-                                new NodeRenderingHandler<>(LinkRef.class, (node, context, html) -> render(node, context, html)),
-                                new NodeRenderingHandler<>(BulletListItem.class, (node, context, html) -> render(node, context, html)),
-                                new NodeRenderingHandler<>(OrderedListItem.class, (node, context, html) -> render(node, context, html)),
-                                new NodeRenderingHandler<>(MailLink.class, (node, context, html) -> render(node, context, html)),
-                                new NodeRenderingHandler<>(OrderedList.class, (node, context, html) -> render(node, context, html)),
-                                new NodeRenderingHandler<>(Paragraph.class, (node, context, html) -> render(node, context, html)),
-                                new NodeRenderingHandler<>(Reference.class, (node, context, html) -> render(node, context, html)),
-                                new NodeRenderingHandler<>(SoftLineBreak.class, (node, context, html) -> render(node, context, html)),
-                                new NodeRenderingHandler<>(StrongEmphasis.class, (node, context, html) -> render(node, context, html)),
-                                new NodeRenderingHandler<>(Text.class, (node, context, html) -> render(node, context, html)),
-                                new NodeRenderingHandler<>(TextBase.class, (node, context, html) -> render(node, context, html)),
-                                new NodeRenderingHandler<>(ThematicBreak.class, (node, context, html) -> render(node, context, html)),
-                                new NodeRenderingHandler<>(AnchorLink.class, (node, context, html) -> render(node, context, html)),
-                                new NodeRenderingHandler<>(JekyllTagBlock.class, (node, context, html) -> render(node, context, html)),
-                                new NodeRenderingHandler<>(JekyllTag.class, (node, context, html) -> render(node, context, html)),
-                                new NodeRenderingHandler<>(Superscript.class, (node, context, html) -> render(node, context, html)),
-                                new NodeRenderingHandler<>(Subscript.class, (node, context, html) -> render(node, context, html))
-                        ))
-                .collect(Collectors.toMap(
-                        handler -> handler.getNodeType(),
-                        handler -> handler
-                ));
+        final List<NodeRenderingHandler> res = new ArrayList<>();
+        if (mditaCoreProfile || mditaExtendedProfile) {
+            res.add(new NodeRenderingHandler<>(TableBlock.class, (node, context, html) -> renderSimpleTableBlock(node, context, html)));
+            res.add(new NodeRenderingHandler<>(TableCaption.class, (node, context, html) -> renderSimpleTableCaption(node, context, html)));
+            res.add(new NodeRenderingHandler<>(TableBody.class, (node, context, html) -> renderSimpleTableBody(node, context, html)));
+            res.add(new NodeRenderingHandler<>(TableHead.class, (node, context, html) -> renderSimpleTableHead(node, context, html)));
+            res.add(new NodeRenderingHandler<>(TableRow.class, (node, context, html) -> renderSimpleTableRow(node, context, html)));
+            res.add(new NodeRenderingHandler<>(TableCell.class, (node, context, html) -> renderSimpleTableCell(node, context, html)));
+            res.add(new NodeRenderingHandler<>(TableSeparator.class, (node, context, html) -> renderSimpleTableSeparator(node, context, html)));
+        } else {
+            res.add(new NodeRenderingHandler<>(TableBlock.class, (node, context, html) -> render(node, context, html)));
+            res.add(new NodeRenderingHandler<>(TableCaption.class, (node, context, html) -> render(node, context, html)));
+            res.add(new NodeRenderingHandler<>(TableBody.class, (node, context, html) -> render(node, context, html)));
+            res.add(new NodeRenderingHandler<>(TableHead.class, (node, context, html) -> render(node, context, html)));
+            res.add(new NodeRenderingHandler<>(TableRow.class, (node, context, html) -> render(node, context, html)));
+            res.add(new NodeRenderingHandler<>(TableCell.class, (node, context, html) -> render(node, context, html)));
+            res.add(new NodeRenderingHandler<>(TableSeparator.class, (node, context, html) -> render(node, context, html)));
+        }
+        if (!mditaCoreProfile) {
+            res.add(new NodeRenderingHandler<>(AttributesNode.class, (node, context, html) -> { /* Ignore */ }));
+            res.add(new NodeRenderingHandler<>(DefinitionList.class, (node, context, html) -> render(node, context, html)));
+            res.add(new NodeRenderingHandler<>(DefinitionTerm.class, (node, context, html) -> render(node, context, html)));
+            res.add(new NodeRenderingHandler<>(DefinitionItem.class, (node, context, html) -> render(node, context, html)));
+            res.add(new NodeRenderingHandler<>(Footnote.class, (node, context, html) -> render(node, context, html)));
+            res.add(new NodeRenderingHandler<>(FootnoteBlock.class, (node, context, html) -> render(node, context, html)));
+            res.add(new NodeRenderingHandler<>(Superscript.class, (node, context, html) -> render(node, context, html)));
+            res.add(new NodeRenderingHandler<>(Subscript.class, (node, context, html) -> render(node, context, html)));
+        }
+        if (!mditaCoreProfile && !mditaExtendedProfile) {
+            res.add(new NodeRenderingHandler<>(Abbreviation.class, (node, context, html) -> render(node, context, html)));
+            res.add(new NodeRenderingHandler<>(AbbreviationBlock.class, (node, context, html) -> render(node, context, html)));
+            res.add(new NodeRenderingHandler<>(AdmonitionBlock.class, (node, context, html) -> render(node, context, html)));
+            res.add(new NodeRenderingHandler<>(Strikethrough.class, (node, context, html) -> render(node, context, html)));
+        }
+        res.add(new NodeRenderingHandler<>(AutoLink.class, (node, context, html) -> render(node, context, html)));
+        res.add(new NodeRenderingHandler<>(YamlFrontMatterBlock.class, (node, context, html) -> render(node, context, html)));
+        res.add(new NodeRenderingHandler<>(BlockQuote.class, (node, context, html) -> render(node, context, html)));
+        res.add(new NodeRenderingHandler<>(BulletList.class, (node, context, html) -> render(node, context, html)));
+        res.add(new NodeRenderingHandler<>(Code.class, (node, context, html) -> render(node, context, html)));
+        res.add(new NodeRenderingHandler<>(CodeBlock.class, (node, context, html) -> render(node, context, html)));
+        res.add(new NodeRenderingHandler<>(Document.class, (node, context, html) -> render(node, context, html)));
+        res.add(new NodeRenderingHandler<>(Emphasis.class, (node, context, html) -> render(node, context, html)));
+        res.add(new NodeRenderingHandler<>(FencedCodeBlock.class, (node, context, html) -> render(node, context, html)));
+        res.add(new NodeRenderingHandler<>(HardLineBreak.class, (node, context, html) -> render(node, context, html)));
+        res.add(new NodeRenderingHandler<>(Heading.class, (node, context, html) -> render(node, context, html)));
+        res.add(new NodeRenderingHandler<>(HtmlBlock.class, (node, context, html) -> render(node, context, html)));
+        res.add(new NodeRenderingHandler<>(HtmlCommentBlock.class, (node, context, html) -> render(node, context, html)));
+        res.add(new NodeRenderingHandler<>(HtmlInnerBlock.class, (node, context, html) -> render(node, context, html)));
+        res.add(new NodeRenderingHandler<>(HtmlInnerBlockComment.class, (node, context, html) -> render(node, context, html)));
+        res.add(new NodeRenderingHandler<>(HtmlEntity.class, (node, context, html) -> render(node, context, html)));
+        res.add(new NodeRenderingHandler<>(HtmlInline.class, (node, context, html) -> render(node, context, html)));
+        res.add(new NodeRenderingHandler<>(HtmlInlineComment.class, (node, context, html) -> render(node, context, html)));
+        res.add(new NodeRenderingHandler<>(Image.class, (node, context, html) -> render(node, context, html)));
+        res.add(new NodeRenderingHandler<>(ImageRef.class, (node, context, html) -> render(node, context, html)));
+        res.add(new NodeRenderingHandler<>(IndentedCodeBlock.class, (node, context, html) -> render(node, context, html)));
+        res.add(new NodeRenderingHandler<>(Link.class, (node, context, html) -> render(node, context, html)));
+        res.add(new NodeRenderingHandler<>(LinkRef.class, (node, context, html) -> render(node, context, html)));
+        res.add(new NodeRenderingHandler<>(BulletListItem.class, (node, context, html) -> render(node, context, html)));
+        res.add(new NodeRenderingHandler<>(OrderedListItem.class, (node, context, html) -> render(node, context, html)));
+        res.add(new NodeRenderingHandler<>(MailLink.class, (node, context, html) -> render(node, context, html)));
+        res.add(new NodeRenderingHandler<>(OrderedList.class, (node, context, html) -> render(node, context, html)));
+        res.add(new NodeRenderingHandler<>(Paragraph.class, (node, context, html) -> render(node, context, html)));
+        res.add(new NodeRenderingHandler<>(Reference.class, (node, context, html) -> render(node, context, html)));
+        res.add(new NodeRenderingHandler<>(SoftLineBreak.class, (node, context, html) -> render(node, context, html)));
+        res.add(new NodeRenderingHandler<>(StrongEmphasis.class, (node, context, html) -> render(node, context, html)));
+        res.add(new NodeRenderingHandler<>(Text.class, (node, context, html) -> render(node, context, html)));
+        res.add(new NodeRenderingHandler<>(TextBase.class, (node, context, html) -> render(node, context, html)));
+        res.add(new NodeRenderingHandler<>(ThematicBreak.class, (node, context, html) -> render(node, context, html)));
+        res.add(new NodeRenderingHandler<>(AnchorLink.class, (node, context, html) -> render(node, context, html)));
+        res.add(new NodeRenderingHandler<>(JekyllTagBlock.class, (node, context, html) -> render(node, context, html)));
+        res.add(new NodeRenderingHandler<>(JekyllTag.class, (node, context, html) -> render(node, context, html)));
+        return res.stream().collect(Collectors.toMap(
+                handler -> handler.getNodeType(),
+                handler -> handler
+        ));
     }
 
 //    void toHtml(final Document astRoot) throws SAXException {
@@ -388,7 +390,7 @@ public class CoreNodeRenderer {
         if (isCompound) {
             final AttributesBuilder atts = new AttributesBuilder()
                     .add(DITA_NAMESPACE, ATTRIBUTE_NAME_DITAARCHVERSION, ATTRIBUTE_PREFIX_DITAARCHVERSION + ":" + ATTRIBUTE_NAME_DITAARCHVERSION, "CDATA", "2.0");
-            if (lwDita) {
+            if (mditaCoreProfile || mditaExtendedProfile) {
                 atts.add(ATTRIBUTE_NAME_SPECIALIZATIONS, "(topic hi-d)(topic em-d)");
             } else {
                 atts.add(ATTRIBUTE_NAME_SPECIALIZATIONS, "@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product");
@@ -505,7 +507,7 @@ public class CoreNodeRenderer {
     }
 
     private void render(final BlockQuote node, final NodeRendererContext context, final SaxWriter html) {
-        if (lwDita) {
+        if (mditaCoreProfile || mditaExtendedProfile) {
             context.renderChildren(node);
         } else {
             printTag(node, context, html, TOPIC_LQ, getAttributesFromAttributesNode(node, BLOCKQUOTE_ATTS));
@@ -513,7 +515,7 @@ public class CoreNodeRenderer {
     }
 
     private Attributes getAttributesFromAttributesNode(Node node, Attributes base) {
-        if (!lwDita && isAttributesParagraph(node.getNext())) {
+        if (!mditaExtendedProfile && isAttributesParagraph(node.getNext())) {
             final Title header = Title.getFromChildren(node.getNext());
             final AttributesBuilder builder = new AttributesBuilder(base);
             return readAttributes(header, builder).build();
@@ -523,7 +525,7 @@ public class CoreNodeRenderer {
     }
 
     private Attributes getInlineAttributes(Node node, Attributes base) {
-        if (!lwDita) {
+        if (!mditaExtendedProfile) {
             if (node.getChildOfType(AttributesNode.class) != null) {
                 final Title header = Title.getFromChildren(node);
                 final AttributesBuilder builder = new AttributesBuilder(base);
@@ -542,7 +544,7 @@ public class CoreNodeRenderer {
     }
 
     private void render(final Code node, final NodeRendererContext context, final SaxWriter html) {
-        if (lwDita) {
+        if (mditaExtendedProfile) {
             printTag(node, context, html, HI_D_TT, TT_ATTS);
         } else {
             printTag(node, context, html, PR_D_CODEPH, getInlineAttributes(node, CODEPH_ATTS));
@@ -723,7 +725,7 @@ public class CoreNodeRenderer {
         final StringBuilder buf = new StringBuilder();
         node.getAstExtra(buf);
         Title header = null;
-        if (!lwDita) {
+        if (!mditaExtendedProfile) {
             if (node.getFirstChild() instanceof AnchorLink) {
                 header = Title.getFromChildren(node.getFirstChild());
             } else {
@@ -738,10 +740,10 @@ public class CoreNodeRenderer {
         }
         final DitaClass cls;
         final boolean isSection;
-        if (lwDita && node.getLevel() == 2) {
+        if ((mditaCoreProfile || mditaExtendedProfile) && node.getLevel() == 2) {
             isSection = true;
             cls = TOPIC_SECTION;
-        } else if (!lwDita) {
+        } else if (!mditaExtendedProfile) {
             final String sectionClassName = containsSome(header.classes, sections.keySet());
             if (sectionClassName != null) {
                 isSection = true;
@@ -763,7 +765,7 @@ public class CoreNodeRenderer {
             if (id != null) {
                 atts.add(ATTRIBUTE_NAME_ID, id);
             }
-            if (!lwDita) {
+            if (!mditaExtendedProfile) {
                 final Collection<String> classes = new ArrayList<>(header.classes);
                 classes.removeAll(sections.keySet());
                 if (!classes.isEmpty()) {
@@ -784,7 +786,7 @@ public class CoreNodeRenderer {
             }
             headerLevel = node.getLevel();
 
-            final AttributesBuilder atts = lwDita
+            final AttributesBuilder atts = mditaCoreProfile || mditaExtendedProfile
                     ? new AttributesBuilder(TOPIC_ATTS)
                     .add(ATTRIBUTE_NAME_SPECIALIZATIONS, "(topic hi-d)(topic em-d)")
                     : new AttributesBuilder(TOPIC_ATTS)
@@ -795,7 +797,7 @@ public class CoreNodeRenderer {
                 lastId = id;
                 atts.add(ATTRIBUTE_NAME_ID, id);
             }
-            if (!lwDita) {
+            if (!mditaExtendedProfile) {
                 if (!header.classes.isEmpty()) {
                     atts.add(ATTRIBUTE_NAME_OUTPUTCLASS, String.join(" ", header.classes));
                 }
@@ -951,7 +953,7 @@ public class CoreNodeRenderer {
      */
     private void render(final HtmlInline node, final NodeRendererContext context, final SaxWriter html) {
         final String text = node.getChars().toString();
-        final Entry<DitaClass, Attributes> entry = (lwDita ? hditaToXdita : htmlToDita).get(text);
+        final Entry<DitaClass, Attributes> entry = (mditaExtendedProfile ? hditaToXdita : htmlToDita).get(text);
         if (entry != null) {
             final DitaClass cls = entry.getKey();
             html.setLocation(node);
@@ -1029,7 +1031,7 @@ public class CoreNodeRenderer {
             onlyImageChild = false;
         } else {
             final Attributes atts;
-            if (!lwDita) {
+            if (!mditaExtendedProfile) {
                 final Title header = Title.getFromChildren(node);
                 final AttributesBuilder builder = new AttributesBuilder(P_ATTS);
                 atts = readAttributes(header, builder).build();
@@ -1233,7 +1235,7 @@ public class CoreNodeRenderer {
 //    }
 
     private void render(final Strikethrough node, final NodeRendererContext context, final SaxWriter html) {
-        if (lwDita) {
+        if (mditaExtendedProfile) {
             printTag(node, context, html, TOPIC_PH, PH_ATTS);
         } else {
             printTag(node, context, html, HI_D_LINE_THROUGH, getInlineAttributes(node, LINE_THROUGH_ATTS));
@@ -1309,7 +1311,7 @@ public class CoreNodeRenderer {
     private void render(final TableBlock node, final NodeRendererContext context, final SaxWriter html) {
         currentTableNode = node;
         final Attributes tableAtts;
-        if (!lwDita && isAttributesParagraph(node.getNext())) {
+        if (!mditaExtendedProfile && isAttributesParagraph(node.getNext())) {
             final Title header = Title.getFromChildren(node.getNext());
             final AttributesBuilder builder = new AttributesBuilder(TABLE_ATTS);
             tableAtts = readAttributes(header, builder).build();
@@ -1410,7 +1412,7 @@ public class CoreNodeRenderer {
     private void renderSimpleTableBlock(final TableBlock node, final NodeRendererContext context, final SaxWriter html) {
         currentTableNode = node;
         final Attributes tableAtts;
-        if (!lwDita && isAttributesParagraph(node.getNext())) {
+        if (!mditaExtendedProfile && isAttributesParagraph(node.getNext())) {
             final Title header = Title.getFromChildren(node.getNext());
             final AttributesBuilder builder = new AttributesBuilder(SIMPLETABLE_ATTS);
             tableAtts = readAttributes(header, builder).build();
@@ -1562,7 +1564,7 @@ public class CoreNodeRenderer {
     // Code block
 
     private void render(final CodeBlock node, final NodeRendererContext context, final SaxWriter html) {
-        final AttributesBuilder atts = new AttributesBuilder(lwDita ? PRE_ATTS : CODEBLOCK_ATTS)
+        final AttributesBuilder atts = new AttributesBuilder(mditaExtendedProfile ? PRE_ATTS : CODEBLOCK_ATTS)
                 .add(XML_NS_URI, "space", "xml:space", "CDATA", "preserve");
 //        if (node.getType() != null && !node.getType().isEmpty()) {
 //            final String type = node.getType().trim();
@@ -1579,7 +1581,7 @@ public class CoreNodeRenderer {
 //                atts.add("outputclass", String.join(" ", metadata.classes));
 //            }
 //        }
-        html.startElement(node, lwDita ? TOPIC_PRE : PR_D_CODEBLOCK, atts.build());
+        html.startElement(node, mditaExtendedProfile ? TOPIC_PRE : PR_D_CODEBLOCK, atts.build());
         String text = node.getChars().toString();
         if (text.endsWith("\n")) {
             text = text.substring(0, text.length() - 1);
@@ -1589,7 +1591,7 @@ public class CoreNodeRenderer {
     }
 
     private void render(final IndentedCodeBlock node, final NodeRendererContext context, final SaxWriter html) {
-        final AttributesBuilder atts = new AttributesBuilder(lwDita ? PRE_ATTS : CODEBLOCK_ATTS)
+        final AttributesBuilder atts = new AttributesBuilder(mditaExtendedProfile ? PRE_ATTS : CODEBLOCK_ATTS)
                 .add(XML_NS_URI, "space", "xml:space", "CDATA", "preserve");
 //        if (node.getType() != null && !node.getType().isEmpty()) {
 //            final String type = node.getType().trim();
@@ -1606,9 +1608,9 @@ public class CoreNodeRenderer {
 //                atts.add("outputclass", String.join(" ", metadata.classes));
 //            }
 //        }
-        html.startElement(node, lwDita ? TOPIC_PRE : PR_D_CODEBLOCK, atts.build());
+        html.startElement(node, mditaExtendedProfile ? TOPIC_PRE : PR_D_CODEBLOCK, atts.build());
         // FIXME: For compatibility with HTML pre/code, should be removed
-        if (lwDita) {
+        if (mditaExtendedProfile) {
             html.startElement(node, HI_D_TT, TT_ATTS);
         }
         String text = node.getContentChars().toString();
@@ -1616,14 +1618,14 @@ public class CoreNodeRenderer {
             text = text.substring(0, text.length() - 1);
         }
         html.characters(text);
-        if (lwDita) {
+        if (mditaExtendedProfile) {
             html.endElement();
         }
         html.endElement();
     }
 
     private void render(final FencedCodeBlock node, final NodeRendererContext context, final SaxWriter html) {
-        final AttributesBuilder atts = new AttributesBuilder(lwDita ? PRE_ATTS : CODEBLOCK_ATTS)
+        final AttributesBuilder atts = new AttributesBuilder(mditaExtendedProfile ? PRE_ATTS : CODEBLOCK_ATTS)
                 .add(XML_NS_URI, "space", "xml:space", "CDATA", "preserve");
 //        if (node.getType() != null && !node.getType().isEmpty()) {
 //            final String type = node.getType().trim();
@@ -1667,9 +1669,9 @@ public class CoreNodeRenderer {
             }
         }
 
-        html.startElement(node, lwDita ? TOPIC_PRE : PR_D_CODEBLOCK, atts.build());
+        html.startElement(node, mditaExtendedProfile ? TOPIC_PRE : PR_D_CODEBLOCK, atts.build());
         // FIXME: For compatibility with HTML pre/code, should be removed
-        if (lwDita) {
+        if (mditaExtendedProfile) {
             html.startElement(node, HI_D_TT, TT_ATTS);
         }
         String text = node.getContentChars().normalizeEOL();
@@ -1677,7 +1679,7 @@ public class CoreNodeRenderer {
             text = text.substring(0, text.length() - 1);
         }
         html.characters(text);
-        if (lwDita) {
+        if (mditaExtendedProfile) {
             html.endElement();
         }
         html.endElement();
