@@ -80,6 +80,30 @@ public class DefaultSchemaProvider implements SchemaProvider {
         final DataSet optionsReference = new MutableDataSet(options)
                 .set(DitaRenderer.SPECIALIZATION_REFERENCE, true)
                 .toImmutable();
+        final DataSet optionsMap = new MutableDataSet()
+                .set(Parser.EXTENSIONS, asList(
+//                    AbbreviationExtension.create(),
+                        AnchorLinkExtension.create(),
+//                    FootnoteExtension.create(),
+//                    InsExtension.create(),
+                        JekyllTagExtension.create(),
+//                    SuperscriptExtension.create(),
+//                        TablesExtension.create(),
+//                    AutolinkExtension.create(),
+                        YamlFrontMatterExtension.create()
+//                    DefinitionExtension.create(),
+//                    StrikethroughExtension.create()
+                ))
+//            .set(DefinitionExtension.TILDE_MARKER, false)
+                .set(TablesExtension.COLUMN_SPANS, false)
+                .set(TablesExtension.APPEND_MISSING_COLUMNS, false)
+                .set(TablesExtension.DISCARD_EXTRA_COLUMNS, true)
+                .set(TablesExtension.HEADER_SEPARATOR_COLUMN_MATCH, true)
+//                .set(DitaRenderer.SHORTDESC_PARAGRAPH, true)
+                .set(DitaRenderer.ID_FROM_YAML, true)
+                .set(DitaRenderer.MAP, true)
+//            .set(DitaRenderer.SPECIALIZATION, false)
+                .toImmutable();
         final Map<URI, DataSet> schemas = new HashMap<>();
         schemas.put(URI.create("urn:oasis:names:tc:dita:xsd:topic.xsd"), options);
         schemas.put(URI.create("urn:oasis:names:tc:dita:rng:topic.rng"), options);
@@ -89,6 +113,8 @@ public class DefaultSchemaProvider implements SchemaProvider {
         schemas.put(URI.create("urn:oasis:names:tc:dita:rng:task.rng"), optionsTask);
         schemas.put(URI.create("urn:oasis:names:tc:dita:xsd:reference.xsd"), optionsReference);
         schemas.put(URI.create("urn:oasis:names:tc:dita:rng:reference.rng"), optionsReference);
+        schemas.put(URI.create("urn:oasis:names:tc:dita:xsd:map.xsd"), optionsMap);
+        schemas.put(URI.create("urn:oasis:names:tc:dita:rng:map.rng"), optionsMap);
         schemas.put(URI.create("urn:oasis:names:tc:mdita:xsd:topic.xsd"), EXTENDED_PROFILE);
         schemas.put(URI.create("urn:oasis:names:tc:mdita:rng:topic.rng"), EXTENDED_PROFILE);
         schemas.put(URI.create("urn:oasis:names:tc:mdita:extended:xsd:topic.xsd"), EXTENDED_PROFILE);
