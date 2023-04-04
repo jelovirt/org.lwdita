@@ -168,7 +168,7 @@ public class CoreNodeRenderer {
     public CoreNodeRenderer(DataHolder options) {
         this.shortdescParagraph = DitaRenderer.SHORTDESC_PARAGRAPH.getFrom(options);
         this.idFromYaml = DitaRenderer.ID_FROM_YAML.getFrom(options);
-        this.mditaExtendedProfile = DitaRenderer.LW_DITA.getFrom(options) || DitaRenderer.MDITA_EXTENDED_PROFILE.getFrom(options);
+        this.mditaExtendedProfile = DitaRenderer.MDITA_EXTENDED_PROFILE.getFrom(options);
         this.mditaCoreProfile = DitaRenderer.MDITA_CORE_PROFILE.getFrom(options);
         this.metadataSerializer = new MetadataSerializerImpl(idFromYaml);
 

@@ -157,6 +157,12 @@ public class MarkdownReader implements XMLReader {
                     throw new SAXNotSupportedException("Unsupported value " + value + " for " + name);
                 }
                 break;
+            case "http://lwdita.org/sax/features/mdita-extended-profile":
+                options.setAll(MDitaReader.EXTENDED_PROFILE);
+                break;
+            case "http://lwdita.org/sax/features/mdita-core-profile":
+                options.setAll(MDitaReader.CORE_PROFILE);
+                break;
             default:
                 final DataKey option = FEATURES.get(name);
                 if (option != null) {

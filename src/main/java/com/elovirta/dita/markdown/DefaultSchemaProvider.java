@@ -17,8 +17,12 @@ import com.vladsch.flexmark.util.data.DataSet;
 import com.vladsch.flexmark.util.data.MutableDataSet;
 
 import java.net.URI;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
+import static com.elovirta.dita.markdown.MDitaReader.CORE_PROFILE;
+import static com.elovirta.dita.markdown.MDitaReader.EXTENDED_PROFILE;
 import static java.util.Arrays.asList;
 
 /**
@@ -76,16 +80,22 @@ public class DefaultSchemaProvider implements SchemaProvider {
         final DataSet optionsReference = new MutableDataSet(options)
                 .set(DitaRenderer.SPECIALIZATION_REFERENCE, true)
                 .toImmutable();
-        SCHEMA_OPTIONS = Map.of(
-                URI.create("urn:oasis:names:tc:dita:xsd:topic.xsd"), options,
-                URI.create("urn:oasis:names:tc:dita:xsd:topic.rng"), options,
-                URI.create("urn:oasis:names:tc:dita:xsd:concept.xsd"), optionsConcept,
-                URI.create("urn:oasis:names:tc:dita:xsd:concept.rng"), optionsConcept,
-                URI.create("urn:oasis:names:tc:dita:xsd:task.xsd"), optionsTask,
-                URI.create("urn:oasis:names:tc:dita:xsd:task.rng"), optionsTask,
-                URI.create("urn:oasis:names:tc:dita:xsd:reference.xsd"), optionsReference,
-                URI.create("urn:oasis:names:tc:dita:xsd:reference.rng"), optionsReference
-        );
+        final Map<URI, DataSet> schemas = new HashMap<>();
+        schemas.put(URI.create("urn:oasis:names:tc:dita:xsd:topic.xsd"), options);
+        schemas.put(URI.create("urn:oasis:names:tc:dita:rng:topic.rng"), options);
+        schemas.put(URI.create("urn:oasis:names:tc:dita:xsd:concept.xsd"), optionsConcept);
+        schemas.put(URI.create("urn:oasis:names:tc:dita:rng:concept.rng"), optionsConcept);
+        schemas.put(URI.create("urn:oasis:names:tc:dita:xsd:task.xsd"), optionsTask);
+        schemas.put(URI.create("urn:oasis:names:tc:dita:rng:task.rng"), optionsTask);
+        schemas.put(URI.create("urn:oasis:names:tc:dita:xsd:reference.xsd"), optionsReference);
+        schemas.put(URI.create("urn:oasis:names:tc:dita:rng:reference.rng"), optionsReference);
+        schemas.put(URI.create("urn:oasis:names:tc:mdita:xsd:topic.xsd"), EXTENDED_PROFILE);
+        schemas.put(URI.create("urn:oasis:names:tc:mdita:rng:topic.rng"), EXTENDED_PROFILE);
+        schemas.put(URI.create("urn:oasis:names:tc:mdita:extended:xsd:topic.xsd"), EXTENDED_PROFILE);
+        schemas.put(URI.create("urn:oasis:names:tc:mdita:extended:rng:topic.rng"), EXTENDED_PROFILE);
+        schemas.put(URI.create("urn:oasis:names:tc:mdita:core:xsd:topic.xsd"), CORE_PROFILE);
+        schemas.put(URI.create("urn:oasis:names:tc:mdita:core:rng:topic.rng"), CORE_PROFILE);
+        SCHEMA_OPTIONS = Collections.unmodifiableMap(schemas);
     }
 
     @Override

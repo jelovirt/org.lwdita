@@ -40,7 +40,7 @@ public class MDitaReader extends MarkdownReader {
             .set(DitaRenderer.SHORTDESC_PARAGRAPH, true)
             .set(DitaRenderer.ID_FROM_YAML, true)
             .set(DitaRenderer.MDITA_CORE_PROFILE, true)
-            .set(DitaRenderer.SPECIALIZATION, false)
+//            .set(DitaRenderer.SPECIALIZATION, false)
             .toImmutable();
 
     public static final DataSet EXTENDED_PROFILE = new MutableDataSet()
