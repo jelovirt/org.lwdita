@@ -7,6 +7,10 @@
     <topicref class="- map/topicref " format="markdown" href="topic-a-1.md" navtitle="A.1"/>
   </topicref>
   <topicref class="- map/topicref " format="markdown" href="topic-b.md" navtitle="B">
-    <topicref class="- map/topicref " format="markdown" href="topic-b-1.md" navtitle="B"/>
+    <topicref class="- map/topicref " format="markdown" href="topic-b-1.md" navtitle="B.1"/>
   </topicref>
+  <topicref class="- map/topicref " format="markdown" href="test.md">
+    <topicref class="- map/topicref " format="markdown" href="test.md" navtitle="Markdown"/>
+  </topicref>
+  <topicref class="- map/topicref " keyref="undefined-key"/>
 </map>

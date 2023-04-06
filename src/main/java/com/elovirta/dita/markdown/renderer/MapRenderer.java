@@ -889,13 +889,40 @@ public class MapRenderer {
     }
 
     private void render(final ListItem node, final NodeRendererContext context, final SaxWriter html) {
-        final Paragraph paragraph = (Paragraph) node.getChildOfType(Paragraph.class);
-        final Link link = (Link) paragraph.getChildOfType(Link.class);
+        final AttributesBuilder atts = new AttributesBuilder(TOPICREF_ATTS);
 
-        final String text = link.getText().toString();
-        final AttributesBuilder atts = getLinkAttributes(link.getUrl().toString())
-                .add("navtitle", text);
-        atts.addAll(TOPICREF_ATTS);
+        final Paragraph paragraph = (Paragraph) node.getChildOfType(Paragraph.class);
+        final Link link = paragraph != null ? (Link) paragraph.getChildOfType(Link.class) : null;
+        if (link != null) {
+            atts.addAll(getLinkAttributes(link.getUrl().toString(), TOPICREF_ATTS).build());
+            final String text = link.getText().toString();
+            atts.add("navtitle", text);
+        }
+        final LinkRef linkRef = paragraph != null ? (LinkRef) paragraph.getChildOfType(LinkRef.class) : null;
+        if (linkRef != null) {
+//            atts.addAll(getLinkAttributes(linkRef.getUrl().toString(), TOPICREF_ATTS).build());
+//            final String text = linkRef.getText().toString();
+//            atts.add("navtitle", text);
+
+            final String text = linkRef.getText().toString();
+            final String key = linkRef.getReference() != null ? linkRef.getReference().toString() : text;
+            final Reference refNode = linkRef.getReferenceNode(linkRef.getDocument());
+            if (refNode == null) { // "fake" reference link
+                atts.add(ATTRIBUTE_NAME_KEYREF, key);
+//                html.startElement(linkRef, TOPIC_XREF, atts.build());
+                if (!linkRef.getText().toString().isEmpty()) {
+                    atts.add("navtitle", linkRef.getText().toString());
+                }
+            } else {
+                atts.addAll(getLinkAttributes(refNode.getUrl().toString(), TOPICREF_ATTS).build());
+//                html.startElement(linkRef, TOPIC_XREF, atts.build());
+                if (!refNode.getTitle().toString().isEmpty()) {
+                    atts.add("navtitle", refNode.getTitle().toString());
+//                } else {
+//                    context.renderChildren(linkRef);
+                }
+            }
+        }
 
 //        html.startElement(node, TOPIC_XREF, );
 //        context.renderChildren(node);
@@ -1704,7 +1731,7 @@ public class MapRenderer {
     }
 
     private AttributesBuilder getLinkAttributes(final String href, Attributes baseAttrs) {
-        final AttributesBuilder atts = new AttributesBuilder(XREF_ATTS)
+        final AttributesBuilder atts = new AttributesBuilder(baseAttrs)
                 .add(ATTRIBUTE_NAME_HREF, href);
         if (href.startsWith("#")) {
             atts.add(ATTRIBUTE_NAME_FORMAT, "markdown");
