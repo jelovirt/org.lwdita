@@ -1,0 +1,10 @@
+---
+$schema: urn:oasis:names:tc:dita:xsd:map.xsd
+---
+
+# Title
+
+* [A](topic-a.md)
+  * [A.1](topic-a-1.md)
+* [B](topic-b.md)
+  * [B](topic-b-1.md)

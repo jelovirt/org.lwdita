@@ -132,7 +132,9 @@ public class DitaRenderer {
             this.doNotRenderLinksNesting = 0;
             this.options = new ScopedDataSet(options, document);
             this.document = document;
-            this.renderers = new CoreNodeRenderer(this.getOptions()).getNodeRenderingHandlers();
+            this.renderers = DitaRenderer.MAP.getFrom(options)
+                    ? new MapRenderer(this.getOptions()).getNodeRenderingHandlers()
+                    : new CoreNodeRenderer(this.getOptions()).getNodeRenderingHandlers();
             this.doNotRenderLinksNesting = ditaOptions.doNotRenderLinksInDocument ? 0 : 1;
             this.ditaIdGenerator = new HeaderIdGenerator();
         }

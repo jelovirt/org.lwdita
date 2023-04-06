@@ -15,7 +15,6 @@ import com.google.common.io.Files;
 import com.vladsch.flexmark.ast.*;
 import com.vladsch.flexmark.ext.abbreviation.Abbreviation;
 import com.vladsch.flexmark.ext.abbreviation.AbbreviationBlock;
-import com.vladsch.flexmark.ext.admonition.AdmonitionBlock;
 import com.vladsch.flexmark.ext.anchorlink.AnchorLink;
 import com.vladsch.flexmark.ext.attributes.AttributesNode;
 import com.vladsch.flexmark.ext.definition.DefinitionItem;
@@ -75,22 +74,22 @@ import static org.dita.dost.util.XMLUtils.AttributesBuilder;
 /**
  * A renderer for a set of node types.
  */
-public class CoreNodeRenderer {
+public class MapRenderer {
 
     private static final String COLUMN_NAME_COL = "col";
     private static final String ATTRIBUTE_NAME_COLSPAN = "colspan";
 
-    private static final Attributes TOPIC_ATTS = new AttributesBuilder()
-            .add(ATTRIBUTE_NAME_CLASS, TOPIC_TOPIC.toString())
+    private static final Attributes MAP_ATTS = new AttributesBuilder()
+            .add(ATTRIBUTE_NAME_CLASS, MAP_MAP.toString())
             .add(DITA_NAMESPACE, ATTRIBUTE_NAME_DITAARCHVERSION, ATTRIBUTE_PREFIX_DITAARCHVERSION + ":" + ATTRIBUTE_NAME_DITAARCHVERSION, "CDATA", "2.0")
 //            .add(ATTRIBUTE_NAME_DOMAINS, "(topic hi-d) (topic ut-d) (topic indexing-d) (topic hazard-d) (topic abbrev-d) (topic pr-d) (topic sw-d) (topic ui-d)")
             .build();
-    private static final Attributes BODY_ATTS = buildAtts(TOPIC_BODY);
-    private static final Attributes SECTION_ATTS = buildAtts(TOPIC_SECTION);
-    private static final Attributes EXAMPLE_ATTS = buildAtts(TOPIC_EXAMPLE);
-    private static final Attributes NOTE_ATTS = buildAtts(TOPIC_NOTE);
+//    private static final Attributes BODY_ATTS = buildAtts(TOPIC_BODY);
+//    private static final Attributes SECTION_ATTS = buildAtts(TOPIC_SECTION);
+//    private static final Attributes EXAMPLE_ATTS = buildAtts(TOPIC_EXAMPLE);
+//    private static final Attributes NOTE_ATTS = buildAtts(TOPIC_NOTE);
     private static final Attributes FN_ATTS = buildAtts(TOPIC_FN);
-    private static final Attributes LI_ATTS = buildAtts(TOPIC_LI);
+    private static final Attributes TOPICREF_ATTS = buildAtts(MAP_TOPICREF);
     private static final Attributes P_ATTS = buildAtts(TOPIC_P);
     private static final Attributes I_ATTS = buildAtts(HI_D_I);
     private static final Attributes B_ATTS = buildAtts(HI_D_B);
@@ -106,7 +105,7 @@ public class CoreNodeRenderer {
     private static final Attributes TT_ATTS = buildAtts(HI_D_TT);
     private static final Attributes TITLE_ATTS = buildAtts(TOPIC_TITLE);
     private static final Attributes SHORTDESC_ATTS = buildAtts(TOPIC_SHORTDESC);
-    private static final Attributes PROLOG_ATTS = buildAtts(TOPIC_PROLOG);
+    private static final Attributes TOPICMETA_ATTS = buildAtts(MAP_TOPICMETA);
     private static final Attributes BLOCKQUOTE_ATTS = buildAtts(TOPIC_LQ);
     private static final Attributes UL_ATTS = buildAtts(TOPIC_UL);
     private static final Attributes DL_ATTS = buildAtts(TOPIC_DL);
@@ -165,7 +164,7 @@ public class CoreNodeRenderer {
      */
     private int headerLevel = 0;
 
-    public CoreNodeRenderer(DataHolder options) {
+    public MapRenderer(DataHolder options) {
         this.shortdescParagraph = DitaRenderer.SHORTDESC_PARAGRAPH.getFrom(options);
         this.idFromYaml = DitaRenderer.ID_FROM_YAML.getFrom(options);
         this.mditaExtendedProfile = DitaRenderer.MDITA_EXTENDED_PROFILE.getFrom(options);
@@ -195,106 +194,70 @@ public class CoreNodeRenderer {
      */
     public Map<Class<? extends Node>, NodeRenderingHandler<? extends Node>> getNodeRenderingHandlers() {
         final List<NodeRenderingHandler> res = new ArrayList<>();
-        if (mditaCoreProfile || mditaExtendedProfile) {
-            res.add(new NodeRenderingHandler<>(TableBlock.class, (node, context, html) -> renderSimpleTableBlock(node, context, html)));
-            res.add(new NodeRenderingHandler<>(TableCaption.class, (node, context, html) -> renderSimpleTableCaption(node, context, html)));
-            res.add(new NodeRenderingHandler<>(TableBody.class, (node, context, html) -> renderSimpleTableBody(node, context, html)));
-            res.add(new NodeRenderingHandler<>(TableHead.class, (node, context, html) -> renderSimpleTableHead(node, context, html)));
-            res.add(new NodeRenderingHandler<>(TableRow.class, (node, context, html) -> renderSimpleTableRow(node, context, html)));
-            res.add(new NodeRenderingHandler<>(TableCell.class, (node, context, html) -> renderSimpleTableCell(node, context, html)));
-            res.add(new NodeRenderingHandler<>(TableSeparator.class, (node, context, html) -> renderSimpleTableSeparator(node, context, html)));
-        } else {
-            res.add(new NodeRenderingHandler<>(TableBlock.class, (node, context, html) -> render(node, context, html)));
-            res.add(new NodeRenderingHandler<>(TableCaption.class, (node, context, html) -> render(node, context, html)));
-            res.add(new NodeRenderingHandler<>(TableBody.class, (node, context, html) -> render(node, context, html)));
-            res.add(new NodeRenderingHandler<>(TableHead.class, (node, context, html) -> render(node, context, html)));
-            res.add(new NodeRenderingHandler<>(TableRow.class, (node, context, html) -> render(node, context, html)));
-            res.add(new NodeRenderingHandler<>(TableCell.class, (node, context, html) -> render(node, context, html)));
-            res.add(new NodeRenderingHandler<>(TableSeparator.class, (node, context, html) -> render(node, context, html)));
-        }
-        if (!mditaCoreProfile) {
-            res.add(new NodeRenderingHandler<>(AttributesNode.class, (node, context, html) -> { /* Ignore */ }));
-            res.add(new NodeRenderingHandler<>(DefinitionList.class, (node, context, html) -> render(node, context, html)));
-            res.add(new NodeRenderingHandler<>(DefinitionTerm.class, (node, context, html) -> render(node, context, html)));
-            res.add(new NodeRenderingHandler<>(DefinitionItem.class, (node, context, html) -> render(node, context, html)));
-            res.add(new NodeRenderingHandler<>(Footnote.class, (node, context, html) -> render(node, context, html)));
-            res.add(new NodeRenderingHandler<>(FootnoteBlock.class, (node, context, html) -> render(node, context, html)));
-            res.add(new NodeRenderingHandler<>(Superscript.class, (node, context, html) -> render(node, context, html)));
-            res.add(new NodeRenderingHandler<>(Subscript.class, (node, context, html) -> render(node, context, html)));
-        }
-        if (!mditaCoreProfile && !mditaExtendedProfile) {
-            res.add(new NodeRenderingHandler<>(Abbreviation.class, (node, context, html) -> render(node, context, html)));
-            res.add(new NodeRenderingHandler<>(AbbreviationBlock.class, (node, context, html) -> render(node, context, html)));
-            res.add(new NodeRenderingHandler<>(AdmonitionBlock.class, (node, context, html) -> render(node, context, html)));
-            res.add(new NodeRenderingHandler<>(Strikethrough.class, (node, context, html) -> render(node, context, html)));
-        }
-        res.add(new NodeRenderingHandler<>(AutoLink.class, (node, context, html) -> render(node, context, html)));
+//                res.add(new NodeRenderingHandler<>(TableBlock.class, (node, context, html) -> renderSimpleTableBlock(node, context, html)));
+//                res.add(new NodeRenderingHandler<>(TableCaption.class, (node, context, html) -> renderSimpleTableCaption(node, context, html)));
+//                res.add(new NodeRenderingHandler<>(TableBody.class, (node, context, html) -> renderSimpleTableBody(node, context, html)));
+//                res.add(new NodeRenderingHandler<>(TableHead.class, (node, context, html) -> renderSimpleTableHead(node, context, html)));
+//                res.add(new NodeRenderingHandler<>(TableRow.class, (node, context, html) -> renderSimpleTableRow(node, context, html)));
+//                res.add(new NodeRenderingHandler<>(TableCell.class, (node, context, html) -> renderSimpleTableCell(node, context, html)));
+//                res.add(new NodeRenderingHandler<>(TableSeparator.class, (node, context, html) -> renderSimpleTableSeparator(node, context, html)));
+
+//                res.add(new NodeRenderingHandler<>(AttributesNode.class, (node, context, html) -> { /* Ignore */ }));
+//                res.add(new NodeRenderingHandler<>(DefinitionList.class, (node, context, html) -> render(node, context, html)));
+//                res.add(new NodeRenderingHandler<>(DefinitionTerm.class, (node, context, html) -> render(node, context, html)));
+//                res.add(new NodeRenderingHandler<>(DefinitionItem.class, (node, context, html) -> render(node, context, html)));
+//                res.add(new NodeRenderingHandler<>(Footnote.class, (node, context, html) -> render(node, context, html)));
+//                res.add(new NodeRenderingHandler<>(FootnoteBlock.class, (node, context, html) -> render(node, context, html)));
+//                res.add(new NodeRenderingHandler<>(Superscript.class, (node, context, html) -> render(node, context, html)));
+//                res.add(new NodeRenderingHandler<>(Subscript.class, (node, context, html) -> render(node, context, html)));
+
+//                res.add(new NodeRenderingHandler<>(Abbreviation.class, (node, context, html) -> render(node, context, html)));
+//                res.add(new NodeRenderingHandler<>(AbbreviationBlock.class, (node, context, html) -> render(node, context, html)));
+//                res.add(new NodeRenderingHandler<>(AdmonitionBlock.class, (node, context, html) -> render(node, context, html)));
+//                res.add(new NodeRenderingHandler<>(Strikethrough.class, (node, context, html) -> render(node, context, html)));
+
+//            res.add(new NodeRenderingHandler<>(AutoLink.class, (node, context, html) -> render(node, context, html)));
         res.add(new NodeRenderingHandler<>(YamlFrontMatterBlock.class, (node, context, html) -> render(node, context, html)));
-        res.add(new NodeRenderingHandler<>(BlockQuote.class, (node, context, html) -> render(node, context, html)));
+//            res.add(new NodeRenderingHandler<>(BlockQuote.class, (node, context, html) -> render(node, context, html)));
         res.add(new NodeRenderingHandler<>(BulletList.class, (node, context, html) -> render(node, context, html)));
-        res.add(new NodeRenderingHandler<>(Code.class, (node, context, html) -> render(node, context, html)));
-        res.add(new NodeRenderingHandler<>(CodeBlock.class, (node, context, html) -> render(node, context, html)));
+//            res.add(new NodeRenderingHandler<>(Code.class, (node, context, html) -> render(node, context, html)));
+//            res.add(new NodeRenderingHandler<>(CodeBlock.class, (node, context, html) -> render(node, context, html)));
         res.add(new NodeRenderingHandler<>(Document.class, (node, context, html) -> render(node, context, html)));
         res.add(new NodeRenderingHandler<>(Emphasis.class, (node, context, html) -> render(node, context, html)));
-        res.add(new NodeRenderingHandler<>(FencedCodeBlock.class, (node, context, html) -> render(node, context, html)));
-        res.add(new NodeRenderingHandler<>(HardLineBreak.class, (node, context, html) -> render(node, context, html)));
+//            res.add(new NodeRenderingHandler<>(FencedCodeBlock.class, (node, context, html) -> render(node, context, html)));
+//            res.add(new NodeRenderingHandler<>(HardLineBreak.class, (node, context, html) -> render(node, context, html)));
         res.add(new NodeRenderingHandler<>(Heading.class, (node, context, html) -> render(node, context, html)));
-        res.add(new NodeRenderingHandler<>(HtmlBlock.class, (node, context, html) -> render(node, context, html)));
-        res.add(new NodeRenderingHandler<>(HtmlCommentBlock.class, (node, context, html) -> render(node, context, html)));
-        res.add(new NodeRenderingHandler<>(HtmlInnerBlock.class, (node, context, html) -> render(node, context, html)));
-        res.add(new NodeRenderingHandler<>(HtmlInnerBlockComment.class, (node, context, html) -> render(node, context, html)));
-        res.add(new NodeRenderingHandler<>(HtmlEntity.class, (node, context, html) -> render(node, context, html)));
-        res.add(new NodeRenderingHandler<>(HtmlInline.class, (node, context, html) -> render(node, context, html)));
-        res.add(new NodeRenderingHandler<>(HtmlInlineComment.class, (node, context, html) -> render(node, context, html)));
+//            res.add(new NodeRenderingHandler<>(HtmlBlock.class, (node, context, html) -> render(node, context, html)));
+//            res.add(new NodeRenderingHandler<>(HtmlCommentBlock.class, (node, context, html) -> render(node, context, html)));
+//            res.add(new NodeRenderingHandler<>(HtmlInnerBlock.class, (node, context, html) -> render(node, context, html)));
+//            res.add(new NodeRenderingHandler<>(HtmlInnerBlockComment.class, (node, context, html) -> render(node, context, html)));
+//            res.add(new NodeRenderingHandler<>(HtmlEntity.class, (node, context, html) -> render(node, context, html)));
+//            res.add(new NodeRenderingHandler<>(HtmlInline.class, (node, context, html) -> render(node, context, html)));
+//            res.add(new NodeRenderingHandler<>(HtmlInlineComment.class, (node, context, html) -> render(node, context, html)));
         res.add(new NodeRenderingHandler<>(Image.class, (node, context, html) -> render(node, context, html)));
         res.add(new NodeRenderingHandler<>(ImageRef.class, (node, context, html) -> render(node, context, html)));
-        res.add(new NodeRenderingHandler<>(IndentedCodeBlock.class, (node, context, html) -> render(node, context, html)));
+//            res.add(new NodeRenderingHandler<>(IndentedCodeBlock.class, (node, context, html) -> render(node, context, html)));
         res.add(new NodeRenderingHandler<>(Link.class, (node, context, html) -> render(node, context, html)));
         res.add(new NodeRenderingHandler<>(LinkRef.class, (node, context, html) -> render(node, context, html)));
         res.add(new NodeRenderingHandler<>(BulletListItem.class, (node, context, html) -> render(node, context, html)));
         res.add(new NodeRenderingHandler<>(OrderedListItem.class, (node, context, html) -> render(node, context, html)));
         res.add(new NodeRenderingHandler<>(MailLink.class, (node, context, html) -> render(node, context, html)));
         res.add(new NodeRenderingHandler<>(OrderedList.class, (node, context, html) -> render(node, context, html)));
-        res.add(new NodeRenderingHandler<>(Paragraph.class, (node, context, html) -> render(node, context, html)));
+//            res.add(new NodeRenderingHandler<>(Paragraph.class, (node, context, html) -> render(node, context, html)));
         res.add(new NodeRenderingHandler<>(Reference.class, (node, context, html) -> render(node, context, html)));
-        res.add(new NodeRenderingHandler<>(SoftLineBreak.class, (node, context, html) -> render(node, context, html)));
+//            res.add(new NodeRenderingHandler<>(SoftLineBreak.class, (node, context, html) -> render(node, context, html)));
         res.add(new NodeRenderingHandler<>(StrongEmphasis.class, (node, context, html) -> render(node, context, html)));
         res.add(new NodeRenderingHandler<>(Text.class, (node, context, html) -> render(node, context, html)));
         res.add(new NodeRenderingHandler<>(TextBase.class, (node, context, html) -> render(node, context, html)));
-        res.add(new NodeRenderingHandler<>(ThematicBreak.class, (node, context, html) -> render(node, context, html)));
+//            res.add(new NodeRenderingHandler<>(ThematicBreak.class, (node, context, html) -> render(node, context, html)));
         res.add(new NodeRenderingHandler<>(AnchorLink.class, (node, context, html) -> render(node, context, html)));
-        res.add(new NodeRenderingHandler<>(JekyllTagBlock.class, (node, context, html) -> render(node, context, html)));
-        res.add(new NodeRenderingHandler<>(JekyllTag.class, (node, context, html) -> render(node, context, html)));
+//            res.add(new NodeRenderingHandler<>(JekyllTagBlock.class, (node, context, html) -> render(node, context, html)));
+//            res.add(new NodeRenderingHandler<>(JekyllTag.class, (node, context, html) -> render(node, context, html)));
         return res.stream().collect(Collectors.toMap(
                 handler -> handler.getNodeType(),
                 handler -> handler
         ));
     }
-
-//    void toHtml(final Document astRoot) throws SAXException {
-////        checkArgNotNull(astRoot, "astRoot");
-//        clean(astRoot);
-//        final boolean isCompound = hasMultipleTopLevelHeaders(astRoot);
-//        contentHandler.startDocument();
-//        contentHandler.startPrefixMapping(ATTRIBUTE_PREFIX_DITAARCHVERSION, DITA_NAMESPACE);
-//        if (isCompound) {
-//            contentHandler.startElement(NULL_NS_URI, ELEMENT_NAME_DITA, ELEMENT_NAME_DITA, EMPTY_ATTS);
-//        }
-//        try {
-//            astRoot.accept(this);
-//            while (!tagStack.isEmpty()) {
-//                html.endElement();
-//            }
-//        } catch (final ParseException e) {
-//            //e.printStackTrace();
-//            throw new SAXException("Failed to parse Markdown: " + e.getMessage(), e);
-//        }
-//        if (isCompound) {
-//            contentHandler.endElement(NULL_NS_URI, ELEMENT_NAME_DITA, ELEMENT_NAME_DITA);
-//        }
-//        contentHandler.endPrefixMapping(ATTRIBUTE_PREFIX_DITAARCHVERSION);
-//        contentHandler.endDocument();
-//    }
 
     private boolean hasMultipleTopLevelHeaders(Document astRoot) {
         final long count = StreamSupport.stream(astRoot.getChildren().spliterator(), false)
@@ -302,76 +265,6 @@ public class CoreNodeRenderer {
                 .count();
         return count > 1;
     }
-
-    /**
-     * Replace metadata para with actual metadata element. Modifies AST <b>in-place</b>.
-     */
-    private void clean(final Document node) {
-//        final Map<String, String> metadata = new HashMap<>();
-//
-//        // read pandoc_title_block
-//        final Node first = node.getChildren().iterator().next();
-//        if (first instanceof Paragraph && toString(first).startsWith("%")) {
-//            final String[] fields = toString(first).split("\n");
-//            if (fields.length >= 1) {
-//                metadata.put("title", fields[0].substring(1));
-//            }
-////            if (fields.length >= 2) {
-////                metadata.put("authors", fields[0].substring(1));
-////            }
-////            if (fields.length >= 3) {
-////                metadata.put("date", fields[0].substring(1));
-////            }
-//        }
-//
-//        // insert header
-//        if (metadata.containsKey("title")) {
-//            boolean levelOneFound = false;
-//            for (final Node c : node.getChildren()) {
-//                if (c instanceof Heading) {
-//                    final Heading h = (Heading) c;
-//                    if (h.getLevel() == 1) {
-//                        levelOneFound = true;
-//                        break;
-//                    }
-//                }
-//            }
-//            final Node m;
-//            if (levelOneFound) {
-//                m = new MetadataNode(metadata.get("title"));
-//            } else {
-////                m = new Heading(1, new Text(metadata.get("title")));
-//                m = new Heading(BasedSequenceImpl.of(metadata.get("title")));
-//            }
-//            m.insertBefore(node.getFirstChild());
-////            node.getChildren().set(0, m);
-//        }
-    }
-
-    // Visitor methods
-//
-//    private static void toString(final Node node, final StringBuilder buf) {
-//        if (node instanceof SuperNode) {
-//            for (final Node n : node.getChildren()) {
-//                toString(n, buf);
-//            }
-//        } else if (node instanceof Text) {
-//            buf.append(((Text) node).getChars());
-//            for (final Node n : node.getChildren()) {
-//                toString(n, buf);
-//            }
-//        } else if (node instanceof SimpleNode) {
-//            buf.append(toString((SimpleNode) node));
-//        } else {
-//            throw new ParseException("Trying to process " + node);
-//        }
-//    }
-
-//    private static String toString(final Node node) {
-//        final StringBuilder buf = new StringBuilder();
-//        toString(node, buf);
-//        return buf.toString();
-//    }
 
     private void render(final Document node, final NodeRendererContext context, final SaxWriter html) {
 //        for (final ReferenceNode refNode : node.getReferences()) {
@@ -388,19 +281,20 @@ public class CoreNodeRenderer {
 //        }
         final boolean isCompound = hasMultipleTopLevelHeaders(node);
         if (isCompound) {
-            final AttributesBuilder atts = new AttributesBuilder()
-                    .add(DITA_NAMESPACE, ATTRIBUTE_NAME_DITAARCHVERSION, ATTRIBUTE_PREFIX_DITAARCHVERSION + ":" + ATTRIBUTE_NAME_DITAARCHVERSION, "CDATA", "2.0");
-            if (mditaCoreProfile || mditaExtendedProfile) {
-                atts.add(ATTRIBUTE_NAME_SPECIALIZATIONS, "(topic hi-d)(topic em-d)");
-            } else {
-                atts.add(ATTRIBUTE_NAME_SPECIALIZATIONS, "@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product");
-            }
-            html.startElement(node, ELEMENT_NAME_DITA, atts.build());
+            throw new ParseException(String.format("Map file cannot have multiple top level headers"));
+//            final AttributesBuilder atts = new AttributesBuilder()
+//                    .add(DITA_NAMESPACE, ATTRIBUTE_NAME_DITAARCHVERSION, ATTRIBUTE_PREFIX_DITAARCHVERSION + ":" + ATTRIBUTE_NAME_DITAARCHVERSION, "CDATA", "2.0");
+//            if (mditaCoreProfile || mditaExtendedProfile) {
+//                atts.add(ATTRIBUTE_NAME_SPECIALIZATIONS, "(topic hi-d)(topic em-d)");
+//            } else {
+//                atts.add(ATTRIBUTE_NAME_SPECIALIZATIONS, "@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product");
+//            }
+//            html.startElement(node, ELEMENT_NAME_DITA, atts.build());
         }
         context.renderChildren(node);
-        if (isCompound) {
-            html.endElement();
-        }
+//        if (isCompound) {
+//            html.endElement();
+//        }
     }
 
     private void render(final Abbreviation node, final NodeRendererContext context, final SaxWriter html) {
@@ -411,37 +305,37 @@ public class CoreNodeRenderer {
         // Ignore
     }
 
-    private void render(final AdmonitionBlock node, final NodeRendererContext context, final SaxWriter html) {
-        final String type = node.getInfo().toString();
-        final AttributesBuilder atts = new AttributesBuilder(NOTE_ATTS);
-        switch (type) {
-            case "note":
-            case "tip":
-            case "fastpath":
-            case "restriction":
-            case "important":
-            case "remember":
-            case "attention":
-            case "caution":
-            case "notice":
-            case "danger":
-            case "warning":
-            case "trouble":
-                atts.add("type", type);
-                break;
-            default:
-                atts.add("type", "other").add("othertype", type);
-                break;
-        }
-        html.startElement(node, TOPIC_NOTE, atts.build());
-        if (!node.getTitle().isEmpty()) {
-            html.startElement(node, TOPIC_P, P_ATTS);
-            html.characters(node.getTitle().toString());
-            html.endElement();
-        }
-        context.renderChildren(node);
-        html.endElement();
-    }
+//    private void render(final AdmonitionBlock node, final NodeRendererContext context, final SaxWriter html) {
+//        final String type = node.getInfo().toString();
+//        final AttributesBuilder atts = new AttributesBuilder(NOTE_ATTS);
+//        switch (type) {
+//            case "note":
+//            case "tip":
+//            case "fastpath":
+//            case "restriction":
+//            case "important":
+//            case "remember":
+//            case "attention":
+//            case "caution":
+//            case "notice":
+//            case "danger":
+//            case "warning":
+//            case "trouble":
+//                atts.add("type", type);
+//                break;
+//            default:
+//                atts.add("type", "other").add("othertype", type);
+//                break;
+//        }
+//        html.startElement(node, TOPIC_NOTE, atts.build());
+//        if (!node.getTitle().isEmpty()) {
+//            html.startElement(node, TOPIC_P, P_ATTS);
+//            html.characters(node.getTitle().toString());
+//            html.endElement();
+//        }
+//        context.renderChildren(node);
+//        html.endElement();
+//    }
 
     private void render(AnchorLink node, final NodeRendererContext context, final SaxWriter html) {
         context.renderChildren(node);
@@ -540,7 +434,8 @@ public class CoreNodeRenderer {
     }
 
     private void render(final BulletList node, final NodeRendererContext context, final SaxWriter html) {
-        printTag(node, context, html, TOPIC_UL, getAttributesFromAttributesNode(node, UL_ATTS));
+//        printTag(node, context, html, TOPIC_UL, getAttributesFromAttributesNode(node, UL_ATTS));
+        context.renderChildren(node);
     }
 
     private void render(final Code node, final NodeRendererContext context, final SaxWriter html) {
@@ -734,50 +629,50 @@ public class CoreNodeRenderer {
             header.id.ifPresent(node::setAnchorRefId);
         }
 
-        if (inSection) {
-            html.endElement(); // section or example
-            inSection = false;
-        }
-        final DitaClass cls;
-        final boolean isSection;
-        if ((mditaCoreProfile || mditaExtendedProfile) && node.getLevel() == 2) {
-            isSection = true;
-            cls = TOPIC_SECTION;
-        } else if (!mditaExtendedProfile) {
-            final String sectionClassName = containsSome(header.classes, sections.keySet());
-            if (sectionClassName != null) {
-                isSection = true;
-                cls = sections.get(sectionClassName);
-            } else {
-                isSection = false;
-                cls = null;
-            }
-        } else {
-            isSection = false;
-            cls = null;
-        }
-        if (isSection) {
-            if (node.getLevel() <= headerLevel) {
-                throw new ParseException(String.format("Level %d section title must be higher level than parent topic title %d", node.getLevel(), headerLevel));
-            }
-            final AttributesBuilder atts = new AttributesBuilder().add(ATTRIBUTE_NAME_CLASS, cls.toString());
-            final String id = getSectionId(node, header);
-            if (id != null) {
-                atts.add(ATTRIBUTE_NAME_ID, id);
-            }
-            if (!mditaExtendedProfile) {
-                final Collection<String> classes = new ArrayList<>(header.classes);
-                classes.removeAll(sections.keySet());
-                if (!classes.isEmpty()) {
-                    atts.add("outputclass", String.join(" ", classes));
-                }
-            }
-            html.startElement(node, cls, atts.build());
-            inSection = true;
-            html.startElement(node, TOPIC_TITLE, TITLE_ATTS);
-            context.renderChildren(node);
-            html.endElement(); // title
-        } else {
+//        if (inSection) {
+//            html.endElement(); // section or example
+//            inSection = false;
+//        }
+//        final DitaClass cls;
+//        final boolean isSection;
+//        if ((mditaCoreProfile || mditaExtendedProfile) && node.getLevel() == 2) {
+////            isSection = true;
+////            cls = TOPIC_SECTION;
+//        } else if (!mditaExtendedProfile) {
+//            final String sectionClassName = containsSome(header.classes, sections.keySet());
+//            if (sectionClassName != null) {
+////                isSection = true;
+////                cls = sections.get(sectionClassName);
+//            } else {
+////                isSection = false;
+////                cls = null;
+//            }
+//        } else {
+////            isSection = false;
+////            cls = null;
+//        }
+//        if (isSection) {
+//            if (node.getLevel() <= headerLevel) {
+//                throw new ParseException(String.format("Level %d section title must be higher level than parent topic title %d", node.getLevel(), headerLevel));
+//            }
+//            final AttributesBuilder atts = new AttributesBuilder().add(ATTRIBUTE_NAME_CLASS, cls.toString());
+//            final String id = getSectionId(node, header);
+//            if (id != null) {
+//                atts.add(ATTRIBUTE_NAME_ID, id);
+//            }
+//            if (!mditaExtendedProfile) {
+//                final Collection<String> classes = new ArrayList<>(header.classes);
+//                classes.removeAll(sections.keySet());
+//                if (!classes.isEmpty()) {
+//                    atts.add("outputclass", String.join(" ", classes));
+//                }
+//            }
+//            html.startElement(node, cls, atts.build());
+//            inSection = true;
+//            html.startElement(node, TOPIC_TITLE, TITLE_ATTS);
+//            context.renderChildren(node);
+//            html.endElement(); // title
+//        } else {
             if (headerLevel > 0) {
                 html.endElement(); // body
             }
@@ -787,9 +682,9 @@ public class CoreNodeRenderer {
             headerLevel = node.getLevel();
 
             final AttributesBuilder atts = mditaCoreProfile || mditaExtendedProfile
-                    ? new AttributesBuilder(TOPIC_ATTS)
+                    ? new AttributesBuilder(MAP_ATTS)
                     .add(ATTRIBUTE_NAME_SPECIALIZATIONS, "(topic hi-d)(topic em-d)")
-                    : new AttributesBuilder(TOPIC_ATTS)
+                    : new AttributesBuilder(MAP_ATTS)
                     .add(ATTRIBUTE_NAME_SPECIALIZATIONS, "@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product");
 
             final String id = getTopicId(node, header);
@@ -805,7 +700,7 @@ public class CoreNodeRenderer {
                     atts.add(attr.getKey(), attr.getValue());
                 }
             }
-            html.startElement(node, TOPIC_TOPIC, atts.build());
+            html.startElement(node, MAP_MAP, atts.build());
             html.startElement(node, TOPIC_TITLE, TITLE_ATTS);
             context.renderChildren(node);
             html.endElement(); // title
@@ -817,13 +712,13 @@ public class CoreNodeRenderer {
             if (node.getLevel() == 1) {
                 final Node firstChild = node.getDocument().getFirstChild();
                 if (firstChild instanceof YamlFrontMatterBlock) {
-                    html.startElement(firstChild, TOPIC_PROLOG, PROLOG_ATTS);
+                    html.startElement(firstChild, MAP_TOPICMETA, TOPICMETA_ATTS);
                     metadataSerializer.render((YamlFrontMatterBlock) firstChild, context, html);
                     html.endElement();
                 }
             }
-            html.startElement(node, TOPIC_BODY, BODY_ATTS);
-        }
+//            html.startElement(node, TOPIC_BODY, BODY_ATTS);
+//        }
     }
 
     private String getSectionId(Heading node, Title header) {
@@ -857,7 +752,7 @@ public class CoreNodeRenderer {
     }
 
     private void outputMetadata(Map<String, Object> documentMetadata, SaxWriter html) {
-        html.startElement(null, TOPIC_PROLOG, PROLOG_ATTS);
+        html.startElement(null, TOPIC_PROLOG, TOPICMETA_ATTS);
 //        metadataSerializer.write(documentMetadata);
         html.endElement();
     }
@@ -929,7 +824,7 @@ public class CoreNodeRenderer {
                         new SimpleImmutableEntry<String, DitaClass>("sup", HI_D_SUP),
                         new SimpleImmutableEntry<String, DitaClass>("u", HI_D_U)
                 )
-                .flatMap(CoreNodeRenderer::createHtmlToDita)
+                .flatMap(MapRenderer::createHtmlToDita)
                 .collect(Collectors.toUnmodifiableMap(Entry::getKey, Entry::getValue));
         hditaToXdita = Stream.<Entry<String, DitaClass>>of(
                         new SimpleImmutableEntry<String, DitaClass>("span", TOPIC_PH),
@@ -944,7 +839,7 @@ public class CoreNodeRenderer {
                         new SimpleImmutableEntry<String, DitaClass>("sup", HI_D_SUP),
                         new SimpleImmutableEntry<String, DitaClass>("u", HI_D_U)
                 )
-                .flatMap(CoreNodeRenderer::createHtmlToDita)
+                .flatMap(MapRenderer::createHtmlToDita)
                 .collect(Collectors.toUnmodifiableMap(Entry::getKey, Entry::getValue));
     }
 
@@ -994,7 +889,30 @@ public class CoreNodeRenderer {
     }
 
     private void render(final ListItem node, final NodeRendererContext context, final SaxWriter html) {
-        printTag(node, context, html, TOPIC_LI, LI_ATTS);
+        final Paragraph paragraph = (Paragraph) node.getChildOfType(Paragraph.class);
+        final Link link = (Link) paragraph.getChildOfType(Link.class);
+
+        final String text = link.getText().toString();
+        final AttributesBuilder atts = getLinkAttributes(link.getUrl().toString())
+                .add("navtitle", text);
+        atts.addAll(TOPICREF_ATTS);
+
+//        html.startElement(node, TOPIC_XREF, );
+//        context.renderChildren(node);
+//        html.endElement();
+
+        html.startElement(node, MAP_TOPICREF, getInlineAttributes(node, atts.build()));
+//        node.getFirstChildAnyNot(Paragraph.class);
+//        context.renderChildren(node);
+        Node child = node.getFirstChild();
+        while (child != null) {
+            Node next = child.getNext();
+            if (child instanceof BulletList || child instanceof OrderedList) {
+                context.renderChildren(child);
+            }
+            child = next;
+        }
+        html.endElement(); // topicref
     }
 
     private void render(final MailLink node, final NodeRendererContext context, final SaxWriter html) {
@@ -1020,27 +938,28 @@ public class CoreNodeRenderer {
         return firstChild != null && firstChild instanceof AttributesNode && firstChild.getNext() == null;
     }
 
-    private void render(final Paragraph node, final NodeRendererContext context, final SaxWriter html) {
-        if (isAttributesParagraph(node)) {
-            // Attributes for previous block
-        } else if (shortdescParagraph && !inSection && node.getPrevious() instanceof Heading) {
-            // Pulled by Heading
-        } else if (containsImage(node)) {
-            onlyImageChild = true;
-            context.renderChildren(node);
-            onlyImageChild = false;
-        } else {
-            final Attributes atts;
-            if (!mditaExtendedProfile) {
-                final Title header = Title.getFromChildren(node);
-                final AttributesBuilder builder = new AttributesBuilder(P_ATTS);
-                atts = readAttributes(header, builder).build();
-            } else {
-                atts = P_ATTS;
-            }
-            printTag(node, context, html, TOPIC_P, atts);
-        }
-    }
+//    private void render(final Paragraph node, final NodeRendererContext context, final SaxWriter html) {
+//        context.renderChildren(node);
+////        if (isAttributesParagraph(node)) {
+////            // Attributes for previous block
+////        } else if (shortdescParagraph && !inSection && node.getPrevious() instanceof Heading) {
+////            // Pulled by Heading
+////        } else if (containsImage(node)) {
+////            onlyImageChild = true;
+////            context.renderChildren(node);
+////            onlyImageChild = false;
+////        } else {
+////            final Attributes atts;
+////            if (!mditaExtendedProfile) {
+////                final Title header = Title.getFromChildren(node);
+////                final AttributesBuilder builder = new AttributesBuilder(P_ATTS);
+////                atts = readAttributes(header, builder).build();
+////            } else {
+////                atts = P_ATTS;
+////            }
+////            printTag(node, context, html, TOPIC_P, atts);
+////        }
+//    }
 
     private AttributesBuilder readAttributes(Title header, AttributesBuilder builder) {
         if (!header.classes.isEmpty()) {
@@ -1685,22 +1604,6 @@ public class CoreNodeRenderer {
         html.endElement();
     }
 
-//    @Override
-//    private void render(final WikiLinkNode node, final NodeRendererContext context, final DitaWriter html) {
-//        String url;
-//        try {
-//            url = "./" + URLEncoder.encode(node.getChars().toString().replace(' ', '-'), "UTF-8") + ".html";
-//        } catch (final UnsupportedEncodingException e) {
-//            throw new IllegalArgumentException(e);
-//        }
-//        final AttributesBuilder atts = getLinkAttributes(url);
-//
-//        html.startElement(TOPIC_XREF, atts.build());
-//        //html.characters(rendering.text);
-//        context.renderChildren(node);
-//        html.endElement();
-//    }
-
     private void render(final Text node, final NodeRendererContext context, final SaxWriter html) {
         if (abbreviations.isEmpty()) {
             if (node.getParent() instanceof Code) {
@@ -1797,6 +1700,10 @@ public class CoreNodeRenderer {
     }
 
     private AttributesBuilder getLinkAttributes(final String href) {
+        return getLinkAttributes(href, XREF_ATTS);
+    }
+
+    private AttributesBuilder getLinkAttributes(final String href, Attributes baseAttrs) {
         final AttributesBuilder atts = new AttributesBuilder(XREF_ATTS)
                 .add(ATTRIBUTE_NAME_HREF, href);
         if (href.startsWith("#")) {
@@ -1899,19 +1806,5 @@ public class CoreNodeRenderer {
         } else {
             html.characters(string);
         }
-    }
-//
-//    private void setLocation(Node node, NodeRendererContext context) {
-//        final Locator2Impl locator = context.getLocator();
-//        if (locator != null) {
-//            locator.setLineNumber(node.getLineNumber() + 1);
-//            locator.setColumnNumber(node.getStartOffset());
-//        }
-//    }
-
-    // Map
-
-    private void renderMap(final BulletList node, final NodeRendererContext context, final SaxWriter html) {
-        printTag(node, context, html, TOPIC_UL, getAttributesFromAttributesNode(node, UL_ATTS));
     }
 }
