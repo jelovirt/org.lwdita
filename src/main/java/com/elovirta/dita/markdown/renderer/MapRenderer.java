@@ -84,7 +84,7 @@ public class MapRenderer {
             .add(DITA_NAMESPACE, ATTRIBUTE_NAME_DITAARCHVERSION, ATTRIBUTE_PREFIX_DITAARCHVERSION + ":" + ATTRIBUTE_NAME_DITAARCHVERSION, "CDATA", "2.0")
 //            .add(ATTRIBUTE_NAME_DOMAINS, "(topic hi-d) (topic ut-d) (topic indexing-d) (topic hazard-d) (topic abbrev-d) (topic pr-d) (topic sw-d) (topic ui-d)")
             .build();
-//    private static final Attributes BODY_ATTS = buildAtts(TOPIC_BODY);
+    //    private static final Attributes BODY_ATTS = buildAtts(TOPIC_BODY);
 //    private static final Attributes SECTION_ATTS = buildAtts(TOPIC_SECTION);
 //    private static final Attributes EXAMPLE_ATTS = buildAtts(TOPIC_EXAMPLE);
 //    private static final Attributes NOTE_ATTS = buildAtts(TOPIC_NOTE);
@@ -158,11 +158,6 @@ public class MapRenderer {
 
     private final Set<String> footnotes = new HashSet<>();
     private String lastId;
-
-    /**
-     * Current header level.
-     */
-    private int headerLevel = 0;
 
     public MapRenderer(DataHolder options) {
         this.shortdescParagraph = DitaRenderer.SHORTDESC_PARAGRAPH.getFrom(options);
@@ -282,19 +277,45 @@ public class MapRenderer {
         final boolean isCompound = hasMultipleTopLevelHeaders(node);
         if (isCompound) {
             throw new ParseException(String.format("Map file cannot have multiple top level headers"));
-//            final AttributesBuilder atts = new AttributesBuilder()
-//                    .add(DITA_NAMESPACE, ATTRIBUTE_NAME_DITAARCHVERSION, ATTRIBUTE_PREFIX_DITAARCHVERSION + ":" + ATTRIBUTE_NAME_DITAARCHVERSION, "CDATA", "2.0");
-//            if (mditaCoreProfile || mditaExtendedProfile) {
-//                atts.add(ATTRIBUTE_NAME_SPECIALIZATIONS, "(topic hi-d)(topic em-d)");
-//            } else {
-//                atts.add(ATTRIBUTE_NAME_SPECIALIZATIONS, "@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product");
-//            }
-//            html.startElement(node, ELEMENT_NAME_DITA, atts.build());
         }
+        final AttributesBuilder atts = mditaCoreProfile || mditaExtendedProfile
+                ? new AttributesBuilder(MAP_ATTS)
+                .add(ATTRIBUTE_NAME_SPECIALIZATIONS, "(topic hi-d)(topic em-d)")
+                : new AttributesBuilder(MAP_ATTS)
+                .add(ATTRIBUTE_NAME_SPECIALIZATIONS, "@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product");
+
+
+        String id = null;
+        final Heading heading = (Heading) node.getChildOfType(Heading.class);
+        if (heading != null) {
+            final StringBuilder buf = new StringBuilder();
+            node.getAstExtra(buf);
+            Title header = null;
+            if (!mditaExtendedProfile) {
+                if (node.getFirstChild() instanceof AnchorLink) {
+                    header = Title.getFromChildren(node.getFirstChild());
+                } else {
+                    header = Title.getFromChildren(node);
+                }
+                header.id.ifPresent(heading::setAnchorRefId);
+            }
+            id = getTopicId(heading, header);
+            if (!mditaExtendedProfile) {
+                if (!header.classes.isEmpty()) {
+                    atts.add(ATTRIBUTE_NAME_OUTPUTCLASS, String.join(" ", header.classes));
+                }
+                for (Entry<String, String> attr : header.attributes.entrySet()) {
+                    atts.add(attr.getKey(), attr.getValue());
+                }
+            }
+        }
+        if (id != null) {
+            lastId = id;
+            atts.add(ATTRIBUTE_NAME_ID, id);
+        }
+        html.startElement(node, MAP_MAP, atts.build());
+
         context.renderChildren(node);
-//        if (isCompound) {
-//            html.endElement();
-//        }
     }
 
     private void render(final Abbreviation node, final NodeRendererContext context, final SaxWriter html) {
@@ -617,108 +638,22 @@ public class MapRenderer {
     }
 
     private void render(final Heading node, final NodeRendererContext context, final SaxWriter html) {
-        final StringBuilder buf = new StringBuilder();
-        node.getAstExtra(buf);
-        Title header = null;
-        if (!mditaExtendedProfile) {
-            if (node.getFirstChild() instanceof AnchorLink) {
-                header = Title.getFromChildren(node.getFirstChild());
-            } else {
-                header = Title.getFromChildren(node);
-            }
-            header.id.ifPresent(node::setAnchorRefId);
+        html.startElement(node, TOPIC_TITLE, TITLE_ATTS);
+        context.renderChildren(node);
+        html.endElement(); // title
+        if (shortdescParagraph && node.getNext() instanceof Paragraph) {
+            html.startElement(node.getNext(), TOPIC_SHORTDESC, SHORTDESC_ATTS);
+            context.renderChildren(node.getNext());
+            html.endElement(); // shortdesc
         }
-
-//        if (inSection) {
-//            html.endElement(); // section or example
-//            inSection = false;
-//        }
-//        final DitaClass cls;
-//        final boolean isSection;
-//        if ((mditaCoreProfile || mditaExtendedProfile) && node.getLevel() == 2) {
-////            isSection = true;
-////            cls = TOPIC_SECTION;
-//        } else if (!mditaExtendedProfile) {
-//            final String sectionClassName = containsSome(header.classes, sections.keySet());
-//            if (sectionClassName != null) {
-////                isSection = true;
-////                cls = sections.get(sectionClassName);
-//            } else {
-////                isSection = false;
-////                cls = null;
-//            }
-//        } else {
-////            isSection = false;
-////            cls = null;
-//        }
-//        if (isSection) {
-//            if (node.getLevel() <= headerLevel) {
-//                throw new ParseException(String.format("Level %d section title must be higher level than parent topic title %d", node.getLevel(), headerLevel));
-//            }
-//            final AttributesBuilder atts = new AttributesBuilder().add(ATTRIBUTE_NAME_CLASS, cls.toString());
-//            final String id = getSectionId(node, header);
-//            if (id != null) {
-//                atts.add(ATTRIBUTE_NAME_ID, id);
-//            }
-//            if (!mditaExtendedProfile) {
-//                final Collection<String> classes = new ArrayList<>(header.classes);
-//                classes.removeAll(sections.keySet());
-//                if (!classes.isEmpty()) {
-//                    atts.add("outputclass", String.join(" ", classes));
-//                }
-//            }
-//            html.startElement(node, cls, atts.build());
-//            inSection = true;
-//            html.startElement(node, TOPIC_TITLE, TITLE_ATTS);
-//            context.renderChildren(node);
-//            html.endElement(); // title
-//        } else {
-            if (headerLevel > 0) {
-                html.endElement(); // body
+        if (node.getLevel() == 1) {
+            final Node firstChild = node.getDocument().getFirstChild();
+            if (firstChild instanceof YamlFrontMatterBlock) {
+                html.startElement(firstChild, MAP_TOPICMETA, TOPICMETA_ATTS);
+                metadataSerializer.render((YamlFrontMatterBlock) firstChild, context, html);
+                html.endElement();
             }
-            for (; node.getLevel() <= headerLevel; headerLevel--) {
-                html.endElement(); // topic
-            }
-            headerLevel = node.getLevel();
-
-            final AttributesBuilder atts = mditaCoreProfile || mditaExtendedProfile
-                    ? new AttributesBuilder(MAP_ATTS)
-                    .add(ATTRIBUTE_NAME_SPECIALIZATIONS, "(topic hi-d)(topic em-d)")
-                    : new AttributesBuilder(MAP_ATTS)
-                    .add(ATTRIBUTE_NAME_SPECIALIZATIONS, "@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product");
-
-            final String id = getTopicId(node, header);
-            if (id != null) {
-                lastId = id;
-                atts.add(ATTRIBUTE_NAME_ID, id);
-            }
-            if (!mditaExtendedProfile) {
-                if (!header.classes.isEmpty()) {
-                    atts.add(ATTRIBUTE_NAME_OUTPUTCLASS, String.join(" ", header.classes));
-                }
-                for (Entry<String, String> attr : header.attributes.entrySet()) {
-                    atts.add(attr.getKey(), attr.getValue());
-                }
-            }
-            html.startElement(node, MAP_MAP, atts.build());
-            html.startElement(node, TOPIC_TITLE, TITLE_ATTS);
-            context.renderChildren(node);
-            html.endElement(); // title
-            if (shortdescParagraph && node.getNext() instanceof Paragraph) {
-                html.startElement(node.getNext(), TOPIC_SHORTDESC, SHORTDESC_ATTS);
-                context.renderChildren(node.getNext());
-                html.endElement(); // shortdesc
-            }
-            if (node.getLevel() == 1) {
-                final Node firstChild = node.getDocument().getFirstChild();
-                if (firstChild instanceof YamlFrontMatterBlock) {
-                    html.startElement(firstChild, MAP_TOPICMETA, TOPICMETA_ATTS);
-                    metadataSerializer.render((YamlFrontMatterBlock) firstChild, context, html);
-                    html.endElement();
-                }
-            }
-//            html.startElement(node, TOPIC_BODY, BODY_ATTS);
-//        }
+        }
     }
 
     private String getSectionId(Heading node, Title header) {
