@@ -99,6 +99,7 @@ public class MarkdownReaderTest extends AbstractReaderTest {
     @ParameterizedTest
     @ValueSource(strings = {
             "map.md",
+            "map_reltable.md",
             "map_without_title.md",
             "map_yaml.md",
     })

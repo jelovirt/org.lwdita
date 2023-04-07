@@ -88,7 +88,7 @@ public class DefaultSchemaProvider implements SchemaProvider {
 //                    InsExtension.create(),
                         JekyllTagExtension.create(),
 //                    SuperscriptExtension.create(),
-//                        TablesExtension.create(),
+                        TablesExtension.create(),
 //                    AutolinkExtension.create(),
                         YamlFrontMatterExtension.create()
 //                    DefinitionExtension.create(),

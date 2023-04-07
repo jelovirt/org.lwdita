@@ -95,7 +95,7 @@ public class MapRenderer {
     private static final Attributes B_ATTS = buildAtts(HI_D_B);
     private static final Attributes DD_ATTS = buildAtts(TOPIC_DD);
     private static final Attributes CODEPH_ATTS = buildAtts(PR_D_CODEPH);
-    private static final Attributes CODEBLOCK_ATTS = buildAtts(PR_D_CODEBLOCK);
+//    private static final Attributes CODEBLOCK_ATTS = buildAtts(PR_D_CODEBLOCK);
     private static final Attributes PRE_ATTS = buildAtts(TOPIC_PRE);
     private static final Attributes DT_ATTS = buildAtts(TOPIC_DT);
     private static final Attributes DEL_ATTS = new AttributesBuilder().add(ATTRIBUTE_NAME_CLASS, TOPIC_PH.toString()).add("status", "deleted").build();
@@ -107,30 +107,31 @@ public class MapRenderer {
     private static final Attributes SHORTDESC_ATTS = buildAtts(TOPIC_SHORTDESC);
     private static final Attributes TOPICMETA_ATTS = buildAtts(MAP_TOPICMETA);
     private static final Attributes BLOCKQUOTE_ATTS = buildAtts(TOPIC_LQ);
-    private static final Attributes UL_ATTS = buildAtts(TOPIC_UL);
+//    private static final Attributes UL_ATTS = buildAtts(TOPIC_UL);
     private static final Attributes DL_ATTS = buildAtts(TOPIC_DL);
     private static final Attributes DLENTRY_ATTS = buildAtts(TOPIC_DLENTRY);
     private static final Attributes OL_ATTS = buildAtts(TOPIC_OL);
-    private static final Attributes TABLE_ATTS = buildAtts(TOPIC_TABLE);
-    private static final Attributes TGROUP_ATTS = buildAtts(TOPIC_TGROUP);
-    private static final Attributes COLSPEC_ATTS = buildAtts(TOPIC_COLSPEC);
-    private static final Attributes TBODY_ATTS = buildAtts(TOPIC_TBODY);
-    private static final Attributes THEAD_ATTS = buildAtts(TOPIC_THEAD);
-    private static final Attributes TR_ATTS = buildAtts(TOPIC_ROW);
+//    private static final Attributes TABLE_ATTS = buildAtts(TOPIC_TABLE);
+//    private static final Attributes TGROUP_ATTS = buildAtts(TOPIC_TGROUP);
+//    private static final Attributes COLSPEC_ATTS = buildAtts(TOPIC_COLSPEC);
+//    private static final Attributes TBODY_ATTS = buildAtts(TOPIC_TBODY);
+//    private static final Attributes THEAD_ATTS = buildAtts(TOPIC_THEAD);
+//    private static final Attributes TR_ATTS = buildAtts(TOPIC_ROW);
 
-    private static final Attributes SIMPLETABLE_ATTS = buildAtts(TOPIC_SIMPLETABLE);
-    private static final Attributes STHEAD_ATTS = buildAtts(TOPIC_STHEAD);
-    private static final Attributes STROW_ATTS = buildAtts(TOPIC_STROW);
-    private static final Attributes STENTRY_ATTS = buildAtts(TOPIC_STENTRY);
+    private static final Attributes RELTABLE_ATTS = buildAtts(MAP_RELTABLE);
+    private static final Attributes RELHEADER_ATTS = buildAtts(MAP_RELHEADER);
+    private static final Attributes RELCOLSPEC_ATTS = buildAtts(MAP_RELCOLSPEC);
+    private static final Attributes RELROW_ATTS = buildAtts(MAP_RELROW);
+    private static final Attributes RELCELL_ATTS = buildAtts(MAP_RELCELL);
 
     private static final Attributes IMAGE_ATTS = buildAtts(TOPIC_IMAGE);
     private static final Attributes XREF_ATTS = buildAtts(TOPIC_XREF);
     private static final Attributes ALT_ATTS = buildAtts(TOPIC_ALT);
     private static final Attributes PH_ATTS = buildAtts(TOPIC_PH);
-    private static final Attributes ENTRY_ATTS = buildAtts(TOPIC_ENTRY);
+//    private static final Attributes ENTRY_ATTS = buildAtts(TOPIC_ENTRY);
     private static final Attributes FIG_ATTS = buildAtts(TOPIC_FIG);
     private static final Attributes REQUIRED_CLEANUP_ATTS = buildAtts(TOPIC_REQUIRED_CLEANUP);
-    private static final Attributes EMPTY_ATTS = new AttributesImpl();
+//    private static final Attributes EMPTY_ATTS = new AttributesImpl();
 
     private static final Map<String, DitaClass> sections = new HashMap<>();
 
@@ -152,9 +153,9 @@ public class MapRenderer {
     private final boolean mditaExtendedProfile;
     private final boolean mditaCoreProfile;
 
-    private TableBlock currentTableNode;
+//    private TableBlock currentTableNode;
     private int currentTableColumn;
-    private boolean inSection = false;
+//    private boolean inSection = false;
 
     private final Set<String> footnotes = new HashSet<>();
     private String lastId;
@@ -189,13 +190,13 @@ public class MapRenderer {
      */
     public Map<Class<? extends Node>, NodeRenderingHandler<? extends Node>> getNodeRenderingHandlers() {
         final List<NodeRenderingHandler> res = new ArrayList<>();
-//                res.add(new NodeRenderingHandler<>(TableBlock.class, (node, context, html) -> renderSimpleTableBlock(node, context, html)));
+                res.add(new NodeRenderingHandler<>(TableBlock.class, (node, context, html) -> renderSimpleTableBlock(node, context, html)));
 //                res.add(new NodeRenderingHandler<>(TableCaption.class, (node, context, html) -> renderSimpleTableCaption(node, context, html)));
-//                res.add(new NodeRenderingHandler<>(TableBody.class, (node, context, html) -> renderSimpleTableBody(node, context, html)));
-//                res.add(new NodeRenderingHandler<>(TableHead.class, (node, context, html) -> renderSimpleTableHead(node, context, html)));
-//                res.add(new NodeRenderingHandler<>(TableRow.class, (node, context, html) -> renderSimpleTableRow(node, context, html)));
-//                res.add(new NodeRenderingHandler<>(TableCell.class, (node, context, html) -> renderSimpleTableCell(node, context, html)));
-//                res.add(new NodeRenderingHandler<>(TableSeparator.class, (node, context, html) -> renderSimpleTableSeparator(node, context, html)));
+                res.add(new NodeRenderingHandler<>(TableBody.class, (node, context, html) -> renderSimpleTableBody(node, context, html)));
+                res.add(new NodeRenderingHandler<>(TableHead.class, (node, context, html) -> renderSimpleTableHead(node, context, html)));
+                res.add(new NodeRenderingHandler<>(TableRow.class, (node, context, html) -> renderSimpleTableRow(node, context, html)));
+                res.add(new NodeRenderingHandler<>(TableCell.class, (node, context, html) -> renderSimpleTableCell(node, context, html)));
+                res.add(new NodeRenderingHandler<>(TableSeparator.class, (node, context, html) -> renderSimpleTableSeparator(node, context, html)));
 
 //                res.add(new NodeRenderingHandler<>(AttributesNode.class, (node, context, html) -> { /* Ignore */ }));
 //                res.add(new NodeRenderingHandler<>(DefinitionList.class, (node, context, html) -> render(node, context, html)));
@@ -238,9 +239,9 @@ public class MapRenderer {
         res.add(new NodeRenderingHandler<>(OrderedListItem.class, (node, context, html) -> render(node, context, html)));
         res.add(new NodeRenderingHandler<>(MailLink.class, (node, context, html) -> render(node, context, html)));
         res.add(new NodeRenderingHandler<>(OrderedList.class, (node, context, html) -> render(node, context, html)));
-//            res.add(new NodeRenderingHandler<>(Paragraph.class, (node, context, html) -> render(node, context, html)));
+            res.add(new NodeRenderingHandler<>(Paragraph.class, (node, context, html) -> render(node, context, html)));
         res.add(new NodeRenderingHandler<>(Reference.class, (node, context, html) -> render(node, context, html)));
-//            res.add(new NodeRenderingHandler<>(SoftLineBreak.class, (node, context, html) -> render(node, context, html)));
+            res.add(new NodeRenderingHandler<>(SoftLineBreak.class, (node, context, html) -> render(node, context, html)));
         res.add(new NodeRenderingHandler<>(StrongEmphasis.class, (node, context, html) -> render(node, context, html)));
         res.add(new NodeRenderingHandler<>(Text.class, (node, context, html) -> render(node, context, html)));
         res.add(new NodeRenderingHandler<>(TextBase.class, (node, context, html) -> render(node, context, html)));
@@ -1012,16 +1013,16 @@ public class MapRenderer {
         final String key = node.getReference() != null ? node.getReference().toString() : text;
         final Reference refNode = node.getReferenceNode(node.getDocument());
         if (refNode == null) { // "fake" reference link
-            final AttributesBuilder atts = new AttributesBuilder(XREF_ATTS)
+            final AttributesBuilder atts = new AttributesBuilder(TOPICREF_ATTS)
                     .add(ATTRIBUTE_NAME_KEYREF, key);
-            html.startElement(node, TOPIC_XREF, atts.build());
+            html.startElement(node, MAP_TOPICREF, atts.build());
             if (!node.getText().toString().isEmpty()) {
                 html.characters(node.getText().toString());
             }
             html.endElement();
         } else {
             final AttributesBuilder atts = getLinkAttributes(refNode.getUrl().toString());
-            html.startElement(node, TOPIC_XREF, atts.build());
+            html.startElement(node, MAP_TOPICREF, atts.build());
             if (!refNode.getTitle().toString().isEmpty()) {
                 html.characters(refNode.getTitle().toString());
             } else {
@@ -1045,7 +1046,7 @@ public class MapRenderer {
 //            html.endElement();
 //        } else {
         final AttributesBuilder atts = getLinkAttributes(node.getUrl().toString());
-        html.startElement(node, TOPIC_XREF, getInlineAttributes(node, atts.build()));
+        html.startElement(node, MAP_TOPICREF, getInlineAttributes(node, atts.build()));
 //            if (!refNode.getTitle().toString().isEmpty()) {
 //                html.characters(refNode.toString());
 //            } else {
@@ -1142,38 +1143,38 @@ public class MapRenderer {
 
     // OASIS Table
 
-    private void render(final TableBody node, final NodeRendererContext context, final SaxWriter html) {
-        printTag(node, context, html, TOPIC_TBODY, TBODY_ATTS);
-    }
+//    private void render(final TableBody node, final NodeRendererContext context, final SaxWriter html) {
+//        printTag(node, context, html, TOPIC_TBODY, TBODY_ATTS);
+//    }
+//
+//    private void render(final TableCaption node, final NodeRendererContext context, final SaxWriter html) {
+//        // Pull processed by TableBlock
+////        html.startElement(TOPIC_TITLE, TITLE_ATTS);
+////        context.renderChildren(node);
+////        html.endElement();
+//    }
 
-    private void render(final TableCaption node, final NodeRendererContext context, final SaxWriter html) {
-        // Pull processed by TableBlock
-//        html.startElement(TOPIC_TITLE, TITLE_ATTS);
+//    private void render(final TableCell node, final NodeRendererContext context, final SaxWriter html) {
+////        final List<TableColumnNode> columns = currentTableNode.getColumns();
+////        final TableColumnNode column = columns.get(Math.min(currentTableColumn, columns.size() - 1));
+////
+//        final AttributesBuilder atts = new AttributesBuilder(ENTRY_ATTS);
+////        column.accept(this);
+//        if (node.getAlignment() != null) {
+//            atts.add(ATTRIBUTE_NAME_ALIGN, node.getAlignment().cellAlignment().name().toLowerCase());
+//        }
+//        if (node.getSpan() > 1) {
+//            atts.add(ATTRIBUTE_NAME_NAMEST, COLUMN_NAME_COL + Integer.toString(currentTableColumn + 1));
+//            atts.add(ATTRIBUTE_NAME_NAMEEND, COLUMN_NAME_COL + Integer.toString(currentTableColumn + node.getSpan()));
+//        }
+//        html.startElement(node, TOPIC_ENTRY, atts.build());
 //        context.renderChildren(node);
 //        html.endElement();
-    }
-
-    private void render(final TableCell node, final NodeRendererContext context, final SaxWriter html) {
-//        final List<TableColumnNode> columns = currentTableNode.getColumns();
-//        final TableColumnNode column = columns.get(Math.min(currentTableColumn, columns.size() - 1));
 //
-        final AttributesBuilder atts = new AttributesBuilder(ENTRY_ATTS);
-//        column.accept(this);
-        if (node.getAlignment() != null) {
-            atts.add(ATTRIBUTE_NAME_ALIGN, node.getAlignment().cellAlignment().name().toLowerCase());
-        }
-        if (node.getSpan() > 1) {
-            atts.add(ATTRIBUTE_NAME_NAMEST, COLUMN_NAME_COL + Integer.toString(currentTableColumn + 1));
-            atts.add(ATTRIBUTE_NAME_NAMEEND, COLUMN_NAME_COL + Integer.toString(currentTableColumn + node.getSpan()));
-        }
-        html.startElement(node, TOPIC_ENTRY, atts.build());
-        context.renderChildren(node);
-        html.endElement();
+//        currentTableColumn += node.getSpan();
+//    }
 
-        currentTableColumn += node.getSpan();
-    }
-
-    private String tableColumnAlignment = null;
+//    private String tableColumnAlignment = null;
 
 //    @Override
 //    private void render(final TableColumnNode node, final NodeRendererContext context, final DitaWriter html) {
@@ -1194,130 +1195,136 @@ public class MapRenderer {
 //        }
 //    }
 
-    private void render(final TableHead node, final NodeRendererContext context, final SaxWriter html) {
-        printTag(node, context, html, TOPIC_THEAD, THEAD_ATTS);
-    }
-
-    private void render(final TableBlock node, final NodeRendererContext context, final SaxWriter html) {
-        currentTableNode = node;
-        final Attributes tableAtts;
-        if (!mditaExtendedProfile && isAttributesParagraph(node.getNext())) {
-            final Title header = Title.getFromChildren(node.getNext());
-            final AttributesBuilder builder = new AttributesBuilder(TABLE_ATTS);
-            tableAtts = readAttributes(header, builder).build();
-        } else {
-            tableAtts = TABLE_ATTS;
-        }
-        html.startElement(node, TOPIC_TABLE, tableAtts);
-        for (final Node child : node.getChildren()) {
-            if (child instanceof TableCaption) {
-                html.startElement(child, TOPIC_TITLE, TITLE_ATTS);
-                context.renderChildren((TableCaption) child);
-                html.endElement();
-//                render((TableCaption) child, context, html);
-            }
-        }
-        final int maxCols = findMaxCols(node);
-        final Attributes atts = new AttributesBuilder(TGROUP_ATTS)
-                .add(ATTRIBUTE_NAME_COLS, Integer.toString(maxCols))
-                .build();
-        html.startElement(node, TOPIC_TGROUP, atts);
-
-        for (int i = 0; i < maxCols; i++) {
-            final AttributesBuilder catts = new AttributesBuilder(COLSPEC_ATTS)
-                    .add(ATTRIBUTE_NAME_COLNAME, COLUMN_NAME_COL + (i + 1));
-//            switch (col.getAlignment()) {
-//                case Center:
-//                    catts.add(ATTRIBUTE_NAME_ALIGN, "center");
-//                    break;
-//                case Right:
-//                    catts.add(ATTRIBUTE_NAME_ALIGN, "right");
-//                    break;
-//                case Left:
-//                    catts.add(ATTRIBUTE_NAME_ALIGN, "left");
-//                    break;
-//            }
-            html.startElement(node, TOPIC_COLSPEC, catts.build());
-            html.endElement(); // colspec
-        }
-
-//            final AttributesBuilder catts = new AttributesBuilder(COLSPEC_ATTS)
-//                    .add(ATTRIBUTE_NAME_COLNAME, COLUMN_NAME_COL + counter);
-//            switch (col.getAlignment()) {
-//                case Center:
-//                    catts.add(ATTRIBUTE_NAME_ALIGN, "center");
-//                    break;
-//                case Right:
-//                    catts.add(ATTRIBUTE_NAME_ALIGN, "right");
-//                    break;
-//                case Left:
-//                    catts.add(ATTRIBUTE_NAME_ALIGN, "left");
-//                    break;
-//            }
-//            html.startElement(TOPIC_COLSPEC, catts.build());
-//            html.endElement(); // colspec
+//    private void render(final TableHead node, final NodeRendererContext context, final SaxWriter html) {
+//        printTag(node, context, html, TOPIC_THEAD, THEAD_ATTS);
+//    }
+//
+//    private void render(final TableBlock node, final NodeRendererContext context, final SaxWriter html) {
+//        currentTableNode = node;
+//        final Attributes tableAtts;
+//        if (!mditaExtendedProfile && isAttributesParagraph(node.getNext())) {
+//            final Title header = Title.getFromChildren(node.getNext());
+//            final AttributesBuilder builder = new AttributesBuilder(TABLE_ATTS);
+//            tableAtts = readAttributes(header, builder).build();
+//        } else {
+//            tableAtts = TABLE_ATTS;
+//        }
+//        html.startElement(node, TOPIC_TABLE, tableAtts);
 //        for (final Node child : node.getChildren()) {
-//            if (!(child instanceof TableCaptionNode)) {
-//                context.renderChildren(child);
+//            if (child instanceof TableCaption) {
+//                html.startElement(child, TOPIC_TITLE, TITLE_ATTS);
+//                context.renderChildren((TableCaption) child);
+//                html.endElement();
+////                render((TableCaption) child, context, html);
 //            }
 //        }
-        context.renderChildren(node);
-        html.endElement(); // tgroup
-        html.endElement(); // table
-        currentTableNode = null;
-    }
+//        final int maxCols = findMaxCols(node);
+//        final Attributes atts = new AttributesBuilder(TGROUP_ATTS)
+//                .add(ATTRIBUTE_NAME_COLS, Integer.toString(maxCols))
+//                .build();
+//        html.startElement(node, TOPIC_TGROUP, atts);
+//
+//        for (int i = 0; i < maxCols; i++) {
+//            final AttributesBuilder catts = new AttributesBuilder(COLSPEC_ATTS)
+//                    .add(ATTRIBUTE_NAME_COLNAME, COLUMN_NAME_COL + (i + 1));
+////            switch (col.getAlignment()) {
+////                case Center:
+////                    catts.add(ATTRIBUTE_NAME_ALIGN, "center");
+////                    break;
+////                case Right:
+////                    catts.add(ATTRIBUTE_NAME_ALIGN, "right");
+////                    break;
+////                case Left:
+////                    catts.add(ATTRIBUTE_NAME_ALIGN, "left");
+////                    break;
+////            }
+//            html.startElement(node, TOPIC_COLSPEC, catts.build());
+//            html.endElement(); // colspec
+//        }
+//
+////            final AttributesBuilder catts = new AttributesBuilder(COLSPEC_ATTS)
+////                    .add(ATTRIBUTE_NAME_COLNAME, COLUMN_NAME_COL + counter);
+////            switch (col.getAlignment()) {
+////                case Center:
+////                    catts.add(ATTRIBUTE_NAME_ALIGN, "center");
+////                    break;
+////                case Right:
+////                    catts.add(ATTRIBUTE_NAME_ALIGN, "right");
+////                    break;
+////                case Left:
+////                    catts.add(ATTRIBUTE_NAME_ALIGN, "left");
+////                    break;
+////            }
+////            html.startElement(TOPIC_COLSPEC, catts.build());
+////            html.endElement(); // colspec
+////        for (final Node child : node.getChildren()) {
+////            if (!(child instanceof TableCaptionNode)) {
+////                context.renderChildren(child);
+////            }
+////        }
+//        context.renderChildren(node);
+//        html.endElement(); // tgroup
+//        html.endElement(); // table
+//        currentTableNode = null;
+//    }
 
-    private int findMaxCols(TableBlock table) {
-        int max = 0;
-        for (Node body = table.getFirstChild(); body != null; body = body.getNext()) {
-            if (body instanceof TableHead || body instanceof TableBody) {
-                for (Node row = body.getFirstChild(); row != null; row = row.getNext()) {
-                    if (row instanceof TableRow) {
-                        int colCount = 0;
-                        for (Node col = row.getFirstChild(); col != null; col = col.getNext()) {
-                            if (col instanceof TableCell) {
-                                TableCell c = ((TableCell) col);
-                                colCount = colCount + c.getSpan();
-                            }
-                        }
-                        max = Math.max(max, colCount);
-                    }
-                }
-            }
-        }
-        return max;
-    }
+//    private int findMaxCols(TableBlock table) {
+//        int max = 0;
+//        for (Node body = table.getFirstChild(); body != null; body = body.getNext()) {
+//            if (body instanceof TableHead || body instanceof TableBody) {
+//                for (Node row = body.getFirstChild(); row != null; row = row.getNext()) {
+//                    if (row instanceof TableRow) {
+//                        int colCount = 0;
+//                        for (Node col = row.getFirstChild(); col != null; col = col.getNext()) {
+//                            if (col instanceof TableCell) {
+//                                TableCell c = ((TableCell) col);
+//                                colCount = colCount + c.getSpan();
+//                            }
+//                        }
+//                        max = Math.max(max, colCount);
+//                    }
+//                }
+//            }
+//        }
+//        return max;
+//    }
 
-    private void render(TableSeparator node, NodeRendererContext context, SaxWriter html) {
-        // Ignore
-    }
-
-    private void render(final TableRow node, final NodeRendererContext context, final SaxWriter html) {
-        currentTableColumn = 0;
-        printTag(node, context, html, TOPIC_ROW, TR_ATTS);
-    }
+//    private void render(TableSeparator node, NodeRendererContext context, SaxWriter html) {
+//        // Ignore
+//    }
+//
+//    private void render(final TableRow node, final NodeRendererContext context, final SaxWriter html) {
+//        currentTableColumn = 0;
+//        printTag(node, context, html, TOPIC_ROW, TR_ATTS);
+//    }
 
     // Simple table
 
+    // <reltable class="- map/reltable " toc="no">
+    //    <relheader class="- map/relheader ">
+    //      <relcolspec class="- map/relcolspec " toc="no">
+    //    <relrow class="- map/relrow ">
+    //      <relcell class="- map/relcell " toc="no">
+
     private void renderSimpleTableBlock(final TableBlock node, final NodeRendererContext context, final SaxWriter html) {
-        currentTableNode = node;
+//        currentTableNode = node;
         final Attributes tableAtts;
         if (!mditaExtendedProfile && isAttributesParagraph(node.getNext())) {
             final Title header = Title.getFromChildren(node.getNext());
-            final AttributesBuilder builder = new AttributesBuilder(SIMPLETABLE_ATTS);
+            final AttributesBuilder builder = new AttributesBuilder(RELTABLE_ATTS);
             tableAtts = readAttributes(header, builder).build();
         } else {
-            tableAtts = SIMPLETABLE_ATTS;
+            tableAtts = RELTABLE_ATTS;
         }
-        html.startElement(node, TOPIC_SIMPLETABLE, tableAtts);
-        for (final Node child : node.getChildren()) {
-            if (child instanceof TableCaption) {
-                html.startElement(child, TOPIC_TITLE, TITLE_ATTS);
-                context.renderChildren((TableCaption) child);
-                html.endElement();
-//                render((TableCaption) child, context, html);
-            }
-        }
+        html.startElement(node, MAP_RELTABLE, tableAtts);
+//        for (final Node child : node.getChildren()) {
+//            if (child instanceof TableCaption) {
+//                html.startElement(child, TOPIC_TITLE, TITLE_ATTS);
+//                context.renderChildren((TableCaption) child);
+//                html.endElement();
+////                render((TableCaption) child, context, html);
+//            }
+//        }
 //        final int maxCols = findMaxCols(node);
 //        final Attributes atts = new AttributesBuilder(TGROUP_ATTS)
 //                .add(ATTRIBUTE_NAME_COLS, Integer.toString(maxCols))
@@ -1365,15 +1372,15 @@ public class MapRenderer {
         context.renderChildren(node);
 //        html.endElement(); // tgroup
         html.endElement(); // table
-        currentTableNode = null;
+//        currentTableNode = null;
     }
 
-    private void renderSimpleTableCaption(final TableCaption node, final NodeRendererContext context, final SaxWriter html) {
-        // Pull processed by TableBlock
-//        html.startElement(TOPIC_TITLE, TITLE_ATTS);
-//        context.renderChildren(node);
-//        html.endElement();
-    }
+//    private void renderSimpleTableCaption(final TableCaption node, final NodeRendererContext context, final SaxWriter html) {
+//        // Pull processed by TableBlock
+////        html.startElement(TOPIC_TITLE, TITLE_ATTS);
+////        context.renderChildren(node);
+////        html.endElement();
+//    }
 
 //    @Override
 //    private void render(final TableColumnNode node, final NodeRendererContext context, final DitaWriter html) {
@@ -1412,27 +1419,28 @@ public class MapRenderer {
     private void renderSimpleTableRow(final TableRow node, final NodeRendererContext context, final SaxWriter html) {
         currentTableColumn = 0;
         if (node.getParent() instanceof TableHead) {
-            printTag(node, context, html, TOPIC_STHEAD, STHEAD_ATTS);
+            printTag(node, context, html, MAP_RELHEADER, RELHEADER_ATTS);
         } else {
-            printTag(node, context, html, TOPIC_STROW, STROW_ATTS);
+            printTag(node, context, html, MAP_RELROW, RELROW_ATTS);
         }
     }
 
     private void renderSimpleTableCell(final TableCell node, final NodeRendererContext context, final SaxWriter html) {
+        final boolean isHeader = node.getParent().getParent().isOrDescendantOfType(TableHead.class);
 //        final List<TableColumnNode> columns = currentTableNode.getColumns();
 //        final TableColumnNode column = columns.get(Math.min(currentTableColumn, columns.size() - 1));
 //
-        final AttributesBuilder atts = new AttributesBuilder(STENTRY_ATTS);
+        final AttributesBuilder atts = new AttributesBuilder(isHeader ? RELCOLSPEC_ATTS : RELCELL_ATTS);
 //        column.accept(this);
 //        if (node.getAlignment() != null) {
 //            atts.add(ATTRIBUTE_NAME_ALIGN, node.getAlignment().cellAlignment().name().toLowerCase());
 //        }
-        if (node.getSpan() > 1) {
-//            atts.add(ATTRIBUTE_NAME_NAMEST, COLUMN_NAME_COL + Integer.toString(currentTableColumn + 1));
-//            atts.add(ATTRIBUTE_NAME_NAMEEND, COLUMN_NAME_COL + Integer.toString(currentTableColumn + node.getSpan()));
-            atts.add(ATTRIBUTE_NAME_COLSPAN, Integer.toString(node.getSpan()));
-        }
-        html.startElement(node, TOPIC_STENTRY, atts.build());
+//        if (node.getSpan() > 1) {
+////            atts.add(ATTRIBUTE_NAME_NAMEST, COLUMN_NAME_COL + Integer.toString(currentTableColumn + 1));
+////            atts.add(ATTRIBUTE_NAME_NAMEEND, COLUMN_NAME_COL + Integer.toString(currentTableColumn + node.getSpan()));
+//            atts.add(ATTRIBUTE_NAME_COLSPAN, Integer.toString(node.getSpan()));
+//        }
+        html.startElement(node, isHeader ? MAP_RELCELL: MAP_RELCOLSPEC, atts.build());
         if (isInline(node.getFirstChild())) {
             html.startElement(node, TOPIC_P, P_ATTS);
             context.renderChildren(node);
@@ -1452,128 +1460,128 @@ public class MapRenderer {
     }
 
     // Code block
-
-    private void render(final CodeBlock node, final NodeRendererContext context, final SaxWriter html) {
-        final AttributesBuilder atts = new AttributesBuilder(mditaExtendedProfile ? PRE_ATTS : CODEBLOCK_ATTS)
-                .add(XML_NS_URI, "space", "xml:space", "CDATA", "preserve");
-//        if (node.getType() != null && !node.getType().isEmpty()) {
-//            final String type = node.getType().trim();
-//            final Metadata metadata;
-//            if (type.startsWith("{")) {
-//                metadata = Metadata.parse(type.substring(1, type.length() - 1));
-//            } else {
-//                metadata = new Metadata(null, Collections.singletonList(type));
+//
+//    private void render(final CodeBlock node, final NodeRendererContext context, final SaxWriter html) {
+//        final AttributesBuilder atts = new AttributesBuilder(mditaExtendedProfile ? PRE_ATTS : CODEBLOCK_ATTS)
+//                .add(XML_NS_URI, "space", "xml:space", "CDATA", "preserve");
+////        if (node.getType() != null && !node.getType().isEmpty()) {
+////            final String type = node.getType().trim();
+////            final Metadata metadata;
+////            if (type.startsWith("{")) {
+////                metadata = Metadata.parse(type.substring(1, type.length() - 1));
+////            } else {
+////                metadata = new Metadata(null, Collections.singletonList(type));
+////            }
+////            if (metadata.id != null) {
+////                atts.add(ATTRIBUTE_NAME_ID, metadata.id);
+////            }
+////            if (!metadata.classes.isEmpty()) {
+////                atts.add("outputclass", String.join(" ", metadata.classes));
+////            }
+////        }
+//        html.startElement(node, mditaExtendedProfile ? TOPIC_PRE : PR_D_CODEBLOCK, atts.build());
+//        String text = node.getChars().toString();
+//        if (text.endsWith("\n")) {
+//            text = text.substring(0, text.length() - 1);
+//        }
+//        html.characters(text);
+//        html.endElement();
+//    }
+//
+//    private void render(final IndentedCodeBlock node, final NodeRendererContext context, final SaxWriter html) {
+//        final AttributesBuilder atts = new AttributesBuilder(mditaExtendedProfile ? PRE_ATTS : CODEBLOCK_ATTS)
+//                .add(XML_NS_URI, "space", "xml:space", "CDATA", "preserve");
+////        if (node.getType() != null && !node.getType().isEmpty()) {
+////            final String type = node.getType().trim();
+////            final Metadata metadata;
+////            if (type.startsWith("{")) {
+////                metadata = Metadata.parse(type.substring(1, type.length() - 1));
+////            } else {
+////                metadata = new Metadata(null, Collections.singletonList(type));
+////            }
+////            if (metadata.id != null) {
+////                atts.add(ATTRIBUTE_NAME_ID, metadata.id);
+////            }
+////            if (!metadata.classes.isEmpty()) {
+////                atts.add("outputclass", String.join(" ", metadata.classes));
+////            }
+////        }
+//        html.startElement(node, mditaExtendedProfile ? TOPIC_PRE : PR_D_CODEBLOCK, atts.build());
+//        // FIXME: For compatibility with HTML pre/code, should be removed
+//        if (mditaExtendedProfile) {
+//            html.startElement(node, HI_D_TT, TT_ATTS);
+//        }
+//        String text = node.getContentChars().toString();
+//        if (text.endsWith("\n")) {
+//            text = text.substring(0, text.length() - 1);
+//        }
+//        html.characters(text);
+//        if (mditaExtendedProfile) {
+//            html.endElement();
+//        }
+//        html.endElement();
+//    }
+//
+//    private void render(final FencedCodeBlock node, final NodeRendererContext context, final SaxWriter html) {
+//        final AttributesBuilder atts = new AttributesBuilder(mditaExtendedProfile ? PRE_ATTS : CODEBLOCK_ATTS)
+//                .add(XML_NS_URI, "space", "xml:space", "CDATA", "preserve");
+////        if (node.getType() != null && !node.getType().isEmpty()) {
+////            final String type = node.getType().trim();
+////            final Metadata metadata;
+////            if (type.startsWith("{")) {
+////                metadata = Metadata.parse(type.substring(1, type.length() - 1));
+////            } else {
+////                metadata = new Metadata(null, Collections.singletonList(type));
+////            }
+////            if (metadata.id != null) {
+////                atts.add(ATTRIBUTE_NAME_ID, metadata.id);
+////            }
+////            if (!metadata.classes.isEmpty()) {
+////                atts.add("outputclass", String.join(" ", metadata.classes));
+////            }
+////        }
+//
+//
+//        BasedSequence info = node.getInfo();
+//        if (info.startsWith("{") && info.endsWith("}")) {
+//            final Metadata metadata = Metadata.parse(info.subSequence(1, info.length() - 1).toString());
+//            if (!metadata.classes.isEmpty()) {
+//                atts.add("outputclass", String.join(" ", metadata.classes));
 //            }
 //            if (metadata.id != null) {
 //                atts.add(ATTRIBUTE_NAME_ID, metadata.id);
 //            }
-//            if (!metadata.classes.isEmpty()) {
-//                atts.add("outputclass", String.join(" ", metadata.classes));
-//            }
-//        }
-        html.startElement(node, mditaExtendedProfile ? TOPIC_PRE : PR_D_CODEBLOCK, atts.build());
-        String text = node.getChars().toString();
-        if (text.endsWith("\n")) {
-            text = text.substring(0, text.length() - 1);
-        }
-        html.characters(text);
-        html.endElement();
-    }
-
-    private void render(final IndentedCodeBlock node, final NodeRendererContext context, final SaxWriter html) {
-        final AttributesBuilder atts = new AttributesBuilder(mditaExtendedProfile ? PRE_ATTS : CODEBLOCK_ATTS)
-                .add(XML_NS_URI, "space", "xml:space", "CDATA", "preserve");
-//        if (node.getType() != null && !node.getType().isEmpty()) {
-//            final String type = node.getType().trim();
-//            final Metadata metadata;
-//            if (type.startsWith("{")) {
-//                metadata = Metadata.parse(type.substring(1, type.length() - 1));
+//        } else if (info.isNotNull() && !info.isBlank()) {
+//            int space = info.indexOf(' ');
+//            BasedSequence language;
+//            if (space == -1) {
+//                language = info;
 //            } else {
-//                metadata = new Metadata(null, Collections.singletonList(type));
+//                language = info.subSequence(0, space);
 //            }
-//            if (metadata.id != null) {
-//                atts.add(ATTRIBUTE_NAME_ID, metadata.id);
-//            }
-//            if (!metadata.classes.isEmpty()) {
-//                atts.add("outputclass", String.join(" ", metadata.classes));
-//            }
-//        }
-        html.startElement(node, mditaExtendedProfile ? TOPIC_PRE : PR_D_CODEBLOCK, atts.build());
-        // FIXME: For compatibility with HTML pre/code, should be removed
-        if (mditaExtendedProfile) {
-            html.startElement(node, HI_D_TT, TT_ATTS);
-        }
-        String text = node.getContentChars().toString();
-        if (text.endsWith("\n")) {
-            text = text.substring(0, text.length() - 1);
-        }
-        html.characters(text);
-        if (mditaExtendedProfile) {
-            html.endElement();
-        }
-        html.endElement();
-    }
-
-    private void render(final FencedCodeBlock node, final NodeRendererContext context, final SaxWriter html) {
-        final AttributesBuilder atts = new AttributesBuilder(mditaExtendedProfile ? PRE_ATTS : CODEBLOCK_ATTS)
-                .add(XML_NS_URI, "space", "xml:space", "CDATA", "preserve");
-//        if (node.getType() != null && !node.getType().isEmpty()) {
-//            final String type = node.getType().trim();
-//            final Metadata metadata;
-//            if (type.startsWith("{")) {
-//                metadata = Metadata.parse(type.substring(1, type.length() - 1));
-//            } else {
-//                metadata = new Metadata(null, Collections.singletonList(type));
-//            }
-//            if (metadata.id != null) {
-//                atts.add(ATTRIBUTE_NAME_ID, metadata.id);
-//            }
-//            if (!metadata.classes.isEmpty()) {
-//                atts.add("outputclass", String.join(" ", metadata.classes));
+//            atts.add("outputclass", /*context.getDitaOptions().languageClassPrefix +*/ language.unescape());
+//        } else {
+//            String noLanguageClass = context.getDitaOptions().noLanguageClass.trim();
+//            if (!noLanguageClass.isEmpty()) {
+//                atts.add("outputclass", noLanguageClass);
 //            }
 //        }
-
-
-        BasedSequence info = node.getInfo();
-        if (info.startsWith("{") && info.endsWith("}")) {
-            final Metadata metadata = Metadata.parse(info.subSequence(1, info.length() - 1).toString());
-            if (!metadata.classes.isEmpty()) {
-                atts.add("outputclass", String.join(" ", metadata.classes));
-            }
-            if (metadata.id != null) {
-                atts.add(ATTRIBUTE_NAME_ID, metadata.id);
-            }
-        } else if (info.isNotNull() && !info.isBlank()) {
-            int space = info.indexOf(' ');
-            BasedSequence language;
-            if (space == -1) {
-                language = info;
-            } else {
-                language = info.subSequence(0, space);
-            }
-            atts.add("outputclass", /*context.getDitaOptions().languageClassPrefix +*/ language.unescape());
-        } else {
-            String noLanguageClass = context.getDitaOptions().noLanguageClass.trim();
-            if (!noLanguageClass.isEmpty()) {
-                atts.add("outputclass", noLanguageClass);
-            }
-        }
-
-        html.startElement(node, mditaExtendedProfile ? TOPIC_PRE : PR_D_CODEBLOCK, atts.build());
-        // FIXME: For compatibility with HTML pre/code, should be removed
-        if (mditaExtendedProfile) {
-            html.startElement(node, HI_D_TT, TT_ATTS);
-        }
-        String text = node.getContentChars().normalizeEOL();
-        if (text.endsWith("\n")) {
-            text = text.substring(0, text.length() - 1);
-        }
-        html.characters(text);
-        if (mditaExtendedProfile) {
-            html.endElement();
-        }
-        html.endElement();
-    }
+//
+//        html.startElement(node, mditaExtendedProfile ? TOPIC_PRE : PR_D_CODEBLOCK, atts.build());
+//        // FIXME: For compatibility with HTML pre/code, should be removed
+//        if (mditaExtendedProfile) {
+//            html.startElement(node, HI_D_TT, TT_ATTS);
+//        }
+//        String text = node.getContentChars().normalizeEOL();
+//        if (text.endsWith("\n")) {
+//            text = text.substring(0, text.length() - 1);
+//        }
+//        html.characters(text);
+//        if (mditaExtendedProfile) {
+//            html.endElement();
+//        }
+//        html.endElement();
+//    }
 
     private void render(final Text node, final NodeRendererContext context, final SaxWriter html) {
         if (abbreviations.isEmpty()) {
@@ -1671,7 +1679,7 @@ public class MapRenderer {
     }
 
     private AttributesBuilder getLinkAttributes(final String href) {
-        return getLinkAttributes(href, XREF_ATTS);
+        return getLinkAttributes(href, TOPICREF_ATTS);
     }
 
     private AttributesBuilder getLinkAttributes(final String href, Attributes baseAttrs) {
