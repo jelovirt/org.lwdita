@@ -100,6 +100,7 @@ public class MarkdownReaderTest extends AbstractReaderTest {
     @ValueSource(strings = {
             "map.md",
             "map_without_title.md",
+            "map_yaml.md",
     })
     public void test_map(String file) throws Exception {
         run(file);

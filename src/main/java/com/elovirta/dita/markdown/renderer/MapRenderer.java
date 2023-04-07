@@ -315,6 +315,15 @@ public class MapRenderer {
         }
         html.startElement(node, MAP_MAP, atts.build());
 
+        if (heading == null) {
+            final Node firstChild = node.getFirstChild();
+            if (firstChild instanceof YamlFrontMatterBlock) {
+                html.startElement(firstChild, MAP_TOPICMETA, TOPICMETA_ATTS);
+                metadataSerializer.render((YamlFrontMatterBlock) firstChild, context, html);
+                html.endElement();
+            }
+        }
+
         context.renderChildren(node);
     }
 
