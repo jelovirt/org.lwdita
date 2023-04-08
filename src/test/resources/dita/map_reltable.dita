@@ -4,8 +4,8 @@
   <topicmeta class="- map/topicmeta "/>
   <topicref class="- map/topicref " format="markdown" href="topic-a.md" navtitle="A"/>
   <topicref class="- map/topicref " format="markdown" href="topic-b.md" navtitle="B"/>
-  <topicref class="- map/topicref " format="markdown" href="topic-c.md"/>
-  <topicref class="- map/topicref " format="markdown" href="topic-d.md"/>
+  <topicref class="- map/topicref " format="markdown" href="topic-c.md" keyref="C"/>
+  <topicref class="- map/topicref " format="markdown" href="topic-d.md" keyref="D"/>
   <reltable class="- map/reltable ">
     <relheader class="- map/relheader ">
       <relcell class="- map/relcolspec ">
@@ -24,4 +24,6 @@
       </relcolspec>
     </relrow>
   </reltable>
+  <keydef class="+ map/topicref mapgroup-d/keydef " format="markdown" href="topic-c.md" keys="C"/>
+  <keydef class="+ map/topicref mapgroup-d/keydef " format="markdown" href="topic-d.md" keys="D"/>
 </map>

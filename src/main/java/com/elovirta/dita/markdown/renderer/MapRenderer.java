@@ -43,7 +43,6 @@ import org.dita.dost.util.DitaClass;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-import org.xml.sax.helpers.AttributesImpl;
 
 import javax.xml.transform.Templates;
 import javax.xml.transform.TransformerConfigurationException;
@@ -66,7 +65,6 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 import static com.elovirta.dita.markdown.MetadataSerializerImpl.buildAtts;
-import static javax.xml.XMLConstants.XML_NS_URI;
 import static org.dita.dost.util.Constants.*;
 import static org.dita.dost.util.URLUtils.toURI;
 import static org.dita.dost.util.XMLUtils.AttributesBuilder;
@@ -95,7 +93,7 @@ public class MapRenderer {
     private static final Attributes B_ATTS = buildAtts(HI_D_B);
     private static final Attributes DD_ATTS = buildAtts(TOPIC_DD);
     private static final Attributes CODEPH_ATTS = buildAtts(PR_D_CODEPH);
-//    private static final Attributes CODEBLOCK_ATTS = buildAtts(PR_D_CODEBLOCK);
+    //    private static final Attributes CODEBLOCK_ATTS = buildAtts(PR_D_CODEBLOCK);
     private static final Attributes PRE_ATTS = buildAtts(TOPIC_PRE);
     private static final Attributes DT_ATTS = buildAtts(TOPIC_DT);
     private static final Attributes DEL_ATTS = new AttributesBuilder().add(ATTRIBUTE_NAME_CLASS, TOPIC_PH.toString()).add("status", "deleted").build();
@@ -107,7 +105,7 @@ public class MapRenderer {
     private static final Attributes SHORTDESC_ATTS = buildAtts(TOPIC_SHORTDESC);
     private static final Attributes TOPICMETA_ATTS = buildAtts(MAP_TOPICMETA);
     private static final Attributes BLOCKQUOTE_ATTS = buildAtts(TOPIC_LQ);
-//    private static final Attributes UL_ATTS = buildAtts(TOPIC_UL);
+    //    private static final Attributes UL_ATTS = buildAtts(TOPIC_UL);
     private static final Attributes DL_ATTS = buildAtts(TOPIC_DL);
     private static final Attributes DLENTRY_ATTS = buildAtts(TOPIC_DLENTRY);
     private static final Attributes OL_ATTS = buildAtts(TOPIC_OL);
@@ -124,11 +122,12 @@ public class MapRenderer {
     private static final Attributes RELROW_ATTS = buildAtts(MAP_RELROW);
     private static final Attributes RELCELL_ATTS = buildAtts(MAP_RELCELL);
 
+    private static final Attributes KEYDEF_ATTS = buildAtts(MAPGROUP_D_KEYDEF);
     private static final Attributes IMAGE_ATTS = buildAtts(TOPIC_IMAGE);
     private static final Attributes XREF_ATTS = buildAtts(TOPIC_XREF);
     private static final Attributes ALT_ATTS = buildAtts(TOPIC_ALT);
     private static final Attributes PH_ATTS = buildAtts(TOPIC_PH);
-//    private static final Attributes ENTRY_ATTS = buildAtts(TOPIC_ENTRY);
+    //    private static final Attributes ENTRY_ATTS = buildAtts(TOPIC_ENTRY);
     private static final Attributes FIG_ATTS = buildAtts(TOPIC_FIG);
     private static final Attributes REQUIRED_CLEANUP_ATTS = buildAtts(TOPIC_REQUIRED_CLEANUP);
 //    private static final Attributes EMPTY_ATTS = new AttributesImpl();
@@ -153,7 +152,7 @@ public class MapRenderer {
     private final boolean mditaExtendedProfile;
     private final boolean mditaCoreProfile;
 
-//    private TableBlock currentTableNode;
+    //    private TableBlock currentTableNode;
     private int currentTableColumn;
 //    private boolean inSection = false;
 
@@ -190,13 +189,13 @@ public class MapRenderer {
      */
     public Map<Class<? extends Node>, NodeRenderingHandler<? extends Node>> getNodeRenderingHandlers() {
         final List<NodeRenderingHandler> res = new ArrayList<>();
-                res.add(new NodeRenderingHandler<>(TableBlock.class, (node, context, html) -> renderSimpleTableBlock(node, context, html)));
+        res.add(new NodeRenderingHandler<>(TableBlock.class, (node, context, html) -> renderSimpleTableBlock(node, context, html)));
 //                res.add(new NodeRenderingHandler<>(TableCaption.class, (node, context, html) -> renderSimpleTableCaption(node, context, html)));
-                res.add(new NodeRenderingHandler<>(TableBody.class, (node, context, html) -> renderSimpleTableBody(node, context, html)));
-                res.add(new NodeRenderingHandler<>(TableHead.class, (node, context, html) -> renderSimpleTableHead(node, context, html)));
-                res.add(new NodeRenderingHandler<>(TableRow.class, (node, context, html) -> renderSimpleTableRow(node, context, html)));
-                res.add(new NodeRenderingHandler<>(TableCell.class, (node, context, html) -> renderSimpleTableCell(node, context, html)));
-                res.add(new NodeRenderingHandler<>(TableSeparator.class, (node, context, html) -> renderSimpleTableSeparator(node, context, html)));
+        res.add(new NodeRenderingHandler<>(TableBody.class, (node, context, html) -> renderSimpleTableBody(node, context, html)));
+        res.add(new NodeRenderingHandler<>(TableHead.class, (node, context, html) -> renderSimpleTableHead(node, context, html)));
+        res.add(new NodeRenderingHandler<>(TableRow.class, (node, context, html) -> renderSimpleTableRow(node, context, html)));
+        res.add(new NodeRenderingHandler<>(TableCell.class, (node, context, html) -> renderSimpleTableCell(node, context, html)));
+        res.add(new NodeRenderingHandler<>(TableSeparator.class, (node, context, html) -> renderSimpleTableSeparator(node, context, html)));
 
 //                res.add(new NodeRenderingHandler<>(AttributesNode.class, (node, context, html) -> { /* Ignore */ }));
 //                res.add(new NodeRenderingHandler<>(DefinitionList.class, (node, context, html) -> render(node, context, html)));
@@ -239,9 +238,9 @@ public class MapRenderer {
         res.add(new NodeRenderingHandler<>(OrderedListItem.class, (node, context, html) -> render(node, context, html)));
         res.add(new NodeRenderingHandler<>(MailLink.class, (node, context, html) -> render(node, context, html)));
         res.add(new NodeRenderingHandler<>(OrderedList.class, (node, context, html) -> render(node, context, html)));
-            res.add(new NodeRenderingHandler<>(Paragraph.class, (node, context, html) -> render(node, context, html)));
+        res.add(new NodeRenderingHandler<>(Paragraph.class, (node, context, html) -> render(node, context, html)));
         res.add(new NodeRenderingHandler<>(Reference.class, (node, context, html) -> render(node, context, html)));
-            res.add(new NodeRenderingHandler<>(SoftLineBreak.class, (node, context, html) -> render(node, context, html)));
+        res.add(new NodeRenderingHandler<>(SoftLineBreak.class, (node, context, html) -> render(node, context, html)));
         res.add(new NodeRenderingHandler<>(StrongEmphasis.class, (node, context, html) -> render(node, context, html)));
         res.add(new NodeRenderingHandler<>(Text.class, (node, context, html) -> render(node, context, html)));
         res.add(new NodeRenderingHandler<>(TextBase.class, (node, context, html) -> render(node, context, html)));
@@ -860,6 +859,7 @@ public class MapRenderer {
                 }
             } else {
                 atts.addAll(getLinkAttributes(refNode.getUrl().toString(), TOPICREF_ATTS).build());
+                atts.add(ATTRIBUTE_NAME_KEYREF, refNode.getReference().toString());
 //                html.startElement(linkRef, TOPIC_XREF, atts.build());
                 if (!refNode.getTitle().toString().isEmpty()) {
                     atts.add("navtitle", refNode.getTitle().toString());
@@ -980,7 +980,11 @@ public class MapRenderer {
     }
 
     private void render(final Reference node, final NodeRendererContext context, final SaxWriter html) {
-        // Ignore
+        final Attributes atts = getLinkAttributes(node.getUrl().toString(), KEYDEF_ATTS)
+                .add(ATTRIBUTE_NAME_KEYS, node.getReference().toString())
+                .build();
+        html.startElement(node, MAPGROUP_D_KEYDEF, atts);
+        html.endElement();
     }
 
     private void render(final ImageRef node, final NodeRendererContext context, final SaxWriter html) {
@@ -1440,7 +1444,7 @@ public class MapRenderer {
 ////            atts.add(ATTRIBUTE_NAME_NAMEEND, COLUMN_NAME_COL + Integer.toString(currentTableColumn + node.getSpan()));
 //            atts.add(ATTRIBUTE_NAME_COLSPAN, Integer.toString(node.getSpan()));
 //        }
-        html.startElement(node, isHeader ? MAP_RELCELL: MAP_RELCOLSPEC, atts.build());
+        html.startElement(node, isHeader ? MAP_RELCELL : MAP_RELCOLSPEC, atts.build());
         if (isInline(node.getFirstChild())) {
             html.startElement(node, TOPIC_P, P_ATTS);
             context.renderChildren(node);
