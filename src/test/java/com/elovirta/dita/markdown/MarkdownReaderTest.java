@@ -98,6 +98,17 @@ public class MarkdownReaderTest extends AbstractReaderTest {
 
     @ParameterizedTest
     @ValueSource(strings = {
+            "map.md",
+            "map_reltable.md",
+            "map_without_title.md",
+            "map_yaml.md",
+    })
+    public void test_map(String file) throws Exception {
+        run(file);
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
             "missing_root_header.md",
             "missing_root_header_with_yaml.md",
     })

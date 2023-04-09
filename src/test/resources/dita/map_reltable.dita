@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/" class="- map/map " ditaarch:DITAArchVersion="2.0"
+     specializations="@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product">
+  <topicmeta class="- map/topicmeta "/>
+  <topicref class="- map/topicref " format="markdown" href="topic-a.md" navtitle="A"/>
+  <topicref class="- map/topicref " format="markdown" href="topic-b.md" navtitle="B"/>
+  <topicref class="- map/topicref " format="markdown" href="topic-c.md" keyref="C"/>
+  <topicref class="- map/topicref " format="markdown" href="topic-d.md" keyref="D"/>
+  <reltable class="- map/reltable " toc="no">
+    <relheader class="- map/relheader ">
+      <relcolspec class="- map/relcolspec " toc="no">
+        <topicref class="- map/topicref " format="markdown" href="topic-a.md">A</topicref>
+      </relcolspec>
+      <relcolspec class="- map/relcolspec " toc="no">
+        <topicref class="- map/topicref " format="markdown" href="topic-c.md">C</topicref>
+      </relcolspec>
+    </relheader>
+    <relrow class="- map/relrow ">
+      <relcell class="- map/relcell ">
+        <topicref class="- map/topicref " format="markdown" href="topic-b.md">B</topicref>
+      </relcell>
+      <relcell class="- map/relcell ">
+        <topicref class="- map/topicref " format="markdown" href="topic-d.md">D</topicref>
+      </relcell>
+    </relrow>
+  </reltable>
+  <keydef class="+ map/topicref mapgroup-d/keydef " format="markdown" href="topic-c.md" keys="C"/>
+  <keydef class="+ map/topicref mapgroup-d/keydef " format="markdown" href="topic-d.md" keys="D"/>
+</map>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/" class="- map/map " ditaarch:DITAArchVersion="2.0"
+     specializations="@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product">
+  <topicmeta class="- map/topicmeta ">
+    <author class="- topic/author ">Author One</author>
+    <author class="- topic/author ">Author Two</author>
+    <source class="- topic/source ">Source</source>
+    <publisher class="- topic/publisher ">Publisher</publisher>
+    <permissions class="- topic/permissions " view="Permissions"/>
+    <metadata class="- topic/metadata ">
+      <audience audience="Audience" class="- topic/audience "/>
+      <category class="- topic/category ">Category</category>
+      <keywords class="- topic/keywords ">
+        <keyword class="- topic/keyword ">Keyword1</keyword>
+        <keyword class="- topic/keyword ">Keyword2</keyword>
+      </keywords>
+    </metadata>
+    <resourceid appid="Resourceid1" class="- topic/resourceid "/>
+    <resourceid appid="Resourceid2" class="- topic/resourceid "/>
+    <data class="- topic/data " name="abstract" value="This is the abstract.&#xA;&#xA;It consists of two paragraphs."/>
+    <data class="- topic/data " name="bar" value="bar"/>
+    <data class="- topic/data " name="bar" value="baz"/>
+    <data class="- topic/data " name="foo" value="foo"/>
+    <data class="- topic/data " name="tags" value="nothing"/>
+    <data class="- topic/data " name="tags" value="nothingness"/>
+    <data class="- topic/data " name="title" value="'This is the title: it contains a colon'"/>
+  </topicmeta>
+  <topicref class="- map/topicref " format="markdown" href="topic-a.md" navtitle="A"/>
+</map>

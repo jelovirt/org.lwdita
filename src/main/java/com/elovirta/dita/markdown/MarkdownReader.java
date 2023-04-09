@@ -27,9 +27,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.CharBuffer;
-import java.util.Map;
-import java.util.Optional;
-import java.util.ServiceLoader;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -65,23 +63,30 @@ public class MarkdownReader implements XMLReader {
      *     <dt><code>http://lwdita.org/sax/features/specialization-task</code></dt>
      *     <dd>Generate DITA task output.</dd>
      *     <dt><code>http://lwdita.org/sax/features/specialization-reference</code></dt>
-     *     <dd>Generate DITA referenc output.</dd>
+     *     <dd>Generate DITA reference output.</dd>
      *     <dt><code>http://lwdita.org/sax/features/fix-root-heading</code></dt>
      *     <dd>Fix missing root heading by reading title from either YAML heading or filename.</dd>
+     *     <dt><code>http://lwdita.org/sax/features/map</code></dt>
+     *     <dd>Generate DITA map output.</dd>
      * </dl>
      */
-    private static final Map<String, DataKey<Boolean>> FEATURES = Map.of(
-            "http://lwdita.org/sax/features/shortdesc-paragraph", DitaRenderer.SHORTDESC_PARAGRAPH,
-            "http://lwdita.org/sax/features/id-from-yaml", DitaRenderer.ID_FROM_YAML,
-            "http://lwdita.org/sax/features/mdita", DitaRenderer.MDITA_EXTENDED_PROFILE,
-            "http://lwdita.org/sax/features/mdita-extended-profile", DitaRenderer.MDITA_EXTENDED_PROFILE,
-            "http://lwdita.org/sax/features/mdita-core-profile", DitaRenderer.MDITA_CORE_PROFILE,
-            "http://lwdita.org/sax/features/specialization", DitaRenderer.SPECIALIZATION,
-            "http://lwdita.org/sax/features/specialization-concept", DitaRenderer.SPECIALIZATION_CONCEPT,
-            "http://lwdita.org/sax/features/specialization-task", DitaRenderer.SPECIALIZATION_TASK,
-            "http://lwdita.org/sax/features/specialization-reference", DitaRenderer.SPECIALIZATION_REFERENCE,
-            "http://lwdita.org/sax/features/fix-root-heading", DitaRenderer.FIX_ROOT_HEADING
-    );
+    private static final Map<String, DataKey<Boolean>> FEATURES;
+
+    static {
+        final Map<String, DataKey<Boolean>> features = new HashMap<>();
+        features.put("http://lwdita.org/sax/features/shortdesc-paragraph", DitaRenderer.SHORTDESC_PARAGRAPH);
+        features.put("http://lwdita.org/sax/features/id-from-yaml", DitaRenderer.ID_FROM_YAML);
+        features.put("http://lwdita.org/sax/features/mdita", DitaRenderer.MDITA_EXTENDED_PROFILE);
+        features.put("http://lwdita.org/sax/features/mdita-extended-profile", DitaRenderer.MDITA_EXTENDED_PROFILE);
+        features.put("http://lwdita.org/sax/features/mdita-core-profile", DitaRenderer.MDITA_CORE_PROFILE);
+        features.put("http://lwdita.org/sax/features/specialization", DitaRenderer.SPECIALIZATION);
+        features.put("http://lwdita.org/sax/features/specialization-concept", DitaRenderer.SPECIALIZATION_CONCEPT);
+        features.put("http://lwdita.org/sax/features/specialization-task", DitaRenderer.SPECIALIZATION_TASK);
+        features.put("http://lwdita.org/sax/features/specialization-reference", DitaRenderer.SPECIALIZATION_REFERENCE);
+        features.put("http://lwdita.org/sax/features/fix-root-heading", DitaRenderer.FIX_ROOT_HEADING);
+        features.put("http://lwdita.org/sax/features/map", DitaRenderer.MAP);
+        FEATURES = Collections.unmodifiableMap(features);
+    }
 
     private final MutableDataSet options;
 

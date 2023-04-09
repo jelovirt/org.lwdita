@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/" class="- map/map " id="title"
+  specializations="@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product"
+  ditaarch:DITAArchVersion="2.0">
+  <title class="- topic/title ">Title</title>
+  <topicmeta class="- map/topicmeta "/>
+  <topicref class="- map/topicref " format="markdown" href="topic-a.md" navtitle="A">
+    <topicref class="- map/topicref " format="markdown" href="topic-a-1.md" navtitle="A.1"/>
+  </topicref>
+  <topicref class="- map/topicref " format="markdown" href="topic-b.md" navtitle="B">
+    <topicref class="- map/topicref " format="markdown" href="topic-b-1.md" navtitle="B.1"/>
+  </topicref>
+  <topicref class="- map/topicref " format="markdown" href="test.md" keyref="key-a">
+    <topicref class="- map/topicref " format="markdown" href="test.md" keyref="key-b" navtitle="Markdown"/>
+  </topicref>
+  <topicref class="- map/topicref " keyref="undefined-key"/>
+  <keydef class="+ map/topicref mapgroup-d/keydef " format="markdown" href="test.md" keys="key-a"/>
+  <keydef class="+ map/topicref mapgroup-d/keydef " format="markdown" href="test.md" keys="key-b"/>
+</map>

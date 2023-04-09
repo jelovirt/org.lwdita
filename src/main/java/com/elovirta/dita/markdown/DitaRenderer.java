@@ -36,6 +36,7 @@ public class DitaRenderer {
     public static final DataKey<Boolean> SPECIALIZATION_REFERENCE = new DataKey<>("SPECIALIZATION_REFERENCE", false);
     public static final DataKey<Boolean> WIKI = new DataKey<>("WIKI", false);
     public static final DataKey<Boolean> FIX_ROOT_HEADING = new DataKey<>("FIXUP_ROOT_HEADING", false);
+    public static final DataKey<Boolean> MAP = new DataKey<>("MAP", false);
     public static final DataKey<String> SOFT_BREAK = new DataKey<>("SOFT_BREAK", "\n");
     public static final DataKey<String> HARD_BREAK = new DataKey<>("HARD_BREAK", "<br />\n");
     public static final NullableDataKey<String> STRONG_EMPHASIS_STYLE_HTML_OPEN = new NullableDataKey<>("STRONG_EMPHASIS_STYLE_HTML_OPEN");
@@ -131,7 +132,9 @@ public class DitaRenderer {
             this.doNotRenderLinksNesting = 0;
             this.options = new ScopedDataSet(options, document);
             this.document = document;
-            this.renderers = new CoreNodeRenderer(this.getOptions()).getNodeRenderingHandlers();
+            this.renderers = DitaRenderer.MAP.getFrom(options)
+                    ? new MapRenderer(this.getOptions()).getNodeRenderingHandlers()
+                    : new CoreNodeRenderer(this.getOptions()).getNodeRenderingHandlers();
             this.doNotRenderLinksNesting = ditaOptions.doNotRenderLinksInDocument ? 0 : 1;
             this.ditaIdGenerator = new HeaderIdGenerator();
         }
