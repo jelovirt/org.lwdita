@@ -1,5 +1,7 @@
 package com.elovirta.dita.markdown;
 
+import static java.util.Arrays.asList;
+
 import com.vladsch.flexmark.ext.abbreviation.AbbreviationExtension;
 import com.vladsch.flexmark.ext.anchorlink.AnchorLinkExtension;
 import com.vladsch.flexmark.ext.attributes.AttributesExtension;
@@ -15,42 +17,44 @@ import com.vladsch.flexmark.ext.yaml.front.matter.YamlFrontMatterExtension;
 import com.vladsch.flexmark.parser.Parser;
 import com.vladsch.flexmark.util.data.DataSet;
 import com.vladsch.flexmark.util.data.MutableDataSet;
-
 import java.net.URI;
 
-import static java.util.Arrays.asList;
-
 public class TestSchemaProvider implements SchemaProvider {
-    private static final URI SCHEMA = URI.create("urn:example:names:tc:dita:xsd:topic.xsd");
-    private static final DataSet OPTIONS = new MutableDataSet()
-            .set(Parser.EXTENSIONS, asList(
-                    AbbreviationExtension.create(),
-                    AnchorLinkExtension.create(),
-                    AttributesExtension.create(),
-                    FootnoteExtension.create(),
-                    InsExtension.create(),
-                    JekyllTagExtension.create(),
-                    SuperscriptExtension.create(),
-                    TablesExtension.create(),
-                    AutolinkExtension.create(),
-                    YamlFrontMatterExtension.create(),
-                    DefinitionExtension.create(),
-                    StrikethroughSubscriptExtension.create()))
-            .set(DefinitionExtension.TILDE_MARKER, false)
-            .set(TablesExtension.COLUMN_SPANS, true)
-            .set(TablesExtension.APPEND_MISSING_COLUMNS, false)
-            .set(TablesExtension.DISCARD_EXTRA_COLUMNS, true)
-            .set(TablesExtension.HEADER_SEPARATOR_COLUMN_MATCH, true)
-            .set(DitaRenderer.SHORTDESC_PARAGRAPH, true)
-            .toImmutable();
 
-    @Override
-    public boolean isSupportedSchema(URI schema) {
-        return SCHEMA.equals(schema);
-    }
+  private static final URI SCHEMA = URI.create("urn:example:names:tc:dita:xsd:topic.xsd");
+  private static final DataSet OPTIONS = new MutableDataSet()
+    .set(
+      Parser.EXTENSIONS,
+      asList(
+        AbbreviationExtension.create(),
+        AnchorLinkExtension.create(),
+        AttributesExtension.create(),
+        FootnoteExtension.create(),
+        InsExtension.create(),
+        JekyllTagExtension.create(),
+        SuperscriptExtension.create(),
+        TablesExtension.create(),
+        AutolinkExtension.create(),
+        YamlFrontMatterExtension.create(),
+        DefinitionExtension.create(),
+        StrikethroughSubscriptExtension.create()
+      )
+    )
+    .set(DefinitionExtension.TILDE_MARKER, false)
+    .set(TablesExtension.COLUMN_SPANS, true)
+    .set(TablesExtension.APPEND_MISSING_COLUMNS, false)
+    .set(TablesExtension.DISCARD_EXTRA_COLUMNS, true)
+    .set(TablesExtension.HEADER_SEPARATOR_COLUMN_MATCH, true)
+    .set(DitaRenderer.SHORTDESC_PARAGRAPH, true)
+    .toImmutable();
 
-    @Override
-    public MarkdownParser createMarkdownParser(URI schema) {
-        return new MarkdownParserImpl(OPTIONS);
-    }
+  @Override
+  public boolean isSupportedSchema(URI schema) {
+    return SCHEMA.equals(schema);
+  }
+
+  @Override
+  public MarkdownParser createMarkdownParser(URI schema) {
+    return new MarkdownParserImpl(OPTIONS);
+  }
 }

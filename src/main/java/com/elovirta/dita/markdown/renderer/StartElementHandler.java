@@ -6,14 +6,15 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 class StartElementHandler extends DefaultHandler {
-    private final ContentHandler contentHandler;
 
-    StartElementHandler(ContentHandler contentHandler) {
-        this.contentHandler = contentHandler;
-    }
+  private final ContentHandler contentHandler;
 
-    @Override
-    public void startElement(String uri, String localName, String qName, Attributes atts) throws SAXException {
-        contentHandler.startElement(uri, localName, qName, atts);
-    }
+  StartElementHandler(ContentHandler contentHandler) {
+    this.contentHandler = contentHandler;
+  }
+
+  @Override
+  public void startElement(String uri, String localName, String qName, Attributes atts) throws SAXException {
+    contentHandler.startElement(uri, localName, qName, atts);
+  }
 }

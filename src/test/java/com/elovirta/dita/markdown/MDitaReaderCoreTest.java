@@ -1,101 +1,101 @@
 package com.elovirta.dita.markdown;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import com.elovirta.dita.utils.AbstractReaderTest;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.opentest4j.AssertionFailedError;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
 public class MDitaReaderCoreTest extends AbstractReaderTest {
 
-    private MarkdownReader r = new MarkdownReader(MDitaReader.CORE_PROFILE);
+  private MarkdownReader r = new MarkdownReader(MDitaReader.CORE_PROFILE);
 
-    @Override
-    public MarkdownReader getReader() {
-        return r;
-    }
+  @Override
+  public MarkdownReader getReader() {
+    return r;
+  }
 
-    @Override
-    public String getExp() {
-        return "xdita/";
-    }
+  @Override
+  public String getExp() {
+    return "xdita/";
+  }
 
-    @Override
-    public String getSrc() {
-        return "markdown/";
-    }
+  @Override
+  public String getSrc() {
+    return "markdown/";
+  }
 
-    @ParameterizedTest
-    @ValueSource(strings = {
-//            "abbreviation.md",
-//            "body_attributes.md",
-            "codeblock_core.md",
-            "comment.md",
-//            "concept.md",
-            "conkeyref.md",
-            "conref.md",
-//            "dl.md",
-            "entity.md",
-            "escape.md",
-//            "footnote.md",
-//            "header_attributes.md",
-//            "invalid_section_header.md",
-            "html.md",
-            "image.md",
-            "inline_core.md",
-//            "inline_extended.md",
-//            "jekyll.md",
-            "keyref.md",
-            "keys.md",
-            "linebreak.md",
-            "link.md",
-            "multiple_top_level.md",
-//            "multiple_top_level_specialized.md",
-            "ol.md",
-            "quote.md",
-//            "reference.md",
-            "short.md",
-            "shortdesc.md",
-            "table-width.md",
-            "table.md",
-//            "task.md",
-//            "taskOneStep.md",
-            "testBOM.md",
-            "testNoBOM.md",
-            "ul.md",
-//            "unsupported_html.md",
-            "yaml.md",
-//            "image-size.md",
-//            "missing_root_header.md",
-//            "missing_root_header_with_yaml.md",
-//            "pandoc_header.md",
-    })
-    public void test(String file) throws Exception {
-        run(file);
+  @ParameterizedTest
+  @ValueSource(
+    strings = {
+      //            "abbreviation.md",
+      //            "body_attributes.md",
+      "codeblock_core.md",
+      "comment.md",
+      //            "concept.md",
+      "conkeyref.md",
+      "conref.md",
+      //            "dl.md",
+      "entity.md",
+      "escape.md",
+      //            "footnote.md",
+      //            "header_attributes.md",
+      //            "invalid_section_header.md",
+      "html.md",
+      "image.md",
+      "inline_core.md",
+      //            "inline_extended.md",
+      //            "jekyll.md",
+      "keyref.md",
+      "keys.md",
+      "linebreak.md",
+      "link.md",
+      "multiple_top_level.md",
+      //            "multiple_top_level_specialized.md",
+      "ol.md",
+      "quote.md",
+      //            "reference.md",
+      "short.md",
+      "shortdesc.md",
+      "table-width.md",
+      "table.md",
+      //            "task.md",
+      //            "taskOneStep.md",
+      "testBOM.md",
+      "testNoBOM.md",
+      "ul.md",
+      //            "unsupported_html.md",
+      "yaml.md",
+      //            "image-size.md",
+      //            "missing_root_header.md",
+      //            "missing_root_header_with_yaml.md",
+      //            "pandoc_header.md",
     }
+  )
+  public void test(String file) throws Exception {
+    run(file);
+  }
 
-    @ParameterizedTest
-    @ValueSource(strings = {
-            "unsupported_html.md",
-            "inline_extended.md",
-            "jekyll.md",
-            "footnote.md",
-            "dl.md",
-            "abbreviation.md",
-            "body_attributes.md",
-    })
-    public void test_unsupported(String file) {
-        assertThrows(AssertionFailedError.class, () -> run(file));
+  @ParameterizedTest
+  @ValueSource(
+    strings = {
+      "unsupported_html.md",
+      "inline_extended.md",
+      "jekyll.md",
+      "footnote.md",
+      "dl.md",
+      "abbreviation.md",
+      "body_attributes.md",
     }
+  )
+  public void test_unsupported(String file) {
+    assertThrows(AssertionFailedError.class, () -> run(file));
+  }
 
-    @ParameterizedTest
-    @ValueSource(strings = {
-            "header.md",
-            "invalid_header.md",
-            "invalid_header_third.md",
-    })
-    public void test_fail(String file) {
-        assertThrows(ParseException.class, () -> run(file));
-    }
+  @ParameterizedTest
+  @ValueSource(strings = { "header.md", "invalid_header.md", "invalid_header_third.md" })
+  public void test_fail(String file) {
+    assertThrows(ParseException.class, () -> run(file));
+  }
 }

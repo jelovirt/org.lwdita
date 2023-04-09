@@ -9,14 +9,14 @@ import java.util.Properties;
  */
 class Entities {
 
-    static final Properties ENTITIES;
+  static final Properties ENTITIES;
 
-    static {
-        ENTITIES = new Properties();
-        try (InputStream in = Entities.class.getResourceAsStream("/entities.properties")) {
-            ENTITIES.load(in);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+  static {
+    ENTITIES = new Properties();
+    try (InputStream in = Entities.class.getResourceAsStream("/entities.properties")) {
+      ENTITIES.load(in);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
     }
+  }
 }

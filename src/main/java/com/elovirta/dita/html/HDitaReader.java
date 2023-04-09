@@ -5,8 +5,7 @@ package com.elovirta.dita.html;
  */
 public class HDitaReader extends HtmlReader {
 
-    public HDitaReader() {
-        super("hdita2dita.xsl");
-    }
-
+  public HDitaReader() {
+    super("hdita2dita.xsl");
+  }
 }
