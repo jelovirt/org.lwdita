@@ -46,14 +46,13 @@ jobs:
         working-directory: registry
         run: |
           URL=https://github.com/jelovirt/org.lwdita/releases/download/${{ env.VERSION }}/org.lwdita-${{ env.VERSION }}.zip
-          BUF=$(cat ${{ env.PLUGIN_NAME }}.json | jq '.[length -1]')
-          #BUF=$(echo $BUF | jq --arg name "$PLUGIN_NAME" '. | .name|=$name')
-          BUF=$(echo $BUF | jq --arg url "$URL" '. | .url|=$url')
-          BUF=$(echo $BUF | jq --arg chksum "${{ env.CHKSUM }}" '. | .cksum|=$chksum') 
-          BUF=$(echo $BUF | jq --arg vers "${{ env.VERSION }}" '. | .vers|=$vers') 
-          echo $BUF > buf.json
-          UPDATED=$(jq '. += [input]' ${{ env.PLUGIN_NAME }}.json buf.json) 
-          echo $UPDATED | jq . > ${{ env.PLUGIN_NAME }}.json
+          cat ${{ env.PLUGIN_NAME }}.json \
+            | jq '.[length -1]' \
+            | jq --arg url "$URL" '. | .url|=$url' \
+            | jq --arg chksum "${{ env.CHKSUM }}" '. | .cksum|=$chksum' \
+            | jq --arg vers "${{ env.VERSION }}" '. | .vers|=$vers' > buf.json 
+          jq '. += [input]' ${{ env.PLUGIN_NAME }}.json buf.json \
+            | jq . > ${{ env.PLUGIN_NAME }}.json
           rm buf.json
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v5
@@ -65,3 +64,5 @@ jobs:
           title: Update ${{ env.PLUGIN_NAME }} to ${{ env.VERSION }}
           body: |
             Updating plug-in `${{ env.PLUGIN_NAME }}` to version `${{ env.VERSION }}`.
+            
+            * [Release notes](https://github.com/jelovirt/org.lwdita/releases/tag/${{ env.VERSION }})

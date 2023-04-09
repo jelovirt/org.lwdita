@@ -109,8 +109,13 @@ To release and build distribution:
 1.  Tag release in `master` branch using semantic version as tag name,
     e.g. `1.2.3`.
 
-    [GitHub Actions](.github/workflows/dist.yml) will build the
-    distribution ZIP and upload it to GitHub Release for the tag.
+[GitHub Actions](.github/workflows/dist.yml) will build the
+distribution ZIP and upload it to GitHub Release for the tag.
+
+The JAR release is published to [github.com/jelovirt/org.lwdita/packages](https://github.com/jelovirt/org.lwdita/packages/).
+
+A pull-request is created to [github.com/dita-ot/registry](https://github.com/dita-ot/registry)
+to update the release to DITA-OT plug-in registry.
 
 ## Donating
 
