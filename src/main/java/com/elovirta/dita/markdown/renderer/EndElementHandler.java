@@ -5,14 +5,15 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 class EndElementHandler extends DefaultHandler {
-    private final ContentHandler contentHandler;
 
-    EndElementHandler(ContentHandler contentHandler) {
-        this.contentHandler = contentHandler;
-    }
+  private final ContentHandler contentHandler;
 
-    @Override
-    public void endElement(String uri, String localName, String qName) throws SAXException {
-        contentHandler.endElement(uri, localName, qName);
-    }
+  EndElementHandler(ContentHandler contentHandler) {
+    this.contentHandler = contentHandler;
+  }
+
+  @Override
+  public void endElement(String uri, String localName, String qName) throws SAXException {
+    contentHandler.endElement(uri, localName, qName);
+  }
 }

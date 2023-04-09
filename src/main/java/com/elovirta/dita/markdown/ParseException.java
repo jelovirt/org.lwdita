@@ -6,19 +6,19 @@ package com.elovirta.dita.markdown;
  */
 public class ParseException extends RuntimeException {
 
-    ParseException() {
-        super();
-    }
+  ParseException() {
+    super();
+  }
 
-    public ParseException(final String msg) {
-        super(msg);
-    }
+  public ParseException(final String msg) {
+    super(msg);
+  }
 
-    ParseException(final Throwable cause) {
-        super(cause);
-    }
+  ParseException(final Throwable cause) {
+    super(cause);
+  }
 
-    public ParseException(String msg, Throwable cause) {
-        super(msg, cause);
-    }
+  public ParseException(String msg, Throwable cause) {
+    super(msg, cause);
+  }
 }

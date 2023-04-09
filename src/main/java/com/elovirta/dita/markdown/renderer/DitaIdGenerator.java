@@ -4,19 +4,17 @@ import com.vladsch.flexmark.util.ast.Document;
 import com.vladsch.flexmark.util.ast.Node;
 
 public interface DitaIdGenerator {
-    DitaIdGenerator NULL = new DitaIdGenerator() {
-        @Override
-        public void generateIds(Document document) {
+  DitaIdGenerator NULL = new DitaIdGenerator() {
+    @Override
+    public void generateIds(Document document) {}
 
-        }
+    @Override
+    public String getId(Node node) {
+      return null;
+    }
+  };
 
-        @Override
-        public String getId(Node node) {
-            return null;
-        }
-    };
+  void generateIds(Document document);
 
-    void generateIds(Document document);
-
-    String getId(Node node);
+  String getId(Node node);
 }
