@@ -30,3 +30,38 @@ jobs:
         run: ./gradlew publish
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build with Gradle
+        run: ./gradlew dist
+      - name: Set variables
+        run: |
+          echo "CHKSUM=$(shasum -a 256 build/distributions/org.lwdita-*.zip | cut -d ' ' -f 1)" >> $GITHUB_ENV
+          echo "VERSION=$(echo $GITHUB_REF | cut -d / -f 3)" >> $GITHUB_ENV
+          echo "PLUGIN_NAME=org.lwdita" >> $GITHUB_ENV
+      - name: Check out registry
+        uses: actions/checkout@v3
+        with:
+          repository: dita-ot/registry
+          path: registry
+      - name: Update registry
+        working-directory: registry
+        run: |
+          URL=https://github.com/jelovirt/org.lwdita/releases/download/${{ env.VERSION }}/org.lwdita-${{ env.VERSION }}.zip
+          BUF=$(cat ${{ env.PLUGIN_NAME }}.json | jq '.[length -1]')
+          #BUF=$(echo $BUF | jq --arg name "$PLUGIN_NAME" '. | .name|=$name')
+          BUF=$(echo $BUF | jq --arg url "$URL" '. | .url|=$url')
+          BUF=$(echo $BUF | jq --arg chksum "${{ env.CHKSUM }}" '. | .cksum|=$chksum') 
+          BUF=$(echo $BUF | jq --arg vers "${{ env.VERSION }}" '. | .vers|=$vers') 
+          echo $BUF > buf.json
+          UPDATED=$(jq '. += [input]' ${{ env.PLUGIN_NAME }}.json buf.json) 
+          echo $UPDATED | jq . > ${{ env.PLUGIN_NAME }}.json
+          rm buf.json
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          path: registry
+          token: ${{ secrets.TOKEN }}
+          push-to-fork: jelovirt/registry
+          branch-suffix: timestamp
+          title: Update ${{ env.PLUGIN_NAME }} to ${{ env.VERSION }}
+          body: |
+            Updating plug-in `${{ env.PLUGIN_NAME }}` to version `${{ env.VERSION }}`.
