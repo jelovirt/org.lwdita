@@ -846,7 +846,9 @@ public class MapRenderer {
         if (link != null) {
             atts.addAll(getLinkAttributes(link.getUrl().toString(), TOPICREF_ATTS).build());
             final String text = link.getText().toString();
-            atts.add("navtitle", text);
+            if (!text.isEmpty()) {
+                atts.add("navtitle", text);
+            }
         }
         final LinkRef linkRef = paragraph != null ? (LinkRef) paragraph.getChildOfType(LinkRef.class) : null;
         if (linkRef != null) {
@@ -855,8 +857,8 @@ public class MapRenderer {
             final Reference refNode = linkRef.getReferenceNode(linkRef.getDocument());
             if (refNode == null) { // "fake" reference link
                 atts.add(ATTRIBUTE_NAME_KEYREF, key);
-                if (!linkRef.getText().toString().isEmpty()) {
-                    atts.add("navtitle", linkRef.getText().toString());
+                if (!text.isEmpty()) {
+                    atts.add("navtitle", text);
                 }
             } else {
                 atts.addAll(getLinkAttributes(refNode.getUrl().toString(), TOPICREF_ATTS).build());

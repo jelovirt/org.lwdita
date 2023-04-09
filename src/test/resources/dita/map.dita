@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/" class="- map/map " id="title"
-  specializations="@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product"
-  ditaarch:DITAArchVersion="2.0">
+<map xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/" class="- map/map " ditaarch:DITAArchVersion="2.0"
+     id="title"
+     specializations="@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product">
   <title class="- topic/title ">Title</title>
   <topicmeta class="- map/topicmeta "/>
   <topicref class="- map/topicref " format="markdown" href="topic-a.md" navtitle="A">
-    <topicref class="- map/topicref " format="markdown" href="topic-a-1.md" navtitle="A.1"/>
+    <topicref class="- map/topicref " format="markdown" href="topic-a-1.md"/>
   </topicref>
   <topicref class="- map/topicref " format="markdown" href="topic-b.md" navtitle="B">
     <topicref class="- map/topicref " format="markdown" href="topic-b-1.md" navtitle="B.1"/>
