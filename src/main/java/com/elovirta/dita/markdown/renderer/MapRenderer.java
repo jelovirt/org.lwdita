@@ -116,9 +116,15 @@ public class MapRenderer {
 //    private static final Attributes THEAD_ATTS = buildAtts(TOPIC_THEAD);
 //    private static final Attributes TR_ATTS = buildAtts(TOPIC_ROW);
 
-    private static final Attributes RELTABLE_ATTS = buildAtts(MAP_RELTABLE);
+    private static final Attributes RELTABLE_ATTS = new AttributesBuilder()
+            .add(ATTRIBUTE_NAME_CLASS, MAP_RELTABLE.toString())
+            .add("toc", "no")
+            .build();
     private static final Attributes RELHEADER_ATTS = buildAtts(MAP_RELHEADER);
-    private static final Attributes RELCOLSPEC_ATTS = buildAtts(MAP_RELCOLSPEC);
+    private static final Attributes RELCOLSPEC_ATTS = new AttributesBuilder()
+            .add(ATTRIBUTE_NAME_CLASS, MAP_RELCOLSPEC.toString())
+            .add("toc", "no")
+            .build();
     private static final Attributes RELROW_ATTS = buildAtts(MAP_RELROW);
     private static final Attributes RELCELL_ATTS = buildAtts(MAP_RELCELL);
 
@@ -1444,14 +1450,14 @@ public class MapRenderer {
 ////            atts.add(ATTRIBUTE_NAME_NAMEEND, COLUMN_NAME_COL + Integer.toString(currentTableColumn + node.getSpan()));
 //            atts.add(ATTRIBUTE_NAME_COLSPAN, Integer.toString(node.getSpan()));
 //        }
-        html.startElement(node, isHeader ? MAP_RELCELL : MAP_RELCOLSPEC, atts.build());
-        if (isInline(node.getFirstChild())) {
-            html.startElement(node, TOPIC_P, P_ATTS);
+        html.startElement(node, isHeader ? MAP_RELCOLSPEC : MAP_RELCELL, atts.build());
+//        if (isInline(node.getFirstChild())) {
+//            html.startElement(node, TOPIC_P, P_ATTS);
+//            context.renderChildren(node);
+//            html.endElement();
+//        } else {
             context.renderChildren(node);
-            html.endElement();
-        } else {
-            context.renderChildren(node);
-        }
+//        }
         html.endElement();
 
         currentTableColumn += node.getSpan();
