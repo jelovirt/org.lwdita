@@ -74,8 +74,8 @@ import static org.dita.dost.util.XMLUtils.AttributesBuilder;
  */
 public class MapRenderer {
 
-    private static final String COLUMN_NAME_COL = "col";
-    private static final String ATTRIBUTE_NAME_COLSPAN = "colspan";
+//    private static final String COLUMN_NAME_COL = "col";
+//    private static final String ATTRIBUTE_NAME_COLSPAN = "colspan";
 
     private static final Attributes MAP_ATTS = new AttributesBuilder()
             .add(ATTRIBUTE_NAME_CLASS, MAP_MAP.toString())
@@ -221,7 +221,7 @@ public class MapRenderer {
         res.add(new NodeRenderingHandler<>(YamlFrontMatterBlock.class, (node, context, html) -> render(node, context, html)));
 //            res.add(new NodeRenderingHandler<>(BlockQuote.class, (node, context, html) -> render(node, context, html)));
         res.add(new NodeRenderingHandler<>(BulletList.class, (node, context, html) -> render(node, context, html)));
-//            res.add(new NodeRenderingHandler<>(Code.class, (node, context, html) -> render(node, context, html)));
+        res.add(new NodeRenderingHandler<>(Code.class, (node, context, html) -> render(node, context, html)));
 //            res.add(new NodeRenderingHandler<>(CodeBlock.class, (node, context, html) -> render(node, context, html)));
         res.add(new NodeRenderingHandler<>(Document.class, (node, context, html) -> render(node, context, html)));
         res.add(new NodeRenderingHandler<>(Emphasis.class, (node, context, html) -> render(node, context, html)));
@@ -846,42 +846,33 @@ public class MapRenderer {
         if (link != null) {
             atts.addAll(getLinkAttributes(link.getUrl().toString(), TOPICREF_ATTS).build());
             final String text = link.getText().toString();
-            atts.add("navtitle", text);
+            if (!text.isEmpty()) {
+                atts.add("navtitle", text);
+            }
         }
         final LinkRef linkRef = paragraph != null ? (LinkRef) paragraph.getChildOfType(LinkRef.class) : null;
         if (linkRef != null) {
-//            atts.addAll(getLinkAttributes(linkRef.getUrl().toString(), TOPICREF_ATTS).build());
-//            final String text = linkRef.getText().toString();
-//            atts.add("navtitle", text);
-
             final String text = linkRef.getText().toString();
             final String key = linkRef.getReference() != null ? linkRef.getReference().toString() : text;
             final Reference refNode = linkRef.getReferenceNode(linkRef.getDocument());
             if (refNode == null) { // "fake" reference link
                 atts.add(ATTRIBUTE_NAME_KEYREF, key);
-//                html.startElement(linkRef, TOPIC_XREF, atts.build());
-                if (!linkRef.getText().toString().isEmpty()) {
-                    atts.add("navtitle", linkRef.getText().toString());
+                if (!text.isEmpty()) {
+                    atts.add("navtitle", text);
                 }
             } else {
                 atts.addAll(getLinkAttributes(refNode.getUrl().toString(), TOPICREF_ATTS).build());
                 atts.add(ATTRIBUTE_NAME_KEYREF, refNode.getReference().toString());
-//                html.startElement(linkRef, TOPIC_XREF, atts.build());
                 if (!refNode.getTitle().toString().isEmpty()) {
                     atts.add("navtitle", refNode.getTitle().toString());
-//                } else {
-//                    context.renderChildren(linkRef);
                 }
             }
         }
-
-//        html.startElement(node, TOPIC_XREF, );
-//        context.renderChildren(node);
-//        html.endElement();
+        if (node instanceof OrderedListItem) {
+            atts.add("collection-type", "sequence");
+        }
 
         html.startElement(node, MAP_TOPICREF, getInlineAttributes(node, atts.build()));
-//        node.getFirstChildAnyNot(Paragraph.class);
-//        context.renderChildren(node);
         Node child = node.getFirstChild();
         while (child != null) {
             Node next = child.getNext();
@@ -890,7 +881,7 @@ public class MapRenderer {
             }
             child = next;
         }
-        html.endElement(); // topicref
+        html.endElement();
     }
 
     private void render(final MailLink node, final NodeRendererContext context, final SaxWriter html) {
@@ -903,7 +894,7 @@ public class MapRenderer {
     }
 
     private void render(final OrderedList node, final NodeRendererContext context, final SaxWriter html) {
-        printTag(node, context, html, TOPIC_OL, getAttributesFromAttributesNode(node, OL_ATTS));
+        context.renderChildren(node);
     }
 
     private boolean onlyImageChild = false;
@@ -1456,7 +1447,7 @@ public class MapRenderer {
 //            context.renderChildren(node);
 //            html.endElement();
 //        } else {
-            context.renderChildren(node);
+        context.renderChildren(node);
 //        }
         html.endElement();
 

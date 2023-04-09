@@ -15,6 +15,8 @@ Links
 
 [External](http://www.example.com/test.html)
 
+[](concept.md)
+
 [key]
 
 <address@example.com>

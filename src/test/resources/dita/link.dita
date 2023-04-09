@@ -26,6 +26,9 @@
         scope="external">External</xref>
     </p>
     <p class="- topic/p ">
+      <xref class="- topic/xref " href="concept.md" format="markdown"></xref>
+    </p>
+    <p class="- topic/p ">
       <xref class="- topic/xref " keyref="key"/>
     </p>
     <p class="- topic/p ">

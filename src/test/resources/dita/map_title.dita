@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/" class="- map/map " ditaarch:DITAArchVersion="2.0"
+     id="title-alt-italic-bold-code"
+     specializations="@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product">
+  <title class="- topic/title ">Title
+    <image class="- topic/image " href="test.jpg">
+      <alt class="- topic/alt ">Alt</alt>
+    </image>
+    <i class="+ topic/ph hi-d/i ">italic</i>
+    <b class="+ topic/ph hi-d/b ">bold</b>
+    <codeph class="+ topic/ph pr-d/codeph ">code</codeph>
+  </title>
+  <topicmeta class="- map/topicmeta "/>
+  <topicref class="- map/topicref " format="markdown" href="topic.md" navtitle="key"/>
+  <keydef class="+ map/topicref mapgroup-d/keydef " format="markdown" href="topic.md" keys="key"/>
+</map>
