@@ -4,7 +4,8 @@ The DITA-OT LwDITA plug-in supersedes the previously released [Markdown
 plug-in for DITA-OT](https://github.com/jelovirt/dita-ot-markdown) and
 adds additional features to support Lightweight DITA.
 
-**Note:** The LwDITA plug-in is included in DITA Open Toolkit 3.0 and
+> **Note**
+> The LwDITA plug-in is included in DITA Open Toolkit 3.0 and
 newer.
 
 It contains:
@@ -109,12 +110,10 @@ To release and build distribution:
 1.  Tag release in `master` branch using semantic version as tag name,
     e.g. `1.2.3`.
 
-[GitHub Actions](.github/workflows/dist.yml) will build the
-distribution ZIP and upload it to GitHub Release for the tag.
-
-The JAR release is published to [github.com/jelovirt/org.lwdita/packages](https://github.com/jelovirt/org.lwdita/packages/).
-
-A pull-request is created to [github.com/dita-ot/registry](https://github.com/dita-ot/registry)
+    [GitHub Actions](.github/workflows/dist.yml) will create
+    * a distribution ZIP and upload it to GitHub Release for the tag,
+    * a JAR release that is published to [github.com/jelovirt/org.lwdita/packages](https://github.com/jelovirt/org.lwdita/packages/),
+    * a pull request to [github.com/dita-ot/registry](https://github.com/dita-ot/registry)
 to update the release to DITA-OT plug-in registry.
 
 ## Donating
