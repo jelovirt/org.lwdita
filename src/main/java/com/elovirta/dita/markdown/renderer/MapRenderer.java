@@ -893,7 +893,7 @@ public class MapRenderer {
       final Reference refNode = linkRef.getReferenceNode(linkRef.getDocument());
       if (refNode == null) { // "fake" reference link
         atts.add(ATTRIBUTE_NAME_KEYREF, key);
-        if (!text.isEmpty()) {
+        if (!text.isBlank()) {
           atts.add("navtitle", text);
         }
       } else {
@@ -901,6 +901,8 @@ public class MapRenderer {
         atts.add(ATTRIBUTE_NAME_KEYREF, refNode.getReference().toString());
         if (!refNode.getTitle().toString().isEmpty()) {
           atts.add("navtitle", refNode.getTitle().toString());
+        } else if (text != null && !text.isBlank()) {
+          atts.add("navtitle", text);
         }
       }
     }

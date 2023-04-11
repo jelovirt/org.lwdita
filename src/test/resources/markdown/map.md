@@ -9,8 +9,14 @@ $schema: urn:oasis:names:tc:dita:xsd:map.xsd
 * [B](topic-b.md)
   * [B.1](topic-b-1.md)
 * [key-a]
-  * [key-b]
+  * [][key-a]
+  * [ignored][key-a]
+* [key-b]
+  * [][key-b]
+  * [ignored][key-b]
 * [undefined-key]
+  * [][undefined-key]
+  * [ignore][undefined-key]
 
 [key-a]: test.md
 [key-b]: test.md "Markdown"
