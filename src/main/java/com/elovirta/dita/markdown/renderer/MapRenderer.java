@@ -162,7 +162,7 @@ public class MapRenderer {
   private final Map<String, String> abbreviations = new HashMap<>();
   private final MetadataSerializerImpl metadataSerializer;
 
-  private final boolean shortdescParagraph;
+  //  private final boolean shortdescParagraph;
   private final boolean idFromYaml;
   private final boolean mditaExtendedProfile;
   private final boolean mditaCoreProfile;
@@ -175,7 +175,7 @@ public class MapRenderer {
   private String lastId;
 
   public MapRenderer(DataHolder options) {
-    this.shortdescParagraph = DitaRenderer.SHORTDESC_PARAGRAPH.getFrom(options);
+    //    this.shortdescParagraph = DitaRenderer.SHORTDESC_PARAGRAPH.getFrom(options);
     this.idFromYaml = DitaRenderer.ID_FROM_YAML.getFrom(options);
     this.mditaExtendedProfile = DitaRenderer.MDITA_EXTENDED_PROFILE.getFrom(options);
     this.mditaCoreProfile = DitaRenderer.MDITA_CORE_PROFILE.getFrom(options);
@@ -311,7 +311,7 @@ public class MapRenderer {
       throw new ParseException(String.format("Map file cannot have multiple top level headers"));
     }
     final AttributesBuilder atts = mditaCoreProfile || mditaExtendedProfile
-      ? new AttributesBuilder(MAP_ATTS).add(ATTRIBUTE_NAME_SPECIALIZATIONS, "(topic hi-d)(topic em-d)")
+      ? new AttributesBuilder(MAP_ATTS).add(ATTRIBUTE_NAME_SPECIALIZATIONS, "")
       : new AttributesBuilder(MAP_ATTS)
         .add(
           ATTRIBUTE_NAME_SPECIALIZATIONS,
@@ -692,11 +692,11 @@ public class MapRenderer {
     html.startElement(node, TOPIC_TITLE, TITLE_ATTS);
     context.renderChildren(node);
     html.endElement(); // title
-    if (shortdescParagraph && node.getNext() instanceof Paragraph) {
-      html.startElement(node.getNext(), TOPIC_SHORTDESC, SHORTDESC_ATTS);
-      context.renderChildren(node.getNext());
-      html.endElement(); // shortdesc
-    }
+    //    if (shortdescParagraph && node.getNext() instanceof Paragraph) {
+    //      html.startElement(node.getNext(), TOPIC_SHORTDESC, SHORTDESC_ATTS);
+    //      context.renderChildren(node.getNext());
+    //      html.endElement(); // shortdesc
+    //    }
     if (node.getLevel() == 1) {
       final Node firstChild = node.getDocument().getFirstChild();
       if (firstChild instanceof YamlFrontMatterBlock) {
@@ -907,8 +907,11 @@ public class MapRenderer {
         }
       }
     }
+
     if (node instanceof OrderedListItem) {
-      atts.add("collection-type", "sequence");
+      if (!mditaCoreProfile && !mditaExtendedProfile) {
+        atts.add("collection-type", "sequence");
+      }
     }
 
     html.startElement(node, MAP_TOPICREF, getInlineAttributes(node, atts.build()));

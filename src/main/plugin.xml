@@ -43,6 +43,7 @@
     <parser format="markdown" class="com.elovirta.dita.markdown.MarkdownReader"/>
     <parser format="md" class="com.elovirta.dita.markdown.MarkdownReader"/>
     <parser format="mdita" class="com.elovirta.dita.markdown.MDitaReader"/>
+    <parser format="mditamap" class="com.elovirta.dita.markdown.MDitamapReader"/>
     <parser format="wikidocs" class="com.elovirta.dita.markdown.MarkdownReader">
       <feature name="http://lwdita.org/sax/features/shortdesc-paragraph" value="true"/>
     </parser>
