@@ -5,6 +5,7 @@
   <body class="- topic/body ">
     <p class="- topic/p ">Plain <b class="+ topic/ph hi-d/b "><i class="+ topic/ph hi-d/i ">paragraph</i></b>.</p>
     <p class="- topic/p ">HTML paragraph.</p>
+    <p class="- topic/p " props="audience(novice)">Novice content.</p>
     <p class="- topic/p "><video class="+ topic/object h5m-d/video " controls="" poster="remote.png" src="remote.mp4"/></p>
   </body>
 </topic>
