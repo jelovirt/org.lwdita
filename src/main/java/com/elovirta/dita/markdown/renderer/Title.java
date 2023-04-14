@@ -84,7 +84,7 @@ class Title {
   }
 
   private static boolean isId(AttributeNode attributeNode) {
-    return attributeNode.getName().equals("#") || attributeNode.getName().equals("id");
+    return attributeNode.getName().toString().equals("#") || attributeNode.getName().toString().equals("id");
   }
 
   private List<String> getClasses(List<AttributesNode> attributesNodes) {

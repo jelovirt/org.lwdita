@@ -15,7 +15,6 @@ import com.elovirta.dita.markdown.ParseException;
 import com.elovirta.dita.markdown.SaxWriter;
 import com.elovirta.dita.utils.ClasspathURIResolver;
 import com.elovirta.dita.utils.FragmentContentHandler;
-import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
 import com.google.common.io.Files;
 import com.vladsch.flexmark.ast.*;
@@ -44,6 +43,7 @@ import com.vladsch.flexmark.util.ast.Node;
 import com.vladsch.flexmark.util.ast.ReferenceNode;
 import com.vladsch.flexmark.util.data.DataHolder;
 import com.vladsch.flexmark.util.sequence.BasedSequence;
+import com.vladsch.flexmark.util.visitor.AstHandler;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
@@ -51,6 +51,7 @@ import java.net.URI;
 import java.util.*;
 import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.Map.Entry;
+import java.util.function.Supplier;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -185,7 +186,7 @@ public class CoreNodeRenderer {
         final SAXTransformerFactory tf = (SAXTransformerFactory) TransformerFactory.newInstance();
         tf.setURIResolver(new ClasspathURIResolver(tf.getURIResolver()));
         return tf;
-      });
+      })::get;
     templatesSupplier =
       Suppliers.memoize(() -> {
         final SAXTransformerFactory tf = transformerFactorySupplier.get();
@@ -197,7 +198,7 @@ public class CoreNodeRenderer {
         } catch (IOException | TransformerConfigurationException e) {
           throw new RuntimeException(e);
         }
-      });
+      })::get;
   }
 
   /**
@@ -972,10 +973,10 @@ public class CoreNodeRenderer {
   }
 
   private static Stream<Entry<String, Entry<DitaClass, Attributes>>> createHtmlToDita(Entry<String, DitaClass> e) {
-    final Entry<DitaClass, Attributes> value = new SimpleImmutableEntry(e.getValue(), buildAtts(e.getValue()));
+    final Entry<DitaClass, Attributes> value = new SimpleImmutableEntry<>(e.getValue(), buildAtts(e.getValue()));
     return Stream.of(
-      new SimpleImmutableEntry("<" + e.getKey() + ">", value),
-      new SimpleImmutableEntry("</" + e.getKey() + ">", value)
+      new SimpleImmutableEntry<>("<" + e.getKey() + ">", value),
+      new SimpleImmutableEntry<>("</" + e.getKey() + ">", value)
     );
   }
 
@@ -986,34 +987,34 @@ public class CoreNodeRenderer {
     htmlToDita =
       Stream
         .of(
-          new SimpleImmutableEntry<String, DitaClass>("span", TOPIC_PH),
-          new SimpleImmutableEntry<String, DitaClass>("code", PR_D_CODEPH),
-          new SimpleImmutableEntry<String, DitaClass>("s", HI_D_LINE_THROUGH),
-          new SimpleImmutableEntry<String, DitaClass>("tt", HI_D_TT),
-          new SimpleImmutableEntry<String, DitaClass>("b", HI_D_B),
-          new SimpleImmutableEntry<String, DitaClass>("strong", HI_D_B),
-          new SimpleImmutableEntry<String, DitaClass>("i", HI_D_I),
-          new SimpleImmutableEntry<String, DitaClass>("em", HI_D_I),
-          new SimpleImmutableEntry<String, DitaClass>("sub", HI_D_SUB),
-          new SimpleImmutableEntry<String, DitaClass>("sup", HI_D_SUP),
-          new SimpleImmutableEntry<String, DitaClass>("u", HI_D_U)
+          new SimpleImmutableEntry<>("span", TOPIC_PH),
+          new SimpleImmutableEntry<>("code", PR_D_CODEPH),
+          new SimpleImmutableEntry<>("s", HI_D_LINE_THROUGH),
+          new SimpleImmutableEntry<>("tt", HI_D_TT),
+          new SimpleImmutableEntry<>("b", HI_D_B),
+          new SimpleImmutableEntry<>("strong", HI_D_B),
+          new SimpleImmutableEntry<>("i", HI_D_I),
+          new SimpleImmutableEntry<>("em", HI_D_I),
+          new SimpleImmutableEntry<>("sub", HI_D_SUB),
+          new SimpleImmutableEntry<>("sup", HI_D_SUP),
+          new SimpleImmutableEntry<>("u", HI_D_U)
         )
         .flatMap(CoreNodeRenderer::createHtmlToDita)
         .collect(Collectors.toUnmodifiableMap(Entry::getKey, Entry::getValue));
     hditaToXdita =
       Stream
         .<Entry<String, DitaClass>>of(
-          new SimpleImmutableEntry<String, DitaClass>("span", TOPIC_PH),
-          new SimpleImmutableEntry<String, DitaClass>("code", TOPIC_PH),
-          new SimpleImmutableEntry<String, DitaClass>("s", TOPIC_PH),
-          new SimpleImmutableEntry<String, DitaClass>("tt", HI_D_TT),
-          new SimpleImmutableEntry<String, DitaClass>("b", HI_D_B),
-          new SimpleImmutableEntry<String, DitaClass>("strong", HI_D_B),
-          new SimpleImmutableEntry<String, DitaClass>("i", HI_D_I),
-          new SimpleImmutableEntry<String, DitaClass>("em", HI_D_I),
-          new SimpleImmutableEntry<String, DitaClass>("sub", HI_D_SUB),
-          new SimpleImmutableEntry<String, DitaClass>("sup", HI_D_SUP),
-          new SimpleImmutableEntry<String, DitaClass>("u", HI_D_U)
+          new SimpleImmutableEntry<>("span", TOPIC_PH),
+          new SimpleImmutableEntry<>("code", TOPIC_PH),
+          new SimpleImmutableEntry<>("s", TOPIC_PH),
+          new SimpleImmutableEntry<>("tt", HI_D_TT),
+          new SimpleImmutableEntry<>("b", HI_D_B),
+          new SimpleImmutableEntry<>("strong", HI_D_B),
+          new SimpleImmutableEntry<>("i", HI_D_I),
+          new SimpleImmutableEntry<>("em", HI_D_I),
+          new SimpleImmutableEntry<>("sub", HI_D_SUB),
+          new SimpleImmutableEntry<>("sup", HI_D_SUP),
+          new SimpleImmutableEntry<>("u", HI_D_U)
         )
         .flatMap(CoreNodeRenderer::createHtmlToDita)
         .collect(Collectors.toUnmodifiableMap(Entry::getKey, Entry::getValue));
@@ -1115,7 +1116,7 @@ public class CoreNodeRenderer {
 
   private AttributesBuilder readAttributes(Title header, AttributesBuilder builder) {
     if (!header.classes.isEmpty()) {
-      builder.add(ATTRIBUTE_NAME_OUTPUTCLASS, header.classes.stream().collect(Collectors.joining(" ")));
+      builder.add(ATTRIBUTE_NAME_OUTPUTCLASS, String.join(" ", header.classes));
     }
     for (Entry<String, String> attr : header.attributes.entrySet()) {
       builder.add(attr.getKey(), attr.getValue());
@@ -1390,7 +1391,7 @@ public class CoreNodeRenderer {
     for (final Node child : node.getChildren()) {
       if (child instanceof TableCaption) {
         html.startElement(child, TOPIC_TITLE, TITLE_ATTS);
-        context.renderChildren((TableCaption) child);
+        context.renderChildren(child);
         html.endElement();
         //                render((TableCaption) child, context, html);
       }
@@ -1491,7 +1492,7 @@ public class CoreNodeRenderer {
     for (final Node child : node.getChildren()) {
       if (child instanceof TableCaption) {
         html.startElement(child, TOPIC_TITLE, TITLE_ATTS);
-        context.renderChildren((TableCaption) child);
+        context.renderChildren(child);
         html.endElement();
         //                render((TableCaption) child, context, html);
       }

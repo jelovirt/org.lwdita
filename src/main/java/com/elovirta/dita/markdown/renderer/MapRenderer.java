@@ -42,6 +42,7 @@ import com.vladsch.flexmark.util.ast.Node;
 import com.vladsch.flexmark.util.ast.ReferenceNode;
 import com.vladsch.flexmark.util.data.DataHolder;
 import com.vladsch.flexmark.util.sequence.BasedSequence;
+import com.vladsch.flexmark.util.visitor.AstHandler;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
@@ -782,10 +783,10 @@ public class MapRenderer {
   }
 
   private static Stream<Entry<String, Entry<DitaClass, Attributes>>> createHtmlToDita(Entry<String, DitaClass> e) {
-    final Entry<DitaClass, Attributes> value = new SimpleImmutableEntry(e.getValue(), buildAtts(e.getValue()));
+    final Entry<DitaClass, Attributes> value = new SimpleImmutableEntry<>(e.getValue(), buildAtts(e.getValue()));
     return Stream.of(
-      new SimpleImmutableEntry("<" + e.getKey() + ">", value),
-      new SimpleImmutableEntry("</" + e.getKey() + ">", value)
+      new SimpleImmutableEntry<>("<" + e.getKey() + ">", value),
+      new SimpleImmutableEntry<>("</" + e.getKey() + ">", value)
     );
   }
 
@@ -796,34 +797,34 @@ public class MapRenderer {
     htmlToDita =
       Stream
         .of(
-          new SimpleImmutableEntry<String, DitaClass>("span", TOPIC_PH),
-          new SimpleImmutableEntry<String, DitaClass>("code", PR_D_CODEPH),
-          new SimpleImmutableEntry<String, DitaClass>("s", HI_D_LINE_THROUGH),
-          new SimpleImmutableEntry<String, DitaClass>("tt", HI_D_TT),
-          new SimpleImmutableEntry<String, DitaClass>("b", HI_D_B),
-          new SimpleImmutableEntry<String, DitaClass>("strong", HI_D_B),
-          new SimpleImmutableEntry<String, DitaClass>("i", HI_D_I),
-          new SimpleImmutableEntry<String, DitaClass>("em", HI_D_I),
-          new SimpleImmutableEntry<String, DitaClass>("sub", HI_D_SUB),
-          new SimpleImmutableEntry<String, DitaClass>("sup", HI_D_SUP),
-          new SimpleImmutableEntry<String, DitaClass>("u", HI_D_U)
+          new SimpleImmutableEntry<>("span", TOPIC_PH),
+          new SimpleImmutableEntry<>("code", PR_D_CODEPH),
+          new SimpleImmutableEntry<>("s", HI_D_LINE_THROUGH),
+          new SimpleImmutableEntry<>("tt", HI_D_TT),
+          new SimpleImmutableEntry<>("b", HI_D_B),
+          new SimpleImmutableEntry<>("strong", HI_D_B),
+          new SimpleImmutableEntry<>("i", HI_D_I),
+          new SimpleImmutableEntry<>("em", HI_D_I),
+          new SimpleImmutableEntry<>("sub", HI_D_SUB),
+          new SimpleImmutableEntry<>("sup", HI_D_SUP),
+          new SimpleImmutableEntry<>("u", HI_D_U)
         )
         .flatMap(MapRenderer::createHtmlToDita)
         .collect(Collectors.toUnmodifiableMap(Entry::getKey, Entry::getValue));
     hditaToXdita =
       Stream
         .<Entry<String, DitaClass>>of(
-          new SimpleImmutableEntry<String, DitaClass>("span", TOPIC_PH),
-          new SimpleImmutableEntry<String, DitaClass>("code", TOPIC_PH),
-          new SimpleImmutableEntry<String, DitaClass>("s", TOPIC_PH),
-          new SimpleImmutableEntry<String, DitaClass>("tt", HI_D_TT),
-          new SimpleImmutableEntry<String, DitaClass>("b", HI_D_B),
-          new SimpleImmutableEntry<String, DitaClass>("strong", HI_D_B),
-          new SimpleImmutableEntry<String, DitaClass>("i", HI_D_I),
-          new SimpleImmutableEntry<String, DitaClass>("em", HI_D_I),
-          new SimpleImmutableEntry<String, DitaClass>("sub", HI_D_SUB),
-          new SimpleImmutableEntry<String, DitaClass>("sup", HI_D_SUP),
-          new SimpleImmutableEntry<String, DitaClass>("u", HI_D_U)
+          new SimpleImmutableEntry<>("span", TOPIC_PH),
+          new SimpleImmutableEntry<>("code", TOPIC_PH),
+          new SimpleImmutableEntry<>("s", TOPIC_PH),
+          new SimpleImmutableEntry<>("tt", HI_D_TT),
+          new SimpleImmutableEntry<>("b", HI_D_B),
+          new SimpleImmutableEntry<>("strong", HI_D_B),
+          new SimpleImmutableEntry<>("i", HI_D_I),
+          new SimpleImmutableEntry<>("em", HI_D_I),
+          new SimpleImmutableEntry<>("sub", HI_D_SUB),
+          new SimpleImmutableEntry<>("sup", HI_D_SUP),
+          new SimpleImmutableEntry<>("u", HI_D_U)
         )
         .flatMap(MapRenderer::createHtmlToDita)
         .collect(Collectors.toUnmodifiableMap(Entry::getKey, Entry::getValue));
@@ -970,7 +971,7 @@ public class MapRenderer {
 
   private AttributesBuilder readAttributes(Title header, AttributesBuilder builder) {
     if (!header.classes.isEmpty()) {
-      builder.add(ATTRIBUTE_NAME_OUTPUTCLASS, header.classes.stream().collect(Collectors.joining(" ")));
+      builder.add(ATTRIBUTE_NAME_OUTPUTCLASS, String.join(" ", header.classes));
     }
     for (Entry<String, String> attr : header.attributes.entrySet()) {
       builder.add(attr.getKey(), attr.getValue());
