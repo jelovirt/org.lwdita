@@ -79,19 +79,13 @@ public class HtmlReader implements XMLReader {
   @Override
   public void setEntityResolver(final EntityResolver resolver) {
     // Validator.nu is unable to parse by URI only, it will always need a stream
-    parser.setEntityResolver(
-      new EntityResolver() {
-        @Override
-        public InputSource resolveEntity(final String publicId, final String systemId)
-          throws SAXException, IOException {
-          final InputSource in = resolver.resolveEntity(publicId, systemId);
-          if (in != null) {
-            return in;
-          }
-          return new InputSource(systemId);
-        }
+    parser.setEntityResolver((publicId, systemId) -> {
+      final InputSource in = resolver.resolveEntity(publicId, systemId);
+      if (in != null) {
+        return in;
       }
-    );
+      return new InputSource(systemId);
+    });
   }
 
   @Override

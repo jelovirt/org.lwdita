@@ -231,7 +231,7 @@ public class DitaRenderer {
         int documentDoNotRenderLinksNesting = getDitaOptions().doNotRenderLinksInDocument ? 1 : 0;
         this.ditaIdGenerator.generateIds(document);
 
-        NodeRenderingHandler nodeRenderer = renderers.get(node.getClass());
+        NodeRenderingHandler<? extends Node> nodeRenderer = renderers.get(node.getClass());
         if (nodeRenderer != null) {
           subContext.doNotRenderLinksNesting = documentDoNotRenderLinksNesting;
           NodeRenderingHandler prevWrapper = subContext.renderingHandler;
@@ -246,7 +246,7 @@ public class DitaRenderer {
           }
         }
       } else {
-        NodeRenderingHandler nodeRenderer = renderers.get(node.getClass());
+        NodeRenderingHandler<? extends Node> nodeRenderer = renderers.get(node.getClass());
         if (nodeRenderer != null) {
           Node oldNode = this.renderingNode;
           int oldDoNotRenderLinksNesting = subContext.doNotRenderLinksNesting;

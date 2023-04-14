@@ -16,7 +16,7 @@ public class AstToMarkdownTest {
     final StringWriter o = new StringWriter();
     try (
       InputStream style = getClass().getResourceAsStream("/ast.xsl");
-      InputStream ri = getClass().getResourceAsStream("/" + input);
+      InputStream ri = getClass().getResourceAsStream("/" + input)
     ) {
       final TransformerFactory tf = TransformerFactory.newInstance();
       tf.setURIResolver(new ClasspathURIResolver(tf.getURIResolver()));
@@ -35,17 +35,11 @@ public class AstToMarkdownTest {
 
   private String read(final String input) throws IOException {
     final StringWriter o = new StringWriter();
-    Reader i = null;
-    try {
-      i = new InputStreamReader(getClass().getResourceAsStream("/" + input));
+    try (Reader i = new InputStreamReader(getClass().getResourceAsStream("/" + input))) {
       char[] buf = new char[1024];
       int len;
       while ((len = i.read(buf)) != -1) {
         o.write(buf, 0, len);
-      }
-    } finally {
-      if (i != null) {
-        i.close();
       }
     }
     return o.toString();

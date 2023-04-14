@@ -123,7 +123,7 @@ public class MarkdownReaderTest extends AbstractReaderTest {
     final SAXParseException e = errorHandler.warnings.get(0);
     assertEquals("Document content doesn't start with heading", e.getMessage());
     assertEquals("classpath:/markdown/" + file, e.getSystemId());
-    assertEquals(null, e.getPublicId());
+    assertNull(e.getPublicId());
     assertEquals(1, e.getLineNumber());
     assertEquals(1, e.getColumnNumber());
   }
@@ -142,7 +142,7 @@ public class MarkdownReaderTest extends AbstractReaderTest {
 
     assertEquals(1, errorHandler.errors.size());
     final SAXParseException act = errorHandler.errors.get(0);
-    assertEquals(null, act.getPublicId());
+    assertNull(act.getPublicId());
     assertEquals("classpath:///schema/unrecognized.md", act.getSystemId());
     assertEquals(2, act.getLineNumber());
     assertEquals(56, act.getColumnNumber());
@@ -295,7 +295,7 @@ public class MarkdownReaderTest extends AbstractReaderTest {
       ((MarkdownReader) reader).getSchema(data.toCharArray(), input);
       fail();
     } catch (SAXParseException e) {
-      assertEquals(null, e.getPublicId());
+      assertNull(e.getPublicId());
       assertEquals("file:/foo/bar.md", e.getSystemId());
       assertEquals(2, e.getLineNumber());
       assertEquals(19, e.getColumnNumber());

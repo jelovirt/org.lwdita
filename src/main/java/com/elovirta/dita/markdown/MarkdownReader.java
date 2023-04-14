@@ -173,7 +173,7 @@ public class MarkdownReader implements XMLReader {
         options.setAll(MDitaReader.CORE_PROFILE);
         break;
       default:
-        final DataKey option = FEATURES.get(name);
+        final DataKey<Boolean> option = FEATURES.get(name);
         if (option != null) {
           options.set(option, value);
         } else {
