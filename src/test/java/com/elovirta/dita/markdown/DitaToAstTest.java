@@ -52,7 +52,7 @@ public class DitaToAstTest {
     final Document output = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
     try (
       InputStream style = getClass().getResourceAsStream("/dita2ast.xsl");
-      InputStream ri = getClass().getResourceAsStream("/" + input);
+      InputStream ri = getClass().getResourceAsStream("/" + input)
     ) {
       final TransformerFactory tf = TransformerFactory.newInstance();
       tf.setURIResolver(new ClasspathURIResolver(tf.getURIResolver()));

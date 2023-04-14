@@ -129,9 +129,7 @@ public class SpecializeFilterTest {
     );
     buf.append("<title class='- topic/title '>Task</title>");
     buf.append("<body class='- topic/body '>");
-    for (int i = 0; i < context; i++) {
-      buf.append("<p class='- topic/p '>Context</p>");
-    }
+    buf.append("<p class='- topic/p '>Context</p>".repeat(Math.max(0, context)));
     buf.append("<ol class='- topic/ol '>");
     args.forEach(arg -> generateStepSrc(buf, (int) arg.get()[0], (int) arg.get()[1]));
     buf.append("</ol>");
@@ -158,9 +156,7 @@ public class SpecializeFilterTest {
       }
     }
     buf.append("</p>");
-    for (int i = 0; i < info; i++) {
-      buf.append("<p class='- topic/p '>Info.</p>");
-    }
+    buf.append("<p class='- topic/p '>Info.</p>".repeat(Math.max(0, info)));
     buf.append("</li>");
   }
 
@@ -173,9 +169,7 @@ public class SpecializeFilterTest {
     buf.append("<taskbody class='- topic/body task/taskbody '>");
     if (context > 0) {
       buf.append("<context class='- topic/section task/context '>");
-      for (int i = 0; i < context; i++) {
-        buf.append("<p class='- topic/p '>Context</p>");
-      }
+      buf.append("<p class='- topic/p '>Context</p>".repeat(context));
       buf.append("</context>");
     }
     buf.append("<steps class='- topic/ol task/steps '>");
@@ -206,9 +200,7 @@ public class SpecializeFilterTest {
     buf.append("</cmd>");
     if (info > 0) {
       buf.append("<info class='- topic/itemgroup task/info '>");
-      for (int i = 0; i < info; i++) {
-        buf.append("<p class='- topic/p '>Info.</p>");
-      }
+      buf.append("<p class='- topic/p '>Info.</p>".repeat(info));
       buf.append("</info>");
     }
     buf.append("</step>");
