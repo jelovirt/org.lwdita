@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/" class="- map/map " ditaarch:DITAArchVersion="2.0"
+     specializations="">
+  <topicref class="- map/topicref " format="markdown" href="topic-a.md" navtitle="A"/>
+</map>
