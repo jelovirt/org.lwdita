@@ -39,6 +39,8 @@
   <feature extension="dita.conductor.lib.import" file="lib/flexmark-util-misc-0.64.0.jar"/>
   <feature extension="dita.conductor.lib.import" file="lib/flexmark-util-visitor-0.64.0.jar"/>
   <feature extension="dita.conductor.lib.import" file="lib/autolink-0.6.0.jar"/>
+  <feature extension="dita.xsl.html5" file="xsl/linebreak2html5.xsl"/>
+  <feature extension="dita.xsl.xslfo" file="xsl/linebreak2fo.xsl"/>
   <feature extension="dita.parser">
     <parser format="markdown" class="com.elovirta.dita.markdown.MarkdownReader"/>
     <parser format="md" class="com.elovirta.dita.markdown.MarkdownReader"/>
