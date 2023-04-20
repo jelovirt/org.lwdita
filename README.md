@@ -24,7 +24,7 @@ compatibility with DITA content models.
 Markdown DITA or HTML DITA topics can only be used by linking to them in
 map files.
 
-``` {.xml}
+```xml
 <map>
   <topicref href="test.md" format="mdita"/>
   <topicref href="test.html" format="hdita"/>
@@ -36,7 +36,7 @@ to recognize files as Markdown DITA or HTML DITA, respectively; the file
 extension is not used to recognize format.
 
 See the [syntax
-reference](https://github.com/jelovirt/org.lwdita/wiki/Syntax-reference)
+reference](https://github.com/jelovirt/org.lwdita/wiki/Markdown-Syntax-reference)
 for XML and Markdown DITA correspondence.
 
 ### Generating Markdown output
