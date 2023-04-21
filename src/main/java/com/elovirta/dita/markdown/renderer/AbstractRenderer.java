@@ -258,7 +258,7 @@ public abstract class AbstractRenderer {
   }
 
   protected Attributes getInlineAttributes(Node node, Attributes base) {
-    if (!mditaExtendedProfile) {
+    if (!mditaCoreProfile && !mditaExtendedProfile) {
       if (node.getChildOfType(AttributesNode.class) != null) {
         final Title header = Title.getFromChildren(node);
         final AttributesBuilder builder = new AttributesBuilder(base);

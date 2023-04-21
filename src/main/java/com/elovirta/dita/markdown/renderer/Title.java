@@ -1,6 +1,5 @@
 package com.elovirta.dita.markdown.renderer;
 
-import com.vladsch.flexmark.ext.anchorlink.AnchorLink;
 import com.vladsch.flexmark.ext.attributes.AttributeNode;
 import com.vladsch.flexmark.ext.attributes.AttributesNode;
 import com.vladsch.flexmark.util.ast.Node;
@@ -104,19 +103,5 @@ class Title {
 
   private static boolean isClass(AttributeNode attributeNode) {
     return attributeNode.getName().toString().equals(".") || attributeNode.getName().toString().equals("class");
-  }
-
-  private static List<AttributesNode> getAttributesNodes(Node parent) {
-    final List<AttributesNode> res = new ArrayList<>();
-    for (Node child : parent.getChildren()) {
-      if (child instanceof AttributesNode) {
-        res.add((AttributesNode) child);
-      } else if (child instanceof AnchorLink) {
-        res.addAll(getAttributesNodes(child));
-      } else {
-        //                res.addAll(getAttributesNodes(child));
-      }
-    }
-    return res;
   }
 }

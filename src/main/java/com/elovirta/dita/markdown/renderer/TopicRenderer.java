@@ -41,8 +41,6 @@ import java.io.StringReader;
 import java.util.*;
 import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.Map.Entry;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.xml.transform.TransformerConfigurationException;
@@ -517,27 +515,6 @@ public class TopicRenderer extends AbstractRenderer {
       if (find.contains(c)) {
         return c;
       }
-    }
-    return null;
-  }
-
-  private static final Pattern p = Pattern.compile("^(.+?)(?:\\{(.+?)\\})?$");
-
-  private Metadata parseMetadata(Node node) {
-    List<String> classes;
-    String id;
-    BasedSequence info = node.getChars();
-    final Matcher m = p.matcher(info);
-    if (m.matches()) {
-      if (m.group(2) != null) {
-        return Metadata.parse(m.group(2));
-      } else {
-        //                    id = getId(title);
-        id = null;
-      }
-    } else {
-      //                id = getId(contents);
-      id = null;
     }
     return null;
   }
