@@ -41,7 +41,7 @@ public class SpecializeFilter extends XMLFilterImpl {
   /**
    * Topic type stack. Default to topic in case of compound type
    */
-  private Deque<Type> typeStack = new ArrayDeque<>(Arrays.asList(Type.TOPIC));
+  private Deque<Type> typeStack = new ArrayDeque<>(List.of(Type.TOPIC));
   private int paragraphCountInStep = 0;
   private int depth = 0;
   private TaskState taskState = null;

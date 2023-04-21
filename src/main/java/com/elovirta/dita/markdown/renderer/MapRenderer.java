@@ -14,7 +14,6 @@ import com.elovirta.dita.markdown.ParseException;
 import com.elovirta.dita.markdown.SaxWriter;
 import com.elovirta.dita.utils.ClasspathURIResolver;
 import com.elovirta.dita.utils.FragmentContentHandler;
-import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
 import com.google.common.io.Files;
 import com.vladsch.flexmark.ast.*;
@@ -42,7 +41,6 @@ import com.vladsch.flexmark.util.ast.Node;
 import com.vladsch.flexmark.util.ast.ReferenceNode;
 import com.vladsch.flexmark.util.data.DataHolder;
 import com.vladsch.flexmark.util.sequence.BasedSequence;
-import com.vladsch.flexmark.util.visitor.AstHandler;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
@@ -50,6 +48,7 @@ import java.net.URI;
 import java.util.*;
 import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.Map.Entry;
+import java.util.function.Supplier;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -186,7 +185,7 @@ public class MapRenderer {
         final SAXTransformerFactory tf = (SAXTransformerFactory) TransformerFactory.newInstance();
         tf.setURIResolver(new ClasspathURIResolver(tf.getURIResolver()));
         return tf;
-      });
+      })::get;
     templatesSupplier =
       Suppliers.memoize(() -> {
         final SAXTransformerFactory tf = transformerFactorySupplier.get();
@@ -198,7 +197,7 @@ public class MapRenderer {
         } catch (IOException | TransformerConfigurationException e) {
           throw new RuntimeException(e);
         }
-      });
+      })::get;
   }
 
   /**
@@ -946,7 +945,7 @@ public class MapRenderer {
       return false;
     }
     final Node firstChild = node.getFirstChild();
-    return firstChild != null && firstChild instanceof AttributesNode && firstChild.getNext() == null;
+    return firstChild instanceof AttributesNode && firstChild.getNext() == null;
   }
 
   //    private void render(final Paragraph node, final NodeRendererContext context, final SaxWriter html) {
@@ -988,7 +987,7 @@ public class MapRenderer {
    */
   private boolean containsImage(final ContentNode node) {
     final Node first = node.getFirstChild();
-    if (first != null && (first instanceof Image || first instanceof ImageRef)) {
+    if ((first instanceof Image || first instanceof ImageRef)) {
       return first.getNextAnyNot(AttributesNode.class) == null;
     }
     return false;

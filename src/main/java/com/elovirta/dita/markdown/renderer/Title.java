@@ -30,7 +30,7 @@ class Title {
   private static List<AttributesNode> getNextAttributesNodes(Node current) {
     final List<AttributesNode> res = new ArrayList<>();
     Node node = current.getNext();
-    while (node != null && node instanceof AttributesNode) {
+    while (node instanceof AttributesNode) {
       res.add((AttributesNode) node);
       node = node.getNext();
     }
@@ -103,7 +103,7 @@ class Title {
   }
 
   private static boolean isClass(AttributeNode attributeNode) {
-    return attributeNode.getName().equals(".") || attributeNode.getName().equals("class");
+    return attributeNode.getName().toString().equals(".") || attributeNode.getName().toString().equals("class");
   }
 
   private static List<AttributesNode> getAttributesNodes(Node parent) {

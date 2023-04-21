@@ -1089,7 +1089,7 @@ public class CoreNodeRenderer {
       return false;
     }
     final Node firstChild = node.getFirstChild();
-    return firstChild != null && firstChild instanceof AttributesNode && firstChild.getNext() == null;
+    return firstChild instanceof AttributesNode && firstChild.getNext() == null;
   }
 
   private void render(final Paragraph node, final NodeRendererContext context, final SaxWriter html) {
@@ -1130,7 +1130,7 @@ public class CoreNodeRenderer {
    */
   private boolean containsImage(final ContentNode node) {
     final Node first = node.getFirstChild();
-    if (first != null && (first instanceof Image || first instanceof ImageRef)) {
+    if (first instanceof Image || first instanceof ImageRef) {
       return first.getNextAnyNot(AttributesNode.class) == null;
     }
     return false;
