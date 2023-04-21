@@ -12,9 +12,7 @@ import com.elovirta.dita.markdown.DitaRenderer;
 import com.elovirta.dita.markdown.MetadataSerializerImpl;
 import com.elovirta.dita.markdown.ParseException;
 import com.elovirta.dita.markdown.SaxWriter;
-import com.elovirta.dita.utils.ClasspathURIResolver;
 import com.elovirta.dita.utils.FragmentContentHandler;
-import com.google.common.base.Suppliers;
 import com.vladsch.flexmark.ast.*;
 import com.vladsch.flexmark.ext.abbreviation.Abbreviation;
 import com.vladsch.flexmark.ext.abbreviation.AbbreviationBlock;
@@ -26,11 +24,8 @@ import com.vladsch.flexmark.ext.definition.DefinitionList;
 import com.vladsch.flexmark.ext.definition.DefinitionTerm;
 import com.vladsch.flexmark.ext.footnotes.Footnote;
 import com.vladsch.flexmark.ext.footnotes.FootnoteBlock;
-import com.vladsch.flexmark.ext.gfm.strikethrough.Strikethrough;
-import com.vladsch.flexmark.ext.gfm.strikethrough.Subscript;
 import com.vladsch.flexmark.ext.jekyll.tag.JekyllTag;
 import com.vladsch.flexmark.ext.jekyll.tag.JekyllTagBlock;
-import com.vladsch.flexmark.ext.superscript.Superscript;
 import com.vladsch.flexmark.ext.tables.*;
 import com.vladsch.flexmark.ext.typographic.TypographicQuotes;
 import com.vladsch.flexmark.ext.yaml.front.matter.AbstractYamlFrontMatterVisitor;
@@ -42,23 +37,17 @@ import com.vladsch.flexmark.util.ast.ReferenceNode;
 import com.vladsch.flexmark.util.data.DataHolder;
 import com.vladsch.flexmark.util.sequence.BasedSequence;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.StringReader;
 import java.util.*;
 import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.Map.Entry;
-import java.util.function.Supplier;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import javax.xml.transform.Templates;
 import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.sax.SAXResult;
-import javax.xml.transform.sax.SAXTransformerFactory;
 import javax.xml.transform.sax.TransformerHandler;
-import javax.xml.transform.stream.StreamSource;
 import nu.validator.htmlparser.common.XmlViolationPolicy;
 import nu.validator.htmlparser.sax.HtmlParser;
 import org.dita.dost.util.DitaClass;
@@ -73,7 +62,6 @@ public class TopicRenderer extends AbstractRenderer {
 
   private static final String COLUMN_NAME_COL = "col";
   private static final String ATTRIBUTE_NAME_COLSPAN = "colspan";
-
   private static final Attributes TOPIC_ATTS = new AttributesBuilder()
     .add(ATTRIBUTE_NAME_CLASS, TOPIC_TOPIC.toString())
     .add(
@@ -90,10 +78,7 @@ public class TopicRenderer extends AbstractRenderer {
   private static final Attributes FN_ATTS = buildAtts(TOPIC_FN);
   private static final Attributes LI_ATTS = buildAtts(TOPIC_LI);
   private static final Attributes P_ATTS = buildAtts(TOPIC_P);
-  //  private static final Attributes I_ATTS = buildAtts(HI_D_I);
-  //  private static final Attributes B_ATTS = buildAtts(HI_D_B);
   private static final Attributes DD_ATTS = buildAtts(TOPIC_DD);
-  //  private static final Attributes CODEPH_ATTS = buildAtts(PR_D_CODEPH);
   private static final Attributes CODEBLOCK_ATTS = buildAtts(PR_D_CODEBLOCK);
   private static final Attributes PRE_ATTS = buildAtts(TOPIC_PRE);
   private static final Attributes DT_ATTS = buildAtts(TOPIC_DT);
@@ -101,11 +86,6 @@ public class TopicRenderer extends AbstractRenderer {
     .add(ATTRIBUTE_NAME_CLASS, TOPIC_PH.toString())
     .add("status", "deleted")
     .build();
-  //  private static final Attributes LINE_THROUGH_ATTS = buildAtts(HI_D_LINE_THROUGH);
-  //  private static final Attributes SUP_ATTS = buildAtts(HI_D_SUP);
-  //  private static final Attributes SUB_ATTS = buildAtts(HI_D_SUB);
-  //  private static final Attributes TT_ATTS = buildAtts(HI_D_TT);
-  //  private static final Attributes TITLE_ATTS = buildAtts(TOPIC_TITLE);
   private static final Attributes SHORTDESC_ATTS = buildAtts(TOPIC_SHORTDESC);
   private static final Attributes PROLOG_ATTS = buildAtts(TOPIC_PROLOG);
   private static final Attributes BLOCKQUOTE_ATTS = buildAtts(TOPIC_LQ);
@@ -119,16 +99,11 @@ public class TopicRenderer extends AbstractRenderer {
   private static final Attributes TBODY_ATTS = buildAtts(TOPIC_TBODY);
   private static final Attributes THEAD_ATTS = buildAtts(TOPIC_THEAD);
   private static final Attributes TR_ATTS = buildAtts(TOPIC_ROW);
-
   private static final Attributes SIMPLETABLE_ATTS = buildAtts(TOPIC_SIMPLETABLE);
   private static final Attributes STHEAD_ATTS = buildAtts(TOPIC_STHEAD);
   private static final Attributes STROW_ATTS = buildAtts(TOPIC_STROW);
   private static final Attributes STENTRY_ATTS = buildAtts(TOPIC_STENTRY);
-
-  //  private static final Attributes IMAGE_ATTS = buildAtts(TOPIC_IMAGE);
   private static final Attributes XREF_ATTS = buildAtts(TOPIC_XREF);
-  //  private static final Attributes ALT_ATTS = buildAtts(TOPIC_ALT);
-  //  private static final Attributes PH_ATTS = buildAtts(TOPIC_PH);
   private static final Attributes ENTRY_ATTS = buildAtts(TOPIC_ENTRY);
   private static final Attributes FIG_ATTS = buildAtts(TOPIC_FIG);
   private static final Attributes REQUIRED_CLEANUP_ATTS = buildAtts(TOPIC_REQUIRED_CLEANUP);
@@ -140,18 +115,11 @@ public class TopicRenderer extends AbstractRenderer {
     sections.put(TOPIC_EXAMPLE.localName, TOPIC_EXAMPLE);
   }
 
-  private final Supplier<SAXTransformerFactory> transformerFactorySupplier;
-  private final Supplier<Templates> templatesSupplier;
-
-  //    private final Map<String, Object> documentMetadata;
-  private final Map<String, ReferenceNode> references = new HashMap<>();
   private final Map<String, String> abbreviations = new HashMap<>();
   private final MetadataSerializerImpl metadataSerializer;
 
   private final boolean shortdescParagraph;
   private final boolean idFromYaml;
-  private final boolean mditaExtendedProfile;
-  private final boolean mditaCoreProfile;
 
   private TableBlock currentTableNode;
   private int currentTableColumn;
@@ -166,35 +134,15 @@ public class TopicRenderer extends AbstractRenderer {
   private int headerLevel = 0;
 
   public TopicRenderer(DataHolder options) {
-    this.shortdescParagraph = DitaRenderer.SHORTDESC_PARAGRAPH.getFrom(options);
-    this.idFromYaml = DitaRenderer.ID_FROM_YAML.getFrom(options);
-    this.mditaExtendedProfile = DitaRenderer.MDITA_EXTENDED_PROFILE.getFrom(options);
-    this.mditaCoreProfile = DitaRenderer.MDITA_CORE_PROFILE.getFrom(options);
-    this.metadataSerializer = new MetadataSerializerImpl(idFromYaml);
-
-    transformerFactorySupplier =
-      Suppliers.memoize(() -> {
-        final SAXTransformerFactory tf = (SAXTransformerFactory) TransformerFactory.newInstance();
-        tf.setURIResolver(new ClasspathURIResolver(tf.getURIResolver()));
-        return tf;
-      })::get;
-    templatesSupplier =
-      Suppliers.memoize(() -> {
-        final SAXTransformerFactory tf = transformerFactorySupplier.get();
-        final String stylesheet = (mditaCoreProfile || mditaExtendedProfile)
-          ? "/hdita2dita.xsl"
-          : "/hdita2dita-markdown.xsl";
-        try (InputStream in = getClass().getResourceAsStream(stylesheet)) {
-          return tf.newTemplates(new StreamSource(in, "classpath://" + stylesheet));
-        } catch (IOException | TransformerConfigurationException e) {
-          throw new RuntimeException(e);
-        }
-      })::get;
+    super(options);
+    shortdescParagraph = DitaRenderer.SHORTDESC_PARAGRAPH.getFrom(options);
+    idFromYaml = DitaRenderer.ID_FROM_YAML.getFrom(options);
+    metadataSerializer = new MetadataSerializerImpl(idFromYaml);
   }
 
   @Override
   public Map<Class<? extends Node>, NodeRenderingHandler<? extends Node>> getNodeRenderingHandlers() {
-    final List<NodeRenderingHandler> res = new ArrayList<>();
+    final List<NodeRenderingHandler> res = new ArrayList<>(super.getNodeRenderingHandlers().values());
     if (mditaCoreProfile || mditaExtendedProfile) {
       res.add(
         new NodeRenderingHandler<>(
@@ -249,8 +197,6 @@ public class TopicRenderer extends AbstractRenderer {
       res.add(new NodeRenderingHandler<>(DefinitionItem.class, (node, context, html) -> render(node, context, html)));
       res.add(new NodeRenderingHandler<>(Footnote.class, (node, context, html) -> render(node, context, html)));
       res.add(new NodeRenderingHandler<>(FootnoteBlock.class, (node, context, html) -> render(node, context, html)));
-      res.add(new NodeRenderingHandler<>(Superscript.class, (node, context, html) -> render(node, context, html)));
-      res.add(new NodeRenderingHandler<>(Subscript.class, (node, context, html) -> render(node, context, html)));
     }
     if (!mditaCoreProfile && !mditaExtendedProfile) {
       res.add(new NodeRenderingHandler<>(Abbreviation.class, (node, context, html) -> render(node, context, html)));
@@ -258,7 +204,6 @@ public class TopicRenderer extends AbstractRenderer {
         new NodeRenderingHandler<>(AbbreviationBlock.class, (node, context, html) -> render(node, context, html))
       );
       res.add(new NodeRenderingHandler<>(AdmonitionBlock.class, (node, context, html) -> render(node, context, html)));
-      res.add(new NodeRenderingHandler<>(Strikethrough.class, (node, context, html) -> render(node, context, html)));
     }
     res.add(new NodeRenderingHandler<>(AutoLink.class, (node, context, html) -> render(node, context, html)));
     res.add(
@@ -266,10 +211,8 @@ public class TopicRenderer extends AbstractRenderer {
     );
     res.add(new NodeRenderingHandler<>(BlockQuote.class, (node, context, html) -> render(node, context, html)));
     res.add(new NodeRenderingHandler<>(BulletList.class, (node, context, html) -> render(node, context, html)));
-    res.add(new NodeRenderingHandler<>(Code.class, (node, context, html) -> render(node, context, html)));
     res.add(new NodeRenderingHandler<>(CodeBlock.class, (node, context, html) -> render(node, context, html)));
     res.add(new NodeRenderingHandler<>(Document.class, (node, context, html) -> render(node, context, html)));
-    res.add(new NodeRenderingHandler<>(Emphasis.class, (node, context, html) -> render(node, context, html)));
     res.add(new NodeRenderingHandler<>(FencedCodeBlock.class, (node, context, html) -> render(node, context, html)));
     res.add(new NodeRenderingHandler<>(HardLineBreak.class, (node, context, html) -> render(node, context, html)));
     res.add(new NodeRenderingHandler<>(Heading.class, (node, context, html) -> render(node, context, html)));
@@ -279,9 +222,7 @@ public class TopicRenderer extends AbstractRenderer {
     res.add(
       new NodeRenderingHandler<>(HtmlInnerBlockComment.class, (node, context, html) -> render(node, context, html))
     );
-    res.add(new NodeRenderingHandler<>(HtmlEntity.class, (node, context, html) -> render(node, context, html)));
     res.add(new NodeRenderingHandler<>(HtmlInline.class, (node, context, html) -> render(node, context, html)));
-    res.add(new NodeRenderingHandler<>(HtmlInlineComment.class, (node, context, html) -> render(node, context, html)));
     res.add(new NodeRenderingHandler<>(Image.class, (node, context, html) -> render(node, context, html)));
     res.add(new NodeRenderingHandler<>(ImageRef.class, (node, context, html) -> render(node, context, html)));
     res.add(new NodeRenderingHandler<>(IndentedCodeBlock.class, (node, context, html) -> render(node, context, html)));
@@ -294,14 +235,14 @@ public class TopicRenderer extends AbstractRenderer {
     res.add(new NodeRenderingHandler<>(Paragraph.class, (node, context, html) -> render(node, context, html)));
     res.add(new NodeRenderingHandler<>(Reference.class, (node, context, html) -> render(node, context, html)));
     res.add(new NodeRenderingHandler<>(SoftLineBreak.class, (node, context, html) -> render(node, context, html)));
-    res.add(new NodeRenderingHandler<>(StrongEmphasis.class, (node, context, html) -> render(node, context, html)));
     res.add(new NodeRenderingHandler<>(Text.class, (node, context, html) -> render(node, context, html)));
-    res.add(new NodeRenderingHandler<>(TextBase.class, (node, context, html) -> render(node, context, html)));
     res.add(new NodeRenderingHandler<>(ThematicBreak.class, (node, context, html) -> render(node, context, html)));
-    res.add(new NodeRenderingHandler<>(AnchorLink.class, (node, context, html) -> render(node, context, html)));
     res.add(new NodeRenderingHandler<>(JekyllTagBlock.class, (node, context, html) -> render(node, context, html)));
     res.add(new NodeRenderingHandler<>(JekyllTag.class, (node, context, html) -> render(node, context, html)));
-    return res.stream().collect(Collectors.toMap(handler -> handler.getNodeType(), handler -> handler));
+
+    final HashMap map = new HashMap(super.getNodeRenderingHandlers());
+    map.putAll(res.stream().collect(Collectors.toMap(handler -> handler.getNodeType(), handler -> handler)));
+    return map;
   }
 
   // Visitor methods
@@ -373,10 +314,6 @@ public class TopicRenderer extends AbstractRenderer {
     html.endElement();
   }
 
-  private void render(AnchorLink node, final NodeRendererContext context, final SaxWriter html) {
-    context.renderChildren(node);
-  }
-
   private void render(JekyllTagBlock node, final NodeRendererContext context, final SaxWriter html) {
     context.renderChildren(node);
   }
@@ -400,10 +337,6 @@ public class TopicRenderer extends AbstractRenderer {
     } else {
       context.renderChildren(node);
     }
-  }
-
-  private void render(final TextBase node, final NodeRendererContext context, final SaxWriter html) {
-    context.renderChildren(node);
   }
 
   private void render(final Footnote node, final NodeRendererContext context, final SaxWriter html) {
@@ -443,14 +376,6 @@ public class TopicRenderer extends AbstractRenderer {
 
   private void render(final BulletList node, final NodeRendererContext context, final SaxWriter html) {
     printTag(node, context, html, TOPIC_UL, getAttributesFromAttributesNode(node, UL_ATTS));
-  }
-
-  private void render(final Code node, final NodeRendererContext context, final SaxWriter html) {
-    if (mditaExtendedProfile) {
-      printTag(node, context, html, HI_D_TT, TT_ATTS);
-    } else {
-      printTag(node, context, html, PR_D_CODEPH, getInlineAttributes(node, CODEPH_ATTS));
-    }
   }
 
   private void render(final DefinitionList node, final NodeRendererContext context, final SaxWriter html) {
@@ -499,14 +424,6 @@ public class TopicRenderer extends AbstractRenderer {
     final AttributesBuilder atts = new AttributesBuilder(getInlineAttributes(node, IMAGE_ATTS))
       .add(ATTRIBUTE_NAME_HREF, node.getUrl().toString());
     writeImage(node, node.getTitle().toString(), null, atts, context, html);
-  }
-
-  private void render(final Superscript node, final NodeRendererContext context, final SaxWriter html) {
-    printTag(node, context, html, HI_D_SUP, getInlineAttributes(node, SUP_ATTS));
-  }
-
-  private void render(final Subscript node, final NodeRendererContext context, final SaxWriter html) {
-    printTag(node, context, html, HI_D_SUB, getInlineAttributes(node, SUB_ATTS));
   }
 
   private void writeImage(
@@ -943,17 +860,6 @@ public class TopicRenderer extends AbstractRenderer {
     }
   }
 
-  private AttributesBuilder readAttributes(Title header, AttributesBuilder builder) {
-    if (!header.classes.isEmpty()) {
-      builder.add(ATTRIBUTE_NAME_OUTPUTCLASS, String.join(" ", header.classes));
-    }
-    for (Entry<String, String> attr : header.attributes.entrySet()) {
-      builder.add(attr.getKey(), attr.getValue());
-    }
-    header.id.ifPresent(id -> builder.add(ATTRIBUTE_NAME_ID, id));
-    return builder;
-  }
-
   /**
    * Contains only single image
    */
@@ -1059,22 +965,6 @@ public class TopicRenderer extends AbstractRenderer {
     //            }
     html.endElement();
     //        }
-  }
-
-  private void render(final Strikethrough node, final NodeRendererContext context, final SaxWriter html) {
-    if (mditaExtendedProfile) {
-      printTag(node, context, html, TOPIC_PH, PH_ATTS);
-    } else {
-      printTag(node, context, html, HI_D_LINE_THROUGH, getInlineAttributes(node, LINE_THROUGH_ATTS));
-    }
-  }
-
-  private void render(final Emphasis node, final NodeRendererContext context, final SaxWriter html) {
-    printTag(node, context, html, HI_D_I, getInlineAttributes(node, I_ATTS));
-  }
-
-  private void render(final StrongEmphasis node, final NodeRendererContext context, final SaxWriter html) {
-    printTag(node, context, html, HI_D_B, getInlineAttributes(node, B_ATTS));
   }
 
   // OASIS Table
@@ -1360,22 +1250,6 @@ public class TopicRenderer extends AbstractRenderer {
     html.processingInstruction("linebreak", null);
   }
 
-  /**
-   * Map HTML entity to Unicode character.
-   */
-  private void render(final HtmlEntity node, final NodeRendererContext context, final SaxWriter html) {
-    final BasedSequence chars = node.getChars();
-    final String name = chars.subSequence(1, chars.length() - 1).toString().toLowerCase();
-    final String val = Entities.ENTITIES.getProperty(name);
-    if (val != null) {
-      html.characters(val);
-    }
-  }
-
-  private void render(final HtmlInlineComment node, final NodeRendererContext context, final SaxWriter html) {
-    // Ignore
-  }
-
   private void render(final Node node, final NodeRendererContext context, final SaxWriter html) {
     throw new RuntimeException(
       "No renderer configured for " + node.getNodeName() + " = " + node.getClass().getCanonicalName()
@@ -1392,21 +1266,6 @@ public class TopicRenderer extends AbstractRenderer {
     } else {
       return base;
     }
-  }
-
-  private Attributes getInlineAttributes(Node node, Attributes base) {
-    if (!mditaExtendedProfile) {
-      if (node.getChildOfType(AttributesNode.class) != null) {
-        final Title header = Title.getFromChildren(node);
-        final AttributesBuilder builder = new AttributesBuilder(base);
-        return readAttributes(header, builder).build();
-      } else if (node.getNext() instanceof AttributesNode) {
-        final Title header = Title.getFromNext(node);
-        final AttributesBuilder builder = new AttributesBuilder(base);
-        return readAttributes(header, builder).build();
-      }
-    }
-    return base;
   }
 
   @Override

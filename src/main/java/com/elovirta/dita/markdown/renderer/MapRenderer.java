@@ -11,15 +11,10 @@ import com.elovirta.dita.markdown.DitaRenderer;
 import com.elovirta.dita.markdown.MetadataSerializerImpl;
 import com.elovirta.dita.markdown.ParseException;
 import com.elovirta.dita.markdown.SaxWriter;
-import com.elovirta.dita.utils.ClasspathURIResolver;
 import com.elovirta.dita.utils.FragmentContentHandler;
-import com.google.common.base.Suppliers;
 import com.vladsch.flexmark.ast.*;
 import com.vladsch.flexmark.ext.anchorlink.AnchorLink;
 import com.vladsch.flexmark.ext.attributes.AttributesNode;
-import com.vladsch.flexmark.ext.gfm.strikethrough.Strikethrough;
-import com.vladsch.flexmark.ext.gfm.strikethrough.Subscript;
-import com.vladsch.flexmark.ext.superscript.Superscript;
 import com.vladsch.flexmark.ext.tables.*;
 import com.vladsch.flexmark.ext.yaml.front.matter.AbstractYamlFrontMatterVisitor;
 import com.vladsch.flexmark.ext.yaml.front.matter.YamlFrontMatterBlock;
@@ -29,7 +24,6 @@ import com.vladsch.flexmark.util.ast.Node;
 import com.vladsch.flexmark.util.data.DataHolder;
 import com.vladsch.flexmark.util.sequence.BasedSequence;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.StringReader;
 import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.ArrayList;
@@ -37,16 +31,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import javax.xml.transform.Templates;
 import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.sax.SAXResult;
-import javax.xml.transform.sax.SAXTransformerFactory;
 import javax.xml.transform.sax.TransformerHandler;
-import javax.xml.transform.stream.StreamSource;
 import nu.validator.htmlparser.common.XmlViolationPolicy;
 import nu.validator.htmlparser.sax.HtmlParser;
 import org.dita.dost.util.DitaClass;
@@ -85,39 +74,14 @@ public class MapRenderer extends AbstractRenderer {
   private static final Attributes RELCELL_ATTS = buildAtts(MAP_RELCELL);
   private static final Attributes KEYDEF_ATTS = buildAtts(MAPGROUP_D_KEYDEF);
 
-  private final Supplier<SAXTransformerFactory> transformerFactorySupplier;
-  private final Supplier<Templates> templatesSupplier;
-
   private final MetadataSerializerImpl metadataSerializer;
 
   private final boolean idFromYaml;
-  private final boolean mditaExtendedProfile;
-  private final boolean mditaCoreProfile;
 
   public MapRenderer(DataHolder options) {
-    this.idFromYaml = DitaRenderer.ID_FROM_YAML.getFrom(options);
-    this.mditaExtendedProfile = DitaRenderer.MDITA_EXTENDED_PROFILE.getFrom(options);
-    this.mditaCoreProfile = DitaRenderer.MDITA_CORE_PROFILE.getFrom(options);
-    this.metadataSerializer = new MetadataSerializerImpl(idFromYaml);
-
-    transformerFactorySupplier =
-      Suppliers.memoize(() -> {
-        final SAXTransformerFactory tf = (SAXTransformerFactory) TransformerFactory.newInstance();
-        tf.setURIResolver(new ClasspathURIResolver(tf.getURIResolver()));
-        return tf;
-      })::get;
-    templatesSupplier =
-      Suppliers.memoize(() -> {
-        final SAXTransformerFactory tf = transformerFactorySupplier.get();
-        final String stylesheet = (mditaCoreProfile || mditaExtendedProfile)
-          ? "/hdita2dita.xsl"
-          : "/hdita2dita-markdown.xsl";
-        try (InputStream in = getClass().getResourceAsStream(stylesheet)) {
-          return tf.newTemplates(new StreamSource(in, "classpath://" + stylesheet));
-        } catch (IOException | TransformerConfigurationException e) {
-          throw new RuntimeException(e);
-        }
-      })::get;
+    super(options);
+    idFromYaml = DitaRenderer.ID_FROM_YAML.getFrom(options);
+    metadataSerializer = new MetadataSerializerImpl(idFromYaml);
   }
 
   @Override
@@ -149,9 +113,7 @@ public class MapRenderer extends AbstractRenderer {
       new NodeRenderingHandler<>(YamlFrontMatterBlock.class, (node, context, html) -> render(node, context, html))
     );
     res.add(new NodeRenderingHandler<>(BulletList.class, (node, context, html) -> render(node, context, html)));
-    res.add(new NodeRenderingHandler<>(Code.class, (node, context, html) -> render(node, context, html)));
     res.add(new NodeRenderingHandler<>(Document.class, (node, context, html) -> render(node, context, html)));
-    res.add(new NodeRenderingHandler<>(Emphasis.class, (node, context, html) -> render(node, context, html)));
     res.add(new NodeRenderingHandler<>(Heading.class, (node, context, html) -> render(node, context, html)));
     res.add(new NodeRenderingHandler<>(Image.class, (node, context, html) -> render(node, context, html)));
     res.add(new NodeRenderingHandler<>(ImageRef.class, (node, context, html) -> render(node, context, html)));
@@ -164,14 +126,14 @@ public class MapRenderer extends AbstractRenderer {
     res.add(new NodeRenderingHandler<>(Paragraph.class, (node, context, html) -> render(node, context, html)));
     res.add(new NodeRenderingHandler<>(Reference.class, (node, context, html) -> render(node, context, html)));
     res.add(new NodeRenderingHandler<>(SoftLineBreak.class, (node, context, html) -> render(node, context, html)));
-    res.add(new NodeRenderingHandler<>(StrongEmphasis.class, (node, context, html) -> render(node, context, html)));
-    res.add(new NodeRenderingHandler<>(Superscript.class, (node, context, html) -> render(node, context, html)));
-    res.add(new NodeRenderingHandler<>(Subscript.class, (node, context, html) -> render(node, context, html)));
     res.add(new NodeRenderingHandler<>(Text.class, (node, context, html) -> render(node, context, html)));
-    res.add(new NodeRenderingHandler<>(TextBase.class, (node, context, html) -> render(node, context, html)));
-    res.add(new NodeRenderingHandler<>(AnchorLink.class, (node, context, html) -> render(node, context, html)));
-    return res.stream().collect(Collectors.toMap(handler -> handler.getNodeType(), handler -> handler));
+
+    final HashMap map = new HashMap(super.getNodeRenderingHandlers());
+    map.putAll(res.stream().collect(Collectors.toMap(handler -> handler.getNodeType(), handler -> handler)));
+    return map;
   }
+
+  // Visitor methods
 
   private void render(final Document node, final NodeRendererContext context, final SaxWriter html) {
     final boolean isCompound = hasMultipleTopLevelHeaders(node);
@@ -227,14 +189,6 @@ public class MapRenderer extends AbstractRenderer {
     context.renderChildren(node);
   }
 
-  private void render(AnchorLink node, final NodeRendererContext context, final SaxWriter html) {
-    context.renderChildren(node);
-  }
-
-  private void render(final TextBase node, final NodeRendererContext context, final SaxWriter html) {
-    context.renderChildren(node);
-  }
-
   private Attributes getAttributesFromAttributesNode(Node node, Attributes base) {
     if (!mditaExtendedProfile && isAttributesParagraph(node.getNext())) {
       final Title header = Title.getFromChildren(node.getNext());
@@ -245,45 +199,14 @@ public class MapRenderer extends AbstractRenderer {
     }
   }
 
-  private Attributes getInlineAttributes(Node node, Attributes base) {
-    if (!mditaExtendedProfile) {
-      if (node.getChildOfType(AttributesNode.class) != null) {
-        final Title header = Title.getFromChildren(node);
-        final AttributesBuilder builder = new AttributesBuilder(base);
-        return readAttributes(header, builder).build();
-      } else if (node.getNext() instanceof AttributesNode) {
-        final Title header = Title.getFromNext(node);
-        final AttributesBuilder builder = new AttributesBuilder(base);
-        return readAttributes(header, builder).build();
-      }
-    }
-    return base;
-  }
-
   private void render(final BulletList node, final NodeRendererContext context, final SaxWriter html) {
     context.renderChildren(node);
-  }
-
-  private void render(final Code node, final NodeRendererContext context, final SaxWriter html) {
-    if (mditaExtendedProfile) {
-      printTag(node, context, html, HI_D_TT, TT_ATTS);
-    } else {
-      printTag(node, context, html, PR_D_CODEPH, getInlineAttributes(node, CODEPH_ATTS));
-    }
   }
 
   private void render(final Image node, final NodeRendererContext context, final SaxWriter html) {
     final AttributesBuilder atts = new AttributesBuilder(getInlineAttributes(node, IMAGE_ATTS))
       .add(ATTRIBUTE_NAME_HREF, node.getUrl().toString());
     writeImage(node, node.getTitle().toString(), null, atts, context, html);
-  }
-
-  private void render(final Superscript node, final NodeRendererContext context, final SaxWriter html) {
-    printTag(node, context, html, HI_D_SUP, getInlineAttributes(node, SUP_ATTS));
-  }
-
-  private void render(final Subscript node, final NodeRendererContext context, final SaxWriter html) {
-    printTag(node, context, html, HI_D_SUB, getInlineAttributes(node, SUB_ATTS));
   }
 
   private void writeImage(
@@ -572,17 +495,6 @@ public class MapRenderer extends AbstractRenderer {
     return firstChild instanceof AttributesNode && firstChild.getNext() == null;
   }
 
-  private AttributesBuilder readAttributes(Title header, AttributesBuilder builder) {
-    if (!header.classes.isEmpty()) {
-      builder.add(ATTRIBUTE_NAME_OUTPUTCLASS, String.join(" ", header.classes));
-    }
-    for (Entry<String, String> attr : header.attributes.entrySet()) {
-      builder.add(attr.getKey(), attr.getValue());
-    }
-    header.id.ifPresent(id -> builder.add(ATTRIBUTE_NAME_ID, id));
-    return builder;
-  }
-
   private void render(final Reference node, final NodeRendererContext context, final SaxWriter html) {
     final Attributes atts = getLinkAttributes(node.getUrl().toString(), KEYDEF_ATTS)
       .add(ATTRIBUTE_NAME_KEYS, node.getReference().toString())
@@ -659,22 +571,6 @@ public class MapRenderer extends AbstractRenderer {
     //        }
   }
 
-  private void render(final Strikethrough node, final NodeRendererContext context, final SaxWriter html) {
-    if (mditaExtendedProfile) {
-      printTag(node, context, html, TOPIC_PH, PH_ATTS);
-    } else {
-      printTag(node, context, html, HI_D_LINE_THROUGH, getInlineAttributes(node, LINE_THROUGH_ATTS));
-    }
-  }
-
-  private void render(final Emphasis node, final NodeRendererContext context, final SaxWriter html) {
-    printTag(node, context, html, HI_D_I, getInlineAttributes(node, I_ATTS));
-  }
-
-  private void render(final StrongEmphasis node, final NodeRendererContext context, final SaxWriter html) {
-    printTag(node, context, html, HI_D_B, getInlineAttributes(node, B_ATTS));
-  }
-
   private void renderSimpleTableBlock(final TableBlock node, final NodeRendererContext context, final SaxWriter html) {
     //        currentTableNode = node;
     final Attributes tableAtts;
@@ -740,22 +636,6 @@ public class MapRenderer extends AbstractRenderer {
 
   private void render(final SoftLineBreak node, final NodeRendererContext context, final SaxWriter html) {
     html.characters('\n');
-  }
-
-  /**
-   * Map HTML entity to Unicode character.
-   */
-  private void render(final HtmlEntity node, final NodeRendererContext context, final SaxWriter html) {
-    final BasedSequence chars = node.getChars();
-    final String name = chars.subSequence(1, chars.length() - 1).toString().toLowerCase();
-    final String val = Entities.ENTITIES.getProperty(name);
-    if (val != null) {
-      html.characters(val);
-    }
-  }
-
-  private void render(final HtmlInlineComment node, final NodeRendererContext context, final SaxWriter html) {
-    // Ignore
   }
 
   private void render(final Node node, final NodeRendererContext context, final SaxWriter html) {
