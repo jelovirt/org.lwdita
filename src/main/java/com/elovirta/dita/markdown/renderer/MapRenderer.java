@@ -5,7 +5,6 @@ package com.elovirta.dita.markdown.renderer;
 
 import static com.elovirta.dita.markdown.MetadataSerializerImpl.buildAtts;
 import static org.dita.dost.util.Constants.*;
-import static org.dita.dost.util.URLUtils.toURI;
 import static org.dita.dost.util.XMLUtils.AttributesBuilder;
 
 import com.elovirta.dita.markdown.DitaRenderer;
@@ -15,45 +14,32 @@ import com.elovirta.dita.markdown.SaxWriter;
 import com.elovirta.dita.utils.ClasspathURIResolver;
 import com.elovirta.dita.utils.FragmentContentHandler;
 import com.google.common.base.Suppliers;
-import com.google.common.io.Files;
 import com.vladsch.flexmark.ast.*;
-import com.vladsch.flexmark.ext.abbreviation.Abbreviation;
-import com.vladsch.flexmark.ext.abbreviation.AbbreviationBlock;
 import com.vladsch.flexmark.ext.anchorlink.AnchorLink;
 import com.vladsch.flexmark.ext.attributes.AttributesNode;
-import com.vladsch.flexmark.ext.definition.DefinitionItem;
-import com.vladsch.flexmark.ext.definition.DefinitionList;
-import com.vladsch.flexmark.ext.definition.DefinitionTerm;
-import com.vladsch.flexmark.ext.footnotes.Footnote;
-import com.vladsch.flexmark.ext.footnotes.FootnoteBlock;
 import com.vladsch.flexmark.ext.gfm.strikethrough.Strikethrough;
 import com.vladsch.flexmark.ext.gfm.strikethrough.Subscript;
-import com.vladsch.flexmark.ext.jekyll.tag.JekyllTag;
-import com.vladsch.flexmark.ext.jekyll.tag.JekyllTagBlock;
 import com.vladsch.flexmark.ext.superscript.Superscript;
 import com.vladsch.flexmark.ext.tables.*;
-import com.vladsch.flexmark.ext.typographic.TypographicQuotes;
 import com.vladsch.flexmark.ext.yaml.front.matter.AbstractYamlFrontMatterVisitor;
 import com.vladsch.flexmark.ext.yaml.front.matter.YamlFrontMatterBlock;
 import com.vladsch.flexmark.util.ast.ContentNode;
 import com.vladsch.flexmark.util.ast.Document;
 import com.vladsch.flexmark.util.ast.Node;
-import com.vladsch.flexmark.util.ast.ReferenceNode;
 import com.vladsch.flexmark.util.data.DataHolder;
 import com.vladsch.flexmark.util.sequence.BasedSequence;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
-import java.net.URI;
-import java.util.*;
 import java.util.AbstractMap.SimpleImmutableEntry;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.function.Supplier;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 import javax.xml.transform.Templates;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerFactory;
@@ -71,7 +57,7 @@ import org.xml.sax.SAXException;
 /**
  * A renderer for a set of node types.
  */
-public class MapRenderer {
+public class MapRenderer extends AbstractRenderer {
 
   private static final Attributes MAP_ATTS = new AttributesBuilder()
     .add(ATTRIBUTE_NAME_CLASS, MAP_MAP.toString())
@@ -85,16 +71,7 @@ public class MapRenderer {
     //            .add(ATTRIBUTE_NAME_DOMAINS, "(topic hi-d) (topic ut-d) (topic indexing-d) (topic hazard-d) (topic abbrev-d) (topic pr-d) (topic sw-d) (topic ui-d)")
     .build();
   private static final Attributes TOPICREF_ATTS = buildAtts(MAP_TOPICREF);
-  private static final Attributes I_ATTS = buildAtts(HI_D_I);
-  private static final Attributes B_ATTS = buildAtts(HI_D_B);
-  private static final Attributes CODEPH_ATTS = buildAtts(PR_D_CODEPH);
-  private static final Attributes LINE_THROUGH_ATTS = buildAtts(HI_D_LINE_THROUGH);
-  private static final Attributes SUP_ATTS = buildAtts(HI_D_SUP);
-  private static final Attributes SUB_ATTS = buildAtts(HI_D_SUB);
-  private static final Attributes TT_ATTS = buildAtts(HI_D_TT);
-  private static final Attributes TITLE_ATTS = buildAtts(TOPIC_TITLE);
   private static final Attributes TOPICMETA_ATTS = buildAtts(MAP_TOPICMETA);
-
   private static final Attributes RELTABLE_ATTS = new AttributesBuilder()
     .add(ATTRIBUTE_NAME_CLASS, MAP_RELTABLE.toString())
     .add("toc", "no")
@@ -106,31 +83,16 @@ public class MapRenderer {
     .build();
   private static final Attributes RELROW_ATTS = buildAtts(MAP_RELROW);
   private static final Attributes RELCELL_ATTS = buildAtts(MAP_RELCELL);
-
   private static final Attributes KEYDEF_ATTS = buildAtts(MAPGROUP_D_KEYDEF);
-  private static final Attributes IMAGE_ATTS = buildAtts(TOPIC_IMAGE);
-  private static final Attributes ALT_ATTS = buildAtts(TOPIC_ALT);
-  private static final Attributes PH_ATTS = buildAtts(TOPIC_PH);
-  private static final Attributes FIG_ATTS = buildAtts(TOPIC_FIG);
-
-  private static final Map<String, DitaClass> sections = new HashMap<>();
-
-  static {
-    sections.put(TOPIC_SECTION.localName, TOPIC_SECTION);
-    sections.put(TOPIC_EXAMPLE.localName, TOPIC_EXAMPLE);
-  }
 
   private final Supplier<SAXTransformerFactory> transformerFactorySupplier;
   private final Supplier<Templates> templatesSupplier;
 
-  private final Map<String, String> abbreviations = new HashMap<>();
   private final MetadataSerializerImpl metadataSerializer;
 
   private final boolean idFromYaml;
   private final boolean mditaExtendedProfile;
   private final boolean mditaCoreProfile;
-
-  private int currentTableColumn;
 
   public MapRenderer(DataHolder options) {
     this.idFromYaml = DitaRenderer.ID_FROM_YAML.getFrom(options);
@@ -158,9 +120,7 @@ public class MapRenderer {
       })::get;
   }
 
-  /**
-   * @return the mapping of nodes this renderer handles to rendering function
-   */
+  @Override
   public Map<Class<? extends Node>, NodeRenderingHandler<? extends Node>> getNodeRenderingHandlers() {
     final List<NodeRenderingHandler> res = new ArrayList<>();
     res.add(
@@ -211,14 +171,6 @@ public class MapRenderer {
     res.add(new NodeRenderingHandler<>(TextBase.class, (node, context, html) -> render(node, context, html)));
     res.add(new NodeRenderingHandler<>(AnchorLink.class, (node, context, html) -> render(node, context, html)));
     return res.stream().collect(Collectors.toMap(handler -> handler.getNodeType(), handler -> handler));
-  }
-
-  private boolean hasMultipleTopLevelHeaders(Document astRoot) {
-    final long count = StreamSupport
-      .stream(astRoot.getChildren().spliterator(), false)
-      .filter(n -> (n instanceof Heading) && (((Heading) n).getLevel() == 1))
-      .count();
-    return count > 1;
   }
 
   private void render(final Document node, final NodeRendererContext context, final SaxWriter html) {
@@ -342,39 +294,17 @@ public class MapRenderer {
     final NodeRendererContext context,
     SaxWriter html
   ) {
-    if (!title.isEmpty()) {
-      html.startElement(node, TOPIC_FIG, FIG_ATTS);
-      html.startElement(node, TOPIC_TITLE, TITLE_ATTS);
-      html.characters(title);
-      html.endElement();
-      html.startElement(node, TOPIC_IMAGE, atts.build());
-      if (hasChildren(node)) {
-        html.startElement(node, TOPIC_ALT, ALT_ATTS);
-        if (alt != null) {
-          html.characters(alt);
-        } else {
-          context.renderChildren(node);
-        }
-        html.endElement();
-      }
-      html.endElement();
-      html.endElement();
-    } else {
-      if (onlyImageChild) {
-        atts.add("placement", "break");
-      }
-      html.startElement(node, TOPIC_IMAGE, atts.build());
-      if (hasChildren(node)) {
-        html.startElement(node, TOPIC_ALT, ALT_ATTS);
-        if (alt != null) {
-          html.characters(alt);
-        } else {
-          context.renderChildren(node);
-        }
-        html.endElement();
+    html.startElement(node, TOPIC_IMAGE, atts.build());
+    if (hasChildren(node)) {
+      html.startElement(node, TOPIC_ALT, ALT_ATTS);
+      if (alt != null) {
+        html.characters(alt);
+      } else {
+        context.renderChildren(node);
       }
       html.endElement();
     }
+    html.endElement();
   }
 
   private void writeImage(
@@ -385,39 +315,17 @@ public class MapRenderer {
     final NodeRendererContext context,
     SaxWriter html
   ) {
-    if (!title.isEmpty()) {
-      html.startElement(node, TOPIC_FIG, FIG_ATTS);
-      html.startElement(node, TOPIC_TITLE, TITLE_ATTS);
-      html.characters(title);
+    html.startElement(node, TOPIC_IMAGE, atts.build());
+    if (hasChildren(node)) {
+      html.startElement(node, TOPIC_ALT, ALT_ATTS);
+      if (alt != null) {
+        html.characters(alt);
+      } else {
+        context.renderChildren(node);
+      }
       html.endElement();
-      html.startElement(node, TOPIC_IMAGE, atts.build());
-      if (hasChildren(node)) {
-        html.startElement(node, TOPIC_ALT, ALT_ATTS);
-        if (alt != null) {
-          html.characters(alt);
-        } else {
-          context.renderChildren(node);
-        }
-        html.endElement();
-      }
-      html.endElement(); // image
-      html.endElement(); // fig
-    } else {
-      if (onlyImageChild) {
-        atts.add("placement", "break");
-      }
-      html.startElement(node, TOPIC_IMAGE, atts.build());
-      if (hasChildren(node)) {
-        html.startElement(node, TOPIC_ALT, ALT_ATTS);
-        if (alt != null) {
-          html.characters(alt);
-        } else {
-          context.renderChildren(node);
-        }
-        html.endElement();
-      }
-      html.endElement(); // image
     }
+    html.endElement(); // image
   }
 
   private void render(final Heading node, final NodeRendererContext context, final SaxWriter html) {
@@ -801,7 +709,6 @@ public class MapRenderer {
   }
 
   private void renderSimpleTableRow(final TableRow node, final NodeRendererContext context, final SaxWriter html) {
-    currentTableColumn = 0;
     if (node.getParent() instanceof TableHead) {
       printTag(node, context, html, MAP_RELHEADER, RELHEADER_ATTS);
     } else {
@@ -815,21 +722,15 @@ public class MapRenderer {
     html.startElement(node, isHeader ? MAP_RELCOLSPEC : MAP_RELCELL, atts.build());
     context.renderChildren(node);
     html.endElement();
-
-    currentTableColumn += node.getSpan();
   }
 
   // Code block
 
   private void render(final Text node, final NodeRendererContext context, final SaxWriter html) {
-    if (abbreviations.isEmpty()) {
-      if (node.getParent() instanceof Code) {
-        html.characters(node.getChars().toString());
-      } else {
-        html.characters(node.getChars().unescapeNoEntities());
-      }
+    if (node.getParent() instanceof Code) {
+      html.characters(node.getChars().toString());
     } else {
-      printWithAbbreviations(node.getChars().toString(), html);
+      html.characters(node.getChars().unescapeNoEntities());
     }
   }
 
@@ -865,114 +766,8 @@ public class MapRenderer {
 
   // helpers
 
-  private boolean hasChildren(final Node node) {
-    return node.hasChildren();
-  }
-
-  private void printTag(
-    Node node,
-    NodeRendererContext context,
-    SaxWriter html,
-    final DitaClass tag,
-    final Attributes atts
-  ) {
-    html.startElement(node, tag, atts);
-    context.renderChildren(node);
-    html.endElement();
-  }
-
-  private AttributesBuilder getLinkAttributes(final String href) {
+  @Override
+  protected AttributesBuilder getLinkAttributes(final String href) {
     return getLinkAttributes(href, TOPICREF_ATTS);
-  }
-
-  private AttributesBuilder getLinkAttributes(final String href, Attributes baseAttrs) {
-    final AttributesBuilder atts = new AttributesBuilder(baseAttrs).add(ATTRIBUTE_NAME_HREF, href);
-    if (href.startsWith("#")) {
-      atts.add(ATTRIBUTE_NAME_FORMAT, "markdown");
-    } else {
-      final URI uri = toURI(href);
-      String format = null;
-      if (uri.getPath() != null) {
-        final String ext = Files.getFileExtension(uri.getPath()).toLowerCase();
-        switch (ext) {
-          case ATTR_FORMAT_VALUE_DITA:
-          case "xml":
-            format = null;
-            break;
-          // Markdown is converted to DITA
-          case "md":
-          case "markdown":
-            format = "markdown";
-            break;
-          default:
-            format = !ext.isEmpty() ? ext : "html";
-            break;
-        }
-      }
-      if (uri.getScheme() != null && uri.getScheme().equals("mailto")) {
-        atts.add(ATTRIBUTE_NAME_FORMAT, "email");
-      }
-      if (format != null) {
-        atts.add(ATTRIBUTE_NAME_FORMAT, format);
-      }
-
-      if (
-        uri != null && (uri.isAbsolute() || !uri.isAbsolute() && uri.getPath() != null && uri.getPath().startsWith("/"))
-      ) {
-        atts.add(ATTRIBUTE_NAME_SCOPE, ATTR_SCOPE_VALUE_EXTERNAL);
-      }
-    }
-    return atts;
-  }
-
-  private void printWithAbbreviations(String string, final SaxWriter html) {
-    Map<Integer, Entry<String, String>> expansions = null;
-
-    for (Entry<String, String> entry : abbreviations.entrySet()) {
-      // first check, whether we have a legal match
-      String abbr = entry.getKey();
-
-      int ix = 0;
-      while (true) {
-        final int sx = string.indexOf(abbr, ix);
-        if (sx == -1) break;
-
-        // only allow whole word matches
-        ix = sx + abbr.length();
-
-        if (sx > 0 && Character.isLetterOrDigit(string.charAt(sx - 1))) continue;
-        if (ix < string.length() && Character.isLetterOrDigit(string.charAt(ix))) {
-          continue;
-        }
-
-        // ok, legal match so save an expansions "task" for all matches
-        if (expansions == null) {
-          expansions = new TreeMap<>();
-        }
-        expansions.put(sx, entry);
-      }
-    }
-
-    if (expansions != null) {
-      int ix = 0;
-      for (Entry<Integer, Entry<String, String>> entry : expansions.entrySet()) {
-        int sx = entry.getKey();
-        final String abbr = entry.getValue().getKey();
-        final String expansion = entry.getValue().getValue();
-
-        html.characters(string.substring(ix, sx));
-        final AttributesBuilder atts = new AttributesBuilder(PH_ATTS);
-        if (expansion != null && !expansion.isEmpty()) {
-          atts.add(ATTRIBUTE_NAME_OTHERPROPS, expansion);
-        }
-        html.startElement(null, TOPIC_PH, atts.build());
-        html.characters(abbr);
-        html.endElement();
-        ix = sx + abbr.length();
-      }
-      html.characters(string.substring(ix));
-    } else {
-      html.characters(string);
-    }
   }
 }
