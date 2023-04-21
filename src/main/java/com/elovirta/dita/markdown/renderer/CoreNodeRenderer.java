@@ -315,31 +315,6 @@ public class CoreNodeRenderer {
     return res.stream().collect(Collectors.toMap(handler -> handler.getNodeType(), handler -> handler));
   }
 
-  //    void toHtml(final Document astRoot) throws SAXException {
-  ////        checkArgNotNull(astRoot, "astRoot");
-  //        clean(astRoot);
-  //        final boolean isCompound = hasMultipleTopLevelHeaders(astRoot);
-  //        contentHandler.startDocument();
-  //        contentHandler.startPrefixMapping(ATTRIBUTE_PREFIX_DITAARCHVERSION, DITA_NAMESPACE);
-  //        if (isCompound) {
-  //            contentHandler.startElement(NULL_NS_URI, ELEMENT_NAME_DITA, ELEMENT_NAME_DITA, EMPTY_ATTS);
-  //        }
-  //        try {
-  //            astRoot.accept(this);
-  //            while (!tagStack.isEmpty()) {
-  //                html.endElement();
-  //            }
-  //        } catch (final ParseException e) {
-  //            //e.printStackTrace();
-  //            throw new SAXException("Failed to parse Markdown: " + e.getMessage(), e);
-  //        }
-  //        if (isCompound) {
-  //            contentHandler.endElement(NULL_NS_URI, ELEMENT_NAME_DITA, ELEMENT_NAME_DITA);
-  //        }
-  //        contentHandler.endPrefixMapping(ATTRIBUTE_PREFIX_DITAARCHVERSION);
-  //        contentHandler.endDocument();
-  //    }
-
   private boolean hasMultipleTopLevelHeaders(Document astRoot) {
     final long count = StreamSupport
       .stream(astRoot.getChildren().spliterator(), false)
@@ -348,89 +323,9 @@ public class CoreNodeRenderer {
     return count > 1;
   }
 
-  /**
-   * Replace metadata para with actual metadata element. Modifies AST <b>in-place</b>.
-   */
-  private void clean(final Document node) {
-    //        final Map<String, String> metadata = new HashMap<>();
-    //
-    //        // read pandoc_title_block
-    //        final Node first = node.getChildren().iterator().next();
-    //        if (first instanceof Paragraph && toString(first).startsWith("%")) {
-    //            final String[] fields = toString(first).split("\n");
-    //            if (fields.length >= 1) {
-    //                metadata.put("title", fields[0].substring(1));
-    //            }
-    ////            if (fields.length >= 2) {
-    ////                metadata.put("authors", fields[0].substring(1));
-    ////            }
-    ////            if (fields.length >= 3) {
-    ////                metadata.put("date", fields[0].substring(1));
-    ////            }
-    //        }
-    //
-    //        // insert header
-    //        if (metadata.containsKey("title")) {
-    //            boolean levelOneFound = false;
-    //            for (final Node c : node.getChildren()) {
-    //                if (c instanceof Heading) {
-    //                    final Heading h = (Heading) c;
-    //                    if (h.getLevel() == 1) {
-    //                        levelOneFound = true;
-    //                        break;
-    //                    }
-    //                }
-    //            }
-    //            final Node m;
-    //            if (levelOneFound) {
-    //                m = new MetadataNode(metadata.get("title"));
-    //            } else {
-    ////                m = new Heading(1, new Text(metadata.get("title")));
-    //                m = new Heading(BasedSequenceImpl.of(metadata.get("title")));
-    //            }
-    //            m.insertBefore(node.getFirstChild());
-    ////            node.getChildren().set(0, m);
-    //        }
-  }
-
   // Visitor methods
-  //
-  //    private static void toString(final Node node, final StringBuilder buf) {
-  //        if (node instanceof SuperNode) {
-  //            for (final Node n : node.getChildren()) {
-  //                toString(n, buf);
-  //            }
-  //        } else if (node instanceof Text) {
-  //            buf.append(((Text) node).getChars());
-  //            for (final Node n : node.getChildren()) {
-  //                toString(n, buf);
-  //            }
-  //        } else if (node instanceof SimpleNode) {
-  //            buf.append(toString((SimpleNode) node));
-  //        } else {
-  //            throw new ParseException("Trying to process " + node);
-  //        }
-  //    }
-
-  //    private static String toString(final Node node) {
-  //        final StringBuilder buf = new StringBuilder();
-  //        toString(node, buf);
-  //        return buf.toString();
-  //    }
 
   private void render(final Document node, final NodeRendererContext context, final SaxWriter html) {
-    //        for (final ReferenceNode refNode : node.getReferences()) {
-    //            references.put(normalize(toString(refNode)), refNode);
-    //        }
-    //        for (final AbbreviationNode abbrNode : node.getAbbreviations()) {
-    //            visitChildren(abbrNode);
-    //            String abbr = printer.getString();
-    //            printer.clear();
-    //            abbrNode.getExpansion().accept(this);
-    //            String expansion = printer.getString();
-    //            abbreviations.put(abbr, expansion);
-    //            printer.clear();
-    //        }
     final boolean isCompound = hasMultipleTopLevelHeaders(node);
     if (isCompound) {
       final AttributesBuilder atts = new AttributesBuilder()
@@ -744,16 +639,6 @@ public class CoreNodeRenderer {
     }
   }
 
-  //    @Override
-  //    private void render(final ExpLinkNode node, final NodeRendererContext context, final DitaWriter html) {
-  //        final AttributesBuilder atts = getLinkAttributes(node.url);
-  //        //atts.add("title", node.title);
-  //
-  //        html.startElement(TOPIC_XREF, atts.build());
-  //        context.renderChildren(node);
-  //        html.endElement();
-  //    }
-
   private static <E> E containsSome(final Collection<E> col, final Collection<E> find) {
     for (final E c : col) {
       if (find.contains(c)) {
@@ -927,21 +812,9 @@ public class CoreNodeRenderer {
     return getSectionId(node, header);
   }
 
-  private void outputMetadata(Map<String, Object> documentMetadata, SaxWriter html) {
-    html.startElement(null, TOPIC_PROLOG, PROLOG_ATTS);
-    //        metadataSerializer.write(documentMetadata);
-    html.endElement();
-  }
-
   private void render(final YamlFrontMatterBlock node, final NodeRendererContext context, final SaxWriter html) {
-    //        final String text = node.getChars().toString();
-    //        html.characters(text);
     // YAML header is pulled by Heading renderer
   }
-
-  //    private String getId(final Heading node) {
-  //        return getId(toString(node));
-  //    }
 
   private static String getId(final String contents) {
     return contents.toLowerCase().replaceAll("[^\\w]", "").trim().replaceAll("\\s+", "_");
@@ -1174,9 +1047,6 @@ public class CoreNodeRenderer {
         atts.add("placement", "break");
       }
       html.startElement(node, TOPIC_IMAGE, getInlineAttributes(node, atts.build()));
-      //            if (node.getReference() != null) {
-      //                context.renderChildren(node);
-      //            }
       html.endElement();
     } else {
       final AttributesBuilder atts = new AttributesBuilder(getInlineAttributes(node, IMAGE_ATTS))
@@ -1235,74 +1105,6 @@ public class CoreNodeRenderer {
     //        }
   }
 
-  //    @Override
-  //    private void render(final SimpleNode node, final NodeRendererContext context, final DitaWriter html) {
-  //        switch (node.getType()) {
-  //            case Apostrophe:
-  //                html.characters('\u2019');//"&rsquo;"
-  //                break;
-  //            case Ellipsis:
-  //                html.characters('\u2026');//"&hellip;"
-  //                break;
-  //            case Emdash:
-  //                html.characters('\u2014');//"&mdash;"
-  //                break;
-  //            case Endash:
-  //                html.characters('\u2013');//"&ndash;"
-  //                break;
-  //            case HRule:
-  ////                html.startElement(TOPIC_PH, new AttributesBuilder().add(ATTRIBUTE_NAME_CLASS, "+ html-d/hr ").build());
-  ////                html.endElement();
-  //                html.characters('\n');
-  //                break;
-  //            case Linebreak:
-  ////                html.startElement(TOPIC_PH, new AttributesBuilder().add(ATTRIBUTE_NAME_CLASS, "+ html-d/br ").build());
-  ////                html.endElement();
-  //                html.characters('\n');
-  //                break;
-  //            case Nbsp:
-  //                html.characters("\u00A0");//&nbsp;
-  //                break;
-  //            default:
-  //                throw new ParseException("Unsupported simple node: " + node.getType());
-  //        }
-  //    }
-
-  //    private static String toString(final SimpleNode node) {
-  //        switch (node.getType()) {
-  //            case Apostrophe:
-  //                return "\u2019";//"&rsquo;"
-  //            case Ellipsis:
-  //                return "\u2026";//"&hellip;"
-  //            case Emdash:
-  //                return "\u2014'";//"&mdash;"
-  //            case Endash:
-  //                return "\u2013";//"&ndash;"
-  //            case Linebreak:
-  //            case HRule:
-  //                return "\n";
-  //            case Nbsp:
-  //                return "\u00A0";//&nbsp;
-  //            default:
-  //                throw new ParseException("Unsupported simple node: " + node.getType());
-  //        }
-  //    }
-
-  //    @Override
-  //    private void render(final StrongEmphSuperNode node, final NodeRendererContext context, final DitaWriter html) {
-  //        if (node.isClosed()) {
-  //            if (node.isStrong()) {
-  //                printTag(node, HI_D_B, B_ATTS);
-  //            } else {
-  //                printTag(node, HI_D_I, I_ATTS);
-  //            }
-  //        } else {
-  //            //sequence was not closed, treat open chars as ordinary chars
-  //            html.characters(node.getChars());
-  //            context.renderChildren(node);
-  //        }
-  //    }
-
   private void render(final Strikethrough node, final NodeRendererContext context, final SaxWriter html) {
     if (mditaExtendedProfile) {
       printTag(node, context, html, TOPIC_PH, PH_ATTS);
@@ -1327,15 +1129,9 @@ public class CoreNodeRenderer {
 
   private void render(final TableCaption node, final NodeRendererContext context, final SaxWriter html) {
     // Pull processed by TableBlock
-    //        html.startElement(TOPIC_TITLE, TITLE_ATTS);
-    //        context.renderChildren(node);
-    //        html.endElement();
   }
 
   private void render(final TableCell node, final NodeRendererContext context, final SaxWriter html) {
-    //        final List<TableColumnNode> columns = currentTableNode.getColumns();
-    //        final TableColumnNode column = columns.get(Math.min(currentTableColumn, columns.size() - 1));
-    //
     final AttributesBuilder atts = new AttributesBuilder(ENTRY_ATTS);
     //        column.accept(this);
     if (node.getAlignment() != null) {
@@ -1351,27 +1147,6 @@ public class CoreNodeRenderer {
 
     currentTableColumn += node.getSpan();
   }
-
-  private String tableColumnAlignment = null;
-
-  //    @Override
-  //    private void render(final TableColumnNode node, final NodeRendererContext context, final DitaWriter html) {
-  //        switch (node.getAlignment()) {
-  //            case None:
-  //                break;
-  //            case Left:
-  //                tableColumnAlignment = "left";
-  //                break;
-  //            case Right:
-  //                tableColumnAlignment = "right";
-  //                break;
-  //            case Center:
-  //                tableColumnAlignment = "center";
-  //                break;
-  //            default:
-  //                throw new ParseException("Unsupported table column alignment: " + node.getAlignment());
-  //        }
-  //    }
 
   private void render(final TableHead node, final NodeRendererContext context, final SaxWriter html) {
     printTag(node, context, html, TOPIC_THEAD, THEAD_ATTS);
@@ -1405,41 +1180,10 @@ public class CoreNodeRenderer {
     for (int i = 0; i < maxCols; i++) {
       final AttributesBuilder catts = new AttributesBuilder(COLSPEC_ATTS)
         .add(ATTRIBUTE_NAME_COLNAME, COLUMN_NAME_COL + (i + 1));
-      //            switch (col.getAlignment()) {
-      //                case Center:
-      //                    catts.add(ATTRIBUTE_NAME_ALIGN, "center");
-      //                    break;
-      //                case Right:
-      //                    catts.add(ATTRIBUTE_NAME_ALIGN, "right");
-      //                    break;
-      //                case Left:
-      //                    catts.add(ATTRIBUTE_NAME_ALIGN, "left");
-      //                    break;
-      //            }
       html.startElement(node, TOPIC_COLSPEC, catts.build());
       html.endElement(); // colspec
     }
 
-    //            final AttributesBuilder catts = new AttributesBuilder(COLSPEC_ATTS)
-    //                    .add(ATTRIBUTE_NAME_COLNAME, COLUMN_NAME_COL + counter);
-    //            switch (col.getAlignment()) {
-    //                case Center:
-    //                    catts.add(ATTRIBUTE_NAME_ALIGN, "center");
-    //                    break;
-    //                case Right:
-    //                    catts.add(ATTRIBUTE_NAME_ALIGN, "right");
-    //                    break;
-    //                case Left:
-    //                    catts.add(ATTRIBUTE_NAME_ALIGN, "left");
-    //                    break;
-    //            }
-    //            html.startElement(TOPIC_COLSPEC, catts.build());
-    //            html.endElement(); // colspec
-    //        for (final Node child : node.getChildren()) {
-    //            if (!(child instanceof TableCaptionNode)) {
-    //                context.renderChildren(child);
-    //            }
-    //        }
     context.renderChildren(node);
     html.endElement(); // tgroup
     html.endElement(); // table
@@ -1497,50 +1241,7 @@ public class CoreNodeRenderer {
         //                render((TableCaption) child, context, html);
       }
     }
-    //        final int maxCols = findMaxCols(node);
-    //        final Attributes atts = new AttributesBuilder(TGROUP_ATTS)
-    //                .add(ATTRIBUTE_NAME_COLS, Integer.toString(maxCols))
-    //                .build();
-    //        html.startElement(TOPIC_TGROUP, atts);
 
-    //        for (int i = 0; i < maxCols; i++) {
-    //            final AttributesBuilder catts = new AttributesBuilder(COLSPEC_ATTS)
-    //                    .add(ATTRIBUTE_NAME_COLNAME, COLUMN_NAME_COL + (i + 1));
-    ////            switch (col.getAlignment()) {
-    ////                case Center:
-    ////                    catts.add(ATTRIBUTE_NAME_ALIGN, "center");
-    ////                    break;
-    ////                case Right:
-    ////                    catts.add(ATTRIBUTE_NAME_ALIGN, "right");
-    ////                    break;
-    ////                case Left:
-    ////                    catts.add(ATTRIBUTE_NAME_ALIGN, "left");
-    ////                    break;
-    ////            }
-    //            html.startElement(TOPIC_COLSPEC, catts.build());
-    //            html.endElement(); // colspec
-    //        }
-
-    //            final AttributesBuilder catts = new AttributesBuilder(COLSPEC_ATTS)
-    //                    .add(ATTRIBUTE_NAME_COLNAME, COLUMN_NAME_COL + counter);
-    //            switch (col.getAlignment()) {
-    //                case Center:
-    //                    catts.add(ATTRIBUTE_NAME_ALIGN, "center");
-    //                    break;
-    //                case Right:
-    //                    catts.add(ATTRIBUTE_NAME_ALIGN, "right");
-    //                    break;
-    //                case Left:
-    //                    catts.add(ATTRIBUTE_NAME_ALIGN, "left");
-    //                    break;
-    //            }
-    //            html.startElement(TOPIC_COLSPEC, catts.build());
-    //            html.endElement(); // colspec
-    //        for (final Node child : node.getChildren()) {
-    //            if (!(child instanceof TableCaptionNode)) {
-    //                context.renderChildren(child);
-    //            }
-    //        }
     context.renderChildren(node);
     //        html.endElement(); // tgroup
     html.endElement(); // table
@@ -1553,29 +1254,7 @@ public class CoreNodeRenderer {
     final SaxWriter html
   ) {
     // Pull processed by TableBlock
-    //        html.startElement(TOPIC_TITLE, TITLE_ATTS);
-    //        context.renderChildren(node);
-    //        html.endElement();
   }
-
-  //    @Override
-  //    private void render(final TableColumnNode node, final NodeRendererContext context, final DitaWriter html) {
-  //        switch (node.getAlignment()) {
-  //            case None:
-  //                break;
-  //            case Left:
-  //                tableColumnAlignment = "left";
-  //                break;
-  //            case Right:
-  //                tableColumnAlignment = "right";
-  //                break;
-  //            case Center:
-  //                tableColumnAlignment = "center";
-  //                break;
-  //            default:
-  //                throw new ParseException("Unsupported table column alignment: " + node.getAlignment());
-  //        }
-  //    }
 
   private void renderSimpleTableHead(final TableHead node, final NodeRendererContext context, final SaxWriter html) {
     //        printTag(node, context, html, TOPIC_STHEAD, STHEAD_ATTS);
@@ -1602,17 +1281,8 @@ public class CoreNodeRenderer {
   }
 
   private void renderSimpleTableCell(final TableCell node, final NodeRendererContext context, final SaxWriter html) {
-    //        final List<TableColumnNode> columns = currentTableNode.getColumns();
-    //        final TableColumnNode column = columns.get(Math.min(currentTableColumn, columns.size() - 1));
-    //
     final AttributesBuilder atts = new AttributesBuilder(STENTRY_ATTS);
-    //        column.accept(this);
-    //        if (node.getAlignment() != null) {
-    //            atts.add(ATTRIBUTE_NAME_ALIGN, node.getAlignment().cellAlignment().name().toLowerCase());
-    //        }
     if (node.getSpan() > 1) {
-      //            atts.add(ATTRIBUTE_NAME_NAMEST, COLUMN_NAME_COL + Integer.toString(currentTableColumn + 1));
-      //            atts.add(ATTRIBUTE_NAME_NAMEEND, COLUMN_NAME_COL + Integer.toString(currentTableColumn + node.getSpan()));
       atts.add(ATTRIBUTE_NAME_COLSPAN, Integer.toString(node.getSpan()));
     }
     html.startElement(node, TOPIC_STENTRY, atts.build());
@@ -1637,21 +1307,6 @@ public class CoreNodeRenderer {
   private void render(final CodeBlock node, final NodeRendererContext context, final SaxWriter html) {
     final AttributesBuilder atts = new AttributesBuilder(mditaExtendedProfile ? PRE_ATTS : CODEBLOCK_ATTS)
       .add(XML_NS_URI, "space", "xml:space", "CDATA", "preserve");
-    //        if (node.getType() != null && !node.getType().isEmpty()) {
-    //            final String type = node.getType().trim();
-    //            final Metadata metadata;
-    //            if (type.startsWith("{")) {
-    //                metadata = Metadata.parse(type.substring(1, type.length() - 1));
-    //            } else {
-    //                metadata = new Metadata(null, Collections.singletonList(type));
-    //            }
-    //            if (metadata.id != null) {
-    //                atts.add(ATTRIBUTE_NAME_ID, metadata.id);
-    //            }
-    //            if (!metadata.classes.isEmpty()) {
-    //                atts.add("outputclass", String.join(" ", metadata.classes));
-    //            }
-    //        }
     html.startElement(node, mditaExtendedProfile ? TOPIC_PRE : PR_D_CODEBLOCK, atts.build());
     String text = node.getChars().toString();
     if (text.endsWith("\n")) {
@@ -1664,21 +1319,6 @@ public class CoreNodeRenderer {
   private void render(final IndentedCodeBlock node, final NodeRendererContext context, final SaxWriter html) {
     final AttributesBuilder atts = new AttributesBuilder(mditaExtendedProfile ? PRE_ATTS : CODEBLOCK_ATTS)
       .add(XML_NS_URI, "space", "xml:space", "CDATA", "preserve");
-    //        if (node.getType() != null && !node.getType().isEmpty()) {
-    //            final String type = node.getType().trim();
-    //            final Metadata metadata;
-    //            if (type.startsWith("{")) {
-    //                metadata = Metadata.parse(type.substring(1, type.length() - 1));
-    //            } else {
-    //                metadata = new Metadata(null, Collections.singletonList(type));
-    //            }
-    //            if (metadata.id != null) {
-    //                atts.add(ATTRIBUTE_NAME_ID, metadata.id);
-    //            }
-    //            if (!metadata.classes.isEmpty()) {
-    //                atts.add("outputclass", String.join(" ", metadata.classes));
-    //            }
-    //        }
     html.startElement(node, mditaExtendedProfile ? TOPIC_PRE : PR_D_CODEBLOCK, atts.build());
     // FIXME: For compatibility with HTML pre/code, should be removed
     if (mditaExtendedProfile) {
@@ -1698,21 +1338,6 @@ public class CoreNodeRenderer {
   private void render(final FencedCodeBlock node, final NodeRendererContext context, final SaxWriter html) {
     final AttributesBuilder atts = new AttributesBuilder(mditaExtendedProfile ? PRE_ATTS : CODEBLOCK_ATTS)
       .add(XML_NS_URI, "space", "xml:space", "CDATA", "preserve");
-    //        if (node.getType() != null && !node.getType().isEmpty()) {
-    //            final String type = node.getType().trim();
-    //            final Metadata metadata;
-    //            if (type.startsWith("{")) {
-    //                metadata = Metadata.parse(type.substring(1, type.length() - 1));
-    //            } else {
-    //                metadata = new Metadata(null, Collections.singletonList(type));
-    //            }
-    //            if (metadata.id != null) {
-    //                atts.add(ATTRIBUTE_NAME_ID, metadata.id);
-    //            }
-    //            if (!metadata.classes.isEmpty()) {
-    //                atts.add("outputclass", String.join(" ", metadata.classes));
-    //            }
-    //        }
 
     BasedSequence info = node.getInfo();
     if (info.startsWith("{") && info.endsWith("}")) {
@@ -1755,22 +1380,6 @@ public class CoreNodeRenderer {
     html.endElement();
   }
 
-  //    @Override
-  //    private void render(final WikiLinkNode node, final NodeRendererContext context, final DitaWriter html) {
-  //        String url;
-  //        try {
-  //            url = "./" + URLEncoder.encode(node.getChars().toString().replace(' ', '-'), "UTF-8") + ".html";
-  //        } catch (final UnsupportedEncodingException e) {
-  //            throw new IllegalArgumentException(e);
-  //        }
-  //        final AttributesBuilder atts = getLinkAttributes(url);
-  //
-  //        html.startElement(TOPIC_XREF, atts.build());
-  //        //html.characters(rendering.text);
-  //        context.renderChildren(node);
-  //        html.endElement();
-  //    }
-
   private void render(final Text node, final NodeRendererContext context, final SaxWriter html) {
     if (abbreviations.isEmpty()) {
       if (node.getParent() instanceof Code) {
@@ -1782,11 +1391,6 @@ public class CoreNodeRenderer {
       printWithAbbreviations(node.getChars().toString(), html);
     }
   }
-
-  //    @Override
-  //    private void render(final SpecialText node, final NodeRendererContext context, final DitaWriter html) {
-  //        html.characters(node.getChars().toString());
-  //    }
 
   private void render(final ContentNode node, final NodeRendererContext context, final SaxWriter html) {
     context.renderChildren(node);
@@ -1820,41 +1424,13 @@ public class CoreNodeRenderer {
     throw new RuntimeException(
       "No renderer configured for " + node.getNodeName() + " = " + node.getClass().getCanonicalName()
     );
-    //        if (node instanceof MetadataNode) {
-    //            final MetadataNode n = (MetadataNode) node;
-    //            final String id = getId(n.title);
-    //            html.startElement(TOPIC_TOPIC, new AttributesBuilder(TOPIC_ATTS).add(ATTRIBUTE_NAME_ID, id).build());
-    //            html.startElement(TOPIC_TITLE, TITLE_ATTS);
-    //            html.characters(n.title);
-    //            html.endElement();
-    //        } else {
-    //            context.renderChildren(node);
-    //        }
-    //        for (final ToDitaSerializerPlugin plugin : plugins) {
-    //            if (plugin.visit(node, this, printer)) {
-    //                return;
-    //            }
-    //        }
   }
 
   // helpers
 
   private boolean hasChildren(final Node node) {
     return node.hasChildren();
-    //        if (node instanceof SuperNode) {
-    //            return !node.hasChildren();
-    //        } else if (node instanceof Text) {
-    //            return !((Text) node).hasChildren();
-    //        } else {
-    //            throw new UnsupportedOperationException();
-    //        }
   }
-
-  //    private void visitChildren(final Node node) {
-  //        for (final Node child : node.getChildren()) {
-  //            child.accept(this);
-  //        }
-  //    }
 
   private void printTag(
     Text node,

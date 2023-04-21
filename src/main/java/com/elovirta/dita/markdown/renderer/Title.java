@@ -119,14 +119,4 @@ class Title {
     }
     return res;
   }
-  //    private void getText(Node parent, StringBuilder buf) {
-  //        final List<AttributesNode> res = new ArrayList<>();
-  //        for (Node child : parent.getChildren()) {
-  //            if (child instanceof Text) {
-  //                buf.append(child.getChars());
-  //            } else {
-  //                getText(child, buf);
-  //            }
-  //        }
-  //    }
 }

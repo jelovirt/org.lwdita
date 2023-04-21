@@ -73,9 +73,6 @@ import org.xml.sax.SAXException;
  */
 public class MapRenderer {
 
-  //    private static final String COLUMN_NAME_COL = "col";
-  //    private static final String ATTRIBUTE_NAME_COLSPAN = "colspan";
-
   private static final Attributes MAP_ATTS = new AttributesBuilder()
     .add(ATTRIBUTE_NAME_CLASS, MAP_MAP.toString())
     .add(
@@ -87,10 +84,6 @@ public class MapRenderer {
     )
     //            .add(ATTRIBUTE_NAME_DOMAINS, "(topic hi-d) (topic ut-d) (topic indexing-d) (topic hazard-d) (topic abbrev-d) (topic pr-d) (topic sw-d) (topic ui-d)")
     .build();
-  //    private static final Attributes BODY_ATTS = buildAtts(TOPIC_BODY);
-  //    private static final Attributes SECTION_ATTS = buildAtts(TOPIC_SECTION);
-  //    private static final Attributes EXAMPLE_ATTS = buildAtts(TOPIC_EXAMPLE);
-  //    private static final Attributes NOTE_ATTS = buildAtts(TOPIC_NOTE);
   private static final Attributes FN_ATTS = buildAtts(TOPIC_FN);
   private static final Attributes TOPICREF_ATTS = buildAtts(MAP_TOPICREF);
   private static final Attributes P_ATTS = buildAtts(TOPIC_P);
@@ -117,12 +110,6 @@ public class MapRenderer {
   private static final Attributes DL_ATTS = buildAtts(TOPIC_DL);
   private static final Attributes DLENTRY_ATTS = buildAtts(TOPIC_DLENTRY);
   private static final Attributes OL_ATTS = buildAtts(TOPIC_OL);
-  //    private static final Attributes TABLE_ATTS = buildAtts(TOPIC_TABLE);
-  //    private static final Attributes TGROUP_ATTS = buildAtts(TOPIC_TGROUP);
-  //    private static final Attributes COLSPEC_ATTS = buildAtts(TOPIC_COLSPEC);
-  //    private static final Attributes TBODY_ATTS = buildAtts(TOPIC_TBODY);
-  //    private static final Attributes THEAD_ATTS = buildAtts(TOPIC_THEAD);
-  //    private static final Attributes TR_ATTS = buildAtts(TOPIC_ROW);
 
   private static final Attributes RELTABLE_ATTS = new AttributesBuilder()
     .add(ATTRIBUTE_NAME_CLASS, MAP_RELTABLE.toString())
@@ -228,21 +215,6 @@ public class MapRenderer {
       )
     );
 
-    //                res.add(new NodeRenderingHandler<>(AttributesNode.class, (node, context, html) -> { /* Ignore */ }));
-    //                res.add(new NodeRenderingHandler<>(DefinitionList.class, (node, context, html) -> render(node, context, html)));
-    //                res.add(new NodeRenderingHandler<>(DefinitionTerm.class, (node, context, html) -> render(node, context, html)));
-    //                res.add(new NodeRenderingHandler<>(DefinitionItem.class, (node, context, html) -> render(node, context, html)));
-    //                res.add(new NodeRenderingHandler<>(Footnote.class, (node, context, html) -> render(node, context, html)));
-    //                res.add(new NodeRenderingHandler<>(FootnoteBlock.class, (node, context, html) -> render(node, context, html)));
-    //                res.add(new NodeRenderingHandler<>(Superscript.class, (node, context, html) -> render(node, context, html)));
-    //                res.add(new NodeRenderingHandler<>(Subscript.class, (node, context, html) -> render(node, context, html)));
-
-    //                res.add(new NodeRenderingHandler<>(Abbreviation.class, (node, context, html) -> render(node, context, html)));
-    //                res.add(new NodeRenderingHandler<>(AbbreviationBlock.class, (node, context, html) -> render(node, context, html)));
-    //                res.add(new NodeRenderingHandler<>(AdmonitionBlock.class, (node, context, html) -> render(node, context, html)));
-    //                res.add(new NodeRenderingHandler<>(Strikethrough.class, (node, context, html) -> render(node, context, html)));
-
-    //            res.add(new NodeRenderingHandler<>(AutoLink.class, (node, context, html) -> render(node, context, html)));
     res.add(
       new NodeRenderingHandler<>(YamlFrontMatterBlock.class, (node, context, html) -> render(node, context, html))
     );
@@ -252,16 +224,7 @@ public class MapRenderer {
     //            res.add(new NodeRenderingHandler<>(CodeBlock.class, (node, context, html) -> render(node, context, html)));
     res.add(new NodeRenderingHandler<>(Document.class, (node, context, html) -> render(node, context, html)));
     res.add(new NodeRenderingHandler<>(Emphasis.class, (node, context, html) -> render(node, context, html)));
-    //            res.add(new NodeRenderingHandler<>(FencedCodeBlock.class, (node, context, html) -> render(node, context, html)));
-    //            res.add(new NodeRenderingHandler<>(HardLineBreak.class, (node, context, html) -> render(node, context, html)));
     res.add(new NodeRenderingHandler<>(Heading.class, (node, context, html) -> render(node, context, html)));
-    //            res.add(new NodeRenderingHandler<>(HtmlBlock.class, (node, context, html) -> render(node, context, html)));
-    //            res.add(new NodeRenderingHandler<>(HtmlCommentBlock.class, (node, context, html) -> render(node, context, html)));
-    //            res.add(new NodeRenderingHandler<>(HtmlInnerBlock.class, (node, context, html) -> render(node, context, html)));
-    //            res.add(new NodeRenderingHandler<>(HtmlInnerBlockComment.class, (node, context, html) -> render(node, context, html)));
-    //            res.add(new NodeRenderingHandler<>(HtmlEntity.class, (node, context, html) -> render(node, context, html)));
-    //            res.add(new NodeRenderingHandler<>(HtmlInline.class, (node, context, html) -> render(node, context, html)));
-    //            res.add(new NodeRenderingHandler<>(HtmlInlineComment.class, (node, context, html) -> render(node, context, html)));
     res.add(new NodeRenderingHandler<>(Image.class, (node, context, html) -> render(node, context, html)));
     res.add(new NodeRenderingHandler<>(ImageRef.class, (node, context, html) -> render(node, context, html)));
     //            res.add(new NodeRenderingHandler<>(IndentedCodeBlock.class, (node, context, html) -> render(node, context, html)));
@@ -279,8 +242,6 @@ public class MapRenderer {
     res.add(new NodeRenderingHandler<>(TextBase.class, (node, context, html) -> render(node, context, html)));
     //            res.add(new NodeRenderingHandler<>(ThematicBreak.class, (node, context, html) -> render(node, context, html)));
     res.add(new NodeRenderingHandler<>(AnchorLink.class, (node, context, html) -> render(node, context, html)));
-    //            res.add(new NodeRenderingHandler<>(JekyllTagBlock.class, (node, context, html) -> render(node, context, html)));
-    //            res.add(new NodeRenderingHandler<>(JekyllTag.class, (node, context, html) -> render(node, context, html)));
     return res.stream().collect(Collectors.toMap(handler -> handler.getNodeType(), handler -> handler));
   }
 
@@ -293,18 +254,6 @@ public class MapRenderer {
   }
 
   private void render(final Document node, final NodeRendererContext context, final SaxWriter html) {
-    //        for (final ReferenceNode refNode : node.getReferences()) {
-    //            references.put(normalize(toString(refNode)), refNode);
-    //        }
-    //        for (final AbbreviationNode abbrNode : node.getAbbreviations()) {
-    //            visitChildren(abbrNode);
-    //            String abbr = printer.getString();
-    //            printer.clear();
-    //            abbrNode.getExpansion().accept(this);
-    //            String expansion = printer.getString();
-    //            abbreviations.put(abbr, expansion);
-    //            printer.clear();
-    //        }
     final boolean isCompound = hasMultipleTopLevelHeaders(node);
     if (isCompound) {
       throw new ParseException(String.format("Map file cannot have multiple top level headers"));
@@ -366,38 +315,6 @@ public class MapRenderer {
   private void render(final AbbreviationBlock node, final NodeRendererContext context, final SaxWriter html) {
     // Ignore
   }
-
-  //    private void render(final AdmonitionBlock node, final NodeRendererContext context, final SaxWriter html) {
-  //        final String type = node.getInfo().toString();
-  //        final AttributesBuilder atts = new AttributesBuilder(NOTE_ATTS);
-  //        switch (type) {
-  //            case "note":
-  //            case "tip":
-  //            case "fastpath":
-  //            case "restriction":
-  //            case "important":
-  //            case "remember":
-  //            case "attention":
-  //            case "caution":
-  //            case "notice":
-  //            case "danger":
-  //            case "warning":
-  //            case "trouble":
-  //                atts.add("type", type);
-  //                break;
-  //            default:
-  //                atts.add("type", "other").add("othertype", type);
-  //                break;
-  //        }
-  //        html.startElement(node, TOPIC_NOTE, atts.build());
-  //        if (!node.getTitle().isEmpty()) {
-  //            html.startElement(node, TOPIC_P, P_ATTS);
-  //            html.characters(node.getTitle().toString());
-  //            html.endElement();
-  //        }
-  //        context.renderChildren(node);
-  //        html.endElement();
-  //    }
 
   private void render(AnchorLink node, final NodeRendererContext context, final SaxWriter html) {
     context.renderChildren(node);
@@ -647,16 +564,6 @@ public class MapRenderer {
     }
   }
 
-  //    @Override
-  //    private void render(final ExpLinkNode node, final NodeRendererContext context, final DitaWriter html) {
-  //        final AttributesBuilder atts = getLinkAttributes(node.url);
-  //        //atts.add("title", node.title);
-  //
-  //        html.startElement(TOPIC_XREF, atts.build());
-  //        context.renderChildren(node);
-  //        html.endElement();
-  //    }
-
   private static <E> E containsSome(final Collection<E> col, final Collection<E> find) {
     for (final E c : col) {
       if (find.contains(c)) {
@@ -691,11 +598,6 @@ public class MapRenderer {
     html.startElement(node, TOPIC_TITLE, TITLE_ATTS);
     context.renderChildren(node);
     html.endElement(); // title
-    //    if (shortdescParagraph && node.getNext() instanceof Paragraph) {
-    //      html.startElement(node.getNext(), TOPIC_SHORTDESC, SHORTDESC_ATTS);
-    //      context.renderChildren(node.getNext());
-    //      html.endElement(); // shortdesc
-    //    }
     if (node.getLevel() == 1) {
       final Node firstChild = node.getDocument().getFirstChild();
       if (firstChild instanceof YamlFrontMatterBlock) {
@@ -747,10 +649,6 @@ public class MapRenderer {
     //        html.characters(text);
     // YAML header is pulled by Heading renderer
   }
-
-  //    private String getId(final Heading node) {
-  //        return getId(toString(node));
-  //    }
 
   private static String getId(final String contents) {
     return contents.toLowerCase().replaceAll("[^\\w]", "").trim().replaceAll("\\s+", "_");
@@ -948,29 +846,6 @@ public class MapRenderer {
     return firstChild instanceof AttributesNode && firstChild.getNext() == null;
   }
 
-  //    private void render(final Paragraph node, final NodeRendererContext context, final SaxWriter html) {
-  //        context.renderChildren(node);
-  ////        if (isAttributesParagraph(node)) {
-  ////            // Attributes for previous block
-  ////        } else if (shortdescParagraph && !inSection && node.getPrevious() instanceof Heading) {
-  ////            // Pulled by Heading
-  ////        } else if (containsImage(node)) {
-  ////            onlyImageChild = true;
-  ////            context.renderChildren(node);
-  ////            onlyImageChild = false;
-  ////        } else {
-  ////            final Attributes atts;
-  ////            if (!mditaExtendedProfile) {
-  ////                final Title header = Title.getFromChildren(node);
-  ////                final AttributesBuilder builder = new AttributesBuilder(P_ATTS);
-  ////                atts = readAttributes(header, builder).build();
-  ////            } else {
-  ////                atts = P_ATTS;
-  ////            }
-  ////            printTag(node, context, html, TOPIC_P, atts);
-  ////        }
-  //    }
-
   private AttributesBuilder readAttributes(Title header, AttributesBuilder builder) {
     if (!header.classes.isEmpty()) {
       builder.add(ATTRIBUTE_NAME_OUTPUTCLASS, String.join(" ", header.classes));
@@ -1035,9 +910,6 @@ public class MapRenderer {
         atts.add("placement", "break");
       }
       html.startElement(node, TOPIC_IMAGE, getInlineAttributes(node, atts.build()));
-      //            if (node.getReference() != null) {
-      //                context.renderChildren(node);
-      //            }
       html.endElement();
     } else {
       final AttributesBuilder atts = new AttributesBuilder(getInlineAttributes(node, IMAGE_ATTS))
@@ -1095,74 +967,6 @@ public class MapRenderer {
     html.endElement();
     //        }
   }
-
-  //    @Override
-  //    private void render(final SimpleNode node, final NodeRendererContext context, final DitaWriter html) {
-  //        switch (node.getType()) {
-  //            case Apostrophe:
-  //                html.characters('\u2019');//"&rsquo;"
-  //                break;
-  //            case Ellipsis:
-  //                html.characters('\u2026');//"&hellip;"
-  //                break;
-  //            case Emdash:
-  //                html.characters('\u2014');//"&mdash;"
-  //                break;
-  //            case Endash:
-  //                html.characters('\u2013');//"&ndash;"
-  //                break;
-  //            case HRule:
-  ////                html.startElement(TOPIC_PH, new AttributesBuilder().add(ATTRIBUTE_NAME_CLASS, "+ html-d/hr ").build());
-  ////                html.endElement();
-  //                html.characters('\n');
-  //                break;
-  //            case Linebreak:
-  ////                html.startElement(TOPIC_PH, new AttributesBuilder().add(ATTRIBUTE_NAME_CLASS, "+ html-d/br ").build());
-  ////                html.endElement();
-  //                html.characters('\n');
-  //                break;
-  //            case Nbsp:
-  //                html.characters("\u00A0");//&nbsp;
-  //                break;
-  //            default:
-  //                throw new ParseException("Unsupported simple node: " + node.getType());
-  //        }
-  //    }
-
-  //    private static String toString(final SimpleNode node) {
-  //        switch (node.getType()) {
-  //            case Apostrophe:
-  //                return "\u2019";//"&rsquo;"
-  //            case Ellipsis:
-  //                return "\u2026";//"&hellip;"
-  //            case Emdash:
-  //                return "\u2014'";//"&mdash;"
-  //            case Endash:
-  //                return "\u2013";//"&ndash;"
-  //            case Linebreak:
-  //            case HRule:
-  //                return "\n";
-  //            case Nbsp:
-  //                return "\u00A0";//&nbsp;
-  //            default:
-  //                throw new ParseException("Unsupported simple node: " + node.getType());
-  //        }
-  //    }
-
-  //    @Override
-  //    private void render(final StrongEmphSuperNode node, final NodeRendererContext context, final DitaWriter html) {
-  //        if (node.isClosed()) {
-  //            if (node.isStrong()) {
-  //                printTag(node, HI_D_B, B_ATTS);
-  //            } else {
-  //                printTag(node, HI_D_I, I_ATTS);
-  //            }
-  //        } else {
-  //            //sequence was not closed, treat open chars as ordinary chars
-  //            html.characters(node.getChars());
-  //            context.renderChildren(node);
-  //        }
-  //    }
 
   private void render(final Strikethrough node, final NodeRendererContext context, final SaxWriter html) {
     if (mditaExtendedProfile) {
@@ -1356,89 +1160,12 @@ public class MapRenderer {
       tableAtts = RELTABLE_ATTS;
     }
     html.startElement(node, MAP_RELTABLE, tableAtts);
-    //        for (final Node child : node.getChildren()) {
-    //            if (child instanceof TableCaption) {
-    //                html.startElement(child, TOPIC_TITLE, TITLE_ATTS);
-    //                context.renderChildren((TableCaption) child);
-    //                html.endElement();
-    ////                render((TableCaption) child, context, html);
-    //            }
-    //        }
-    //        final int maxCols = findMaxCols(node);
-    //        final Attributes atts = new AttributesBuilder(TGROUP_ATTS)
-    //                .add(ATTRIBUTE_NAME_COLS, Integer.toString(maxCols))
-    //                .build();
-    //        html.startElement(TOPIC_TGROUP, atts);
 
-    //        for (int i = 0; i < maxCols; i++) {
-    //            final AttributesBuilder catts = new AttributesBuilder(COLSPEC_ATTS)
-    //                    .add(ATTRIBUTE_NAME_COLNAME, COLUMN_NAME_COL + (i + 1));
-    ////            switch (col.getAlignment()) {
-    ////                case Center:
-    ////                    catts.add(ATTRIBUTE_NAME_ALIGN, "center");
-    ////                    break;
-    ////                case Right:
-    ////                    catts.add(ATTRIBUTE_NAME_ALIGN, "right");
-    ////                    break;
-    ////                case Left:
-    ////                    catts.add(ATTRIBUTE_NAME_ALIGN, "left");
-    ////                    break;
-    ////            }
-    //            html.startElement(TOPIC_COLSPEC, catts.build());
-    //            html.endElement(); // colspec
-    //        }
-
-    //            final AttributesBuilder catts = new AttributesBuilder(COLSPEC_ATTS)
-    //                    .add(ATTRIBUTE_NAME_COLNAME, COLUMN_NAME_COL + counter);
-    //            switch (col.getAlignment()) {
-    //                case Center:
-    //                    catts.add(ATTRIBUTE_NAME_ALIGN, "center");
-    //                    break;
-    //                case Right:
-    //                    catts.add(ATTRIBUTE_NAME_ALIGN, "right");
-    //                    break;
-    //                case Left:
-    //                    catts.add(ATTRIBUTE_NAME_ALIGN, "left");
-    //                    break;
-    //            }
-    //            html.startElement(TOPIC_COLSPEC, catts.build());
-    //            html.endElement(); // colspec
-    //        for (final Node child : node.getChildren()) {
-    //            if (!(child instanceof TableCaptionNode)) {
-    //                context.renderChildren(child);
-    //            }
-    //        }
     context.renderChildren(node);
     //        html.endElement(); // tgroup
     html.endElement(); // table
     //        currentTableNode = null;
   }
-
-  //    private void renderSimpleTableCaption(final TableCaption node, final NodeRendererContext context, final SaxWriter html) {
-  //        // Pull processed by TableBlock
-  ////        html.startElement(TOPIC_TITLE, TITLE_ATTS);
-  ////        context.renderChildren(node);
-  ////        html.endElement();
-  //    }
-
-  //    @Override
-  //    private void render(final TableColumnNode node, final NodeRendererContext context, final DitaWriter html) {
-  //        switch (node.getAlignment()) {
-  //            case None:
-  //                break;
-  //            case Left:
-  //                tableColumnAlignment = "left";
-  //                break;
-  //            case Right:
-  //                tableColumnAlignment = "right";
-  //                break;
-  //            case Center:
-  //                tableColumnAlignment = "center";
-  //                break;
-  //            default:
-  //                throw new ParseException("Unsupported table column alignment: " + node.getAlignment());
-  //        }
-  //    }
 
   private void renderSimpleTableHead(final TableHead node, final NodeRendererContext context, final SaxWriter html) {
     //        printTag(node, context, html, TOPIC_STHEAD, STHEAD_ATTS);
@@ -1466,19 +1193,7 @@ public class MapRenderer {
 
   private void renderSimpleTableCell(final TableCell node, final NodeRendererContext context, final SaxWriter html) {
     final boolean isHeader = node.getParent().getParent().isOrDescendantOfType(TableHead.class);
-    //        final List<TableColumnNode> columns = currentTableNode.getColumns();
-    //        final TableColumnNode column = columns.get(Math.min(currentTableColumn, columns.size() - 1));
-    //
     final AttributesBuilder atts = new AttributesBuilder(isHeader ? RELCOLSPEC_ATTS : RELCELL_ATTS);
-    //        column.accept(this);
-    //        if (node.getAlignment() != null) {
-    //            atts.add(ATTRIBUTE_NAME_ALIGN, node.getAlignment().cellAlignment().name().toLowerCase());
-    //        }
-    //        if (node.getSpan() > 1) {
-    ////            atts.add(ATTRIBUTE_NAME_NAMEST, COLUMN_NAME_COL + Integer.toString(currentTableColumn + 1));
-    ////            atts.add(ATTRIBUTE_NAME_NAMEEND, COLUMN_NAME_COL + Integer.toString(currentTableColumn + node.getSpan()));
-    //            atts.add(ATTRIBUTE_NAME_COLSPAN, Integer.toString(node.getSpan()));
-    //        }
     html.startElement(node, isHeader ? MAP_RELCOLSPEC : MAP_RELCELL, atts.build());
     //        if (isInline(node.getFirstChild())) {
     //            html.startElement(node, TOPIC_P, P_ATTS);
@@ -1497,128 +1212,6 @@ public class MapRenderer {
   }
 
   // Code block
-  //
-  //    private void render(final CodeBlock node, final NodeRendererContext context, final SaxWriter html) {
-  //        final AttributesBuilder atts = new AttributesBuilder(mditaExtendedProfile ? PRE_ATTS : CODEBLOCK_ATTS)
-  //                .add(XML_NS_URI, "space", "xml:space", "CDATA", "preserve");
-  ////        if (node.getType() != null && !node.getType().isEmpty()) {
-  ////            final String type = node.getType().trim();
-  ////            final Metadata metadata;
-  ////            if (type.startsWith("{")) {
-  ////                metadata = Metadata.parse(type.substring(1, type.length() - 1));
-  ////            } else {
-  ////                metadata = new Metadata(null, Collections.singletonList(type));
-  ////            }
-  ////            if (metadata.id != null) {
-  ////                atts.add(ATTRIBUTE_NAME_ID, metadata.id);
-  ////            }
-  ////            if (!metadata.classes.isEmpty()) {
-  ////                atts.add("outputclass", String.join(" ", metadata.classes));
-  ////            }
-  ////        }
-  //        html.startElement(node, mditaExtendedProfile ? TOPIC_PRE : PR_D_CODEBLOCK, atts.build());
-  //        String text = node.getChars().toString();
-  //        if (text.endsWith("\n")) {
-  //            text = text.substring(0, text.length() - 1);
-  //        }
-  //        html.characters(text);
-  //        html.endElement();
-  //    }
-  //
-  //    private void render(final IndentedCodeBlock node, final NodeRendererContext context, final SaxWriter html) {
-  //        final AttributesBuilder atts = new AttributesBuilder(mditaExtendedProfile ? PRE_ATTS : CODEBLOCK_ATTS)
-  //                .add(XML_NS_URI, "space", "xml:space", "CDATA", "preserve");
-  ////        if (node.getType() != null && !node.getType().isEmpty()) {
-  ////            final String type = node.getType().trim();
-  ////            final Metadata metadata;
-  ////            if (type.startsWith("{")) {
-  ////                metadata = Metadata.parse(type.substring(1, type.length() - 1));
-  ////            } else {
-  ////                metadata = new Metadata(null, Collections.singletonList(type));
-  ////            }
-  ////            if (metadata.id != null) {
-  ////                atts.add(ATTRIBUTE_NAME_ID, metadata.id);
-  ////            }
-  ////            if (!metadata.classes.isEmpty()) {
-  ////                atts.add("outputclass", String.join(" ", metadata.classes));
-  ////            }
-  ////        }
-  //        html.startElement(node, mditaExtendedProfile ? TOPIC_PRE : PR_D_CODEBLOCK, atts.build());
-  //        // FIXME: For compatibility with HTML pre/code, should be removed
-  //        if (mditaExtendedProfile) {
-  //            html.startElement(node, HI_D_TT, TT_ATTS);
-  //        }
-  //        String text = node.getContentChars().toString();
-  //        if (text.endsWith("\n")) {
-  //            text = text.substring(0, text.length() - 1);
-  //        }
-  //        html.characters(text);
-  //        if (mditaExtendedProfile) {
-  //            html.endElement();
-  //        }
-  //        html.endElement();
-  //    }
-  //
-  //    private void render(final FencedCodeBlock node, final NodeRendererContext context, final SaxWriter html) {
-  //        final AttributesBuilder atts = new AttributesBuilder(mditaExtendedProfile ? PRE_ATTS : CODEBLOCK_ATTS)
-  //                .add(XML_NS_URI, "space", "xml:space", "CDATA", "preserve");
-  ////        if (node.getType() != null && !node.getType().isEmpty()) {
-  ////            final String type = node.getType().trim();
-  ////            final Metadata metadata;
-  ////            if (type.startsWith("{")) {
-  ////                metadata = Metadata.parse(type.substring(1, type.length() - 1));
-  ////            } else {
-  ////                metadata = new Metadata(null, Collections.singletonList(type));
-  ////            }
-  ////            if (metadata.id != null) {
-  ////                atts.add(ATTRIBUTE_NAME_ID, metadata.id);
-  ////            }
-  ////            if (!metadata.classes.isEmpty()) {
-  ////                atts.add("outputclass", String.join(" ", metadata.classes));
-  ////            }
-  ////        }
-  //
-  //
-  //        BasedSequence info = node.getInfo();
-  //        if (info.startsWith("{") && info.endsWith("}")) {
-  //            final Metadata metadata = Metadata.parse(info.subSequence(1, info.length() - 1).toString());
-  //            if (!metadata.classes.isEmpty()) {
-  //                atts.add("outputclass", String.join(" ", metadata.classes));
-  //            }
-  //            if (metadata.id != null) {
-  //                atts.add(ATTRIBUTE_NAME_ID, metadata.id);
-  //            }
-  //        } else if (info.isNotNull() && !info.isBlank()) {
-  //            int space = info.indexOf(' ');
-  //            BasedSequence language;
-  //            if (space == -1) {
-  //                language = info;
-  //            } else {
-  //                language = info.subSequence(0, space);
-  //            }
-  //            atts.add("outputclass", /*context.getDitaOptions().languageClassPrefix +*/ language.unescape());
-  //        } else {
-  //            String noLanguageClass = context.getDitaOptions().noLanguageClass.trim();
-  //            if (!noLanguageClass.isEmpty()) {
-  //                atts.add("outputclass", noLanguageClass);
-  //            }
-  //        }
-  //
-  //        html.startElement(node, mditaExtendedProfile ? TOPIC_PRE : PR_D_CODEBLOCK, atts.build());
-  //        // FIXME: For compatibility with HTML pre/code, should be removed
-  //        if (mditaExtendedProfile) {
-  //            html.startElement(node, HI_D_TT, TT_ATTS);
-  //        }
-  //        String text = node.getContentChars().normalizeEOL();
-  //        if (text.endsWith("\n")) {
-  //            text = text.substring(0, text.length() - 1);
-  //        }
-  //        html.characters(text);
-  //        if (mditaExtendedProfile) {
-  //            html.endElement();
-  //        }
-  //        html.endElement();
-  //    }
 
   private void render(final Text node, final NodeRendererContext context, final SaxWriter html) {
     if (abbreviations.isEmpty()) {
@@ -1631,11 +1224,6 @@ public class MapRenderer {
       printWithAbbreviations(node.getChars().toString(), html);
     }
   }
-
-  //    @Override
-  //    private void render(final SpecialText node, final NodeRendererContext context, final DitaWriter html) {
-  //        html.characters(node.getChars().toString());
-  //    }
 
   private void render(final ContentNode node, final NodeRendererContext context, final SaxWriter html) {
     context.renderChildren(node);
@@ -1669,41 +1257,13 @@ public class MapRenderer {
     throw new RuntimeException(
       "No renderer configured for " + node.getNodeName() + " = " + node.getClass().getCanonicalName()
     );
-    //        if (node instanceof MetadataNode) {
-    //            final MetadataNode n = (MetadataNode) node;
-    //            final String id = getId(n.title);
-    //            html.startElement(TOPIC_TOPIC, new AttributesBuilder(TOPIC_ATTS).add(ATTRIBUTE_NAME_ID, id).build());
-    //            html.startElement(TOPIC_TITLE, TITLE_ATTS);
-    //            html.characters(n.title);
-    //            html.endElement();
-    //        } else {
-    //            context.renderChildren(node);
-    //        }
-    //        for (final ToDitaSerializerPlugin plugin : plugins) {
-    //            if (plugin.visit(node, this, printer)) {
-    //                return;
-    //            }
-    //        }
   }
 
   // helpers
 
   private boolean hasChildren(final Node node) {
     return node.hasChildren();
-    //        if (node instanceof SuperNode) {
-    //            return !node.hasChildren();
-    //        } else if (node instanceof Text) {
-    //            return !((Text) node).hasChildren();
-    //        } else {
-    //            throw new UnsupportedOperationException();
-    //        }
   }
-
-  //    private void visitChildren(final Node node) {
-  //        for (final Node child : node.getChildren()) {
-  //            child.accept(this);
-  //        }
-  //    }
 
   private void printTag(
     Text node,
