@@ -10,7 +10,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.xml.sax.SAXException;
 
-public class MDitaReaderTest extends AbstractReaderTest {
+public class MDitaReaderExtendedTest extends AbstractReaderTest {
 
   private MarkdownReader r = new MDitaReader();
 
@@ -70,10 +70,6 @@ public class MDitaReaderTest extends AbstractReaderTest {
       "ul.md",
       "unsupported_html.md",
       "yaml.md",
-      //            "image-size.md",
-      //            "missing_root_header.md",
-      //            "missing_root_header_with_yaml.md",
-      //            "pandoc_header.md",
     }
   )
   public void test(String file) throws Exception {
