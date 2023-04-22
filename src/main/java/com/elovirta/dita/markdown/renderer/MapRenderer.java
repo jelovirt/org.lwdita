@@ -153,7 +153,7 @@ public class MapRenderer extends AbstractRenderer {
       final StringBuilder buf = new StringBuilder();
       node.getAstExtra(buf);
       Title header = null;
-      if (!mditaExtendedProfile) {
+      if (!mditaCoreProfile) {
         if (node.getFirstChild() instanceof AnchorLink) {
           header = Title.getFromChildren(node.getFirstChild());
         } else {
@@ -162,7 +162,7 @@ public class MapRenderer extends AbstractRenderer {
         header.id.ifPresent(heading::setAnchorRefId);
       }
       id = getTopicId(heading, header);
-      if (!mditaExtendedProfile) {
+      if (!mditaCoreProfile) {
         if (!header.classes.isEmpty()) {
           atts.add(ATTRIBUTE_NAME_OUTPUTCLASS, String.join(" ", header.classes));
         }
@@ -186,16 +186,6 @@ public class MapRenderer extends AbstractRenderer {
     }
 
     context.renderChildren(node);
-  }
-
-  private Attributes getAttributesFromAttributesNode(Node node, Attributes base) {
-    if (!mditaExtendedProfile && isAttributesParagraph(node.getNext())) {
-      final Title header = Title.getFromChildren(node.getNext());
-      final AttributesBuilder builder = new AttributesBuilder(base);
-      return readAttributes(header, builder).build();
-    } else {
-      return base;
-    }
   }
 
   private void render(final BulletList node, final NodeRendererContext context, final SaxWriter html) {

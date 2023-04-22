@@ -523,7 +523,7 @@ public class TopicRenderer extends AbstractRenderer {
     final StringBuilder buf = new StringBuilder();
     node.getAstExtra(buf);
     Title header = null;
-    if (!mditaExtendedProfile) {
+    if (!mditaCoreProfile) {
       if (node.getFirstChild() instanceof AnchorLink) {
         header = Title.getFromChildren(node.getFirstChild());
       } else {
@@ -541,7 +541,7 @@ public class TopicRenderer extends AbstractRenderer {
     if ((mditaCoreProfile || mditaExtendedProfile) && node.getLevel() == 2) {
       isSection = true;
       cls = TOPIC_SECTION;
-    } else if (!mditaExtendedProfile) {
+    } else if (!mditaCoreProfile) {
       final String sectionClassName = containsSome(header.classes, sections.keySet());
       if (sectionClassName != null) {
         isSection = true;
@@ -569,7 +569,7 @@ public class TopicRenderer extends AbstractRenderer {
       if (id != null) {
         atts.add(ATTRIBUTE_NAME_ID, id);
       }
-      if (!mditaExtendedProfile) {
+      if (!mditaCoreProfile) {
         final Collection<String> classes = new ArrayList<>(header.classes);
         classes.removeAll(sections.keySet());
         if (!classes.isEmpty()) {
@@ -603,7 +603,7 @@ public class TopicRenderer extends AbstractRenderer {
         lastId = id;
         atts.add(ATTRIBUTE_NAME_ID, id);
       }
-      if (!mditaExtendedProfile) {
+      if (!mditaCoreProfile) {
         if (!header.classes.isEmpty()) {
           atts.add(ATTRIBUTE_NAME_OUTPUTCLASS, String.join(" ", header.classes));
         }
@@ -826,7 +826,7 @@ public class TopicRenderer extends AbstractRenderer {
       onlyImageChild = false;
     } else {
       final Attributes atts;
-      if (!mditaExtendedProfile) {
+      if (!mditaCoreProfile) {
         final Title header = Title.getFromChildren(node);
         final AttributesBuilder builder = new AttributesBuilder(P_ATTS);
         atts = readAttributes(header, builder).build();
