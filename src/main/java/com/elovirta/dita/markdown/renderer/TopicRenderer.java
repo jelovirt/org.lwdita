@@ -119,7 +119,7 @@ public class TopicRenderer extends AbstractRenderer {
   private final boolean shortdescParagraph;
   private final boolean idFromYaml;
 
-  private TableBlock currentTableNode;
+  //  private TableBlock currentTableNode;
   private int currentTableColumn;
   private boolean inSection = false;
 
@@ -438,7 +438,7 @@ public class TopicRenderer extends AbstractRenderer {
       html.characters(title);
       html.endElement();
       html.startElement(node, TOPIC_IMAGE, atts.build());
-      if (hasChildren(node)) {
+      if (node.hasChildren()) {
         html.startElement(node, TOPIC_ALT, ALT_ATTS);
         if (alt != null) {
           html.characters(alt);
@@ -454,7 +454,7 @@ public class TopicRenderer extends AbstractRenderer {
         atts.add("placement", "break");
       }
       html.startElement(node, TOPIC_IMAGE, atts.build());
-      if (hasChildren(node)) {
+      if (node.hasChildren()) {
         html.startElement(node, TOPIC_ALT, ALT_ATTS);
         if (alt != null) {
           html.characters(alt);
@@ -481,7 +481,7 @@ public class TopicRenderer extends AbstractRenderer {
       html.characters(title);
       html.endElement();
       html.startElement(node, TOPIC_IMAGE, atts.build());
-      if (hasChildren(node)) {
+      if (node.hasChildren()) {
         html.startElement(node, TOPIC_ALT, ALT_ATTS);
         if (alt != null) {
           html.characters(alt);
@@ -497,7 +497,7 @@ public class TopicRenderer extends AbstractRenderer {
         atts.add("placement", "break");
       }
       html.startElement(node, TOPIC_IMAGE, atts.build());
-      if (hasChildren(node)) {
+      if (node.hasChildren()) {
         html.startElement(node, TOPIC_ALT, ALT_ATTS);
         if (alt != null) {
           html.characters(alt);
@@ -807,6 +807,7 @@ public class TopicRenderer extends AbstractRenderer {
 
   private boolean onlyImageChild = false;
 
+  /** Check if paragraph only contains a single attributes node. */
   private boolean isAttributesParagraph(final Node node) {
     if (node == null) {
       return false;
@@ -921,27 +922,10 @@ public class TopicRenderer extends AbstractRenderer {
   }
 
   private void render(final Link node, final NodeRendererContext context, final SaxWriter html) {
-    final String text = node.getText().toString();
-    //        final String key = node.getReference() != null ? node.getReference().toString() : text;
-    //        final ReferenceNode refNode = node.getReferenceNode(node.getDocument());
-    //        if (refNode == null) { // "fake" reference link
-    //            final AttributesBuilder atts = new AttributesBuilder(XREF_ATTS)
-    //                    .add(ATTRIBUTE_NAME_KEYREF, key);
-    //            html.startElement(TOPIC_XREF, atts.build());
-    //            if (node.getReference() != null) {
-    //                context.renderChildren(node);
-    //            }
-    //            html.endElement();
-    //        } else {
     final AttributesBuilder atts = getLinkAttributes(node.getUrl().toString());
     html.startElement(node, TOPIC_XREF, getInlineAttributes(node, atts.build()));
-    //            if (!refNode.getTitle().toString().isEmpty()) {
-    //                html.characters(refNode.toString());
-    //            } else {
     context.renderChildren(node);
-    //            }
     html.endElement();
-    //        }
   }
 
   // OASIS Table
@@ -976,7 +960,7 @@ public class TopicRenderer extends AbstractRenderer {
   }
 
   private void render(final TableBlock node, final NodeRendererContext context, final SaxWriter html) {
-    currentTableNode = node;
+    //    currentTableNode = node;
     final Attributes tableAtts;
     if (!mditaExtendedProfile && isAttributesParagraph(node.getNext())) {
       final Title header = Title.getFromChildren(node.getNext());
@@ -986,14 +970,13 @@ public class TopicRenderer extends AbstractRenderer {
       tableAtts = TABLE_ATTS;
     }
     html.startElement(node, TOPIC_TABLE, tableAtts);
-    for (final Node child : node.getChildren()) {
-      if (child instanceof TableCaption) {
-        html.startElement(child, TOPIC_TITLE, TITLE_ATTS);
-        context.renderChildren(child);
-        html.endElement();
-        //                render((TableCaption) child, context, html);
-      }
+    final Node caption = node.getChildOfType(TableCaption.class);
+    if (caption != null) {
+      html.startElement(caption, TOPIC_TITLE, TITLE_ATTS);
+      context.renderChildren(caption);
+      html.endElement();
     }
+
     final int maxCols = findMaxCols(node);
     final Attributes atts = new AttributesBuilder(TGROUP_ATTS)
       .add(ATTRIBUTE_NAME_COLS, Integer.toString(maxCols))
@@ -1010,7 +993,7 @@ public class TopicRenderer extends AbstractRenderer {
     context.renderChildren(node);
     html.endElement(); // tgroup
     html.endElement(); // table
-    currentTableNode = null;
+    //    currentTableNode = null;
   }
 
   private int findMaxCols(TableBlock table) {
@@ -1046,7 +1029,7 @@ public class TopicRenderer extends AbstractRenderer {
   // Simple table
 
   private void renderSimpleTableBlock(final TableBlock node, final NodeRendererContext context, final SaxWriter html) {
-    currentTableNode = node;
+    //    currentTableNode = node;
     final Attributes tableAtts;
     if (!mditaExtendedProfile && isAttributesParagraph(node.getNext())) {
       final Title header = Title.getFromChildren(node.getNext());
@@ -1056,19 +1039,16 @@ public class TopicRenderer extends AbstractRenderer {
       tableAtts = SIMPLETABLE_ATTS;
     }
     html.startElement(node, TOPIC_SIMPLETABLE, tableAtts);
-    for (final Node child : node.getChildren()) {
-      if (child instanceof TableCaption) {
-        html.startElement(child, TOPIC_TITLE, TITLE_ATTS);
-        context.renderChildren(child);
-        html.endElement();
-        //                render((TableCaption) child, context, html);
-      }
+    final Node caption = node.getChildOfType(TableCaption.class);
+    if (caption != null) {
+      html.startElement(caption, TOPIC_TITLE, TITLE_ATTS);
+      context.renderChildren(caption);
+      html.endElement();
     }
 
     context.renderChildren(node);
-    //        html.endElement(); // tgroup
     html.endElement(); // table
-    currentTableNode = null;
+    //    currentTableNode = null;
   }
 
   private void renderSimpleTableCaption(
@@ -1080,14 +1060,11 @@ public class TopicRenderer extends AbstractRenderer {
   }
 
   private void renderSimpleTableHead(final TableHead node, final NodeRendererContext context, final SaxWriter html) {
-    //        printTag(node, context, html, TOPIC_STHEAD, STHEAD_ATTS);
     context.renderChildren(node);
   }
 
   private void renderSimpleTableBody(final TableBody node, final NodeRendererContext context, final SaxWriter html) {
-    //        html.startElement(TOPIC_TBODY, TBODY_ATTS);
     context.renderChildren(node);
-    //        html.endElement();
   }
 
   private void renderSimpleTableSeparator(TableSeparator node, NodeRendererContext context, SaxWriter html) {

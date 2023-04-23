@@ -207,7 +207,7 @@ public class MapRenderer extends AbstractRenderer {
     SaxWriter html
   ) {
     html.startElement(node, TOPIC_IMAGE, atts.build());
-    if (hasChildren(node)) {
+    if (node.hasChildren()) {
       html.startElement(node, TOPIC_ALT, ALT_ATTS);
       if (alt != null) {
         html.characters(alt);
@@ -228,7 +228,7 @@ public class MapRenderer extends AbstractRenderer {
     SaxWriter html
   ) {
     html.startElement(node, TOPIC_IMAGE, atts.build());
-    if (hasChildren(node)) {
+    if (node.hasChildren()) {
       html.startElement(node, TOPIC_ALT, ALT_ATTS);
       if (alt != null) {
         html.characters(alt);

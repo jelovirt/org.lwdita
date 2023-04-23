@@ -172,10 +172,6 @@ public abstract class AbstractRenderer {
     return count > 1;
   }
 
-  protected boolean hasChildren(final Node node) {
-    return node.hasChildren();
-  }
-
   protected void printTag(
     Text node,
     NodeRendererContext context,
