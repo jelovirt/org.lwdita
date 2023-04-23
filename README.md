@@ -58,12 +58,14 @@ content as Markdown.
 
 ## Requirements
 
-| LwDITA plug-in | DITA-OT | Java |
-|----------------|---------|------|
-| ≤ 2.5          | 2.4     | 1.8  |
-| ≥ 3.0          | 3.4     | 1.8  |
-| ≥ 4.0          | 3.4     | 11   |
-| ≥ 5.2          | 4.1     | 11   |
+| LwDITA plug-in | DITA-OT  | Java |
+|----------------|----------|------|
+| ≤ 2.5          | 2.4      | 1.8  |
+| ≥ 3.0          | 3.4      | 1.8  |
+| ≥ 4.0          | 3.4      | 11   |
+| ≥ 5.2          | 3.4 [^1] | 11   |
+
+[^1]: Support MDITA map requires DITA-OT version 4.1.
 
 ## Install
 
