@@ -25,7 +25,14 @@ public class MDitamapReaderTest extends AbstractReaderTest {
 
   @ParameterizedTest
   @ValueSource(
-    strings = { "map/map.md", "map/map_ol.md", "map/map_title.md", "map/map_without_title.md", "map/map_yaml.md" }
+    strings = {
+      "map/map.md",
+      "map/map_ol.md",
+      "map/map_title.md",
+      "map/map_topichead.md",
+      "map/map_without_title.md",
+      "map/map_yaml.md",
+    }
   )
   public void test_map(String file) throws Exception {
     run(file);

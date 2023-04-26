@@ -104,6 +104,7 @@ public class MarkdownReaderTest extends AbstractReaderTest {
       "map/map_ol.md",
       "map/map_reltable.md",
       "map/map_title.md",
+      "map/map_topichead.md",
       "map/map_without_title.md",
       "map/map_yaml.md",
     }

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/" class="- map/map " ditaarch:DITAArchVersion="2.0"
+     id="title" specializations="">
+  <title class="- topic/title ">Title</title>
+  <topicref class="- map/topicref " format="markdown" href="topic-1.md" navtitle="1">
+    <topicref class="- map/topicref " navtitle="Topic head">
+      <topicref class="- map/topicref " format="markdown" href="topic-1-a-1.md" navtitle="1.A.1"/>
+    </topicref>
+  </topicref>
+  <topicref class="- map/topicref " navtitle="Topic head">
+    <topicref class="- map/topicref " format="markdown" href="topic-2-a.md" navtitle="2.A">
+      <topicref class="- map/topicref " navtitle="Topic head"/>
+    </topicref>
+  </topicref>
+  <topicref class="- map/topicref " format="markdown" href="topic-a.md" navtitle="A">
+    <topicref class="- map/topicref " navtitle="Topic head">
+      <topicref class="- map/topicref " format="markdown" href="topic-a-1-a.md" navtitle="A.1.A"/>
+    </topicref>
+  </topicref>
+  <topicref class="- map/topicref " navtitle="Topic head">
+    <topicref class="- map/topicref " format="markdown" href="topic-b-1.md" navtitle="B.1">
+      <topicref class="- map/topicref " navtitle="Topic head"/>
+    </topicref>
+  </topicref>
+</map>

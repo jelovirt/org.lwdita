@@ -59,6 +59,7 @@ public class MapRenderer extends AbstractRenderer {
     //            .add(ATTRIBUTE_NAME_DOMAINS, "(topic hi-d) (topic ut-d) (topic indexing-d) (topic hazard-d) (topic abbrev-d) (topic pr-d) (topic sw-d) (topic ui-d)")
     .build();
   private static final Attributes TOPICREF_ATTS = buildAtts(MAP_TOPICREF);
+  private static final Attributes TOPICHEAD_ATTS = buildAtts(MAPGROUP_D_TOPICHEAD);
   private static final Attributes TOPICMETA_ATTS = buildAtts(MAP_TOPICMETA);
   private static final Attributes RELTABLE_ATTS = new AttributesBuilder()
     .add(ATTRIBUTE_NAME_CLASS, MAP_RELTABLE.toString())
@@ -411,36 +412,60 @@ public class MapRenderer extends AbstractRenderer {
   }
 
   private void render(final ListItem node, final NodeRendererContext context, final SaxWriter html) {
-    final AttributesBuilder atts = new AttributesBuilder(TOPICREF_ATTS);
-
     final Paragraph paragraph = (Paragraph) node.getChildOfType(Paragraph.class);
     final Link link = paragraph != null ? (Link) paragraph.getChildOfType(Link.class) : null;
-    if (link != null) {
-      atts.addAll(getLinkAttributes(link.getUrl().toString(), TOPICREF_ATTS).build());
-      final String text = link.getText().toString();
-      if (!text.isEmpty()) {
-        atts.add("navtitle", text);
-      }
-    }
     final LinkRef linkRef = paragraph != null ? (LinkRef) paragraph.getChildOfType(LinkRef.class) : null;
-    if (linkRef != null) {
-      final String text = linkRef.getText().toString();
-      final String key = linkRef.getReference() != null ? linkRef.getReference().toString() : text;
-      final Reference refNode = linkRef.getReferenceNode(linkRef.getDocument());
-      if (refNode == null) { // "fake" reference link
-        atts.add(ATTRIBUTE_NAME_KEYREF, key);
-        if (!text.isBlank()) {
-          atts.add("navtitle", text);
-        }
-      } else {
-        atts.addAll(getLinkAttributes(refNode.getUrl().toString(), TOPICREF_ATTS).build());
-        atts.add(ATTRIBUTE_NAME_KEYREF, refNode.getReference().toString());
-        if (!refNode.getTitle().toString().isEmpty()) {
-          atts.add("navtitle", refNode.getTitle().toString());
-        } else if (text != null && !text.isBlank()) {
+    final DitaClass name;
+    final AttributesBuilder atts;
+    if (link != null || linkRef != null) {
+      name = MAP_TOPICREF;
+      atts = new AttributesBuilder(TOPICREF_ATTS);
+      if (link != null) {
+        atts.addAll(getLinkAttributes(link.getUrl().toString(), TOPICREF_ATTS).build());
+        final String text = link.getText().toString();
+        if (!text.isEmpty()) {
           atts.add("navtitle", text);
         }
       }
+      if (linkRef != null) {
+        final String text = linkRef.getText().toString();
+        final String key = linkRef.getReference() != null ? linkRef.getReference().toString() : text;
+        final Reference refNode = linkRef.getReferenceNode(linkRef.getDocument());
+        if (refNode == null) { // "fake" reference link
+          atts.add(ATTRIBUTE_NAME_KEYREF, key);
+          if (!text.isBlank()) {
+            atts.add("navtitle", text);
+          }
+        } else {
+          atts.addAll(getLinkAttributes(refNode.getUrl().toString(), TOPICREF_ATTS).build());
+          atts.add(ATTRIBUTE_NAME_KEYREF, refNode.getReference().toString());
+          if (!refNode.getTitle().toString().isEmpty()) {
+            atts.add("navtitle", refNode.getTitle().toString());
+          } else if (text != null && !text.isBlank()) {
+            atts.add("navtitle", text);
+          }
+        }
+      }
+    } else {
+      if (mditaCoreProfile || mditaExtendedProfile) {
+        name = MAP_TOPICREF;
+        atts = new AttributesBuilder(TOPICREF_ATTS);
+      } else {
+        name = MAPGROUP_D_TOPICHEAD;
+        atts = new AttributesBuilder(TOPICHEAD_ATTS);
+      }
+      final StringBuilder buf = new StringBuilder();
+      Node child = paragraph.getFirstChild();
+      while (child != null) {
+        Node next = child.getNext();
+        if (child instanceof Text) {
+          buf.append(child.getChars());
+        } else if (child instanceof BulletList || child instanceof OrderedList) {
+          break;
+        }
+        child = next;
+      }
+      atts.add("navtitle", buf.toString());
     }
 
     if (node instanceof OrderedListItem) {
@@ -449,7 +474,7 @@ public class MapRenderer extends AbstractRenderer {
       }
     }
 
-    html.startElement(node, MAP_TOPICREF, getInlineAttributes(node, atts.build()));
+    html.startElement(node, name, getInlineAttributes(node, atts.build()));
     Node child = node.getFirstChild();
     while (child != null) {
       Node next = child.getNext();
