@@ -447,8 +447,13 @@ public class MapRenderer extends AbstractRenderer {
         }
       }
     } else {
-      name = MAPGROUP_D_TOPICHEAD;
-      atts = new AttributesBuilder(TOPICHEAD_ATTS);
+      if (mditaCoreProfile || mditaExtendedProfile) {
+        name = MAP_TOPICREF;
+        atts = new AttributesBuilder(TOPICREF_ATTS);
+      } else {
+        name = MAPGROUP_D_TOPICHEAD;
+        atts = new AttributesBuilder(TOPICHEAD_ATTS);
+      }
       final StringBuilder buf = new StringBuilder();
       Node child = paragraph.getFirstChild();
       while (child != null) {
