@@ -6,7 +6,7 @@ public class Metadata {
 
   public final String id;
   public final List<String> classes;
-  private final Map<String, String> attrs;
+  public final Map<String, String> attrs;
 
   public Metadata(final String id, final List<String> classes, final Map<String, String> attrs) {
     this.id = id;
@@ -28,11 +28,20 @@ public class Metadata {
         }
         classes.add(t.substring(1));
       } else if (t.contains("=")) {
-        if (attrs == null) {
-          attrs = new HashMap<>();
-        }
         final String[] tokens = t.split("=", 2);
-        attrs.put(tokens[0], tokens[1]);
+        final String key = tokens[0];
+        final String value = tokens[1];
+        if (key.equals("class")) {
+          if (classes == null) {
+            classes = new ArrayList<>();
+          }
+          classes.addAll(List.of(value.trim().split("\\s+")));
+        } else {
+          if (attrs == null) {
+            attrs = new HashMap<>();
+          }
+          attrs.put(key, value);
+        }
       }
     }
     final String id = fragment;

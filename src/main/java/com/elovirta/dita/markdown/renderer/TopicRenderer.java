@@ -1148,6 +1148,9 @@ public class TopicRenderer extends AbstractRenderer {
       if (metadata.id != null) {
         atts.add(ATTRIBUTE_NAME_ID, metadata.id);
       }
+      for (Entry<String, String> entry : metadata.attrs.entrySet()) {
+        atts.add(entry.getKey(), entry.getValue());
+      }
     } else if (info.isNotNull() && !info.isBlank()) {
       int space = info.indexOf(' ');
       BasedSequence language;

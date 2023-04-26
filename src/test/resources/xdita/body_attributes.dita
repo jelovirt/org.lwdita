@@ -47,7 +47,7 @@
       </strow>
     </simpletable>
     <p class="- topic/p ">{audience=novice}</p>
-    <pre class="- topic/pre " id="id" outputclass="lang" xml:space="preserve"><tt class="+ topic/ph hi-d/tt ">code</tt></pre>
+    <pre audience="novice" class="- topic/pre " id="id" outputclass="lang" xml:space="preserve"><tt class="+ topic/ph hi-d/tt ">code</tt></pre>
     <p class="- topic/p ">
       <fig class="- topic/fig ">
         <title class="- topic/title ">Title</title>

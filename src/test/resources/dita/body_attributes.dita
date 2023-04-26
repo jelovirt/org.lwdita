@@ -48,7 +48,7 @@
         </tbody>
       </tgroup>
     </table>
-    <codeblock class="+ topic/pre pr-d/codeblock " outputclass="lang" id="id" xml:space="preserve">code</codeblock>
+    <codeblock audience="novice" class="+ topic/pre pr-d/codeblock " id="id" outputclass="lang" xml:space="preserve">code</codeblock>
     <fig class="- topic/fig ">
       <title class="- topic/title ">Title</title>
       <image class="- topic/image " href="test.jpg" id="carrot" outputclass="juice">
