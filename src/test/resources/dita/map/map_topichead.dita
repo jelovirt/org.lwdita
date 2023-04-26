@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/" class="- map/map " ditaarch:DITAArchVersion="2.0"
+     id="title"
+     specializations="@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product">
+  <title class="- topic/title ">Title</title>
+  <topicmeta class="- map/topicmeta "/>
+  <topicref class="- map/topicref " collection-type="sequence" format="markdown" href="topic-1.md" navtitle="1">
+    <topichead class="+ map/topicref mapgroup-d/topichead " navtitle="Topic head">
+      <topicref class="- map/topicref " collection-type="sequence" format="markdown" href="topic-1-a-1.md"
+                navtitle="1.A.1"/>
+    </topichead>
+  </topicref>
+  <topichead class="+ map/topicref mapgroup-d/topichead " collection-type="sequence" navtitle="Topic head">
+    <topicref class="- map/topicref " format="markdown" href="topic-2-a.md" navtitle="2.A">
+      <topichead class="+ map/topicref mapgroup-d/topichead " collection-type="sequence" navtitle="Topic head"/>
+    </topicref>
+  </topichead>
+  <topicref class="- map/topicref " format="markdown" href="topic-a.md" navtitle="A">
+    <topichead class="+ map/topicref mapgroup-d/topichead " collection-type="sequence" navtitle="Topic head">
+      <topicref class="- map/topicref " format="markdown" href="topic-a-1-a.md" navtitle="A.1.A"/>
+    </topichead>
+  </topicref>
+  <topichead class="+ map/topicref mapgroup-d/topichead " navtitle="Topic head">
+    <topicref class="- map/topicref " collection-type="sequence" format="markdown" href="topic-b-1.md" navtitle="B.1">
+      <topichead class="+ map/topicref mapgroup-d/topichead " navtitle="Topic head"/>
+    </topicref>
+  </topichead>
+</map>
