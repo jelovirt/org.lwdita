@@ -189,7 +189,7 @@ public class DitaRenderer {
       this.renderers =
         DitaRenderer.MAP.getFrom(options)
           ? new MapRenderer(this.getOptions()).getNodeRenderingHandlers()
-          : new CoreNodeRenderer(this.getOptions()).getNodeRenderingHandlers();
+          : new TopicRenderer(this.getOptions()).getNodeRenderingHandlers();
       this.doNotRenderLinksNesting = ditaOptions.doNotRenderLinksInDocument ? 0 : 1;
       this.ditaIdGenerator = new HeaderIdGenerator();
     }

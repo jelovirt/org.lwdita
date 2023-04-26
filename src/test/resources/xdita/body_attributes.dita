@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<topic xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/"
-       ditaarch:DITAArchVersion="2.0"
-       specializations="(topic hi-d)(topic em-d)" class="- topic/topic " id="header">
+<topic xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/" class="- topic/topic "
+       ditaarch:DITAArchVersion="2.0" id="header" specializations="(topic hi-d)(topic em-d)">
   <title class="- topic/title ">Header</title>
   <shortdesc class="- topic/shortdesc ">Paragraph {.draft rev=1 #p}</shortdesc>
   <body class="- topic/body ">
@@ -48,7 +47,7 @@
       </strow>
     </simpletable>
     <p class="- topic/p ">{audience=novice}</p>
-    <pre class="- topic/pre " outputclass="lang" xml:space="preserve"><tt class="+ topic/ph hi-d/tt ">code</tt></pre>
+    <pre audience="novice" class="- topic/pre " id="id" outputclass="lang" xml:space="preserve"><tt class="+ topic/ph hi-d/tt ">code</tt></pre>
     <p class="- topic/p ">
       <fig class="- topic/fig ">
         <title class="- topic/title ">Title</title>

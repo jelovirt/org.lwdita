@@ -1,6 +1,5 @@
 package com.elovirta.dita.markdown.renderer;
 
-import com.vladsch.flexmark.ext.anchorlink.AnchorLink;
 import com.vladsch.flexmark.ext.attributes.AttributeNode;
 import com.vladsch.flexmark.ext.attributes.AttributesNode;
 import com.vladsch.flexmark.util.ast.Node;
@@ -30,7 +29,7 @@ class Title {
   private static List<AttributesNode> getNextAttributesNodes(Node current) {
     final List<AttributesNode> res = new ArrayList<>();
     Node node = current.getNext();
-    while (node != null && node instanceof AttributesNode) {
+    while (node instanceof AttributesNode) {
       res.add((AttributesNode) node);
       node = node.getNext();
     }
@@ -103,30 +102,6 @@ class Title {
   }
 
   private static boolean isClass(AttributeNode attributeNode) {
-    return attributeNode.getName().equals(".") || attributeNode.getName().equals("class");
+    return attributeNode.getName().toString().equals(".") || attributeNode.getName().toString().equals("class");
   }
-
-  private static List<AttributesNode> getAttributesNodes(Node parent) {
-    final List<AttributesNode> res = new ArrayList<>();
-    for (Node child : parent.getChildren()) {
-      if (child instanceof AttributesNode) {
-        res.add((AttributesNode) child);
-      } else if (child instanceof AnchorLink) {
-        res.addAll(getAttributesNodes(child));
-      } else {
-        //                res.addAll(getAttributesNodes(child));
-      }
-    }
-    return res;
-  }
-  //    private void getText(Node parent, StringBuilder buf) {
-  //        final List<AttributesNode> res = new ArrayList<>();
-  //        for (Node child : parent.getChildren()) {
-  //            if (child instanceof Text) {
-  //                buf.append(child.getChars());
-  //            } else {
-  //                getText(child, buf);
-  //            }
-  //        }
-  //    }
 }

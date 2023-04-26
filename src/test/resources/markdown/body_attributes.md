@@ -29,7 +29,7 @@ Definition Term
 | body        |
 {audience=novice}
 
-``` {.lang}
+``` {.lang #id audience=novice}
 code
 ```
 
