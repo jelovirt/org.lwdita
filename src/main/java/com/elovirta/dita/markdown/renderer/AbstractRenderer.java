@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 import javax.xml.transform.Templates;
 import javax.xml.transform.TransformerConfigurationException;
@@ -164,9 +165,12 @@ public abstract class AbstractRenderer {
     // Ignore
   }
 
+  protected Stream<Node> childStream(Node astRoot) {
+    return StreamSupport.stream(astRoot.getChildren().spliterator(), false);
+  }
+
   protected boolean hasMultipleTopLevelHeaders(Document astRoot) {
-    final long count = StreamSupport
-      .stream(astRoot.getChildren().spliterator(), false)
+    final long count = childStream(astRoot)
       .filter(n -> (n instanceof Heading) && (((Heading) n).getLevel() == 1))
       .count();
     return count > 1;

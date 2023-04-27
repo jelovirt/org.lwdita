@@ -2,26 +2,64 @@
 <map xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/" class="- map/map " ditaarch:DITAArchVersion="2.0"
      id="title" specializations="">
   <title class="- topic/title ">Title</title>
-  <topicref class="- map/topicref " format="markdown" href="topic-1.md" navtitle="1">
-    <topicref class="- map/topicref " format="markdown" href="topic-1-a.md" navtitle="1.A">
-      <topicref class="- map/topicref " format="markdown" href="topic-1-a-1.md"
-                navtitle="1.A.1"/>
+  <topicref class="- map/topicref " format="markdown" href="topic-1.md">
+    <topicmeta class="- map/topicmeta ">
+      <navtitle class="- topic/navtitle ">1</navtitle>
+    </topicmeta>
+    <topicref class="- map/topicref " format="markdown" href="topic-1-a.md">
+      <topicmeta class="- map/topicmeta ">
+        <navtitle class="- topic/navtitle ">1.A</navtitle>
+      </topicmeta>
+      <topicref class="- map/topicref " format="markdown" href="topic-1-a-1.md">
+        <topicmeta class="- map/topicmeta ">
+          <navtitle class="- topic/navtitle ">1.A.1</navtitle>
+        </topicmeta>
+      </topicref>
     </topicref>
   </topicref>
-  <topicref class="- map/topicref " format="markdown" href="topic-2.md" navtitle="2">
-    <topicref class="- map/topicref " format="markdown" href="topic-2-a.md" navtitle="2.A">
-      <topicref class="- map/topicref " format="markdown" href="topic-2-a-1.md"
-                navtitle="2.A.1"/>
+  <topicref class="- map/topicref " format="markdown" href="topic-2.md">
+    <topicmeta class="- map/topicmeta ">
+      <navtitle class="- topic/navtitle ">2</navtitle>
+    </topicmeta>
+    <topicref class="- map/topicref " format="markdown" href="topic-2-a.md">
+      <topicmeta class="- map/topicmeta ">
+        <navtitle class="- topic/navtitle ">2.A</navtitle>
+      </topicmeta>
+      <topicref class="- map/topicref " format="markdown" href="topic-2-a-1.md">
+        <topicmeta class="- map/topicmeta ">
+          <navtitle class="- topic/navtitle ">2.A.1</navtitle>
+        </topicmeta>
+      </topicref>
     </topicref>
   </topicref>
-  <topicref class="- map/topicref " format="markdown" href="topic-a.md" navtitle="A">
-    <topicref class="- map/topicref " format="markdown" href="topic-a-1.md" navtitle="A.1">
-      <topicref class="- map/topicref " format="markdown" href="topic-a-1-a.md" navtitle="A.1.A"/>
+  <topicref class="- map/topicref " format="markdown" href="topic-a.md">
+    <topicmeta class="- map/topicmeta ">
+      <navtitle class="- topic/navtitle ">A</navtitle>
+    </topicmeta>
+    <topicref class="- map/topicref " format="markdown" href="topic-a-1.md">
+      <topicmeta class="- map/topicmeta ">
+        <navtitle class="- topic/navtitle ">A.1</navtitle>
+      </topicmeta>
+      <topicref class="- map/topicref " format="markdown" href="topic-a-1-a.md">
+        <topicmeta class="- map/topicmeta ">
+          <navtitle class="- topic/navtitle ">A.1.A</navtitle>
+        </topicmeta>
+      </topicref>
     </topicref>
   </topicref>
-  <topicref class="- map/topicref " format="markdown" href="topic-b.md" navtitle="B">
-    <topicref class="- map/topicref " format="markdown" href="topic-b-1.md" navtitle="B.1">
-      <topicref class="- map/topicref " format="markdown" href="topic-b-1-a.md" navtitle="B.1.A"/>
+  <topicref class="- map/topicref " format="markdown" href="topic-b.md">
+    <topicmeta class="- map/topicmeta ">
+      <navtitle class="- topic/navtitle ">B</navtitle>
+    </topicmeta>
+    <topicref class="- map/topicref " format="markdown" href="topic-b-1.md">
+      <topicmeta class="- map/topicmeta ">
+        <navtitle class="- topic/navtitle ">B.1</navtitle>
+      </topicmeta>
+      <topicref class="- map/topicref " format="markdown" href="topic-b-1-a.md">
+        <topicmeta class="- map/topicmeta ">
+          <navtitle class="- topic/navtitle ">B.1.A</navtitle>
+        </topicmeta>
+      </topicref>
     </topicref>
   </topicref>
 </map>

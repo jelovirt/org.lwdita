@@ -9,6 +9,10 @@
     <b class="+ topic/ph hi-d/b ">bold</b>
     <tt class="+ topic/ph hi-d/tt ">code</tt>
   </title>
-  <topicref class="- map/topicref " format="markdown" href="topic.md" navtitle="key"/>
+  <topicref class="- map/topicref " format="markdown" href="topic.md">
+    <topicmeta class="- map/topicmeta ">
+      <navtitle class="- topic/navtitle ">key</navtitle>
+    </topicmeta>
+  </topicref>
   <keydef class="+ map/topicref mapgroup-d/keydef " format="markdown" href="topic.md" keys="key"/>
 </map>

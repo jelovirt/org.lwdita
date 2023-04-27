@@ -2,8 +2,16 @@
 <map xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/" class="- map/map " ditaarch:DITAArchVersion="2.0"
      specializations="@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product">
   <topicmeta class="- map/topicmeta "/>
-  <topicref class="- map/topicref " format="markdown" href="topic-a.md" navtitle="A"/>
-  <topicref class="- map/topicref " format="markdown" href="topic-b.md" navtitle="B"/>
+  <topicref class="- map/topicref " format="markdown" href="topic-a.md">
+    <topicmeta class="- map/topicmeta ">
+      <navtitle class="- topic/navtitle ">A</navtitle>
+    </topicmeta>
+  </topicref>
+  <topicref class="- map/topicref " format="markdown" href="topic-b.md">
+    <topicmeta class="- map/topicmeta ">
+      <navtitle class="- topic/navtitle ">B</navtitle>
+    </topicmeta>
+  </topicref>
   <topicref class="- map/topicref " format="markdown" href="topic-c.md" keyref="C"/>
   <topicref class="- map/topicref " format="markdown" href="topic-d.md" keyref="D"/>
   <reltable class="- map/reltable " toc="no">

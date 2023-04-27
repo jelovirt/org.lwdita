@@ -25,5 +25,9 @@
     <data class="- topic/data " name="tags" value="nothingness"/>
     <data class="- topic/data " name="title" value="'This is the title: it contains a colon'"/>
   </topicmeta>
-  <topicref class="- map/topicref " format="markdown" href="topic-a.md" navtitle="A"/>
+  <topicref class="- map/topicref " format="markdown" href="topic-a.md">
+    <topicmeta class="- map/topicmeta ">
+      <navtitle class="- topic/navtitle ">A</navtitle>
+    </topicmeta>
+  </topicref>
 </map>
