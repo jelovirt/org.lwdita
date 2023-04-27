@@ -27,7 +27,6 @@ import com.vladsch.flexmark.util.ast.Node;
 import com.vladsch.flexmark.util.data.DataHolder;
 import java.io.IOException;
 import java.io.StringReader;
-import java.sql.Array;
 import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -416,16 +415,18 @@ public class MapRenderer extends AbstractRenderer {
     html.setDocumentLocator();
   }
 
-  private static Class<? extends Node>[] INLINE = List.of(
-          Text.class,
-          TextBase.class,
-          Code.class,
-          Emphasis.class,
-          StrongEmphasis.class,
-          Superscript.class,
-          Subscript.class,
-          Strikethrough.class
-  ).toArray(new Class[0]);
+  private static Class<? extends Node>[] INLINE = List
+    .of(
+      Text.class,
+      TextBase.class,
+      Code.class,
+      Emphasis.class,
+      StrongEmphasis.class,
+      Superscript.class,
+      Subscript.class,
+      Strikethrough.class
+    )
+    .toArray(new Class[0]);
 
   private void render(final ListItem node, final NodeRendererContext context, final SaxWriter html) {
     final Paragraph paragraph = (Paragraph) node.getChildOfType(Paragraph.class);
@@ -441,7 +442,7 @@ public class MapRenderer extends AbstractRenderer {
         atts.addAll(getLinkAttributes(link.getUrl().toString(), TOPICREF_ATTS).build());
         final String text = link.getText().toString();
         if (!text.isEmpty()) {
-          navtitle = childStream(link).toList();
+          navtitle = childList(link);
         }
       }
       if (linkRef != null) {
@@ -451,15 +452,15 @@ public class MapRenderer extends AbstractRenderer {
         if (refNode == null) { // "fake" reference link
           atts.add(ATTRIBUTE_NAME_KEYREF, key);
           if (!text.isBlank()) {
-            navtitle = childStream(linkRef).toList();
+            navtitle = childList(linkRef);
           }
         } else {
           atts.addAll(getLinkAttributes(refNode.getUrl().toString(), TOPICREF_ATTS).build());
           atts.add(ATTRIBUTE_NAME_KEYREF, refNode.getReference().toString());
           if (!refNode.getTitle().toString().isEmpty()) {
-            navtitle = childStream(refNode).toList();
+            navtitle = childList(refNode);
           } else if (text != null && !text.isBlank()) {
-            navtitle = childStream(linkRef).toList();
+            navtitle = childList(linkRef);
           }
         }
       }
@@ -491,15 +492,7 @@ public class MapRenderer extends AbstractRenderer {
     }
 
     html.startElement(node, name, getInlineAttributes(node, atts.build()));
-    if (navtitle != null && !navtitle.isEmpty()) {
-      html.startElement(node, MAP_TOPICMETA, TOPICMETA_ATTS);
-      html.startElement(node, TOPIC_NAVTITLE, NAVTITLE_ATTS);
-      for (Node child : navtitle) {
-        context.renderChild(child);
-      }
-      html.endElement();
-      html.endElement();
-    }
+    renderNavtitle(node, context, html, navtitle);
     Node child = node.getFirstChild();
     while (child != null) {
       Node next = child.getNext();
@@ -509,6 +502,23 @@ public class MapRenderer extends AbstractRenderer {
       child = next;
     }
     html.endElement();
+  }
+
+  private void renderNavtitle(
+    final Node node,
+    final NodeRendererContext context,
+    final SaxWriter html,
+    final List<Node> navtitle
+  ) {
+    if (navtitle != null && !navtitle.isEmpty()) {
+      html.startElement(node, MAP_TOPICMETA, TOPICMETA_ATTS);
+      html.startElement(node, TOPIC_NAVTITLE, NAVTITLE_ATTS);
+      for (Node child : navtitle) {
+        context.renderChild(child);
+      }
+      html.endElement();
+      html.endElement();
+    }
   }
 
   private void render(final MailLink node, final NodeRendererContext context, final SaxWriter html) {
@@ -571,16 +581,19 @@ public class MapRenderer extends AbstractRenderer {
       final AttributesBuilder atts = new AttributesBuilder(TOPICREF_ATTS).add(ATTRIBUTE_NAME_KEYREF, key);
       html.startElement(node, MAP_TOPICREF, atts.build());
       if (!node.getText().toString().isEmpty()) {
-        html.characters(node.getText().toString());
+        renderNavtitle(node, context, html, childList(node));
+        //        html.characters(node.getText().toString());
       }
       html.endElement();
     } else {
       final AttributesBuilder atts = getLinkAttributes(refNode.getUrl().toString());
       html.startElement(node, MAP_TOPICREF, atts.build());
       if (!refNode.getTitle().toString().isEmpty()) {
-        html.characters(refNode.getTitle().toString());
+        //        html.characters(refNode.getTitle().toString());
+        renderNavtitle(node, context, html, childList(refNode));
       } else {
-        context.renderChildren(node);
+        //        context.renderChildren(node);
+        renderNavtitle(node, context, html, childList(node));
       }
       html.endElement();
     }
@@ -604,7 +617,8 @@ public class MapRenderer extends AbstractRenderer {
     //            if (!refNode.getTitle().toString().isEmpty()) {
     //                html.characters(refNode.toString());
     //            } else {
-    context.renderChildren(node);
+    //    context.renderChildren(node);
+    renderNavtitle(node, context, html, childList(node));
     //            }
     html.endElement();
     //        }

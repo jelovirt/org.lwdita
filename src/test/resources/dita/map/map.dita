@@ -6,7 +6,10 @@
   <topicmeta class="- map/topicmeta "/>
   <topicref class="- map/topicref " format="markdown" href="topic-a.md">
     <topicmeta class="- map/topicmeta ">
-      <navtitle class="- topic/navtitle ">A</navtitle>
+      <navtitle class="- topic/navtitle ">Text <i class="+ topic/ph hi-d/i ">italic</i>
+        <b class="+ topic/ph hi-d/b ">bold</b>
+        <codeph class="+ topic/ph pr-d/codeph ">code</codeph>
+      </navtitle>
     </topicmeta>
     <topicref class="- map/topicref " format="markdown" href="topic-a-1.md"/>
   </topicref>

@@ -17,18 +17,34 @@
   <reltable class="- map/reltable " toc="no">
     <relheader class="- map/relheader ">
       <relcolspec class="- map/relcolspec " toc="no">
-        <topicref class="- map/topicref " format="markdown" href="topic-a.md">A</topicref>
+        <topicref class="- map/topicref " format="markdown" href="topic-a.md">
+          <topicmeta class="- map/topicmeta ">
+            <navtitle class="- topic/navtitle ">A</navtitle>
+          </topicmeta>
+        </topicref>
       </relcolspec>
       <relcolspec class="- map/relcolspec " toc="no">
-        <topicref class="- map/topicref " format="markdown" href="topic-c.md">C</topicref>
+        <topicref class="- map/topicref " format="markdown" href="topic-c.md">
+          <topicmeta class="- map/topicmeta ">
+            <navtitle class="- topic/navtitle ">C</navtitle>
+          </topicmeta>
+        </topicref>
       </relcolspec>
     </relheader>
     <relrow class="- map/relrow ">
       <relcell class="- map/relcell ">
-        <topicref class="- map/topicref " format="markdown" href="topic-b.md">B</topicref>
+        <topicref class="- map/topicref " format="markdown" href="topic-b.md">
+          <topicmeta class="- map/topicmeta ">
+            <navtitle class="- topic/navtitle ">B</navtitle>
+          </topicmeta>
+        </topicref>
       </relcell>
       <relcell class="- map/relcell ">
-        <topicref class="- map/topicref " format="markdown" href="topic-d.md">D</topicref>
+        <topicref class="- map/topicref " format="markdown" href="topic-d.md">
+          <topicmeta class="- map/topicmeta ">
+            <navtitle class="- topic/navtitle ">D</navtitle>
+          </topicmeta>
+        </topicref>
       </relcell>
     </relrow>
   </reltable>
