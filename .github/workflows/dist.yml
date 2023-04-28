@@ -62,8 +62,9 @@ jobs:
           token: ${{ secrets.TOKEN }}
           push-to-fork: jelovirt/registry
           branch-suffix: timestamp
-          title: Update ${{ env.PLUGIN_NAME }} to ${{ env.VERSION }}
+          commit-message: Add ${{ env.PLUGIN_NAME }} ${{ env.VERSION }}
+          title: Add ${{ env.PLUGIN_NAME }} ${{ env.VERSION }}
           body: |
-            Updating plug-in `${{ env.PLUGIN_NAME }}` to version `${{ env.VERSION }}`.
+            Add plug-in `${{ env.PLUGIN_NAME }}` version `${{ env.VERSION }}`.
             
             * [Release notes](https://github.com/jelovirt/org.lwdita/releases/tag/${{ env.VERSION }})
