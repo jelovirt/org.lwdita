@@ -52,7 +52,8 @@ jobs:
             | jq --arg chksum "${{ env.CHKSUM }}" '. | .cksum|=$chksum' \
             | jq --arg vers "${{ env.VERSION }}" '. | .vers|=$vers' > buf.json 
           jq '. += [input]' ${{ env.PLUGIN_NAME }}.json buf.json \
-            | jq . > ${{ env.PLUGIN_NAME }}.json
+            | jq . > concat.json
+          mv concat.json ${{ env.PLUGIN_NAME }}.json
           rm buf.json
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v5
