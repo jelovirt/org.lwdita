@@ -4,23 +4,44 @@
      specializations="@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product">
   <title class="- topic/title ">Title</title>
   <topicmeta class="- map/topicmeta "/>
-  <topicref class="- map/topicref " format="markdown" href="topic-a.md" navtitle="A">
+  <topicref class="- map/topicref " format="markdown" href="topic-a.md">
+    <topicmeta class="- map/topicmeta ">
+      <navtitle class="- topic/navtitle ">Text <i class="+ topic/ph hi-d/i ">italic</i>
+        <b class="+ topic/ph hi-d/b ">bold</b>
+        <codeph class="+ topic/ph pr-d/codeph ">code</codeph>
+      </navtitle>
+    </topicmeta>
     <topicref class="- map/topicref " format="markdown" href="topic-a-1.md"/>
   </topicref>
-  <topicref class="- map/topicref " format="markdown" href="topic-b.md" navtitle="B">
-    <topicref class="- map/topicref " format="markdown" href="topic-b-1.md" navtitle="B.1"/>
+  <topicref class="- map/topicref " format="markdown" href="topic-b.md">
+    <topicmeta class="- map/topicmeta ">
+      <navtitle class="- topic/navtitle ">B</navtitle>
+    </topicmeta>
+    <topicref class="- map/topicref " format="markdown" href="topic-b-1.md">
+      <topicmeta class="- map/topicmeta ">
+        <navtitle class="- topic/navtitle ">B.1</navtitle>
+      </topicmeta>
+    </topicref>
   </topicref>
   <topicref class="- map/topicref " format="markdown" href="test.md" keyref="key-a">
     <topicref class="- map/topicref " format="markdown" href="test.md" keyref="key-a"/>
-    <topicref class="- map/topicref " format="markdown" href="test.md" keyref="key-a" navtitle="ignored"/>
+    <topicref class="- map/topicref " format="markdown" href="test.md" keyref="key-a">
+      <topicmeta class="- map/topicmeta ">
+        <navtitle class="- topic/navtitle ">ignored</navtitle>
+      </topicmeta>
+    </topicref>
   </topicref>
-  <topicref class="- map/topicref " format="markdown" href="test.md" keyref="key-b" navtitle="Markdown">
-    <topicref class="- map/topicref " format="markdown" href="test.md" keyref="key-b" navtitle="Markdown"/>
-    <topicref class="- map/topicref " format="markdown" href="test.md" keyref="key-b" navtitle="Markdown"/>
+  <topicref class="- map/topicref " format="markdown" href="test.md" keyref="key-b">
+    <topicref class="- map/topicref " format="markdown" href="test.md" keyref="key-b"/>
+    <topicref class="- map/topicref " format="markdown" href="test.md" keyref="key-b"/>
   </topicref>
   <topicref class="- map/topicref " keyref="undefined-key">
     <topicref class="- map/topicref " keyref="undefined-key"/>
-    <topicref class="- map/topicref " keyref="undefined-key" navtitle="ignore"/>
+    <topicref class="- map/topicref " keyref="undefined-key">
+      <topicmeta class="- map/topicmeta ">
+        <navtitle class="- topic/navtitle ">ignore</navtitle>
+      </topicmeta>
+    </topicref>
   </topicref>
   <keydef class="+ map/topicref mapgroup-d/keydef " format="markdown" href="test.md" keys="key-a"/>
   <keydef class="+ map/topicref mapgroup-d/keydef " format="markdown" href="test.md" keys="key-b"/>

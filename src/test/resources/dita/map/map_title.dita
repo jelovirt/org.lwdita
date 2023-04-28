@@ -11,6 +11,10 @@
     <codeph class="+ topic/ph pr-d/codeph ">code</codeph>
   </title>
   <topicmeta class="- map/topicmeta "/>
-  <topicref class="- map/topicref " format="markdown" href="topic.md" navtitle="key"/>
+  <topicref class="- map/topicref " format="markdown" href="topic.md">
+    <topicmeta class="- map/topicmeta ">
+      <navtitle class="- topic/navtitle ">key</navtitle>
+    </topicmeta>
+  </topicref>
   <keydef class="+ map/topicref mapgroup-d/keydef " format="markdown" href="topic.md" keys="key"/>
 </map>

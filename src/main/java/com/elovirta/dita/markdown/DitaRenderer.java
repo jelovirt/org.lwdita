@@ -276,6 +276,11 @@ public class DitaRenderer {
       }
     }
 
+    @Override
+    public void renderChild(Node node) {
+      renderNode(node, this);
+    }
+
     protected int getDoNotRenderLinksNesting() {
       return doNotRenderLinksNesting;
     }

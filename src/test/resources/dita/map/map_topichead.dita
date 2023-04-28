@@ -4,25 +4,67 @@
      specializations="@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product">
   <title class="- topic/title ">Title</title>
   <topicmeta class="- map/topicmeta "/>
-  <topicref class="- map/topicref " collection-type="sequence" format="markdown" href="topic-1.md" navtitle="1">
-    <topichead class="+ map/topicref mapgroup-d/topichead " navtitle="Topic head">
-      <topicref class="- map/topicref " collection-type="sequence" format="markdown" href="topic-1-a-1.md"
-                navtitle="1.A.1"/>
+  <topicref class="- map/topicref " collection-type="sequence" format="markdown" href="topic-1.md">
+    <topicmeta class="- map/topicmeta ">
+      <navtitle class="- topic/navtitle ">1</navtitle>
+    </topicmeta>
+    <topichead class="+ map/topicref mapgroup-d/topichead ">
+      <topicmeta class="- map/topicmeta ">
+        <navtitle class="- topic/navtitle ">Topic <i class="+ topic/ph hi-d/i ">italic</i>
+          <b class="+ topic/ph hi-d/b ">bold</b>
+          <codeph class="+ topic/ph pr-d/codeph ">code</codeph> head
+        </navtitle>
+      </topicmeta>
+      <topicref class="- map/topicref " collection-type="sequence" format="markdown" href="topic-1-a-1.md">
+        <topicmeta class="- map/topicmeta ">
+          <navtitle class="- topic/navtitle ">1.A.1</navtitle>
+        </topicmeta>
+      </topicref>
     </topichead>
   </topicref>
-  <topichead class="+ map/topicref mapgroup-d/topichead " collection-type="sequence" navtitle="Topic head">
-    <topicref class="- map/topicref " format="markdown" href="topic-2-a.md" navtitle="2.A">
-      <topichead class="+ map/topicref mapgroup-d/topichead " collection-type="sequence" navtitle="Topic head"/>
+  <topichead class="+ map/topicref mapgroup-d/topichead " collection-type="sequence">
+    <topicmeta class="- map/topicmeta ">
+      <navtitle class="- topic/navtitle ">Topic head</navtitle>
+    </topicmeta>
+    <topicref class="- map/topicref " format="markdown" href="topic-2-a.md">
+      <topicmeta class="- map/topicmeta ">
+        <navtitle class="- topic/navtitle ">2.A</navtitle>
+      </topicmeta>
+      <topichead class="+ map/topicref mapgroup-d/topichead " collection-type="sequence">
+        <topicmeta class="- map/topicmeta ">
+          <navtitle class="- topic/navtitle ">Topic head</navtitle>
+        </topicmeta>
+      </topichead>
     </topicref>
   </topichead>
-  <topicref class="- map/topicref " format="markdown" href="topic-a.md" navtitle="A">
-    <topichead class="+ map/topicref mapgroup-d/topichead " collection-type="sequence" navtitle="Topic head">
-      <topicref class="- map/topicref " format="markdown" href="topic-a-1-a.md" navtitle="A.1.A"/>
+  <topicref class="- map/topicref " format="markdown" href="topic-a.md">
+    <topicmeta class="- map/topicmeta ">
+      <navtitle class="- topic/navtitle ">A</navtitle>
+    </topicmeta>
+    <topichead class="+ map/topicref mapgroup-d/topichead " collection-type="sequence">
+      <topicmeta class="- map/topicmeta ">
+        <navtitle class="- topic/navtitle ">Topic head</navtitle>
+      </topicmeta>
+      <topicref class="- map/topicref " format="markdown" href="topic-a-1-a.md">
+        <topicmeta class="- map/topicmeta ">
+          <navtitle class="- topic/navtitle ">A.1.A</navtitle>
+        </topicmeta>
+      </topicref>
     </topichead>
   </topicref>
-  <topichead class="+ map/topicref mapgroup-d/topichead " navtitle="Topic head">
-    <topicref class="- map/topicref " collection-type="sequence" format="markdown" href="topic-b-1.md" navtitle="B.1">
-      <topichead class="+ map/topicref mapgroup-d/topichead " navtitle="Topic head"/>
+  <topichead class="+ map/topicref mapgroup-d/topichead ">
+    <topicmeta class="- map/topicmeta ">
+      <navtitle class="- topic/navtitle ">Topic head</navtitle>
+    </topicmeta>
+    <topicref class="- map/topicref " collection-type="sequence" format="markdown" href="topic-b-1.md">
+      <topicmeta class="- map/topicmeta ">
+        <navtitle class="- topic/navtitle ">B.1</navtitle>
+      </topicmeta>
+      <topichead class="+ map/topicref mapgroup-d/topichead ">
+        <topicmeta class="- map/topicmeta ">
+          <navtitle class="- topic/navtitle ">Topic head</navtitle>
+        </topicmeta>
+      </topichead>
     </topicref>
   </topichead>
 </map>

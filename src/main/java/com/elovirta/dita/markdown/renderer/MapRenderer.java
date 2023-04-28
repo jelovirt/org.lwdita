@@ -15,6 +15,9 @@ import com.elovirta.dita.utils.FragmentContentHandler;
 import com.vladsch.flexmark.ast.*;
 import com.vladsch.flexmark.ext.anchorlink.AnchorLink;
 import com.vladsch.flexmark.ext.attributes.AttributesNode;
+import com.vladsch.flexmark.ext.gfm.strikethrough.Strikethrough;
+import com.vladsch.flexmark.ext.gfm.strikethrough.Subscript;
+import com.vladsch.flexmark.ext.superscript.Superscript;
 import com.vladsch.flexmark.ext.tables.*;
 import com.vladsch.flexmark.ext.yaml.front.matter.AbstractYamlFrontMatterVisitor;
 import com.vladsch.flexmark.ext.yaml.front.matter.YamlFrontMatterBlock;
@@ -61,6 +64,7 @@ public class MapRenderer extends AbstractRenderer {
   private static final Attributes TOPICREF_ATTS = buildAtts(MAP_TOPICREF);
   private static final Attributes TOPICHEAD_ATTS = buildAtts(MAPGROUP_D_TOPICHEAD);
   private static final Attributes TOPICMETA_ATTS = buildAtts(MAP_TOPICMETA);
+  private static final Attributes NAVTITLE_ATTS = buildAtts(TOPIC_NAVTITLE);
   private static final Attributes RELTABLE_ATTS = new AttributesBuilder()
     .add(ATTRIBUTE_NAME_CLASS, MAP_RELTABLE.toString())
     .add("toc", "no")
@@ -411,12 +415,26 @@ public class MapRenderer extends AbstractRenderer {
     html.setDocumentLocator();
   }
 
+  private static Class<? extends Node>[] INLINE = List
+    .of(
+      Text.class,
+      TextBase.class,
+      Code.class,
+      Emphasis.class,
+      StrongEmphasis.class,
+      Superscript.class,
+      Subscript.class,
+      Strikethrough.class
+    )
+    .toArray(new Class[0]);
+
   private void render(final ListItem node, final NodeRendererContext context, final SaxWriter html) {
     final Paragraph paragraph = (Paragraph) node.getChildOfType(Paragraph.class);
     final Link link = paragraph != null ? (Link) paragraph.getChildOfType(Link.class) : null;
     final LinkRef linkRef = paragraph != null ? (LinkRef) paragraph.getChildOfType(LinkRef.class) : null;
     final DitaClass name;
     final AttributesBuilder atts;
+    List<Node> navtitle = null;
     if (link != null || linkRef != null) {
       name = MAP_TOPICREF;
       atts = new AttributesBuilder(TOPICREF_ATTS);
@@ -424,7 +442,7 @@ public class MapRenderer extends AbstractRenderer {
         atts.addAll(getLinkAttributes(link.getUrl().toString(), TOPICREF_ATTS).build());
         final String text = link.getText().toString();
         if (!text.isEmpty()) {
-          atts.add("navtitle", text);
+          navtitle = childList(link);
         }
       }
       if (linkRef != null) {
@@ -434,15 +452,15 @@ public class MapRenderer extends AbstractRenderer {
         if (refNode == null) { // "fake" reference link
           atts.add(ATTRIBUTE_NAME_KEYREF, key);
           if (!text.isBlank()) {
-            atts.add("navtitle", text);
+            navtitle = childList(linkRef);
           }
         } else {
           atts.addAll(getLinkAttributes(refNode.getUrl().toString(), TOPICREF_ATTS).build());
           atts.add(ATTRIBUTE_NAME_KEYREF, refNode.getReference().toString());
           if (!refNode.getTitle().toString().isEmpty()) {
-            atts.add("navtitle", refNode.getTitle().toString());
+            navtitle = childList(refNode);
           } else if (text != null && !text.isBlank()) {
-            atts.add("navtitle", text);
+            navtitle = childList(linkRef);
           }
         }
       }
@@ -454,18 +472,17 @@ public class MapRenderer extends AbstractRenderer {
         name = MAPGROUP_D_TOPICHEAD;
         atts = new AttributesBuilder(TOPICHEAD_ATTS);
       }
-      final StringBuilder buf = new StringBuilder();
+      navtitle = new ArrayList<>();
       Node child = paragraph.getFirstChild();
       while (child != null) {
         Node next = child.getNext();
-        if (child instanceof Text) {
-          buf.append(child.getChars());
+        if (child.isOrDescendantOfType(INLINE)) {
+          navtitle.add(child);
         } else if (child instanceof BulletList || child instanceof OrderedList) {
           break;
         }
         child = next;
       }
-      atts.add("navtitle", buf.toString());
     }
 
     if (node instanceof OrderedListItem) {
@@ -475,6 +492,7 @@ public class MapRenderer extends AbstractRenderer {
     }
 
     html.startElement(node, name, getInlineAttributes(node, atts.build()));
+    renderNavtitle(node, context, html, navtitle);
     Node child = node.getFirstChild();
     while (child != null) {
       Node next = child.getNext();
@@ -484,6 +502,23 @@ public class MapRenderer extends AbstractRenderer {
       child = next;
     }
     html.endElement();
+  }
+
+  private void renderNavtitle(
+    final Node node,
+    final NodeRendererContext context,
+    final SaxWriter html,
+    final List<Node> navtitle
+  ) {
+    if (navtitle != null && !navtitle.isEmpty()) {
+      html.startElement(node, MAP_TOPICMETA, TOPICMETA_ATTS);
+      html.startElement(node, TOPIC_NAVTITLE, NAVTITLE_ATTS);
+      for (Node child : navtitle) {
+        context.renderChild(child);
+      }
+      html.endElement();
+      html.endElement();
+    }
   }
 
   private void render(final MailLink node, final NodeRendererContext context, final SaxWriter html) {
@@ -546,16 +581,19 @@ public class MapRenderer extends AbstractRenderer {
       final AttributesBuilder atts = new AttributesBuilder(TOPICREF_ATTS).add(ATTRIBUTE_NAME_KEYREF, key);
       html.startElement(node, MAP_TOPICREF, atts.build());
       if (!node.getText().toString().isEmpty()) {
-        html.characters(node.getText().toString());
+        renderNavtitle(node, context, html, childList(node));
+        //        html.characters(node.getText().toString());
       }
       html.endElement();
     } else {
       final AttributesBuilder atts = getLinkAttributes(refNode.getUrl().toString());
       html.startElement(node, MAP_TOPICREF, atts.build());
       if (!refNode.getTitle().toString().isEmpty()) {
-        html.characters(refNode.getTitle().toString());
+        //        html.characters(refNode.getTitle().toString());
+        renderNavtitle(node, context, html, childList(refNode));
       } else {
-        context.renderChildren(node);
+        //        context.renderChildren(node);
+        renderNavtitle(node, context, html, childList(node));
       }
       html.endElement();
     }
@@ -579,7 +617,8 @@ public class MapRenderer extends AbstractRenderer {
     //            if (!refNode.getTitle().toString().isEmpty()) {
     //                html.characters(refNode.toString());
     //            } else {
-    context.renderChildren(node);
+    //    context.renderChildren(node);
+    renderNavtitle(node, context, html, childList(node));
     //            }
     html.endElement();
     //        }

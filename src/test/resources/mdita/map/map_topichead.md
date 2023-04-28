@@ -1,7 +1,7 @@
 # Title
 
 1. [1](topic-1.md)
-    * Topic head
+    * Topic _italic_ **bold** `code` head
         1.  [1.A.1](topic-1-a-1.md)
 2. Topic head
     * [2.A](topic-2-a.md)

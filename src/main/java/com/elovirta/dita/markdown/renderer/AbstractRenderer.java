@@ -164,6 +164,10 @@ public abstract class AbstractRenderer {
     // Ignore
   }
 
+  protected List<Node> childList(Node astRoot) {
+    return StreamSupport.stream(astRoot.getChildren().spliterator(), false).collect(Collectors.toList());
+  }
+
   protected boolean hasMultipleTopLevelHeaders(Document astRoot) {
     final long count = StreamSupport
       .stream(astRoot.getChildren().spliterator(), false)

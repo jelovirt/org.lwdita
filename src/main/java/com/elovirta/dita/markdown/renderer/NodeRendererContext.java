@@ -25,6 +25,13 @@ public interface NodeRendererContext {
   void renderChildren(Node parent);
 
   /**
+   * Render the node, used by custom renderers
+   *
+   * @param node node to be rendered
+   */
+  void renderChild(Node node);
+
+  /**
    * Get the current rendering context {@link DataHolder}.
    * To get the document options you should use {@link #getDocument()} as the data holder.
    *
