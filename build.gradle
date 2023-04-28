@@ -128,7 +128,7 @@ task dist(type: Zip) {
                 year: new Date().format('yyyy')
         )
     }
-    archiveName "${project.name}-${project.version}.zip"
+    archiveFileName = "${project.name}-${project.version}.zip"
 }
 
 publishing {
