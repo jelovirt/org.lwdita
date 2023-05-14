@@ -1,0 +1,57 @@
+name: registry
+description: Publish plug-in to DITA-OT plug-in registry
+
+inputs:
+  TOKEN:
+    required: true
+    description: Github token
+  CHKSUM:
+    required: true
+    description: SHA-256 of the distribution file
+  VERSION:
+    required: true
+    description: Plug-in version
+  PLUGIN_NAME:
+    required: true
+    description: Plug-in ID
+  URL:
+    required: true
+    description: Plug-in download URL
+  FORK:
+    required: true
+    description: Registry repo fork
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Check out registry
+      uses: actions/checkout@v3
+      with:
+        repository: dita-ot/registry
+        path: registry
+    - name: Update registry
+      working-directory: registry
+      run: |
+        cat ${{ inputs.PLUGIN_NAME }}.json \
+          | jq '.[length -1]' \
+          | jq --arg url "${{ inputs.URL }}" '. | .url|=$url' \
+          | jq --arg chksum "${{ inputs.CHKSUM }}" '. | .cksum|=$chksum' \
+          | jq --arg vers "${{ inputs.VERSION }}" '. | .vers|=$vers' > buf.json 
+        jq '. += [input]' ${{ inputs.PLUGIN_NAME }}.json buf.json \
+          | jq . > concat.json
+        mv concat.json ${{ inputs.PLUGIN_NAME }}.json
+        rm buf.json
+      shell: bash
+    - name: Create Pull Request
+      uses: peter-evans/create-pull-request@v5
+      with:
+        path: registry
+        token: ${{ inputs.TOKEN }}
+        push-to-fork: ${{ inputs.FORK }}
+        branch-suffix: timestamp
+        commit-message: Add ${{ inputs.PLUGIN_NAME }} ${{ inputs.VERSION }}
+        title: Add ${{ inputs.PLUGIN_NAME }} ${{ inputs.VERSION }}
+        body: |
+          Add plug-in `${{ inputs.PLUGIN_NAME }}` version `${{ inputs.VERSION }}`.
+          
+          * [Release notes](https://github.com/jelovirt/org.lwdita/releases/tag/${{ inputs.VERSION }})
