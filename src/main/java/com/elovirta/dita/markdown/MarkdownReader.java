@@ -18,6 +18,7 @@ import com.vladsch.flexmark.ext.superscript.SuperscriptExtension;
 import com.vladsch.flexmark.ext.tables.TablesExtension;
 import com.vladsch.flexmark.ext.yaml.front.matter.YamlFrontMatterExtension;
 import com.vladsch.flexmark.parser.Parser;
+import com.vladsch.flexmark.util.ast.KeepType;
 import com.vladsch.flexmark.util.data.DataKey;
 import com.vladsch.flexmark.util.data.DataSet;
 import com.vladsch.flexmark.util.data.MutableDataSet;
@@ -40,6 +41,9 @@ public class MarkdownReader implements XMLReader {
 
   private static final Pattern schemaPattern = Pattern.compile("^---[\r\n]+\\$schema: +(.+?)[\r\n]");
   private static final ServiceLoader<SchemaProvider> schemaLoader = ServiceLoader.load(SchemaProvider.class);
+
+  final public static DataKey<Collection<String>> FORMATS = new DataKey<>("FORMATS", List.of("markdown", "md"));
+  final public static DataKey<Boolean> PROCESSING_MODE = new DataKey<>("PROCESSING_MODE", false);
 
   /**
    * Supported features mapped to options.
@@ -188,8 +192,17 @@ public class MarkdownReader implements XMLReader {
   }
 
   @Override
-  public void setProperty(String name, Object value) throws SAXNotRecognizedException, SAXNotSupportedException {
-    // NOOP
+  public void setProperty(String name, Object value) throws SAXNotRecognizedException {
+    switch (name) {
+      case "https://dita-ot.org/property/formats":
+        options.set(FORMATS, (Collection<String>) value);
+        break;
+      case "https://dita-ot.org/property/processing-mode":
+        options.set(PROCESSING_MODE, "strict".equals(value));
+        break;
+      default:
+        throw new SAXNotRecognizedException(String.format("Property %s not supported", name));
+    }
   }
 
   @Override

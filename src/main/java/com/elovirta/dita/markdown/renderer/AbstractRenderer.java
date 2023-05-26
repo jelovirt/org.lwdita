@@ -3,6 +3,7 @@
  */
 package com.elovirta.dita.markdown.renderer;
 
+import static com.elovirta.dita.markdown.MarkdownReader.FORMATS;
 import static com.elovirta.dita.markdown.MetadataSerializerImpl.buildAtts;
 import static org.dita.dost.util.Constants.*;
 import static org.dita.dost.util.URLUtils.toURI;
@@ -27,6 +28,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
@@ -61,6 +63,7 @@ public abstract class AbstractRenderer {
   protected final boolean mditaCoreProfile;
   protected final Supplier<SAXTransformerFactory> transformerFactorySupplier;
   protected final Supplier<Templates> templatesSupplier;
+  protected final Collection<String> formats;
 
   public AbstractRenderer(DataHolder options) {
     mditaExtendedProfile = DitaRenderer.MDITA_EXTENDED_PROFILE.getFrom(options);
@@ -83,6 +86,7 @@ public abstract class AbstractRenderer {
           throw new RuntimeException(e);
         }
       })::get;
+    formats = options.get(FORMATS);
   }
 
   /**
@@ -216,14 +220,12 @@ public abstract class AbstractRenderer {
           case "xml":
             format = null;
             break;
-          // Markdown is converted to DITA
-          case "md":
-          case "markdown":
-            format = "markdown";
-            break;
           default:
-            format = !ext.isEmpty() ? ext : "html";
-            break;
+            if (formats.contains(ext)) {
+              format = ext;
+            } else {
+              format = !ext.isEmpty() ? ext : "html";
+            }
         }
       }
       if (uri.getScheme() != null && uri.getScheme().equals("mailto")) {
