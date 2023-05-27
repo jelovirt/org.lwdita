@@ -4,60 +4,60 @@
      specializations="@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product">
   <title class="- topic/title ">Title</title>
   <topicmeta class="- map/topicmeta "/>
-  <topicref class="- map/topicref " collection-type="sequence" format="markdown" href="topic-1.md">
+  <topicref class="- map/topicref " collection-type="sequence" format="md" href="topic-1.md">
     <topicmeta class="- map/topicmeta ">
       <navtitle class="- topic/navtitle ">1</navtitle>
     </topicmeta>
-    <topicref class="- map/topicref " format="markdown" href="topic-1-a.md">
+    <topicref class="- map/topicref " format="md" href="topic-1-a.md">
       <topicmeta class="- map/topicmeta ">
         <navtitle class="- topic/navtitle ">1.A</navtitle>
       </topicmeta>
-      <topicref class="- map/topicref " collection-type="sequence" format="markdown" href="topic-1-a-1.md">
+      <topicref class="- map/topicref " collection-type="sequence" format="md" href="topic-1-a-1.md">
         <topicmeta class="- map/topicmeta ">
           <navtitle class="- topic/navtitle ">1.A.1</navtitle>
         </topicmeta>
       </topicref>
     </topicref>
   </topicref>
-  <topicref class="- map/topicref " collection-type="sequence" format="markdown" href="topic-2.md">
+  <topicref class="- map/topicref " collection-type="sequence" format="md" href="topic-2.md">
     <topicmeta class="- map/topicmeta ">
       <navtitle class="- topic/navtitle ">2</navtitle>
     </topicmeta>
-    <topicref class="- map/topicref " format="markdown" href="topic-2-a.md">
+    <topicref class="- map/topicref " format="md" href="topic-2-a.md">
       <topicmeta class="- map/topicmeta ">
         <navtitle class="- topic/navtitle ">2.A</navtitle>
       </topicmeta>
-      <topicref class="- map/topicref " collection-type="sequence" format="markdown" href="topic-2-a-1.md">
+      <topicref class="- map/topicref " collection-type="sequence" format="md" href="topic-2-a-1.md">
         <topicmeta class="- map/topicmeta ">
           <navtitle class="- topic/navtitle ">2.A.1</navtitle>
         </topicmeta>
       </topicref>
     </topicref>
   </topicref>
-  <topicref class="- map/topicref " format="markdown" href="topic-a.md">
+  <topicref class="- map/topicref " format="md" href="topic-a.md">
     <topicmeta class="- map/topicmeta ">
       <navtitle class="- topic/navtitle ">A</navtitle>
     </topicmeta>
-    <topicref class="- map/topicref " collection-type="sequence" format="markdown" href="topic-a-1.md">
+    <topicref class="- map/topicref " collection-type="sequence" format="md" href="topic-a-1.md">
       <topicmeta class="- map/topicmeta ">
         <navtitle class="- topic/navtitle ">A.1</navtitle>
       </topicmeta>
-      <topicref class="- map/topicref " format="markdown" href="topic-a-1-a.md">
+      <topicref class="- map/topicref " format="md" href="topic-a-1-a.md">
         <topicmeta class="- map/topicmeta ">
           <navtitle class="- topic/navtitle ">A.1.A</navtitle>
         </topicmeta>
       </topicref>
     </topicref>
   </topicref>
-  <topicref class="- map/topicref " format="markdown" href="topic-b.md">
+  <topicref class="- map/topicref " format="md" href="topic-b.md">
     <topicmeta class="- map/topicmeta ">
       <navtitle class="- topic/navtitle ">B</navtitle>
     </topicmeta>
-    <topicref class="- map/topicref " collection-type="sequence" format="markdown" href="topic-b-1.md">
+    <topicref class="- map/topicref " collection-type="sequence" format="md" href="topic-b-1.md">
       <topicmeta class="- map/topicmeta ">
         <navtitle class="- topic/navtitle ">B.1</navtitle>
       </topicmeta>
-      <topicref class="- map/topicref " format="markdown" href="topic-b-1-a.md">
+      <topicref class="- map/topicref " format="md" href="topic-b-1-a.md">
         <topicmeta class="- map/topicmeta ">
           <navtitle class="- topic/navtitle ">B.1.A</navtitle>
         </topicmeta>

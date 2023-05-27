@@ -4,36 +4,36 @@
      specializations="@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product">
   <title class="- topic/title ">Title</title>
   <topicmeta class="- map/topicmeta "/>
-  <topicref class="- map/topicref " format="markdown" href="topic-a.md">
+  <topicref class="- map/topicref " format="md" href="topic-a.md">
     <topicmeta class="- map/topicmeta ">
       <navtitle class="- topic/navtitle ">Text <i class="+ topic/ph hi-d/i ">italic</i>
         <b class="+ topic/ph hi-d/b ">bold</b>
         <codeph class="+ topic/ph pr-d/codeph ">code</codeph>
       </navtitle>
     </topicmeta>
-    <topicref class="- map/topicref " format="markdown" href="topic-a-1.md"/>
+    <topicref class="- map/topicref " format="md" href="topic-a-1.md"/>
   </topicref>
-  <topicref class="- map/topicref " format="markdown" href="topic-b.md">
+  <topicref class="- map/topicref " format="md" href="topic-b.md">
     <topicmeta class="- map/topicmeta ">
       <navtitle class="- topic/navtitle ">B</navtitle>
     </topicmeta>
-    <topicref class="- map/topicref " format="markdown" href="topic-b-1.md">
+    <topicref class="- map/topicref " format="md" href="topic-b-1.md">
       <topicmeta class="- map/topicmeta ">
         <navtitle class="- topic/navtitle ">B.1</navtitle>
       </topicmeta>
     </topicref>
   </topicref>
-  <topicref class="- map/topicref " format="markdown" href="test.md" keyref="key-a">
-    <topicref class="- map/topicref " format="markdown" href="test.md" keyref="key-a"/>
-    <topicref class="- map/topicref " format="markdown" href="test.md" keyref="key-a">
+  <topicref class="- map/topicref " format="md" href="test.md" keyref="key-a">
+    <topicref class="- map/topicref " format="md" href="test.md" keyref="key-a"/>
+    <topicref class="- map/topicref " format="md" href="test.md" keyref="key-a">
       <topicmeta class="- map/topicmeta ">
         <navtitle class="- topic/navtitle ">ignored</navtitle>
       </topicmeta>
     </topicref>
   </topicref>
-  <topicref class="- map/topicref " format="markdown" href="test.md" keyref="key-b">
-    <topicref class="- map/topicref " format="markdown" href="test.md" keyref="key-b"/>
-    <topicref class="- map/topicref " format="markdown" href="test.md" keyref="key-b"/>
+  <topicref class="- map/topicref " format="md" href="test.md" keyref="key-b">
+    <topicref class="- map/topicref " format="md" href="test.md" keyref="key-b"/>
+    <topicref class="- map/topicref " format="md" href="test.md" keyref="key-b"/>
   </topicref>
   <topicref class="- map/topicref " keyref="undefined-key">
     <topicref class="- map/topicref " keyref="undefined-key"/>
@@ -43,6 +43,6 @@
       </topicmeta>
     </topicref>
   </topicref>
-  <keydef class="+ map/topicref mapgroup-d/keydef " format="markdown" href="test.md" keys="key-a"/>
-  <keydef class="+ map/topicref mapgroup-d/keydef " format="markdown" href="test.md" keys="key-b"/>
+  <keydef class="+ map/topicref mapgroup-d/keydef " format="md" href="test.md" keys="key-a"/>
+  <keydef class="+ map/topicref mapgroup-d/keydef " format="md" href="test.md" keys="key-b"/>
 </map>

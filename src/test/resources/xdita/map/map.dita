@@ -2,36 +2,36 @@
 <map xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/" class="- map/map " ditaarch:DITAArchVersion="2.0"
      id="title" specializations="">
   <title class="- topic/title ">Title</title>
-  <topicref class="- map/topicref " format="markdown" href="topic-a.md">
+  <topicref class="- map/topicref " format="md" href="topic-a.md">
     <topicmeta class="- map/topicmeta ">
       <navtitle class="- topic/navtitle ">Text <i class="+ topic/ph hi-d/i ">italic</i>
         <b class="+ topic/ph hi-d/b ">bold</b>
         <tt class="+ topic/ph hi-d/tt ">code</tt>
       </navtitle>
     </topicmeta>
-    <topicref class="- map/topicref " format="markdown" href="topic-a-1.md"/>
+    <topicref class="- map/topicref " format="md" href="topic-a-1.md"/>
   </topicref>
-  <topicref class="- map/topicref " format="markdown" href="topic-b.md">
+  <topicref class="- map/topicref " format="md" href="topic-b.md">
     <topicmeta class="- map/topicmeta ">
       <navtitle class="- topic/navtitle ">B</navtitle>
     </topicmeta>
-    <topicref class="- map/topicref " format="markdown" href="topic-b-1.md">
+    <topicref class="- map/topicref " format="md" href="topic-b-1.md">
       <topicmeta class="- map/topicmeta ">
         <navtitle class="- topic/navtitle ">B.1</navtitle>
       </topicmeta>
     </topicref>
   </topicref>
-  <topicref class="- map/topicref " format="markdown" href="test.md" keyref="key-a">
-    <topicref class="- map/topicref " format="markdown" href="test.md" keyref="key-a"/>
-    <topicref class="- map/topicref " format="markdown" href="test.md" keyref="key-a">
+  <topicref class="- map/topicref " format="md" href="test.md" keyref="key-a">
+    <topicref class="- map/topicref " format="md" href="test.md" keyref="key-a"/>
+    <topicref class="- map/topicref " format="md" href="test.md" keyref="key-a">
       <topicmeta class="- map/topicmeta ">
         <navtitle class="- topic/navtitle ">ignored</navtitle>
       </topicmeta>
     </topicref>
   </topicref>
-  <topicref class="- map/topicref " format="markdown" href="test.md" keyref="key-b">
-    <topicref class="- map/topicref " format="markdown" href="test.md" keyref="key-b"/>
-    <topicref class="- map/topicref " format="markdown" href="test.md" keyref="key-b"/>
+  <topicref class="- map/topicref " format="md" href="test.md" keyref="key-b">
+    <topicref class="- map/topicref " format="md" href="test.md" keyref="key-b"/>
+    <topicref class="- map/topicref " format="md" href="test.md" keyref="key-b"/>
   </topicref>
   <topicref class="- map/topicref " keyref="undefined-key">
     <topicref class="- map/topicref " keyref="undefined-key"/>
@@ -41,6 +41,6 @@
       </topicmeta>
     </topicref>
   </topicref>
-  <keydef class="+ map/topicref mapgroup-d/keydef " format="markdown" href="test.md" keys="key-a"/>
-  <keydef class="+ map/topicref mapgroup-d/keydef " format="markdown" href="test.md" keys="key-b"/>
+  <keydef class="+ map/topicref mapgroup-d/keydef " format="md" href="test.md" keys="key-a"/>
+  <keydef class="+ map/topicref mapgroup-d/keydef " format="md" href="test.md" keys="key-b"/>
 </map>

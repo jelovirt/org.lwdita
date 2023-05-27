@@ -1,13 +1,14 @@
 package com.elovirta.dita.html;
 
 import com.elovirta.dita.utils.AbstractReaderTest;
+import com.vladsch.flexmark.util.data.DataSet;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.xml.sax.XMLReader;
 
 public class HtmlReaderTest extends AbstractReaderTest {
 
-  private XMLReader r = new HtmlReader();
+  private XMLReader r = new HtmlReader(new DataSet(), "html2dita.xsl");
 
   @Override
   public XMLReader getReader() {

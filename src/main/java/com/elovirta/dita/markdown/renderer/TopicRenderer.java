@@ -683,6 +683,7 @@ public class TopicRenderer extends AbstractRenderer {
     } catch (final TransformerConfigurationException e) {
       throw new RuntimeException(e);
     }
+    h.getTransformer().setParameter("formats", String.join(",", formats));
     h.setResult(new SAXResult(fragmentFilter));
     final HtmlParser parser = new HtmlParser();
     parser.setContentHandler(h);
@@ -766,6 +767,7 @@ public class TopicRenderer extends AbstractRenderer {
     } catch (final TransformerConfigurationException e) {
       throw new RuntimeException(e);
     }
+    h.getTransformer().setParameter("formats", String.join(",", formats));
     final HtmlParser parser = new HtmlParser(XmlViolationPolicy.ALLOW);
     parser.setContentHandler(h);
     html.setLocation(node);

@@ -7,6 +7,13 @@
                 xpath-default-namespace="http://www.w3.org/1999/xhtml"
                 version="2.0">
 
+  <xsl:param name="formats"/>
+
+  <xsl:variable name="supported-formats" as="xs:string*"
+                select="if (exists($formats))
+                        then tokenize($formats, ',')
+                        else ('md', 'markdown')"/>
+
   <!-- Topic -->
 
   <xsl:template match="html">
@@ -508,6 +515,7 @@
       <xsl:if test="@data-keyref">
         <xsl:attribute name="keyref" select="@data-keyref"/>
       </xsl:if>
+      <xsl:variable name="extension" select="x:get-extension($href)"/>
       <xsl:choose>
         <xsl:when test="starts-with(@href, 'mailto')">
           <xsl:attribute name="format">email</xsl:attribute>
@@ -516,20 +524,14 @@
         <xsl:when test="@type">
           <xsl:attribute name="format" select="@type"/>
         </xsl:when>
-        <xsl:when test="ends-with($href, '.md')">
-          <xsl:attribute name="format">markdown</xsl:attribute>
+        <xsl:when test="$extension = $supported-formats">
+          <xsl:attribute name="format" select="$extension"/>
         </xsl:when>
-        <xsl:when test="ends-with($href, '.dita') or ends-with($href, '.xml')"/>
+        <xsl:when test="$extension = ('dita', 'xml')"/>
         <xsl:when test="@href">
-          <xsl:attribute name="format">
-            <xsl:variable name="path" select="if (contains($href, '://'))
-                                              then tokenize(substring-after($href, '://'), '/')[position() gt 1]
-                                              else tokenize($href, '/')"/>
-            <xsl:variable name="file" select="$path[position() eq last()]"/>
-            <xsl:value-of select="if (matches($file, '^.+\.(\w+?)$'))
-                                  then replace($file, '^.+\.(\w+?)$', '$1')
-                                  else 'html'"/>
-          </xsl:attribute>
+          <xsl:attribute name="format" select="if (exists($extension))
+                                               then $extension
+                                               else 'html'"/>
         </xsl:when>
       </xsl:choose>
       <xsl:if test="matches(@href, '^https?://', 'i') or starts-with(@href, '/')">
@@ -548,6 +550,17 @@
   <xsl:template match="a/@rel">
     <xsl:attribute name="scope" select="."/>
   </xsl:template>
+
+  <xsl:function name="x:get-extension" as="xs:string?">
+    <xsl:param name="href"/>
+    <xsl:variable name="path" select="if (contains($href, '://'))
+                                      then tokenize(substring-after($href, '://'), '/')[position() gt 1]
+                                      else tokenize($href, '/')"/>
+    <xsl:variable name="file" select="$path[position() eq last()]"/>
+    <xsl:sequence select="if (matches($file, '^.+\.(\w+?)$'))
+                          then replace($file, '^.+\.(\w+?)$', '$1')
+                          else ()"/>
+  </xsl:function>
 
   <!-- HDITA -->
 

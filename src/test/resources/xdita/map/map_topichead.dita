@@ -2,7 +2,7 @@
 <map xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/" class="- map/map " ditaarch:DITAArchVersion="2.0"
      id="title" specializations="">
   <title class="- topic/title ">Title</title>
-  <topicref class="- map/topicref " format="markdown" href="topic-1.md">
+  <topicref class="- map/topicref " format="md" href="topic-1.md">
     <topicmeta class="- map/topicmeta ">
       <navtitle class="- topic/navtitle ">1</navtitle>
     </topicmeta>
@@ -13,7 +13,7 @@
           <tt class="+ topic/ph hi-d/tt ">code</tt> head
         </navtitle>
       </topicmeta>
-      <topicref class="- map/topicref " format="markdown" href="topic-1-a-1.md">
+      <topicref class="- map/topicref " format="md" href="topic-1-a-1.md">
         <topicmeta class="- map/topicmeta ">
           <navtitle class="- topic/navtitle ">1.A.1</navtitle>
         </topicmeta>
@@ -24,7 +24,7 @@
     <topicmeta class="- map/topicmeta ">
       <navtitle class="- topic/navtitle ">Topic head</navtitle>
     </topicmeta>
-    <topicref class="- map/topicref " format="markdown" href="topic-2-a.md">
+    <topicref class="- map/topicref " format="md" href="topic-2-a.md">
       <topicmeta class="- map/topicmeta ">
         <navtitle class="- topic/navtitle ">2.A</navtitle>
       </topicmeta>
@@ -35,7 +35,7 @@
       </topicref>
     </topicref>
   </topicref>
-  <topicref class="- map/topicref " format="markdown" href="topic-a.md">
+  <topicref class="- map/topicref " format="md" href="topic-a.md">
     <topicmeta class="- map/topicmeta ">
       <navtitle class="- topic/navtitle ">A</navtitle>
     </topicmeta>
@@ -43,7 +43,7 @@
       <topicmeta class="- map/topicmeta ">
         <navtitle class="- topic/navtitle ">Topic head</navtitle>
       </topicmeta>
-      <topicref class="- map/topicref " format="markdown" href="topic-a-1-a.md">
+      <topicref class="- map/topicref " format="md" href="topic-a-1-a.md">
         <topicmeta class="- map/topicmeta ">
           <navtitle class="- topic/navtitle ">A.1.A</navtitle>
         </topicmeta>
@@ -54,7 +54,7 @@
     <topicmeta class="- map/topicmeta ">
       <navtitle class="- topic/navtitle ">Topic head</navtitle>
     </topicmeta>
-    <topicref class="- map/topicref " format="markdown" href="topic-b-1.md">
+    <topicref class="- map/topicref " format="md" href="topic-b-1.md">
       <topicmeta class="- map/topicmeta ">
         <navtitle class="- topic/navtitle ">B.1</navtitle>
       </topicmeta>
