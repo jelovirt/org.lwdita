@@ -2,29 +2,29 @@
 <map xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/" class="- map/map " ditaarch:DITAArchVersion="2.0"
      specializations="@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product">
   <topicmeta class="- map/topicmeta "/>
-  <topicref class="- map/topicref " format="markdown" href="topic-a.md">
+  <topicref class="- map/topicref " format="md" href="topic-a.md">
     <topicmeta class="- map/topicmeta ">
       <navtitle class="- topic/navtitle ">A</navtitle>
     </topicmeta>
   </topicref>
-  <topicref class="- map/topicref " format="markdown" href="topic-b.md">
+  <topicref class="- map/topicref " format="md" href="topic-b.md">
     <topicmeta class="- map/topicmeta ">
       <navtitle class="- topic/navtitle ">B</navtitle>
     </topicmeta>
   </topicref>
-  <topicref class="- map/topicref " format="markdown" href="topic-c.md" keyref="C"/>
-  <topicref class="- map/topicref " format="markdown" href="topic-d.md" keyref="D"/>
+  <topicref class="- map/topicref " format="md" href="topic-c.md" keyref="C"/>
+  <topicref class="- map/topicref " format="md" href="topic-d.md" keyref="D"/>
   <reltable class="- map/reltable " toc="no">
     <relheader class="- map/relheader ">
       <relcolspec class="- map/relcolspec " toc="no">
-        <topicref class="- map/topicref " format="markdown" href="topic-a.md">
+        <topicref class="- map/topicref " format="md" href="topic-a.md">
           <topicmeta class="- map/topicmeta ">
             <navtitle class="- topic/navtitle ">A</navtitle>
           </topicmeta>
         </topicref>
       </relcolspec>
       <relcolspec class="- map/relcolspec " toc="no">
-        <topicref class="- map/topicref " format="markdown" href="topic-c.md">
+        <topicref class="- map/topicref " format="md" href="topic-c.md">
           <topicmeta class="- map/topicmeta ">
             <navtitle class="- topic/navtitle ">C</navtitle>
           </topicmeta>
@@ -33,14 +33,14 @@
     </relheader>
     <relrow class="- map/relrow ">
       <relcell class="- map/relcell ">
-        <topicref class="- map/topicref " format="markdown" href="topic-b.md">
+        <topicref class="- map/topicref " format="md" href="topic-b.md">
           <topicmeta class="- map/topicmeta ">
             <navtitle class="- topic/navtitle ">B</navtitle>
           </topicmeta>
         </topicref>
       </relcell>
       <relcell class="- map/relcell ">
-        <topicref class="- map/topicref " format="markdown" href="topic-d.md">
+        <topicref class="- map/topicref " format="md" href="topic-d.md">
           <topicmeta class="- map/topicmeta ">
             <navtitle class="- topic/navtitle ">D</navtitle>
           </topicmeta>
@@ -48,6 +48,6 @@
       </relcell>
     </relrow>
   </reltable>
-  <keydef class="+ map/topicref mapgroup-d/keydef " format="markdown" href="topic-c.md" keys="C"/>
-  <keydef class="+ map/topicref mapgroup-d/keydef " format="markdown" href="topic-d.md" keys="D"/>
+  <keydef class="+ map/topicref mapgroup-d/keydef " format="md" href="topic-c.md" keys="C"/>
+  <keydef class="+ map/topicref mapgroup-d/keydef " format="md" href="topic-d.md" keys="D"/>
 </map>

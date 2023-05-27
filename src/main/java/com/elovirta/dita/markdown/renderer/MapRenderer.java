@@ -3,6 +3,7 @@
  */
 package com.elovirta.dita.markdown.renderer;
 
+import static com.elovirta.dita.markdown.MarkdownReader.FORMATS;
 import static com.elovirta.dita.markdown.MetadataSerializerImpl.buildAtts;
 import static org.dita.dost.util.Constants.*;
 import static org.dita.dost.util.XMLUtils.AttributesBuilder;
@@ -310,6 +311,7 @@ public class MapRenderer extends AbstractRenderer {
     } catch (final TransformerConfigurationException e) {
       throw new RuntimeException(e);
     }
+    h.getTransformer().setParameter("formats", String.join(",", formats));
     h.setResult(new SAXResult(fragmentFilter));
     final HtmlParser parser = new HtmlParser();
     parser.setContentHandler(h);
@@ -393,6 +395,7 @@ public class MapRenderer extends AbstractRenderer {
     } catch (final TransformerConfigurationException e) {
       throw new RuntimeException(e);
     }
+    h.getTransformer().setParameter("formats", String.join(",", formats));
     final HtmlParser parser = new HtmlParser(XmlViolationPolicy.ALLOW);
     parser.setContentHandler(h);
     html.setLocation(node);

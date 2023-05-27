@@ -42,8 +42,8 @@ public class MarkdownReader implements XMLReader {
   private static final Pattern schemaPattern = Pattern.compile("^---[\r\n]+\\$schema: +(.+?)[\r\n]");
   private static final ServiceLoader<SchemaProvider> schemaLoader = ServiceLoader.load(SchemaProvider.class);
 
-  final public static DataKey<Collection<String>> FORMATS = new DataKey<>("FORMATS", List.of("markdown", "md"));
-  final public static DataKey<Boolean> PROCESSING_MODE = new DataKey<>("PROCESSING_MODE", false);
+  public static final DataKey<Collection<String>> FORMATS = new DataKey<>("FORMATS", List.of("markdown", "md"));
+  public static final DataKey<Boolean> PROCESSING_MODE = new DataKey<>("PROCESSING_MODE", false);
 
   /**
    * Supported features mapped to options.

@@ -26,6 +26,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.*;
 import org.xmlunit.builder.DiffBuilder;
+import org.xmlunit.diff.DefaultComparisonFormatter;
 import org.xmlunit.diff.Diff;
 
 public abstract class AbstractReaderTest {
@@ -89,6 +90,9 @@ public abstract class AbstractReaderTest {
         .normalizeWhitespace()
         .checkForIdentical()
         .build();
+      if (diff.hasDifferences()) {
+        System.err.println(diff.fullDescription(new DefaultComparisonFormatter()));
+      }
       assertFalse(diff.hasDifferences());
     } catch (AssertionFailedError e) {
       //      transformerFactory.newTransformer().transform(new DOMSource(act), new StreamResult(System.out));

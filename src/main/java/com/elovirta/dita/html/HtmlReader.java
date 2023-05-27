@@ -1,7 +1,10 @@
 package com.elovirta.dita.html;
 
+import static com.elovirta.dita.markdown.MarkdownReader.FORMATS;
+
 import com.elovirta.dita.utils.ClasspathURIResolver;
 import com.google.common.collect.Lists;
+import com.vladsch.flexmark.util.data.DataSet;
 import java.io.IOException;
 import java.util.Arrays;
 import javax.xml.transform.TransformerConfigurationException;
@@ -23,11 +26,7 @@ public class HtmlReader implements XMLReader {
   private final HtmlParser parser;
   private final SAXResult result;
 
-  public HtmlReader() {
-    this("html2dita.xsl");
-  }
-
-  public HtmlReader(final String... stylesheets) {
+  public HtmlReader(DataSet options, final String... stylesheets) {
     parser = new HtmlParser();
     parser.setDoctypeExpectation(DoctypeExpectation.AUTO);
     parser.setHeuristics(Heuristics.ICU);
@@ -44,6 +43,7 @@ public class HtmlReader implements XMLReader {
           "classpath:///" + stylesheet
         );
         transformerHandler = tf.newTransformerHandler(src);
+        transformerHandler.getTransformer().setParameter("formats", String.join(",", FORMATS.get(options)));
         transformerHandler.setResult(res);
         res = new SAXResult(transformerHandler);
       }

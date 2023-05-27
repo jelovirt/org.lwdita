@@ -86,7 +86,7 @@ public abstract class AbstractRenderer {
           throw new RuntimeException(e);
         }
       })::get;
-    formats = options.get(FORMATS);
+    formats = FORMATS.get(options);
   }
 
   /**
