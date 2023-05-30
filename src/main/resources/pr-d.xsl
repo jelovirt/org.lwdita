@@ -13,22 +13,22 @@
   </xsl:template>
   
   <xsl:template match="*[contains(@class,' pr-d/kwd ')]" name="topic.pr-d.kwd">
-   <span class="kwd">
+   <strong class="kwd">
     <xsl:if test="(@importance='default')">
      <xsl:attribute name="class">defkwd</xsl:attribute>
     </xsl:if>
     <xsl:call-template name="commonattributes"/>
     <xsl:call-template name="setidaname"/>
     <xsl:apply-templates/>
-   </span>
+   </strong>
   </xsl:template>
   
   <xsl:template match="*[contains(@class,' pr-d/var ')]" name="topic.pr-d.var">
-   <span class="var">
+   <emph class="var">
     <xsl:call-template name="commonattributes"/>
     <xsl:call-template name="setidaname"/>
     <xsl:apply-templates/>
-   </span>
+   </emph>
   </xsl:template>
   
   <xsl:template match="*[contains(@class,' pr-d/synph ')]" name="topic.pr-d.synph">
@@ -80,11 +80,11 @@
   </xsl:template>
   
   <xsl:template match="*[contains(@class,' pr-d/parmname ')]" name="topic.pr-d.parmname">
-   <span class="parmname">
+   <strong class="parmname">
     <xsl:call-template name="commonattributes"/>
     <xsl:call-template name="setidaname"/>
     <xsl:apply-templates/>
-   </span>
+   </strong>
   </xsl:template>
   
   <xsl:template match="*[contains(@class,' pr-d/apiname ')]" name="topic.pr-d.apiname">

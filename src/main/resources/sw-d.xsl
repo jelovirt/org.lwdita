@@ -3,43 +3,43 @@
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
   <xsl:template match="*[contains(@class,' sw-d/filepath ')]" name="topic.sw-d.filepath">
-    <span class="filepath">
+    <code class="filepath">
       <xsl:call-template name="commonattributes"/>
       <xsl:call-template name="setidaname"/>
       <xsl:apply-templates/>
-    </span>
+    </code>
   </xsl:template>
 
   <xsl:template match="*[contains(@class,' sw-d/msgph ')]" name="topic.sw-d.msgph">
-    <span class="msgph">
+    <code class="msgph">
       <xsl:call-template name="commonattributes"/>
       <xsl:call-template name="setidaname"/>
       <xsl:apply-templates/>
-    </span>
+    </code>
   </xsl:template>
 
   <xsl:template match="*[contains(@class,' sw-d/userinput ')]" name="topic.sw-d.userinput">
-    <span class="userinput">
+    <code class="userinput">
       <xsl:call-template name="commonattributes"/>
       <xsl:call-template name="setidaname"/>
       <xsl:apply-templates/>
-    </span>
+    </code>
   </xsl:template>
 
   <xsl:template match="*[contains(@class,' sw-d/systemoutput ')]" name="topic.sw-d.systemoutput">
-    <span class="sysout">
+    <code class="sysout">
       <xsl:call-template name="commonattributes"/>
       <xsl:call-template name="setidaname"/>
       <xsl:apply-templates/>
-    </span>
+    </code>
   </xsl:template>
 
   <xsl:template match="*[contains(@class,' sw-d/cmdname ')]" name="topic.sw-d.cmdname">
-    <span class="cmdname">
+    <code class="cmdname">
       <xsl:call-template name="commonattributes"/>
       <xsl:call-template name="setidaname"/>
       <xsl:apply-templates/>
-    </span>
+    </code>
   </xsl:template>
 
   <xsl:template match="*[contains(@class,' sw-d/msgnum ')]" name="topic.sw-d.msgnum">
@@ -51,11 +51,11 @@
   </xsl:template>
 
   <xsl:template match="*[contains(@class,' sw-d/varname ')]" name="topic.sw-d.varname">
-    <span class="varname">
+    <emph class="varname">
       <xsl:call-template name="commonattributes"/>
       <xsl:call-template name="setidaname"/>
       <xsl:apply-templates/>
-    </span>
+    </emph>
   </xsl:template>
 
 </xsl:stylesheet>
