@@ -4,7 +4,9 @@
 
   <xsl:template match="*[contains(@class, ' xml-d/xmlelement ')]">
     <code>
+      <xsl:text>&lt;</xsl:text>
       <xsl:apply-templates/>
+      <xsl:text>&gt;</xsl:text>
     </code>
   </xsl:template>
 
