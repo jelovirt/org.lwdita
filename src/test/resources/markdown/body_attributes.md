@@ -10,11 +10,15 @@ Inline *inline*{.red}.
 
 {audience=novice}
 
-* List item {#ul}
+*  List item {#ul}
+
+*  List item
 
 {audience=novice}
 
 1. List item {#ol}
+
+2. List item
 
 {audience=novice}
 

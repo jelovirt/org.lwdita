@@ -828,6 +828,15 @@ public class TopicRenderer extends AbstractRenderer {
       context.renderChildren(node);
       onlyImageChild = false;
     } else {
+      final Node parent = node.getParent();
+      if (
+        parent.isOrDescendantOfType(BulletListItem.class, OrderedListItem.class) &&
+        !parent.isOrDescendantOfType(BlockQuote.class) &&
+        ((ListItem) parent).isTight()
+      ) {
+        context.renderChildren(node);
+        return;
+      }
       final Attributes atts;
       if (!mditaCoreProfile) {
         final Title header = Title.getFromChildren(node);

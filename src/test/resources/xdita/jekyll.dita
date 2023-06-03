@@ -23,27 +23,13 @@
       <title class="- topic/title ">Add a menu item</title>
       <p class="- topic/p ">You can add menu items to link to:</p>
       <ul class="- topic/ul ">
-        <li class="- topic/li ">
-          <p class="- topic/p ">webpages</p>
-        </li>
-        <li class="- topic/li ">
-          <p class="- topic/p ">collections</p>
-        </li>
-        <li class="- topic/li ">
-          <p class="- topic/p ">products</p>
-        </li>
-        <li class="- topic/li ">
-          <p class="- topic/p ">blogs or blog posts</p>
-        </li>
-        <li class="- topic/li ">
-          <p class="- topic/p ">store policies</p>
-        </li>
-        <li class="- topic/li ">
-          <p class="- topic/p ">external websites</p>
-        </li>
-        <li class="- topic/li ">
-          <p class="- topic/p ">email links</p>
-        </li>
+        <li class="- topic/li ">webpages</li>
+        <li class="- topic/li ">collections</li>
+        <li class="- topic/li ">products</li>
+        <li class="- topic/li ">blogs or blog posts</li>
+        <li class="- topic/li ">store policies</li>
+        <li class="- topic/li ">external websites</li>
+        <li class="- topic/li ">email links</li>
       </ul>
       <p class="- topic/p ">{{ 'xYGuJhKiOZw' | youtube }}</p>
       <required-cleanup class="- topic/required-cleanup " conref="link-to-more-videos.md"/>
@@ -72,49 +58,35 @@
           </p>
           <ul class="- topic/ul ">
             <li class="- topic/li ">
-              <p class="- topic/p ">
                 <b class="+ topic/ph hi-d/b ">Home</b>
                 - your online store's home page
-              </p>
             </li>
             <li class="- topic/li ">
-              <p class="- topic/p ">
                 <b class="+ topic/ph hi-d/b ">Collections</b>
                 - a specific collection or all collections
-              </p>
             </li>
             <li class="- topic/li ">
-              <p class="- topic/p ">
                 <b class="+ topic/ph hi-d/b ">Products</b>
                 - a specific product or all products
-              </p>
             </li>
             <li class="- topic/li ">
-              <p class="- topic/p ">
                 <b class="+ topic/ph hi-d/b ">Pages</b>
                 - a webpage on your online store
-              </p>
             </li>
             <li class="- topic/li ">
-              <p class="- topic/p ">
                 <b class="+ topic/ph hi-d/b ">Blogs</b>
                 - a blog on your online store
-              </p>
             </li>
             <li class="- topic/li ">
-              <p class="- topic/p ">
                 <b class="+ topic/ph hi-d/b ">Blog posts</b>
                 - a blog post on your online store
-              </p>
             </li>
             <li class="- topic/li ">
-              <p class="- topic/p ">
                 <b class="+ topic/ph hi-d/b ">Policies</b>
                 - one of your
                 <xref class="- topic/xref " format="html"
                       href="/manual/sell-online/checkout-settings/refund-privacy-tos" scope="external">store policies
                 </xref>
-              </p>
             </li>
           </ul>
           <p class="- topic/p ">To create an email link, use the format <tt class="+ topic/ph hi-d/tt ">
@@ -152,16 +124,11 @@
         <li class="- topic/li ">
           <p class="- topic/p ">Make any changes:</p>
           <ul class="- topic/ul ">
-            <li class="- topic/li ">
-              <p class="- topic/p ">To change the name of the menu item, enter text in the <b
+            <li class="- topic/li ">To change the name of the menu item, enter text in the <b
                   class="+ topic/ph hi-d/b ">Name
-              </b> field.
-              </p>
-            </li>
-            <li class="- topic/li ">
-              <p class="- topic/p ">To change the destination of the menu item, click the <tt class="+ topic/ph hi-d/tt ">x</tt> in
+              </b> field.</li>
+            <li class="- topic/li ">To change the destination of the menu item, click the <tt class="+ topic/ph hi-d/tt ">x</tt> in
                 the <b class="+ topic/ph hi-d/b ">Link</b> field, and then enter or select a new destination.
-              </p>
             </li>
           </ul>
         </li>

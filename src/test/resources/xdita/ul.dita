@@ -7,27 +7,18 @@
   <shortdesc class="- topic/shortdesc ">Hyphen:</shortdesc>
   <body class="- topic/body ">
     <ul class="- topic/ul ">
-      <li class="- topic/li ">
-        <p class="- topic/p ">hyphen list list list list list list list list list list list list
-          list list list list list list list list list list list</p>
-      </li>
-      <li class="- topic/li ">
-        <p class="- topic/p ">list</p>
+      <li class="- topic/li ">hyphen list list list list list list list list list list list list
+          list list list list list list list list list list list</li>
+      <li class="- topic/li ">list
         <ul class="- topic/ul ">
-          <li class="- topic/li ">
-            <p class="- topic/p ">item</p>
+          <li class="- topic/li ">item
             <ul class="- topic/ul ">
-              <li class="- topic/li ">
-                <p class="- topic/p ">four</p>
-              </li>
+              <li class="- topic/li ">four</li>
             </ul>
           </li>
-          <li class="- topic/li ">
-            <p class="- topic/p ">fifth</p>
+          <li class="- topic/li ">fifth
             <ul class="- topic/ul ">
-              <li class="- topic/li ">
-                <p class="- topic/p ">sixth</p>
-              </li>
+              <li class="- topic/li ">sixth</li>
             </ul>
           </li>
         </ul>
@@ -38,17 +29,13 @@
       <li class="- topic/li ">
         <p class="- topic/p ">inline <i class="+ topic/ph hi-d/i ">bold</i> normal</p>
         <ul class="- topic/ul ">
-          <li class="- topic/li ">
-            <p class="- topic/p ">inline</p>
-          </li>
+          <li class="- topic/li ">inline</li>
         </ul>
       </li>
       <li class="- topic/li ">
         <p class="- topic/p ">para</p>
         <ul class="- topic/ul ">
-          <li class="- topic/li ">
-            <p class="- topic/p ">inline</p>
-          </li>
+          <li class="- topic/li ">inline</li>
         </ul>
       </li>
       <li class="- topic/li ">
@@ -59,17 +46,13 @@
         <p class="- topic/p ">para</p>
         <p class="- topic/p ">para</p>
         <ul class="- topic/ul ">
-          <li class="- topic/li ">
-            <p class="- topic/p ">below this will not work</p>
-          </li>
+          <li class="- topic/li ">below this will not work</li>
         </ul>
       </li>
       <li class="- topic/li ">
         <p class="- topic/p ">para</p>
         <ul class="- topic/ul ">
-          <li class="- topic/li ">
-            <p class="- topic/p ">para</p>
-          </li>
+          <li class="- topic/li ">para</li>
         </ul>
       </li>
     </ul>
@@ -84,12 +67,8 @@
     </ul>
     <p class="- topic/p ">Tight:</p>
     <ul class="- topic/ul ">
-      <li class="- topic/li ">
-        <p class="- topic/p ">Item</p>
-      </li>
-      <li class="- topic/li ">
-        <p class="- topic/p ">Item</p>
-      </li>
+      <li class="- topic/li ">Item</li>
+      <li class="- topic/li ">Item</li>
     </ul>
   </body>
 </topic>
