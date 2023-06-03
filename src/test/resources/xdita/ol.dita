@@ -61,5 +61,23 @@
         <p class="- topic/p ">foo</p>
       </li>
     </ol>
+    <p class="- topic/p ">Loose:</p>
+    <ol class="- topic/ol ">
+      <li class="- topic/li ">
+        <p class="- topic/p ">Item</p>
+      </li>
+      <li class="- topic/li ">
+        <p class="- topic/p ">Item</p>
+      </li>
+    </ol>
+    <p class="- topic/p ">Tight:</p>
+    <ol class="- topic/ol ">
+      <li class="- topic/li ">
+        <p class="- topic/p ">Item</p>
+      </li>
+      <li class="- topic/li ">
+        <p class="- topic/p ">Item</p>
+      </li>
+    </ol>
   </body>
 </topic>

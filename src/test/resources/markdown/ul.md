@@ -28,3 +28,14 @@ Asterix:
 *   para
 
     -   para
+
+Loose:
+
+*   Item
+
+*   Item
+
+Tight:
+
+*   Item
+*   Item

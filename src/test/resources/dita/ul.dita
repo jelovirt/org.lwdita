@@ -71,5 +71,23 @@
         </ul>
       </li>
     </ul>
+    <p class="- topic/p ">Loose:</p>
+    <ul class="- topic/ul ">
+      <li class="- topic/li ">
+        <p class="- topic/p ">Item</p>
+      </li>
+      <li class="- topic/li ">
+        <p class="- topic/p ">Item</p>
+      </li>
+    </ul>
+    <p class="- topic/p ">Tight:</p>
+    <ul class="- topic/ul ">
+      <li class="- topic/li ">
+        <p class="- topic/p ">Item</p>
+      </li>
+      <li class="- topic/li ">
+        <p class="- topic/p ">Item</p>
+      </li>
+    </ul>
   </body>
 </topic>
