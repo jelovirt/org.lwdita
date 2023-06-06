@@ -118,6 +118,7 @@ public class TopicRenderer extends AbstractRenderer {
 
   private final boolean shortdescParagraph;
   private final boolean idFromYaml;
+  private final boolean tightList;
 
   //  private TableBlock currentTableNode;
   private int currentTableColumn;
@@ -133,8 +134,9 @@ public class TopicRenderer extends AbstractRenderer {
 
   public TopicRenderer(DataHolder options) {
     super(options);
-    shortdescParagraph = DitaRenderer.SHORTDESC_PARAGRAPH.getFrom(options);
-    idFromYaml = DitaRenderer.ID_FROM_YAML.getFrom(options);
+    shortdescParagraph = DitaRenderer.SHORTDESC_PARAGRAPH.get(options);
+    idFromYaml = DitaRenderer.ID_FROM_YAML.get(options);
+    tightList = DitaRenderer.TIGHT_LIST.get(options);
     metadataSerializer = new MetadataSerializerImpl(idFromYaml);
   }
 
@@ -830,6 +832,7 @@ public class TopicRenderer extends AbstractRenderer {
     } else {
       final Node parent = node.getParent();
       if (
+        tightList &&
         parent.isOrDescendantOfType(BulletListItem.class, OrderedListItem.class) &&
         !parent.isOrDescendantOfType(BlockQuote.class) &&
         ((ListItem) parent).isTight()
