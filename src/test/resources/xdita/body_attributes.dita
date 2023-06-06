@@ -14,11 +14,17 @@
       <li class="- topic/li ">
         <p class="- topic/p ">List item {#ul}</p>
       </li>
+      <li class="- topic/li ">
+        <p class="- topic/p ">List item</p>
+      </li>
     </ul>
     <p class="- topic/p ">{audience=novice}</p>
     <ol class="- topic/ol ">
       <li class="- topic/li ">
         <p class="- topic/p ">List item {#ol}</p>
+      </li>
+      <li class="- topic/li ">
+        <p class="- topic/p ">List item</p>
       </li>
     </ol>
     <p class="- topic/p ">{audience=novice}</p>

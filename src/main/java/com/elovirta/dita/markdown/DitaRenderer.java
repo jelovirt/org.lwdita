@@ -21,6 +21,7 @@ import org.xml.sax.SAXException;
 public class DitaRenderer {
 
   public static final DataKey<Boolean> SHORTDESC_PARAGRAPH = new DataKey<>("SHORTDESC_PARAGRAPH", false);
+  public static final DataKey<Boolean> TIGHT_LIST = new DataKey<>("TIGHT_LIST", true);
   public static final DataKey<Boolean> ID_FROM_YAML = new DataKey<>("ID_FROM_YAML", false);
 
   /**

@@ -20,3 +20,14 @@ Ordered:
 1.  foo
 1.  foo
 1.  foo
+
+Loose:
+
+1.  Item
+
+2.  Item
+
+Tight:
+
+1.  Item
+2.  Item
