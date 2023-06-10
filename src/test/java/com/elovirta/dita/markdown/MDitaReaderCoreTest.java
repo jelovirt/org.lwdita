@@ -36,6 +36,7 @@ public class MDitaReaderCoreTest extends AbstractReaderTest {
       "conref.md",
       "entity.md",
       "escape.md",
+      "example.md",
       "html.md",
       "image.md",
       "inline_core.md",
