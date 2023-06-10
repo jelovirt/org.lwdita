@@ -4,13 +4,13 @@
   <title class="- topic/title ">Example</title>
   <shortdesc class="- topic/shortdesc ">Shortdesc.</shortdesc>
   <body class="- topic/body ">
-    <section class="- topic/section " id="example-section-example">
+    <example class="- topic/example " id="example-section-example">
       <title class="- topic/title ">Example section {.example}</title>
       <p class="- topic/p ">Example content.</p>
-    </section>
-    <section class="- topic/section " id="example-section-----example--">
+    </example>
+    <example class="- topic/example " id="example-section-----example--">
       <title class="- topic/title ">Example section { .example }</title>
       <p class="- topic/p ">Example content.</p>
-    </section>
+    </example>
   </body>
 </topic>
