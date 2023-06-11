@@ -34,6 +34,7 @@ public class HDitaReaderTest extends AbstractReaderTest {
       "dl.html",
       "entity.html",
       "escape.html",
+      "example.html",
       "hdita.html",
       "html.html",
       "image-size.html",
