@@ -140,7 +140,7 @@
     <section class="- topic/section " id="image-and-multimedia">
       <title class="- topic/title ">Image and multimedia</title>
       <p class="- topic/p ">
-        <audio class="+ topic/object h5m-d/audio ">content</audio>
+        <audio class="- topic/audio ">content</audio>
       </p>
       <p class="- topic/p ">
         <image class="- topic/image ">content</image>
@@ -148,9 +148,9 @@
       <map class="- topic/map ">
         <area class="- topic/area "/>content
       </map>
-      <track class="+ topic/param h5m-d/track " name="track"/>
+      <track class="- topic/track " name="track"/>
       <p class="- topic/p ">
-        <video class="+ topic/object h5m-d/video ">content</video>
+        <video class="- topic/video ">content</video>
       </p>
     </section>
     <section class="- topic/section " id="embedded-content">
@@ -167,7 +167,7 @@
       <p class="- topic/p ">
         <portal class="- topic/portal ">content</portal>
       </p>
-      <source class="+ topic/param h5m-d/source " name="source"/>
+      <source class="- topic/source " name="source"/>
     </section>
     <section class="- topic/section " id="svg-and-mathml">
       <title class="- topic/title ">SVG and MathML</title>
