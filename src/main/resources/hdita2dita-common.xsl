@@ -609,7 +609,7 @@
     </audio>
   </xsl:template>
   <xsl:template match="audio" mode="class">
-    <xsl:attribute name="class">+ topic/object h5m-d/audio </xsl:attribute>
+    <xsl:attribute name="class">- topic/audio </xsl:attribute>
   </xsl:template>
 
   <xsl:template match="video">
@@ -619,19 +619,19 @@
     </video>
   </xsl:template>
   <xsl:template match="video" mode="class">
-    <xsl:attribute name="class">+ topic/object h5m-d/video </xsl:attribute>
+    <xsl:attribute name="class">- topic/video </xsl:attribute>
   </xsl:template>
 
   <xsl:template match="fallback" mode="class">
-    <xsl:attribute name="class">+ topic/desc h5m-d/fallback </xsl:attribute>
+    <xsl:attribute name="class">- topic/fallback </xsl:attribute>
   </xsl:template>
 
 <!--  <xsl:template match="controls" mode="class">-->
-<!--    <xsl:attribute name="class">+ topic/param h5m-d/controls </xsl:attribute>-->
+<!--    <xsl:attribute name="class">- topic/controls </xsl:attribute>-->
 <!--    <xsl:attribute name="name" select="local-name()"/>-->
 <!--  </xsl:template>-->
 <!--  <xsl:template match="poster" mode="class">-->
-<!--    <xsl:attribute name="class">+ topic/param h5m-d/poster </xsl:attribute>-->
+<!--    <xsl:attribute name="class">- topic/poster </xsl:attribute>-->
 <!--    <xsl:attribute name="name" select="local-name()"/>-->
 <!--  </xsl:template>-->
 
@@ -642,12 +642,12 @@
     </source>
   </xsl:template>
   <xsl:template match="source" mode="class">
-    <xsl:attribute name="class">+ topic/param h5m-d/source </xsl:attribute>
+    <xsl:attribute name="class">- topic/source </xsl:attribute>
     <xsl:attribute name="name" select="local-name()"/>
   </xsl:template>
 
   <xsl:template match="track" mode="class">
-    <xsl:attribute name="class">+ topic/param h5m-d/track </xsl:attribute>
+    <xsl:attribute name="class">- topic/track </xsl:attribute>
     <xsl:attribute name="name" select="local-name()"/>
   </xsl:template>
 
