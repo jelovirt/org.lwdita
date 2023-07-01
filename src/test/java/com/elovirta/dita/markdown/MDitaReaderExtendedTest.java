@@ -54,6 +54,7 @@ public class MDitaReaderExtendedTest extends AbstractReaderTest {
       "link.md",
       "multiple_top_level.md",
       "multiple_top_level_specialized.md",
+      "note.md",
       "ol.md",
       "quote.md",
       "reference.md",

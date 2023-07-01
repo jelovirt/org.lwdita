@@ -258,6 +258,19 @@
     <xsl:attribute name="class">- topic/fig </xsl:attribute>
   </xsl:template>
 
+  <xsl:template match="div[@data-class = 'note']">
+    <note>
+      <xsl:apply-templates select="." mode="class"/>
+      <xsl:apply-templates select="@* except @data-class | node()"/>
+    </note>
+  </xsl:template>
+  <xsl:template match="div[@data-class = 'note']" mode="class">
+    <xsl:attribute name="class">- topic/note </xsl:attribute>
+  </xsl:template>
+  <xsl:template match="div[@data-class = 'note']/@data-type">
+    <xsl:attribute name="type" select="."/>
+  </xsl:template>
+
   <xsl:template match="pre">  
     <pre>
       <xsl:apply-templates select="." mode="class"/>

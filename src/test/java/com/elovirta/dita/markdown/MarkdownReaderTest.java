@@ -69,6 +69,7 @@ public class MarkdownReaderTest extends AbstractReaderTest {
       "missing_root_header_with_yaml.md",
       "multiple_top_level.md",
       "multiple_top_level_specialized.md",
+      "note.md",
       "ol.md",
       "quote.md",
       "reference.md",
