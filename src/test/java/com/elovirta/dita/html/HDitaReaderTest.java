@@ -45,6 +45,7 @@ public class HDitaReaderTest extends AbstractReaderTest {
       "linebreak.html",
       "link.html",
       "multiple_top_level.html",
+      "note.html",
       "ol.html",
       "quote.html",
       "short.html",

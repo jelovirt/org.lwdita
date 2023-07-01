@@ -43,6 +43,7 @@ public class MDitaReaderCoreTest extends AbstractReaderTest {
       "linebreak.md",
       "link.md",
       "multiple_top_level.md",
+      "note.md",
       "ol.md",
       "quote.md",
       "short.md",

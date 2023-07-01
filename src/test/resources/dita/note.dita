@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<topic xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/" class="- topic/topic "
+       ditaarch:DITAArchVersion="2.0" id="note"
+       specializations="@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product">
+  <title class="- topic/title ">Note</title>
+  <body class="- topic/body ">
+    <note class="- topic/note ">Note</note>
+    <note class="- topic/note " type="caution">Caution</note>
+    <note class="- topic/note " type="danger">Danger</note>
+    <note class="- topic/note " type="note">Note</note>
+    <note class="- topic/note " type="notice">Notice</note>
+    <note class="- topic/note " type="trouble">Trouble</note>
+    <note class="- topic/note " type="warning">Warning</note>
+  </body>
+</topic>
