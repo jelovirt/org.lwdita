@@ -26,6 +26,15 @@ jobs:
           files: build/distributions/org.lwdita-*.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Publish to registry
+        uses: ./.github/actions/registry
+        with:
+          TOKEN: ${{ secrets.TOKEN }}
+          FORK: jelovirt/registry
+          CHKSUM: ${{ env.CHKSUM }}
+          VERSION: ${{ env.VERSION }}
+          PLUGIN_NAME: org.lwdita
+          URL: https://github.com/jelovirt/org.lwdita/releases/download/${{ env.VERSION }}/org.lwdita-${{ env.VERSION }}.zip
       - name: Publish package
         run: ./gradlew publish
         env:
@@ -36,35 +45,3 @@ jobs:
         run: |
           echo "CHKSUM=$(shasum -a 256 build/distributions/org.lwdita-*.zip | cut -d ' ' -f 1)" >> $GITHUB_ENV
           echo "VERSION=$(echo $GITHUB_REF | cut -d / -f 3)" >> $GITHUB_ENV
-          echo "PLUGIN_NAME=org.lwdita" >> $GITHUB_ENV
-      - name: Check out registry
-        uses: actions/checkout@v3
-        with:
-          repository: dita-ot/registry
-          path: registry
-      - name: Update registry
-        working-directory: registry
-        run: |
-          URL=https://github.com/jelovirt/org.lwdita/releases/download/${{ env.VERSION }}/org.lwdita-${{ env.VERSION }}.zip
-          cat ${{ env.PLUGIN_NAME }}.json \
-            | jq '.[length -1]' \
-            | jq --arg url "$URL" '. | .url|=$url' \
-            | jq --arg chksum "${{ env.CHKSUM }}" '. | .cksum|=$chksum' \
-            | jq --arg vers "${{ env.VERSION }}" '. | .vers|=$vers' > buf.json 
-          jq '. += [input]' ${{ env.PLUGIN_NAME }}.json buf.json \
-            | jq . > concat.json
-          mv concat.json ${{ env.PLUGIN_NAME }}.json
-          rm buf.json
-      - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v5
-        with:
-          path: registry
-          token: ${{ secrets.TOKEN }}
-          push-to-fork: jelovirt/registry
-          branch-suffix: timestamp
-          commit-message: Add ${{ env.PLUGIN_NAME }} ${{ env.VERSION }}
-          title: Add ${{ env.PLUGIN_NAME }} ${{ env.VERSION }}
-          body: |
-            Add plug-in `${{ env.PLUGIN_NAME }}` version `${{ env.VERSION }}`.
-            
-            * [Release notes](https://github.com/jelovirt/org.lwdita/releases/tag/${{ env.VERSION }})
