@@ -63,3 +63,7 @@ Open by default
 
 !!! trouble ""
     block content
+
+1. List item
+   !!! note
+   block content

@@ -835,6 +835,7 @@ public class TopicRenderer extends AbstractRenderer {
         tightList &&
         parent.isOrDescendantOfType(BulletListItem.class, OrderedListItem.class) &&
         !parent.isOrDescendantOfType(BlockQuote.class) &&
+        ListItem.class.isAssignableFrom(parent.getClass()) &&
         ((ListItem) parent).isTight()
       ) {
         context.renderChildren(node);
