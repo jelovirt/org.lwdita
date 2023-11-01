@@ -64,5 +64,13 @@
     <note class="- topic/note " type="trouble">
       <p class="- topic/p ">block content</p>
     </note>
+    <ol class="- topic/ol ">
+      <li class="- topic/li ">
+        List item
+        <note class="- topic/note " type="note">
+          <p class="- topic/p ">block content</p>
+        </note>
+      </li>
+    </ol>
   </body>
 </topic>
