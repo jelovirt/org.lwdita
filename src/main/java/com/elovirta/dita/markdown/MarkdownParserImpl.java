@@ -62,6 +62,9 @@ public class MarkdownParserImpl implements MarkdownParser {
    */
   protected void render(final Document root) {
     ContentHandler res = contentHandler;
+    final XMLFilterImpl cleanerFilter = new CleanerFilter();
+    cleanerFilter.setContentHandler(res);
+    res = cleanerFilter;
     if (DitaRenderer.SPECIALIZATION.get(options)) {
       final XMLFilterImpl specialize = new SpecializeFilter();
       specialize.setContentHandler(res);

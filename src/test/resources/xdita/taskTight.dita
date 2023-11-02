@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<topic xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/"
+       class="- topic/topic " ditaarch:DITAArchVersion="2.0"
+       specializations="(topic hi-d)(topic em-d)"
+       id="task-task">
+  <title class="- topic/title ">Task {.task}</title>
+  <body class="- topic/body ">
+    <ol class="- topic/ol ">
+      <li class="- topic/li ">
+        <p class="- topic/p ">Command</p>
+      </li>
+      <li class="- topic/li ">
+        <p class="- topic/p ">Command</p>
+      </li>
+    </ol>
+  </body>
+</topic>

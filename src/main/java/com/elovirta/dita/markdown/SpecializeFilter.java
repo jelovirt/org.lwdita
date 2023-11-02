@@ -1,5 +1,6 @@
 package com.elovirta.dita.markdown;
 
+import static com.elovirta.dita.markdown.renderer.TopicRenderer.TIGHT_LIST_P;
 import static javax.xml.XMLConstants.NULL_NS_URI;
 import static org.dita.dost.util.Constants.*;
 
@@ -179,7 +180,13 @@ public class SpecializeFilter extends XMLFilterImpl {
         if (depth == DEPTH_IN_BODY) {
           if (taskState == TaskState.BODY) {
             AttributesImpl sectionAtts = new AttributesImpl();
-            sectionAtts.addAttribute(NULL_NS_URI, "class", "class", "CDATA", TASK_CONTEXT.toString());
+            sectionAtts.addAttribute(
+              NULL_NS_URI,
+              ATTRIBUTE_NAME_CLASS,
+              ATTRIBUTE_NAME_CLASS,
+              "CDATA",
+              TASK_CONTEXT.toString()
+            );
             doStartElement(uri, TASK_CONTEXT.localName, TASK_CONTEXT.localName, sectionAtts);
             taskState = TaskState.CONTEXT;
           }
@@ -187,12 +194,19 @@ public class SpecializeFilter extends XMLFilterImpl {
         } else if ((taskState == TaskState.STEP || taskState == TaskState.INFO) && depth == 5) {
           switch (localName) {
             case "p":
+            case TIGHT_LIST_P:
               paragraphCountInStep++;
               if (paragraphCountInStep == 1) {
                 renameStartElement(TASK_CMD, atts);
               } else if (paragraphCountInStep == 2 && taskState != TaskState.INFO) {
                 AttributesImpl res = new AttributesImpl(atts);
-                res.addAttribute(NULL_NS_URI, "class", "class", "CDATA", TASK_INFO.toString());
+                res.addAttribute(
+                  NULL_NS_URI,
+                  ATTRIBUTE_NAME_CLASS,
+                  ATTRIBUTE_NAME_CLASS,
+                  "CDATA",
+                  TASK_INFO.toString()
+                );
                 doStartElement(NULL_NS_URI, TASK_INFO.localName, TASK_INFO.localName, res);
                 taskState = TaskState.INFO;
                 doStartElement(uri, localName, qName, atts);
@@ -203,7 +217,13 @@ public class SpecializeFilter extends XMLFilterImpl {
             default:
               if (taskState != TaskState.INFO) {
                 AttributesImpl res = new AttributesImpl(atts);
-                res.addAttribute(NULL_NS_URI, "class", "class", "CDATA", TASK_INFO.toString());
+                res.addAttribute(
+                  NULL_NS_URI,
+                  ATTRIBUTE_NAME_CLASS,
+                  ATTRIBUTE_NAME_CLASS,
+                  "CDATA",
+                  TASK_INFO.toString()
+                );
                 doStartElement(NULL_NS_URI, TASK_INFO.localName, TASK_INFO.localName, res);
                 taskState = TaskState.INFO;
               }
@@ -264,8 +284,14 @@ public class SpecializeFilter extends XMLFilterImpl {
             default:
               if (referenceState == ReferenceState.BODY) {
                 AttributesImpl sectionAtts = new AttributesImpl();
-                sectionAtts.addAttribute(NULL_NS_URI, "class", "class", "CDATA", "- topic/section ");
-                doStartElement(uri, "section", "section", sectionAtts);
+                sectionAtts.addAttribute(
+                  NULL_NS_URI,
+                  ATTRIBUTE_NAME_CLASS,
+                  ATTRIBUTE_NAME_CLASS,
+                  "CDATA",
+                  "- topic/section "
+                );
+                doStartElement(uri, TOPIC_SECTION.localName, TOPIC_SECTION.localName, sectionAtts);
                 referenceState = ReferenceState.SECTION;
               }
               break;
@@ -305,8 +331,8 @@ public class SpecializeFilter extends XMLFilterImpl {
 
   private void renameStartElement(DitaClass cls, Attributes atts) throws SAXException {
     AttributesImpl res = new AttributesImpl(atts);
-    res.addAttribute(NULL_NS_URI, "class", "class", "CDATA", cls.toString());
-    final int i = res.getIndex(NULL_NS_URI, "outputclass");
+    res.addAttribute(NULL_NS_URI, ATTRIBUTE_NAME_CLASS, ATTRIBUTE_NAME_CLASS, "CDATA", cls.toString());
+    final int i = res.getIndex(NULL_NS_URI, ATTRIBUTE_NAME_OUTPUTCLASS);
     if (i != -1) {
       res.removeAttribute(i);
     }
@@ -314,7 +340,7 @@ public class SpecializeFilter extends XMLFilterImpl {
   }
 
   private Collection<String> getOutputclass(Attributes atts) {
-    final String outputclass = atts.getValue("outputclass");
+    final String outputclass = atts.getValue(ATTRIBUTE_NAME_OUTPUTCLASS);
     if (outputclass == null) {
       return Collections.emptyList();
     }
