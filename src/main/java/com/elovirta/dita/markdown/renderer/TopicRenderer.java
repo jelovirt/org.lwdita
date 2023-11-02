@@ -49,6 +49,7 @@ import javax.xml.transform.sax.TransformerHandler;
 import nu.validator.htmlparser.common.XmlViolationPolicy;
 import nu.validator.htmlparser.sax.HtmlParser;
 import org.dita.dost.util.DitaClass;
+import org.dita.dost.util.XMLUtils;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -105,6 +106,8 @@ public class TopicRenderer extends AbstractRenderer {
   private static final Attributes ENTRY_ATTS = buildAtts(TOPIC_ENTRY);
   private static final Attributes FIG_ATTS = buildAtts(TOPIC_FIG);
   private static final Attributes REQUIRED_CLEANUP_ATTS = buildAtts(TOPIC_REQUIRED_CLEANUP);
+
+  public static final String TIGHT_LIST_P = "tight-list-p";
 
   private static final Map<String, DitaClass> sections = new HashMap<>();
 
@@ -838,7 +841,9 @@ public class TopicRenderer extends AbstractRenderer {
         ListItem.class.isAssignableFrom(parent.getClass()) &&
         ((ListItem) parent).isTight()
       ) {
+        html.startElement(node, TIGHT_LIST_P, P_ATTS);
         context.renderChildren(node);
+        html.endElement();
         return;
       }
       final Attributes atts;

@@ -18,6 +18,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.xml.sax.*;
+import org.xml.sax.helpers.XMLFilterImpl;
 
 public class MarkdownReaderTest extends AbstractReaderTest {
 
@@ -78,6 +79,7 @@ public class MarkdownReaderTest extends AbstractReaderTest {
       "table-width.md",
       "table.md",
       "task.md",
+      "taskTight.md",
       "taskOneStep.md",
       "testBOM.md",
       "testNoBOM.md",
@@ -140,6 +142,7 @@ public class MarkdownReaderTest extends AbstractReaderTest {
   @Test
   public void test_schemaParseFailure() throws Exception {
     final XMLReader reader = getReader();
+    reader.setContentHandler(new XMLFilterImpl());
     final TestErrorHandler errorHandler = new TestErrorHandler();
     reader.setErrorHandler(errorHandler);
 
@@ -160,6 +163,7 @@ public class MarkdownReaderTest extends AbstractReaderTest {
   @Test
   public void test_schemaParseFailure_withoutErrorHandler() throws Exception {
     final XMLReader reader = getReader();
+    reader.setContentHandler(new XMLFilterImpl());
 
     try (final InputStream in = getClass().getResourceAsStream("/" + getSrc() + "schema/unrecognized.md")) {
       final InputSource input = new InputSource(in);
