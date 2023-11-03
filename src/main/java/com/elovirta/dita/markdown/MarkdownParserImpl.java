@@ -10,6 +10,7 @@ import com.vladsch.flexmark.util.ast.Document;
 import com.vladsch.flexmark.util.ast.Node;
 import com.vladsch.flexmark.util.data.DataSet;
 import com.vladsch.flexmark.util.sequence.BasedSequence;
+import java.io.IOException;
 import java.net.URI;
 import java.util.List;
 import java.util.Map;
@@ -33,15 +34,20 @@ public class MarkdownParserImpl implements MarkdownParser {
   }
 
   @Override
-  public void convert(BasedSequence sequence, URI input) throws ParseException {
+  public void convert(BasedSequence sequence, URI input) throws SAXException {
     final Parser parser = Parser.builder(options).build();
     final Document root = parser.parse(sequence);
     try {
       final Document cleaned = preprocess(root, input);
       validate(cleaned);
       render(cleaned);
-    } catch (SAXException e) {
-      throw new ParseException(e);
+    } catch (ParseException e) {
+      final Throwable cause = e.getCause();
+      if (cause != null && cause instanceof SAXException) {
+        throw (SAXException) cause;
+      } else {
+        throw new SAXException(e);
+      }
     }
   }
 

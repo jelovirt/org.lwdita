@@ -1,11 +1,12 @@
 package com.elovirta.dita.markdown;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 import com.elovirta.dita.utils.AbstractReaderTest;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.opentest4j.AssertionFailedError;
+import org.xml.sax.SAXException;
 
 public class MDitaReaderCoreTest extends AbstractReaderTest {
 
@@ -79,6 +80,11 @@ public class MDitaReaderCoreTest extends AbstractReaderTest {
   @ParameterizedTest
   @ValueSource(strings = { "header.md", "invalid_header.md", "invalid_header_third.md" })
   public void test_fail(String file) {
-    assertThrows(ParseException.class, () -> run(file));
+    try {
+      run(file);
+      fail();
+    } catch (Exception e) {
+      assertEquals(SAXException.class, e.getCause().getClass());
+    }
   }
 }
