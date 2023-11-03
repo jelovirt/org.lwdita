@@ -5,7 +5,7 @@ sourceCompatibility = 11
 targetCompatibility = 11
 
 group = 'com.elovirta.dita'
-version = "5.5.1"
+version = "5.6.0"
 
 repositories {
     mavenCentral()
