@@ -177,6 +177,21 @@ public class MarkdownReader implements XMLReader {
       case "http://lwdita.org/sax/features/mdita-core-profile":
         options.setAll(MDitaReader.CORE_PROFILE);
         break;
+      case "http://xml.org/sax/features/external-general-entities":
+      case "http://xml.org/sax/features/external-parameter-entities":
+      case "http://xml.org/sax/features/is-standalone":
+      case "http://xml.org/sax/features/lexical-handler/parameter-entities":
+      case "http://xml.org/sax/features/resolve-dtd-uris":
+      case "http://xml.org/sax/features/string-interning":
+      case "http://xml.org/sax/features/unicode-normalization-checking":
+      case "http://xml.org/sax/features/use-attributes2":
+      case "http://xml.org/sax/features/use-locator2":
+      case "http://xml.org/sax/features/use-entity-resolver2":
+      case "http://xml.org/sax/features/validation":
+      case "http://xml.org/sax/features/xmlns-uris":
+      case "http://xml.org/sax/features/xml-1.1":
+        // Ignore. Should throw SAXNotSupportedException but Saxon doesn't catch the exception
+        break;
       default:
         final DataKey<Boolean> option = FEATURES.get(name);
         if (option != null) {
@@ -200,6 +215,13 @@ public class MarkdownReader implements XMLReader {
         break;
       case "https://dita-ot.org/property/processing-mode":
         options.set(PROCESSING_MODE, "strict".equals(value));
+        break;
+      case "http://xml.org/sax/properties/declaration-handler":
+      case "http://xml.org/sax/properties/document-xml-version":
+      case "http://xml.org/sax/properties/dom-node":
+      case "http://xml.org/sax/properties/lexical-handler":
+      case "http://xml.org/sax/properties/xml-string":
+        // Ignore. Should throw SAXNotSupportedException but Saxon doesn't catch the exception
         break;
       default:
         throw new SAXNotRecognizedException(String.format("Property %s not supported", name));
