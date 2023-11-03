@@ -4,6 +4,7 @@ import com.vladsch.flexmark.util.sequence.BasedSequence;
 import java.net.URI;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.ErrorHandler;
+import org.xml.sax.SAXException;
 
 /**
  * Interface for Markdown parser that produces SAX events for a DITA document.
@@ -16,7 +17,7 @@ public interface MarkdownParser {
    * @param input    Markdown document URI.
    * @throws ParseException if parsing failed
    */
-  void convert(BasedSequence sequence, URI input) throws ParseException;
+  void convert(BasedSequence sequence, URI input) throws SAXException;
 
   /**
    * Set the content event handler.

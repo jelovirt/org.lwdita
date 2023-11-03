@@ -175,7 +175,12 @@ public class MarkdownReaderTest extends AbstractReaderTest {
   @ParameterizedTest
   @ValueSource(strings = { "invalid_header.md" })
   public void test_fail(String file) {
-    assertThrows(RuntimeException.class, () -> run(file));
+    try {
+      run(file);
+      fail();
+    } catch (Exception e) {
+      assertEquals(SAXException.class, e.getCause().getClass());
+    }
   }
 
   @Test

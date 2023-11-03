@@ -258,7 +258,7 @@ public class MarkdownReader implements XMLReader {
     try {
       markdownParser.convert(sequence, Optional.ofNullable(input.getSystemId()).map(URI::create).orElse(null));
     } catch (ParseException e) {
-      throw new SAXException(e);
+      throw new SAXException("Failed to parse: " + e.getMessage(), e);
     }
   }
 
