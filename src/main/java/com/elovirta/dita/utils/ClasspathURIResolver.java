@@ -37,7 +37,6 @@ public class ClasspathURIResolver implements URIResolver {
         resource = res.getPath().substring(1);
       }
       final InputStream in = this.getClass().getClassLoader().getResourceAsStream(resource);
-      System.out.println("Resolved " + resource + ": " + in);
       if (in != null) {
         return new StreamSource(in, res.toString());
       } else {
