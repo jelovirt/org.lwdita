@@ -30,26 +30,11 @@ import org.xmlunit.diff.Diff;
 
 public class DitaToAstTest {
 
-  @Test
-  public void testAst() throws Exception {
-    final String name = "ast";
-    final Document act = run("dita/" + name + ".dita");
-    final Document exp = read("ast/dita2" + name + ".xml");
-    try {
-      final Diff diff = DiffBuilder
-        .compare(clean(act))
-        .withTest(clean(exp))
-        .normalizeWhitespace()
-        .ignoreWhitespace()
-        .ignoreComments()
-        .checkForIdentical()
-        .build();
-      assertFalse(diff.hasDifferences());
-    } catch (AssertionFailedError e) {
-      TransformerFactory.newInstance().newTransformer().transform(new DOMSource(exp), new StreamResult(System.out));
-      TransformerFactory.newInstance().newTransformer().transform(new DOMSource(act), new StreamResult(System.out));
-      throw e;
-    }
+  private final TransformerFactory transformerFactory;
+
+  public DitaToAstTest() {
+    transformerFactory = TransformerFactory.newInstance();
+    transformerFactory.setURIResolver(new ClasspathURIResolver(transformerFactory.getURIResolver()));
   }
 
   @ParameterizedTest
@@ -107,7 +92,7 @@ public class DitaToAstTest {
   )
   public void testAst(String name) throws Exception {
     final Document act = run("dita/" + name + ".dita");
-    final Document exp = read("ast/dita2" + name + ".xml");
+    final Document exp = read("output/ast/" + name + ".xml");
     try {
       final Diff diff = DiffBuilder
         .compare(clean(act))
@@ -119,8 +104,8 @@ public class DitaToAstTest {
         .build();
       assertFalse(diff.hasDifferences());
     } catch (AssertionFailedError e) {
-      TransformerFactory.newInstance().newTransformer().transform(new DOMSource(exp), new StreamResult(System.out));
-      TransformerFactory.newInstance().newTransformer().transform(new DOMSource(act), new StreamResult(System.out));
+      transformerFactory.newTransformer().transform(new DOMSource(exp), new StreamResult(System.out));
+      transformerFactory.newTransformer().transform(new DOMSource(act), new StreamResult(System.out));
       throw e;
     }
   }
@@ -131,9 +116,7 @@ public class DitaToAstTest {
       InputStream style = getClass().getResourceAsStream("/dita2ast.xsl");
       InputStream ri = getClass().getResourceAsStream("/" + input)
     ) {
-      final TransformerFactory tf = TransformerFactory.newInstance();
-      tf.setURIResolver(new ClasspathURIResolver(tf.getURIResolver()));
-      final Transformer t = tf.newTransformer(new StreamSource(style, "classpath:///dita2ast.xsl"));
+      final Transformer t = transformerFactory.newTransformer(new StreamSource(style, "classpath:///dita2ast.xsl"));
       t.transform(new StreamSource(ri), new DOMResult(output));
     }
     return output;
@@ -146,12 +129,12 @@ public class DitaToAstTest {
         doc.removeChild(node);
       }
     }
-    final NodeList elems = doc.getElementsByTagName("*");
-    for (int i = 0; i < elems.getLength(); i++) {
-      final Element elem = (Element) elems.item(i);
-      //            elem.removeAttribute("domains");
-      //            elem.removeAttributeNS("http://dita.oasis-open.org/architecture/2005/", "DITAArchVersion");
-    }
+    //    final NodeList elems = doc.getElementsByTagName("*");
+    //    for (int i = 0; i < elems.getLength(); i++) {
+    //      final Element elem = (Element) elems.item(i);
+    //            elem.removeAttribute("domains");
+    //            elem.removeAttributeNS("http://dita.oasis-open.org/architecture/2005/", "DITAArchVersion");
+    //    }
     doc.normalizeDocument();
     return doc;
   }
