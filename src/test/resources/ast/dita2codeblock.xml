@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?><pandoc><div><header id="codeblock" level="1">Codeblock</header><div><para>Code example on <code>for</code> loop:</para><codeblock xml:space="preserve">for i in items:
+    println(i)
+</codeblock><para>Fenced block:</para><codeblock class="scala" id="foreach-example" xml:space="preserve">items.foreach(println)
+</codeblock></div></div></pandoc>

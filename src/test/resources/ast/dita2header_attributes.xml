@@ -1,0 +1,1 @@
+<?xml version="1.0" encoding="UTF-8"?><pandoc><div><header id="foo" level="1">My header</header><div/><div id="foo-section"><header id="foo-section" level="2">My header ##</header><div/></div><div class="main shine" id="the-site"><header id="the-site" level="2">My other header</header><div/></div></div></pandoc>

@@ -3,6 +3,7 @@ package com.elovirta.dita.markdown;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import com.elovirta.dita.utils.ClasspathURIResolver;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -16,6 +17,8 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 import org.dita.dost.util.XMLUtils;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.opentest4j.AssertionFailedError;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -29,8 +32,82 @@ public class DitaToAstTest {
 
   @Test
   public void testAst() throws Exception {
-    final Document act = run("dita/ast.dita");
-    final Document exp = read("ast/dita2ast.xml");
+    final String name = "ast";
+    final Document act = run("dita/" + name + ".dita");
+    final Document exp = read("ast/dita2" + name + ".xml");
+    try {
+      final Diff diff = DiffBuilder
+        .compare(clean(act))
+        .withTest(clean(exp))
+        .normalizeWhitespace()
+        .ignoreWhitespace()
+        .ignoreComments()
+        .checkForIdentical()
+        .build();
+      assertFalse(diff.hasDifferences());
+    } catch (AssertionFailedError e) {
+      TransformerFactory.newInstance().newTransformer().transform(new DOMSource(exp), new StreamResult(System.out));
+      TransformerFactory.newInstance().newTransformer().transform(new DOMSource(act), new StreamResult(System.out));
+      throw e;
+    }
+  }
+
+  @ParameterizedTest
+  @ValueSource(
+    strings = {
+      "abbreviation",
+      "admonition",
+      "ast",
+      "body_attributes",
+      "codeblock",
+      "comment",
+      "concept",
+      "conkeyref",
+      "conref",
+      "dl",
+      "entity",
+      "escape",
+      "footnote",
+      "hdita",
+      "header",
+      "header_attributes",
+      "html",
+      "image-size",
+      "image",
+      "inline",
+      "inline_extended",
+      "jekyll",
+      "keyref",
+      "keys",
+      "linebreak",
+      "link",
+      "missing_root_header",
+      "missing_root_header_with_yaml",
+      "multiple_top_level",
+      "multiple_top_level_specialized",
+      "note",
+      "ol",
+      "pandoc_header",
+      "quote",
+      "reference",
+      "short",
+      "shortdesc",
+      "table-width",
+      "table",
+      "task",
+      "taskOneStep",
+      "taskTight",
+      "testBOM",
+      "testNoBOM",
+      "topic",
+      "ul",
+      "unsupported_html",
+      "yaml",
+    }
+  )
+  public void testAst(String name) throws Exception {
+    final Document act = run("dita/" + name + ".dita");
+    final Document exp = read("ast/dita2" + name + ".xml");
     try {
       final Diff diff = DiffBuilder
         .compare(clean(act))

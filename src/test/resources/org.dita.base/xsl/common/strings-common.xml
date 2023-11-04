@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+This file is part of the DITA Open Toolkit project.
+
+Copyright 2017 IBM Corporation
+
+See the accompanying LICENSE file for applicable license.
+-->
+<?xml-model href="strings.rnc" type="application/relax-ng-compact-syntax"?>
+<variables>
+   <variable id="figure-number-separator"> </variable>
+   <variable id="OpenQuote">“</variable>
+   <variable id="CloseQuote">”</variable>
+   <variable id="ColonSymbol">:</variable>
+   <variable id="#menucascade-separator"> &gt; </variable>
+   <variable id="intro-to-topic-link"/>
+  <variable id="Note">Note</variable>
+  <variable id="Trouble">Trouble</variable>
+  <variable id="Warning">Warning</variable>
+  <variable id="Danger">Danger</variable>
+  <variable id="Caution">Caution</variable>
+  <variable id="Attention">Attention</variable>
+  <variable id="Remember">Remember</variable>
+  <variable id="Important">Important</variable>
+  <variable id="Restriction">Restriction</variable>
+  <variable id="Fastpath">Fastpath</variable>
+  <variable id="Tip">Tip</variable>
+  <variable id="Table">Table</variable>
+</variables>
