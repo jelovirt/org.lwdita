@@ -1,9 +1,11 @@
 package com.elovirta.dita.markdown;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 import com.elovirta.dita.utils.ClasspathURIResolver;
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
@@ -12,8 +14,8 @@ import org.junit.jupiter.api.Test;
 
 public class AstToMarkdownTest {
 
-  private String run(final String input) throws Exception {
-    final StringWriter o = new StringWriter();
+  private byte[] run(final String input) throws Exception {
+    final ByteArrayOutputStream o = new ByteArrayOutputStream();
     try (
       InputStream style = getClass().getResourceAsStream("/ast.xsl");
       InputStream ri = getClass().getResourceAsStream("/" + input)
@@ -23,25 +25,17 @@ public class AstToMarkdownTest {
       final Transformer t = tf.newTransformer(new StreamSource(style, "classpath:///ast.xsl"));
       t.transform(new StreamSource(ri), new StreamResult(o));
     }
-    return o.toString();
+    return o.toByteArray();
   }
 
   @Test
   public void testAst() throws Exception {
-    final String act = run("ast/ast.xml");
-    final String exp = read("markdown/ast.md");
-    assertEquals(exp, act);
+    final byte[] act = run("ast/ast.xml");
+    final byte[] exp = read("markdown/ast.md");
+    assertArrayEquals(exp, act);
   }
 
-  private String read(final String input) throws IOException {
-    final StringWriter o = new StringWriter();
-    try (Reader i = new InputStreamReader(getClass().getResourceAsStream("/" + input))) {
-      char[] buf = new char[1024];
-      int len;
-      while ((len = i.read(buf)) != -1) {
-        o.write(buf, 0, len);
-      }
-    }
-    return o.toString();
+  private byte[] read(final String input) throws Exception {
+    return Files.readAllBytes(Paths.get(getClass().getResource("/" + input).toURI()));
   }
 }
