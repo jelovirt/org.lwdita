@@ -1,9 +1,11 @@
 package com.elovirta.dita.markdown;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.elovirta.dita.utils.ClasspathURIResolver;
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import javax.xml.transform.Transformer;
@@ -55,6 +57,7 @@ public class AstToMarkdownTest {
       "reference",
       "short",
       "shortdesc",
+      "table-block",
       "table-width",
       "table",
       "task",
@@ -71,7 +74,7 @@ public class AstToMarkdownTest {
   public void testAst(String name) throws Exception {
     final byte[] act = run("output/ast/" + name + ".xml");
     final byte[] exp = read("output/markdown/" + name + ".md");
-    assertArrayEquals(exp, act);
+    assertEquals(new String(exp, StandardCharsets.UTF_8), new String(act, StandardCharsets.UTF_8));
   }
 
   private byte[] run(final String input) throws Exception {
