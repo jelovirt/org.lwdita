@@ -1,0 +1,1 @@
+<?xml version="1.0" encoding="UTF-8"?><pandoc><div><header id="escape" level="1">Escape</header><div><para>Asterisk * bracket [foo].</para><para>\`*_{}[]()&gt;#+-.!&lt;&gt;</para></div></div></pandoc>
