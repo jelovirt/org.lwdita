@@ -1,6 +1,5 @@
 package com.elovirta.dita.markdown;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.elovirta.dita.utils.ClasspathURIResolver;

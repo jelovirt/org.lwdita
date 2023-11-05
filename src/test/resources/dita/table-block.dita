@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<topic xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/"
+       ditaarch:DITAArchVersion="2.0"
+       specializations="@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product"
+       class="- topic/topic "
+       id="tables">
+  <title class="- topic/title ">Table with block content</title>
+  <body class="- topic/body ">
+    <table class="- topic/table ">
+      <tgroup class="- topic/tgroup " cols="3">
+        <colspec class="- topic/colspec " colname="col1"/>
+        <colspec class="- topic/colspec " colname="col2"/>
+        <colspec class="- topic/colspec " colname="col3"/>
+        <thead class="- topic/thead ">
+          <row class="- topic/row ">
+            <entry class="- topic/entry ">A</entry>
+            <entry class="- topic/entry ">B</entry>
+            <entry class="- topic/entry ">C</entry>
+          </row>
+        </thead>
+        <tbody class="- topic/tbody ">
+          <row class="- topic/row ">
+            <entry class="- topic/entry ">
+              <p class="- topic/p ">A1</p>
+              <p class="- topic/p ">A1</p>
+            </entry>
+            <entry class="- topic/entry ">
+              <p class="- topic/p ">B1</p>
+              <p class="- topic/p ">B1</p>
+            </entry>
+            <entry class="- topic/entry ">
+              <p class="- topic/p ">C1</p>
+              <p class="- topic/p ">C1</p>
+            </entry>
+          </row>
+          <row class="- topic/row ">
+            <entry class="- topic/entry ">
+              <p class="- topic/p ">A2</p>
+            </entry>
+            <entry class="- topic/entry ">
+              <p class="- topic/p ">B2</p>
+            </entry>
+            <entry class="- topic/entry ">
+              <p class="- topic/p ">C2</p>
+            </entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+  </body>
+</topic>
