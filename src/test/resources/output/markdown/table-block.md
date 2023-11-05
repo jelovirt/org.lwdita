@@ -13,19 +13,19 @@ C
 
 A1
 
-A1
+ A1
 
 </td><td>
 
 B1
 
-B1
+ B1
 
 </td><td>
 
 C1
 
-C1
+ C1
 
 </td></tr><tr><td>
 
@@ -38,5 +38,23 @@ B2
 </td><td>
 
 C2
+
+</td></tr><tr><td colspan="2">
+
+A3
+
+ B3
+
+</td><td rowspan="2">
+
+C3
+
+</td></tr><tr><td>
+
+A2
+
+</td><td>
+
+B2
 
 </td></tr><tbody></table>

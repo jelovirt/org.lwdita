@@ -34,14 +34,31 @@
             </entry>
           </row>
           <row class="- topic/row ">
-            <entry class="- topic/entry ">
+            <entry class="- topic/entry " align="left">
               <p class="- topic/p ">A2</p>
             </entry>
-            <entry class="- topic/entry ">
+            <entry class="- topic/entry " align="center">
               <p class="- topic/p ">B2</p>
             </entry>
-            <entry class="- topic/entry ">
+            <entry class="- topic/entry " align="right">
               <p class="- topic/p ">C2</p>
+            </entry>
+          </row>
+          <row class="- topic/row ">
+            <entry class="- topic/entry " namest="col1" nameend="col2">
+              <p class="- topic/p ">A3</p>
+              <p class="- topic/p ">B3</p>
+            </entry>
+            <entry class="- topic/entry " morerows="1">
+              <p class="- topic/p ">C3</p>
+            </entry>
+          </row>
+          <row class="- topic/row ">
+            <entry class="- topic/entry " align="left">
+              <p class="- topic/p ">A2</p>
+            </entry>
+            <entry class="- topic/entry " align="center">
+              <p class="- topic/p ">B2</p>
             </entry>
           </row>
         </tbody>

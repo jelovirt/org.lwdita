@@ -222,11 +222,35 @@
   <xsl:template match="table[*/tr/tablecell/para]" mode="ast" priority="10">
     <xsl:text>&lt;table></xsl:text>
     <xsl:for-each select="thead">
-      <xsl:text>&lt;thead></xsl:text>
+      <xsl:text>&lt;thead</xsl:text>
+      <xsl:for-each select="@*">
+        <xsl:text> </xsl:text>
+        <xsl:value-of select="name()"/>
+        <xsl:text>="</xsl:text>
+        <xsl:value-of select="."/>
+        <xsl:text>"</xsl:text>
+      </xsl:for-each>
+      <xsl:text>></xsl:text>
       <xsl:for-each select="tr">
-        <xsl:text>&lt;tr></xsl:text>
+        <xsl:text>&lt;tr</xsl:text>
+        <xsl:for-each select="@*">
+          <xsl:text> </xsl:text>
+          <xsl:value-of select="name()"/>
+          <xsl:text>="</xsl:text>
+          <xsl:value-of select="."/>
+          <xsl:text>"</xsl:text>
+        </xsl:for-each>
+        <xsl:text>></xsl:text>
         <xsl:for-each select="tablecell">
-          <xsl:text>&lt;th></xsl:text>
+          <xsl:text>&lt;th</xsl:text>
+          <xsl:for-each select="@*">
+            <xsl:text> </xsl:text>
+            <xsl:value-of select="name()"/>
+            <xsl:text>="</xsl:text>
+            <xsl:value-of select="."/>
+            <xsl:text>"</xsl:text>
+          </xsl:for-each>
+          <xsl:text>></xsl:text>
           <xsl:value-of select="$linefeed"/>
           <xsl:value-of select="$linefeed"/>
           <xsl:variable name="contents" as="xs:string*">
@@ -247,9 +271,25 @@
     <xsl:for-each select="tbody">
       <xsl:text>&lt;tbody></xsl:text>
       <xsl:for-each select="tr">
-        <xsl:text>&lt;tr></xsl:text>
+        <xsl:text>&lt;tr</xsl:text>
+        <xsl:for-each select="@*">
+          <xsl:text> </xsl:text>
+          <xsl:value-of select="name()"/>
+          <xsl:text>="</xsl:text>
+          <xsl:value-of select="."/>
+          <xsl:text>"</xsl:text>
+        </xsl:for-each>
+        <xsl:text>></xsl:text>
         <xsl:for-each select="tablecell">
-          <xsl:text>&lt;td></xsl:text>
+          <xsl:text>&lt;td</xsl:text>
+          <xsl:for-each select="@*">
+            <xsl:text> </xsl:text>
+            <xsl:value-of select="name()"/>
+            <xsl:text>="</xsl:text>
+            <xsl:value-of select="."/>
+            <xsl:text>"</xsl:text>
+          </xsl:for-each>
+          <xsl:text>></xsl:text>
           <xsl:value-of select="$linefeed"/>
           <xsl:value-of select="$linefeed"/>
           <xsl:variable name="contents" as="xs:string*">
