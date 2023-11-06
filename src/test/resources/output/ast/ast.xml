@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?xml-model href="../../main/resources/ast.rnc" type="application/relax-ng-compact-syntax"?>
 <pandoc>
   <div>
     <header id="test" level="1">Test</header>
     <div>
       <para>Paragraph <emph>test</emph> and <strong>list list list list list list list list list list list list list
-          list list list list list list list list list list</strong> or <code>code</code>. This is a very long line.
-        This is a very long line. This is a very long line. This is a very long line. This is a very long line. This is
-        a very long line. This is a very long line. This is a very long line. This is a very long line. This is a very
-        long line. This is a very long line.</para>
+        list list list list list list list list list list
+      </strong> or <code>code</code>. This is a very long line. This is a very long line. This is a very long line. This
+        is a very long line. This is a very long line. This is a very long line. This is a very long line. This is a
+        very long line. This is a very long line. This is a very long line. This is a very long line.
+      </para>
       <para>Paragraph with block content</para>
       <codeblock xml:space="preserve">codeblock
 codeblock
@@ -20,16 +20,20 @@ codeblock</codeblock>
         </li>
       </orderedlist>
       <para>Asterisk \* bracket \[foo\].</para>
-      <para>\\\`\*\_\{\}\[\]\(\)\&gt;\#+-.!&lt;></para>
+      <para>\\\`\*\_\{\}\[\]\(\)\&gt;\#+-.!&lt;&gt;</para>
       <para>Hyphen:</para>
       <bulletlist>
         <li>
           <para>hyphen list list list list list list list list list list list list list list list list list list list
-            list list list list</para>
+            list list list list
+          </para>
         </li>
         <li>
-          <para><strong>start</strong> with <emph>inline</emph>
-            <strong>elements</strong></para>
+          <para>
+            <strong>start</strong>
+            with <emph>inline</emph>
+            <strong>elements</strong>
+          </para>
           <para>para</para>
         </li>
         <li>
@@ -57,7 +61,8 @@ codeblock</codeblock>
       <para>Asterix:</para>
       <bulletlist>
         <li>
-          <para>inline <emph>bold</emph> normal</para>
+          <para>inline <emph>bold</emph> normal
+          </para>
           <bulletlist>
             <li>
               <para>inline</para>
@@ -156,7 +161,8 @@ codeblock
       </orderedlist>
       <div class="section" id="example">
         <header class="section" id="example" level="2">Example</header>
-        <para>Code example on <code>for</code> loop:</para>
+        <para>Code example on <code>for</code> loop:
+        </para>
         <codeblock xml:space="preserve">for i in items:
     println(i)
 </codeblock>
@@ -168,7 +174,8 @@ codeblock
     <div id="images">
       <header id="images" level="2">Images</header>
       <div>
-        <para>An inline <image alt="Alt" href="test.jpg"/>.</para>
+        <para>An inline <image alt="Alt" href="test.jpg"/>.
+        </para>
         <para>
           <image alt="Alt" href="test.jpg"/>
         </para>
@@ -223,30 +230,30 @@ codeblock
           <col/>
           <thead>
             <tr>
-              <tablecell>Right</tablecell>
-              <tablecell>Left</tablecell>
+              <tablecell align="right">Right</tablecell>
+              <tablecell align="left">Left</tablecell>
               <tablecell>Default</tablecell>
-              <tablecell>Center</tablecell>
+              <tablecell align="center">Center</tablecell>
             </tr>
           </thead>
           <tbody>
             <tr>
+              <tablecell align="right">12</tablecell>
+              <tablecell align="left">12</tablecell>
               <tablecell>12</tablecell>
-              <tablecell>12</tablecell>
-              <tablecell>12</tablecell>
-              <tablecell>12</tablecell>
+              <tablecell align="center">12</tablecell>
             </tr>
             <tr>
+              <tablecell align="right">123</tablecell>
+              <tablecell align="left">123</tablecell>
               <tablecell>123</tablecell>
-              <tablecell>123</tablecell>
-              <tablecell>123</tablecell>
-              <tablecell>123</tablecell>
+              <tablecell align="center">123</tablecell>
             </tr>
             <tr>
+              <tablecell align="right">1</tablecell>
+              <tablecell align="left">1</tablecell>
               <tablecell>1</tablecell>
-              <tablecell>1</tablecell>
-              <tablecell>1</tablecell>
-              <tablecell>1</tablecell>
+              <tablecell align="center">1</tablecell>
             </tr>
           </tbody>
         </table>
@@ -257,27 +264,29 @@ codeblock
           <col/>
           <thead>
             <tr>
-              <tablecell>First Header</tablecell>
-              <tablecell>Second Header Very long data entry Very long data entry Very long data entry Very long data
-                entry Very long data entry Very long data entry Very long data entry Very long data entry Very long data
-                entry</tablecell>
-              <tablecell>Third Header</tablecell>
+              <tablecell align="left">First Header</tablecell>
+              <tablecell align="center">Second Header Very long data entry Very long data entry Very long data entry
+                Very long data entry Very long data entry Very long data entry Very long data entry Very long data entry
+                Very long data entry
+              </tablecell>
+              <tablecell align="right">Third Header</tablecell>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <tablecell>First row</tablecell>
-              <tablecell>Data</tablecell>
-              <tablecell>Very long data entry Very long data entry Very long data entry Very long data entry Very long
-                data entry Very long data entry Very long data entry Very long data entry Very long data entry Very long
-                data entry</tablecell>
+              <tablecell align="left">First row</tablecell>
+              <tablecell align="center">Data</tablecell>
+              <tablecell align="right">Very long data entry Very long data entry Very long data entry Very long data
+                entry Very long data entry Very long data entry Very long data entry Very long data entry Very long data
+                entry Very long data entry
+              </tablecell>
             </tr>
             <tr>
-              <tablecell>Second row</tablecell>
-              <tablecell>
+              <tablecell align="left">Second row</tablecell>
+              <tablecell align="center">
                 <strong>Cell</strong>
               </tablecell>
-              <tablecell>
+              <tablecell align="right">
                 <emph>Cell</emph>
               </tablecell>
             </tr>

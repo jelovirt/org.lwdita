@@ -1,1 +1,159 @@
-<?xml version="1.0" encoding="UTF-8"?><pandoc><div><header id="tables" level="1">Tables</header><div><table><col/><col/><col/><col/><thead><tr><tablecell>Right</tablecell><tablecell>Left</tablecell><tablecell>Default</tablecell><tablecell>Center</tablecell></tr></thead><tbody><tr><tablecell>12</tablecell><tablecell>12</tablecell><tablecell>12</tablecell><tablecell>12</tablecell></tr><tr><tablecell>123</tablecell><tablecell>123</tablecell><tablecell>123</tablecell><tablecell>123</tablecell></tr><tr><tablecell>1</tablecell><tablecell>1</tablecell><tablecell>1</tablecell><tablecell>1</tablecell></tr></tbody></table><table><caption><span class="tablecap">Table 1. simple_table</span></caption><col/><col/><col/><thead><tr><tablecell>First Header</tablecell><tablecell>Second Header</tablecell><tablecell>Third Header</tablecell></tr></thead><tbody><tr><tablecell>First row</tablecell><tablecell>Data</tablecell><tablecell>Very long data entry</tablecell></tr><tr><tablecell>Second row</tablecell><tablecell><strong>Cell</strong></tablecell><tablecell><emph>Cell</emph></tablecell></tr></tbody></table><para>PHP Table:</para><table><col/><col/><col/><thead><tr><tablecell>First Header</tablecell><tablecell>Second Header Very long data entry Very long data entry Very long data entry Very long data entry Very long data entry Very long data entry Very long data entry Very long data entry Very long data entry</tablecell><tablecell>Third Header</tablecell></tr></thead><tbody><tr><tablecell>First row</tablecell><tablecell>Data</tablecell><tablecell>Very long data entry Very long data entry Very long data entry Very long data entry Very long data entry Very long data entry Very long data entry Very long data entry Very long data entry Very long data entry</tablecell></tr><tr><tablecell>Second row</tablecell><tablecell><strong>Cell</strong></tablecell><tablecell><emph>Cell</emph></tablecell></tr></tbody></table><table><col/><col/><col/><thead><tr><tablecell>A</tablecell><tablecell>B</tablecell><tablecell>C</tablecell></tr></thead><tbody><tr><tablecell>A1</tablecell><tablecell>B1</tablecell><tablecell>C1</tablecell></tr><tr><tablecell>A2</tablecell><tablecell colspan="2">B2</tablecell></tr><tr><tablecell colspan="3">A3</tablecell></tr><tr><tablecell colspan="2">A4</tablecell><tablecell>C4</tablecell></tr></tbody></table><table><col/><col/><col/><thead><tr><tablecell>A</tablecell><tablecell>B</tablecell><tablecell>C</tablecell></tr></thead><tbody><tr><tablecell>A5</tablecell></tr><tr><tablecell>A6</tablecell><tablecell>A7</tablecell></tr></tbody></table></div></div></pandoc>
+<?xml version="1.0" encoding="UTF-8"?>
+<pandoc>
+  <div>
+    <header id="tables" level="1">Tables</header>
+    <div>
+      <table>
+        <col/>
+        <col/>
+        <col/>
+        <col/>
+        <thead>
+          <tr>
+            <tablecell align="right">Right</tablecell>
+            <tablecell align="left">Left</tablecell>
+            <tablecell>Default</tablecell>
+            <tablecell align="center">Center</tablecell>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <tablecell align="right">12</tablecell>
+            <tablecell align="left">12</tablecell>
+            <tablecell>12</tablecell>
+            <tablecell align="center">12</tablecell>
+          </tr>
+          <tr>
+            <tablecell align="right">123</tablecell>
+            <tablecell align="left">123</tablecell>
+            <tablecell>123</tablecell>
+            <tablecell align="center">123</tablecell>
+          </tr>
+          <tr>
+            <tablecell align="right">1</tablecell>
+            <tablecell align="left">1</tablecell>
+            <tablecell>1</tablecell>
+            <tablecell align="center">1</tablecell>
+          </tr>
+        </tbody>
+      </table>
+      <table>
+        <caption>
+          <span class="tablecap">Table 1. simple_table</span>
+        </caption>
+        <col/>
+        <col/>
+        <col/>
+        <thead>
+          <tr>
+            <tablecell align="left">First Header</tablecell>
+            <tablecell align="center">Second Header</tablecell>
+            <tablecell align="right">Third Header</tablecell>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <tablecell align="left">First row</tablecell>
+            <tablecell align="center">Data</tablecell>
+            <tablecell align="right">Very long data entry</tablecell>
+          </tr>
+          <tr>
+            <tablecell align="left">Second row</tablecell>
+            <tablecell align="center">
+              <strong>Cell</strong>
+            </tablecell>
+            <tablecell align="right">
+              <emph>Cell</emph>
+            </tablecell>
+          </tr>
+        </tbody>
+      </table>
+      <para>PHP Table:</para>
+      <table>
+        <col/>
+        <col/>
+        <col/>
+        <thead>
+          <tr>
+            <tablecell align="left">First Header</tablecell>
+            <tablecell align="center">Second Header Very long data entry Very long data entry Very long data entry Very
+              long data entry Very long data entry Very long data entry Very long data entry Very long data entry Very
+              long data entry
+            </tablecell>
+            <tablecell align="right">Third Header</tablecell>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <tablecell align="left">First row</tablecell>
+            <tablecell align="center">Data</tablecell>
+            <tablecell align="right">Very long data entry Very long data entry Very long data entry Very long data entry
+              Very long data entry Very long data entry Very long data entry Very long data entry Very long data entry
+              Very long data entry
+            </tablecell>
+          </tr>
+          <tr>
+            <tablecell align="left">Second row</tablecell>
+            <tablecell align="center">
+              <strong>Cell</strong>
+            </tablecell>
+            <tablecell align="right">
+              <emph>Cell</emph>
+            </tablecell>
+          </tr>
+        </tbody>
+      </table>
+      <table>
+        <col/>
+        <col/>
+        <col/>
+        <thead>
+          <tr>
+            <tablecell>A</tablecell>
+            <tablecell>B</tablecell>
+            <tablecell>C</tablecell>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <tablecell>A1</tablecell>
+            <tablecell>B1</tablecell>
+            <tablecell>C1</tablecell>
+          </tr>
+          <tr>
+            <tablecell>A2</tablecell>
+            <tablecell colspan="2">B2</tablecell>
+          </tr>
+          <tr>
+            <tablecell colspan="3">A3</tablecell>
+          </tr>
+          <tr>
+            <tablecell colspan="2">A4</tablecell>
+            <tablecell>C4</tablecell>
+          </tr>
+        </tbody>
+      </table>
+      <table>
+        <col/>
+        <col/>
+        <col/>
+        <thead>
+          <tr>
+            <tablecell>A</tablecell>
+            <tablecell>B</tablecell>
+            <tablecell>C</tablecell>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <tablecell>A5</tablecell>
+          </tr>
+          <tr>
+            <tablecell>A6</tablecell>
+            <tablecell>A7</tablecell>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</pandoc>
