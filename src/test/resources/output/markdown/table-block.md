@@ -11,25 +11,25 @@ B
 C
 </th></tr></thead><tbody><tr><td>
 
-A1
+A1 **bold**
 
-A1
+ A1
 
 </td><td>
 
 B1
 
-B1
+ **bold** B1
 
 </td><td>
 
-C1
+**C1**
 
-C1
+ C1
 
 </td></tr><tr><td align="left">
 
-A2
+A2 **bold**
 
 </td><td align="center">
 
@@ -37,13 +37,13 @@ B2
 
 </td><td align="right">
 
-C2
+**C2**
 
 </td></tr><tr><td colspan="2">
 
 A3
 
-B3
+ B3
 
 </td><td rowspan="2">
 

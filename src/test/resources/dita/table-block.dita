@@ -21,27 +21,27 @@
         <tbody class="- topic/tbody ">
           <row class="- topic/row ">
             <entry class="- topic/entry ">
-              <p class="- topic/p ">A1</p>
+              <p class="- topic/p ">A1 <b class="+ topic/ph hi-d/b ">bold</b></p>
               <p class="- topic/p ">A1</p>
             </entry>
             <entry class="- topic/entry ">
               <p class="- topic/p ">B1</p>
-              <p class="- topic/p ">B1</p>
+              <p class="- topic/p "><b class="+ topic/ph hi-d/b ">bold</b> B1</p>
             </entry>
             <entry class="- topic/entry ">
-              <p class="- topic/p ">C1</p>
+              <p class="- topic/p "><b class="+ topic/ph hi-d/b ">C1</b></p>
               <p class="- topic/p ">C1</p>
             </entry>
           </row>
           <row class="- topic/row ">
             <entry class="- topic/entry " align="left">
-              <p class="- topic/p ">A2</p>
+              <p class="- topic/p ">A2 <b class="+ topic/ph hi-d/b ">bold</b></p>
             </entry>
             <entry class="- topic/entry " align="center">
               <p class="- topic/p ">B2</p>
             </entry>
             <entry class="- topic/entry " align="right">
-              <p class="- topic/p ">C2</p>
+              <p class="- topic/p "><b class="+ topic/ph hi-d/b ">C2</b></p>
             </entry>
           </row>
           <row class="- topic/row ">
