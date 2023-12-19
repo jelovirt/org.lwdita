@@ -59,7 +59,7 @@ public class MetadataSerializerImpl {
       header.containsKey(TOPIC_KEYWORD.localName)
     ) {
       html.startElement(node, TOPIC_METADATA, buildAtts(TOPIC_METADATA));
-      write(header, TOPIC_AUDIENCE, ATTRIBUTE_NAME_AUDIENCE, html);
+      write(header, TOPIC_AUDIENCE, ATTRIBUTE_NAME_TYPE, html);
       write(header, TOPIC_CATEGORY, html);
       if (header.containsKey(TOPIC_KEYWORD.localName)) {
         html.startElement(node, TOPIC_KEYWORDS, buildAtts(TOPIC_KEYWORDS));
