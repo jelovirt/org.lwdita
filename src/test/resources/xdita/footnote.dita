@@ -7,7 +7,7 @@
   <shortdesc class="- topic/shortdesc ">
     Press<fn class="- topic/fn " callout="1" id="fn_1">If you reset the remote control, you must reprogram all lighting
     groups on it.
-  </fn> and hold for 10 seconds<fn callout="2" class="- topic/fn " id="fn_2">Second footnote</fn> to reset the remote
+  </fn><xref class="- topic/xref " type="fn" href="#footnote/fn_1"/> and hold for 10 seconds<fn callout="2" class="- topic/fn ">Second footnote</fn> to reset the remote
     control and all lighting group programming on it<xref class="- topic/xref " type="fn" href="#footnote/fn_1"/>.
   </shortdesc>
   <body class="- topic/body "/>
