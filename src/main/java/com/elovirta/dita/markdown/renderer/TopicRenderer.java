@@ -41,6 +41,7 @@ import java.io.StringReader;
 import java.util.*;
 import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.Map.Entry;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.xml.transform.TransformerConfigurationException;
@@ -128,6 +129,7 @@ public class TopicRenderer extends AbstractRenderer {
   private boolean inSection = false;
 
   private final Set<String> footnotes = new HashSet<>();
+  private Map<String, Integer> footnoteCount;
   private String lastId;
 
   /**
@@ -251,6 +253,7 @@ public class TopicRenderer extends AbstractRenderer {
   // Visitor methods
 
   private void render(final Document node, final NodeRendererContext context, final SaxWriter html) {
+    collectFootnotes(node);
     final boolean isCompound = hasMultipleTopLevelHeaders(node);
     if (isCompound) {
       final AttributesBuilder atts = new AttributesBuilder()
@@ -275,6 +278,20 @@ public class TopicRenderer extends AbstractRenderer {
     if (isCompound) {
       html.endElement();
     }
+  }
+
+  private void collectFootnotes(Document doc) {
+    final Map<String, Integer> res = new HashMap<>();
+    doc
+      .getDescendants()
+      .forEach(node -> {
+        if (node instanceof Footnote) {
+          final Footnote footnote = (Footnote) node;
+          final String callout = footnote.getText().toString().trim();
+          res.compute(callout, (k, v) -> (v == null) ? 1 : v + 1);
+        }
+      });
+    footnoteCount = Collections.unmodifiableMap(res);
   }
 
   private void render(final Abbreviation node, final NodeRendererContext context, final SaxWriter html) {
@@ -345,22 +362,36 @@ public class TopicRenderer extends AbstractRenderer {
   private void render(final Footnote node, final NodeRendererContext context, final SaxWriter html) {
     final String callout = node.getText().toString().trim();
     final String id = getId("fn_" + callout);
-    if (footnotes.contains(id)) {
-      final Attributes atts = new AttributesBuilder(XREF_ATTS)
-        .add(ATTRIBUTE_NAME_TYPE, "fn")
-        .add(ATTRIBUTE_NAME_HREF, String.format("#%s/%s", lastId, id))
-        .build();
-      html.startElement(node, TOPIC_XREF, atts);
-      html.endElement();
-    } else {
-      footnotes.add(id);
-      final Attributes atts = new AttributesBuilder(FN_ATTS).add("callout", callout).add(ATTRIBUTE_NAME_ID, id).build();
+    final int count = footnoteCount.getOrDefault(callout, 0);
+    if (count == 1) {
+      final Attributes atts = new AttributesBuilder(FN_ATTS).add("callout", callout).build();
       html.startElement(node, TOPIC_FN, atts);
       Node child = node.getFootnoteBlock().getFirstChild();
       while (child != null) {
         context.renderChildren(child);
         child = child.getNext();
       }
+      html.endElement();
+    } else {
+      if (!footnotes.contains(id)) {
+        final Attributes atts = new AttributesBuilder(FN_ATTS)
+          .add("callout", callout)
+          .add(ATTRIBUTE_NAME_ID, id)
+          .build();
+        html.startElement(node, TOPIC_FN, atts);
+        Node child = node.getFootnoteBlock().getFirstChild();
+        while (child != null) {
+          context.renderChildren(child);
+          child = child.getNext();
+        }
+        html.endElement();
+        footnotes.add(id);
+      }
+      final Attributes atts = new AttributesBuilder(XREF_ATTS)
+        .add(ATTRIBUTE_NAME_TYPE, "fn")
+        .add(ATTRIBUTE_NAME_HREF, String.format("#%s/%s", lastId, id))
+        .build();
+      html.startElement(node, TOPIC_XREF, atts);
       html.endElement();
     }
   }
