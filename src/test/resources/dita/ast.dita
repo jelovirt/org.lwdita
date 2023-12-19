@@ -8,7 +8,7 @@
     <publisher class="- topic/publisher ">Publisher</publisher>
     <permissions class="- topic/permissions " view="Permissions"/>
     <metadata class="- topic/metadata ">
-      <audience class="- topic/audience " audience="Audience"/>
+      <audience class="- topic/audience " type="Audience"/>
       <category class="- topic/category ">Category</category>
       <keywords class="- topic/keywords ">
         <keyword class="- topic/keyword ">Keyword1</keyword>
