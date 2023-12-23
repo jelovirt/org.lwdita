@@ -57,4 +57,5 @@ A4
 
 B4
 
-</td></tr><tbody></table>
+</td></tr></tbody>
+</table>
