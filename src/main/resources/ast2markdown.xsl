@@ -255,15 +255,23 @@
                     <xsl:copy-of select="@*"/>
                     <xsl:value-of select="$linefeed"/>
                     <xsl:value-of select="$linefeed"/>
-                    <xsl:variable name="contents" as="xs:string*">
-                      <xsl:apply-templates mode="#current">
-                        <xsl:with-param name="indent" tunnel="yes" select="''"/>
-                      </xsl:apply-templates>
+                    <xsl:variable name="contents" as="xs:string">
+                      <xsl:value-of separator="">
+                        <xsl:apply-templates mode="#current">
+                          <xsl:with-param name="indent" tunnel="yes" select="''"/>
+                        </xsl:apply-templates>
+                      </xsl:value-of>
                     </xsl:variable>
-                    <xsl:value-of select="$contents" separator=""/>
-                    <xsl:if test="empty($contents[last()][ends-with(., '&#xA;')])">
-                      <xsl:value-of select="$linefeed"/>
-                    </xsl:if>
+                    <xsl:value-of select="$contents" separator="|"/>
+                    <xsl:choose>
+                      <xsl:when test="not(ends-with($contents, '&#xA;&#xA;'))">
+                        <xsl:value-of select="$linefeed"/>
+                        <xsl:value-of select="$linefeed"/>
+                      </xsl:when>
+                      <xsl:when test="not(ends-with($contents, '&#xA;'))">
+                        <xsl:value-of select="$linefeed"/>
+                      </xsl:when>
+                    </xsl:choose>
                   </th>
                 </xsl:for-each>
               </tr>
@@ -281,15 +289,23 @@
                     <xsl:copy-of select="@*"/>
                     <xsl:value-of select="$linefeed"/>
                     <xsl:value-of select="$linefeed"/>
-                    <xsl:variable name="contents" as="xs:string*">
-                      <xsl:apply-templates mode="#current">
-                        <xsl:with-param name="indent" tunnel="yes" select="''"/>
-                      </xsl:apply-templates>
+                    <xsl:variable name="contents" as="xs:string">
+                      <xsl:value-of separator="">
+                        <xsl:apply-templates mode="#current">
+                          <xsl:with-param name="indent" tunnel="yes" select="''"/>
+                        </xsl:apply-templates>
+                      </xsl:value-of>
                     </xsl:variable>
-                    <xsl:value-of select="$contents" separator=""/>
-                    <xsl:if test="empty($contents[last()][ends-with(., '&#xA;')])">
-                      <xsl:value-of select="$linefeed"/>
-                    </xsl:if>
+                    <xsl:value-of select="$contents" separator="|"/>
+                    <xsl:choose>
+                      <xsl:when test="not(ends-with($contents, '&#xA;&#xA;'))">
+                        <xsl:value-of select="$linefeed"/>
+                        <xsl:value-of select="$linefeed"/>
+                      </xsl:when>
+                      <xsl:when test="not(ends-with($contents, '&#xA;'))">
+                        <xsl:value-of select="$linefeed"/>
+                      </xsl:when>
+                    </xsl:choose>
                   </td>
                 </xsl:for-each>
               </tr>

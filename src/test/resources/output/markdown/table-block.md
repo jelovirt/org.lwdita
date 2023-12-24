@@ -3,12 +3,15 @@
 <table><thead><tr><th>
 
 A
+
 </th><th>
 
 B
+
 </th><th>
 
 C
+
 </th></tr></thead><tbody><tr><td>
 
 A1 **bold**
