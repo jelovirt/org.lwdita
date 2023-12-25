@@ -77,6 +77,7 @@ public class DitaToAstTest {
       "reference",
       "short",
       "shortdesc",
+      "table-block",
       "table-width",
       "table",
       "task",

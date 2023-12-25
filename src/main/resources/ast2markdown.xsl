@@ -219,6 +219,105 @@
     <xsl:value-of select="$linefeed"/>
   </xsl:template>
 
+  <xsl:template match="*" mode="render-html">
+    <xsl:text>&lt;</xsl:text>
+    <xsl:value-of select="name()"/>
+    <xsl:for-each select="@*">
+      <xsl:text> </xsl:text>
+      <xsl:value-of select="name()"/>
+      <xsl:text>="</xsl:text>
+      <xsl:value-of select="replace(replace(., '&amp;', '&amp;amp;'), '&quot;', '&amp;quot;')"/>
+      <xsl:text>"</xsl:text>
+    </xsl:for-each>
+    <xsl:text>></xsl:text>
+    <xsl:apply-templates mode="#current"/>
+    <xsl:text>&lt;/</xsl:text>
+    <xsl:value-of select="name()"/>
+    <xsl:text>></xsl:text>
+  </xsl:template>
+
+  <xsl:template match="text()" mode="render-html">
+    <xsl:value-of select="."/>
+  </xsl:template>
+
+  <xsl:template match="table[*/tr/tablecell/(para | plain | codeblock | rawblock | blockquote | orderedlist | bulletlist | definitionlist | header | table | div)]" mode="ast" priority="10">
+    <xsl:variable name="html" as="element()*">
+      <table>
+        <xsl:copy-of select="@*"/>
+        <xsl:for-each select="thead">
+          <thead>
+            <xsl:copy-of select="@*"/>
+            <xsl:for-each select="tr">
+              <tr>
+                <xsl:copy-of select="@*"/>
+                <xsl:for-each select="tablecell">
+                  <th>
+                    <xsl:copy-of select="@*"/>
+                    <xsl:value-of select="$linefeed"/>
+                    <xsl:value-of select="$linefeed"/>
+                    <xsl:variable name="contents" as="xs:string">
+                      <xsl:value-of separator="">
+                        <xsl:apply-templates mode="#current">
+                          <xsl:with-param name="indent" tunnel="yes" select="''"/>
+                        </xsl:apply-templates>
+                      </xsl:value-of>
+                    </xsl:variable>
+                    <xsl:value-of select="$contents" separator="|"/>
+                    <xsl:choose>
+                      <xsl:when test="not(ends-with($contents, '&#xA;&#xA;'))">
+                        <xsl:value-of select="$linefeed"/>
+                        <xsl:value-of select="$linefeed"/>
+                      </xsl:when>
+                      <xsl:when test="not(ends-with($contents, '&#xA;'))">
+                        <xsl:value-of select="$linefeed"/>
+                      </xsl:when>
+                    </xsl:choose>
+                  </th>
+                </xsl:for-each>
+              </tr>
+            </xsl:for-each>
+          </thead>
+        </xsl:for-each>
+        <xsl:for-each select="tbody">
+          <tbody>
+            <xsl:copy-of select="@*"/>
+            <xsl:for-each select="tr">
+              <tr>
+                <xsl:copy-of select="@*"/>
+                <xsl:for-each select="tablecell">
+                  <td>
+                    <xsl:copy-of select="@*"/>
+                    <xsl:value-of select="$linefeed"/>
+                    <xsl:value-of select="$linefeed"/>
+                    <xsl:variable name="contents" as="xs:string">
+                      <xsl:value-of separator="">
+                        <xsl:apply-templates mode="#current">
+                          <xsl:with-param name="indent" tunnel="yes" select="''"/>
+                        </xsl:apply-templates>
+                      </xsl:value-of>
+                    </xsl:variable>
+                    <xsl:value-of select="$contents" separator="|"/>
+                    <xsl:choose>
+                      <xsl:when test="not(ends-with($contents, '&#xA;&#xA;'))">
+                        <xsl:value-of select="$linefeed"/>
+                        <xsl:value-of select="$linefeed"/>
+                      </xsl:when>
+                      <xsl:when test="not(ends-with($contents, '&#xA;'))">
+                        <xsl:value-of select="$linefeed"/>
+                      </xsl:when>
+                    </xsl:choose>
+                  </td>
+                </xsl:for-each>
+              </tr>
+            </xsl:for-each>
+          </tbody>
+        </xsl:for-each>
+        <xsl:value-of select="$linefeed"/>
+      </table>
+    </xsl:variable>
+    <xsl:apply-templates select="$html" mode="render-html"/>
+  </xsl:template>
+
   <xsl:template name="process-tablecell-contents">
     <xsl:choose>
       <xsl:when test="para and count(*) eq 1 and not(text()[normalize-space()])">

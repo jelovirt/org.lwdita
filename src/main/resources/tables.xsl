@@ -120,6 +120,9 @@
         <xsl:call-template name="find-colspan"/>
       </xsl:attribute>
     </xsl:if>
+    <xsl:if test="@align">
+      <xsl:attribute name="align" select="@align"/>
+    </xsl:if>
 
     <!-- Add any flags from tgroup, thead or tbody, and row -->
     <xsl:apply-templates select="../../../*[contains(@class, ' ditaot-d/ditaval-startprop ')]" mode="out-of-line"/>
