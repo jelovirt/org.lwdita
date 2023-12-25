@@ -55,10 +55,12 @@
           </row>
           <row class="- topic/row ">
             <entry class="- topic/entry ">
-              <p class="- topic/p ">A4</p>
+              <codeblock class="+ topic/pre pr-d/codeblock ">A4</codeblock>
             </entry>
             <entry class="- topic/entry ">
-              <p class="- topic/p ">B4</p>
+              <ol class="- topic/ol ">
+                <li class="- topic/li ">B4</li>
+              </ol>
             </entry>
           </row>
         </tbody>
