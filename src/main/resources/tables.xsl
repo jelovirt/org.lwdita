@@ -428,11 +428,13 @@
           </xsl:if>
         </col>
       </xsl:for-each>
-      <thead>
-        <xsl:apply-templates select="." mode="dita2html:simpletable-heading">
-          <xsl:with-param name="width-multiplier" select="$width-multiplier"/>
-        </xsl:apply-templates>
-      </thead>
+      <xsl:if test="*[contains(@class, ' topic/sthead ')]">
+        <thead>
+          <xsl:apply-templates select="." mode="dita2html:simpletable-heading">
+            <xsl:with-param name="width-multiplier" select="$width-multiplier"/>
+          </xsl:apply-templates>
+        </thead>
+      </xsl:if>
       <tbody>
         <xsl:apply-templates
             select="*[contains(@class, ' topic/strow ')]|processing-instruction()">     <!-- width-multiplier will be used in the first row to set widths. -->
