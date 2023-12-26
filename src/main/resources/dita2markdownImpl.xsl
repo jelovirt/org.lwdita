@@ -1456,20 +1456,19 @@
 
 <!-- =========== FOOTNOTE =========== -->
 <xsl:template match="*[contains(@class, ' topic/fn ')]" name="topic.fn">
-  <xsl:param name="xref"/>
-  <!-- when FN has an ID, it can only be referenced, otherwise, output an a-name & a counter -->
-  <xsl:if test="not(@id) or $xref = 'yes'">
-    <xsl:variable name="fnid"><xsl:number from="/" level="any"/></xsl:variable>
-    <xsl:variable name="callout" select="@callout"/>
-    <xsl:variable name="convergedcallout" select="if (string-length($callout)> 0) then $callout else $fnid"/>
-     <link name="fnsrc_{$fnid}" href="#fntarg_{$fnid}">
-      <superscript>
-        <xsl:value-of select="$convergedcallout"/>
-      </superscript>
-     </link>
-  </xsl:if>
+  <footnote>
+    <xsl:choose>
+      <xsl:when test="exists(@callout)">
+        <xsl:value-of select="@callout"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:number from="/" level="any"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </footnote>
 </xsl:template>
 
+<xsl:template match="*[contains(@class, ' topic/fn ')][exists(@id)]" priority="10"/>
 
 <!-- =========== REQUIRED CLEANUP and REVIEW COMMENT =========== -->
 
@@ -1892,17 +1891,17 @@
   <!-- render any contained footnotes as endnotes.  Links back to reference point -->
   <xsl:template name="gen-endnotes">
     <!-- Skip any footnotes that are in draft elements when draft = no -->
-    <xsl:apply-templates select="//*[contains(@class, ' topic/fn ')][not( (ancestor::*[contains(@class, ' topic/draft-comment ')] or ancestor::*[contains(@class, ' topic/required-cleanup ')]) and $DRAFT = 'no')]" mode="genEndnote"/>
-  
+    <xsl:apply-templates select="/descendant::*[contains(@class, ' topic/fn ')]
+                                    [not((ancestor::*[contains(@class, ' topic/draft-comment ')]
+                                            or ancestor::*[contains(@class, ' topic/required-cleanup ')])
+                                         and $DRAFT = 'no')]" mode="genEndnote"/>
   </xsl:template>
   
   <!-- Catch footnotes that should appear at the end of the topic, and output them. -->
   <xsl:template match="*[contains(@class, ' topic/fn ')]" mode="genEndnote">
-    <note>
-      <xsl:variable name="fnid"><xsl:number from="/" level="any"/></xsl:variable>
-      <xsl:variable name="callout" select="@callout"/>
-      <xsl:variable name="convergedcallout" select="if (string-length($callout) > 0) then $callout else $fnid"/>
-      <xsl:call-template name="commonattributes"/>
+    <footnoteblock>
+      <xsl:call-template name="topic.fn"/>
+      <!--
       <xsl:choose>
         <xsl:when test="@id and not(@id = '')">
           <xsl:variable name="topicid" select="ancestor::*[contains(@class, ' topic/topic ')][1]/@id"/>
@@ -1936,8 +1935,9 @@
           <xsl:text> </xsl:text>
         </xsl:otherwise>
       </xsl:choose>
+      -->
       <xsl:apply-templates/>
-    </note>
+    </footnoteblock>
   </xsl:template>
     
   <!-- listing of topics from calling context only; can be expanded for nesting -->

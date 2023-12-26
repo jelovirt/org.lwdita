@@ -9,6 +9,7 @@ import java.io.InputStream;
 import java.util.List;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMResult;
@@ -106,6 +107,7 @@ public class DitaToAstTest {
       assertFalse(diff.hasDifferences());
     } catch (AssertionFailedError e) {
       transformerFactory.newTransformer().transform(new DOMSource(exp), new StreamResult(System.out));
+      System.out.println();
       transformerFactory.newTransformer().transform(new DOMSource(act), new StreamResult(System.out));
       throw e;
     }
