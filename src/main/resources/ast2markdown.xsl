@@ -240,7 +240,9 @@
     <xsl:value-of select="."/>
   </xsl:template>
 
-  <xsl:template match="table[*/tr/tablecell/(para | plain | codeblock | rawblock | blockquote | orderedlist | bulletlist | definitionlist | header | table | div)]" mode="ast" priority="10">
+  <xsl:template match="table[*/tr/tablecell/(para | plain | codeblock | rawblock | blockquote | orderedlist | bulletlist | definitionlist | header | table | div)] |
+                       table[empty(thead)]"
+                mode="ast" priority="10">
     <xsl:variable name="html" as="element()*">
       <table>
         <xsl:copy-of select="@*"/>
