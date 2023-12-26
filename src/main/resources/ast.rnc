@@ -50,6 +50,8 @@ table =
     }
   }
 \div = element div { attr, block* }
+footnoteblock = element footnoteblock { inline* }
+
 strong = element strong { inline* }
 str = element str { text }
 emph = element emph { inline* }
@@ -75,12 +77,14 @@ image =
     inline*
   }
 span = element span { inline* }
+footnote = element footnote { text }
+
 attr =
   attribute id { text }?,
   attribute class { text }?,
   attribute key-value { text }?
-block = para | plain | codeblock | rawblock | blockquote | orderedlist | bulletlist | definitionlist | header | table | \div
-inline = text | emph | strong | strikeout | superscript | subscript | smallcaps | quoted | cite | code | link | image | span
+block = para | plain | codeblock | rawblock | blockquote | orderedlist | bulletlist | definitionlist | header | table | \div | footnoteblock
+inline = text | emph | strong | strikeout | superscript | subscript | smallcaps | quoted | cite | code | link | image | span | footnote
 
 head = element head {
   yamlValue*

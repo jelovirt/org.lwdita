@@ -390,6 +390,19 @@
     <xsl:value-of select="@keyref"/>
     <xsl:text>]</xsl:text>
   </xsl:template>
+
+  <xsl:template match="footnote" mode="ast">
+    <xsl:text>[^</xsl:text>
+    <xsl:value-of select="."/>
+    <xsl:text>]</xsl:text>
+  </xsl:template>
+
+  <xsl:template match="footnoteblock" mode="ast">
+    <xsl:apply-templates select="footnote" mode="#current"/>
+    <xsl:text>: </xsl:text>
+    <xsl:apply-templates select="node() except footnote" mode="#current"/>
+    <xsl:value-of select="$linefeed"/>
+  </xsl:template>
   
   <xsl:template match="image" mode="ast">
     <xsl:text>![</xsl:text>
@@ -540,6 +553,7 @@
       $node/self::horizontalrule or
       $node/self::table or $node/self::thead or $node/self::tbody or $node/self::tr or $node/self::tablecell or
       $node/self::div or
+      $node/self::footnoteblock or
       $node/self::null"/>
   </xsl:function>
   

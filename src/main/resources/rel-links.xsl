@@ -56,29 +56,12 @@
           <!-- if there is text or sub element other than desc, apply templates to them
           otherwise, use the href as the value of link text. -->
           <xsl:choose>
-            <xsl:when test="@type = 'fn'">
-              <superscript>
-                <xsl:choose>
-                  <xsl:when test="*[not(contains(@class, ' topic/desc '))] | text()">
-                    <xsl:apply-templates select="*[not(contains(@class, ' topic/desc '))] | text()"/>
-                    <!--use xref content-->
-                  </xsl:when>
-                  <xsl:otherwise>
-                    <xsl:call-template name="href"/><!--use href text-->
-                  </xsl:otherwise>
-                </xsl:choose>
-              </superscript>
+            <xsl:when test="*[not(contains(@class, ' topic/desc '))] | text()">
+              <xsl:apply-templates select="*[not(contains(@class, ' topic/desc '))] | text()"/>
+              <!--use xref content-->
             </xsl:when>
             <xsl:otherwise>
-              <xsl:choose>
-                <xsl:when test="*[not(contains(@class, ' topic/desc '))] | text()">
-                  <xsl:apply-templates select="*[not(contains(@class, ' topic/desc '))] | text()"/>
-                  <!--use xref content-->
-                </xsl:when>
-                <xsl:otherwise>
-                  <xsl:call-template name="href"/><!--use href text-->
-                </xsl:otherwise>
-              </xsl:choose>
+              <xsl:call-template name="href"/><!--use href text-->
             </xsl:otherwise>
           </xsl:choose>
         </link>
@@ -93,6 +76,13 @@
       </xsl:otherwise>
     </xsl:choose>
 
+  </xsl:template>
+
+  <xsl:template match="*[contains(@class, ' topic/xref ')][@type = 'fn']" priority="10">
+    <xsl:variable name="id" select="substring-after(substring-after(@href, '#'), '/')"/>
+    <xsl:for-each select="key('fn', $id)">
+      <xsl:call-template name="topic.fn"/>
+    </xsl:for-each>
   </xsl:template>
 
   <!--create breadcrumbs for each grouping of ancestor links; include previous, next, and ancestor links, sorted by linkpool/related-links parent. If there is more than one linkpool that contains ancestors, multiple breadcrumb trails will be generated-->
