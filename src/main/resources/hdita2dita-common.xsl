@@ -584,6 +584,18 @@
     </div>
   </xsl:template>
 
+  <xsl:template match="div[@data-class = 'example']">
+    <example>
+      <xsl:apply-templates select="." mode="class"/>
+      <xsl:apply-templates select="@* | node()"/>
+    </example>
+  </xsl:template>
+  <xsl:template match="div[@data-class = 'example']" mode="class">
+    <xsl:attribute name="class">
+      <xsl:text>- topic/example </xsl:text>
+    </xsl:attribute>
+  </xsl:template>
+
   <xsl:template match="ol">
     <ol>
       <xsl:apply-templates select="." mode="class"/>
@@ -790,6 +802,7 @@
   </xsl:template>
 
   <xsl:template match="@data-hd-class" priority="10"/>
+  <xsl:template match="@data-class" priority="10"/>
 
   <xsl:template match="@data-keyref">
     <xsl:attribute name="keyref" select="."/>

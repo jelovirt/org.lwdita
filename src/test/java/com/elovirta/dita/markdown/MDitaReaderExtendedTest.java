@@ -41,6 +41,7 @@ public class MDitaReaderExtendedTest extends AbstractReaderTest {
       "dl.md",
       "entity.md",
       "escape.md",
+      "example.md",
       "footnote.md",
       "header_attributes.md",
       "invalid_section_header.md",

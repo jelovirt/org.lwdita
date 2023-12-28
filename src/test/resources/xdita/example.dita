@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<topic xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/" class="- topic/topic "
+       ditaarch:DITAArchVersion="2.0" id="example" specializations="(topic hi-d)(topic em-d)">
+  <title class="- topic/title ">Example</title>
+  <shortdesc class="- topic/shortdesc ">Shortdesc.</shortdesc>
+  <body class="- topic/body ">
+    <example class="- topic/example " id="example-section-example">
+      <title class="- topic/title ">Example section {.example}</title>
+      <p class="- topic/p ">Example content.</p>
+    </example>
+    <example class="- topic/example " id="example-section-----example--">
+      <title class="- topic/title ">Example section { .example }</title>
+      <p class="- topic/p ">Example content.</p>
+    </example>
+  </body>
+</topic>

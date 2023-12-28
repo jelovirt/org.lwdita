@@ -42,6 +42,8 @@ import java.util.*;
 import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.xml.transform.TransformerConfigurationException;
@@ -555,6 +557,8 @@ public class TopicRenderer extends AbstractRenderer {
     return null;
   }
 
+  private static final Pattern EXAMPLE_PATTERN = Pattern.compile("\\{ *\\.example *}");
+
   private void render(final Heading node, final NodeRendererContext context, final SaxWriter html) {
     final StringBuilder buf = new StringBuilder();
     node.getAstExtra(buf);
@@ -575,8 +579,13 @@ public class TopicRenderer extends AbstractRenderer {
     final DitaClass cls;
     final boolean isSection;
     if ((mditaCoreProfile || mditaExtendedProfile) && node.getLevel() == 2) {
-      isSection = true;
-      cls = TOPIC_SECTION;
+        isSection = true;
+        final Matcher matcher = EXAMPLE_PATTERN.matcher(node.getText());
+        if (matcher.find()) {
+            cls = TOPIC_EXAMPLE;
+         } else {
+            cls = TOPIC_SECTION;
+        }
     } else if (!mditaCoreProfile) {
       final String sectionClassName = containsSome(header.classes, sections.keySet());
       if (sectionClassName != null) {
