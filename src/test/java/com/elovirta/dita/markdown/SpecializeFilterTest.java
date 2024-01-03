@@ -1,6 +1,7 @@
 package com.elovirta.dita.markdown;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.dita.dost.util.Constants.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -20,15 +21,20 @@ import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.sax.SAXSource;
 import javax.xml.transform.stream.StreamResult;
+import org.dita.dost.util.XMLUtils;
+import org.dita.dost.util.XMLUtils.AttributesBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.w3c.dom.Document;
+import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
 import org.xmlunit.builder.DiffBuilder;
 import org.xmlunit.diff.Diff;
 
@@ -89,6 +95,30 @@ public class SpecializeFilterTest {
     try (InputStream srcIn = generateSrc(1, taskArgument()); InputStream expIn = generateExp(1, taskArgument())) {
       run_filter(srcIn, expIn);
     }
+  }
+
+  @ParameterizedTest
+  @CsvSource({ "reference,", "prefix reference suffix, prefix suffix" })
+  public void renameStartElement(String src, String exp) throws SAXException {
+    filter.setContentHandler(
+      new DefaultHandler() {
+        @Override
+        public void startElement(String uri, String localName, String qName, Attributes attributes) {
+          assertEquals("", uri);
+          assertEquals(REFERENCE_REFERENCE.localName, localName);
+          assertEquals(REFERENCE_REFERENCE.localName, qName);
+          assertEquals(REFERENCE_REFERENCE.toString(), attributes.getValue(ATTRIBUTE_NAME_CLASS));
+          assertEquals(exp, attributes.getValue(ATTRIBUTE_NAME_OUTPUTCLASS));
+        }
+      }
+    );
+    filter.renameStartElement(
+      REFERENCE_REFERENCE,
+      new AttributesBuilder()
+        .add(ATTRIBUTE_NAME_CLASS, TOPIC_TOPIC.toString())
+        .add(ATTRIBUTE_NAME_OUTPUTCLASS, src)
+        .build()
+    );
   }
 
   private void run_filter(InputStream srcIn, InputStream expIn) throws Exception {

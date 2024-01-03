@@ -5,6 +5,8 @@ import static javax.xml.XMLConstants.NULL_NS_URI;
 import static org.dita.dost.util.Constants.*;
 
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.dita.dost.util.Constants;
 import org.dita.dost.util.DitaClass;
 import org.xml.sax.Attributes;
@@ -329,12 +331,30 @@ public class SpecializeFilter extends XMLFilterImpl {
     super.endElement(uri, l, l);
   }
 
-  private void renameStartElement(DitaClass cls, Attributes atts) throws SAXException {
+  void renameStartElement(DitaClass cls, Attributes atts) throws SAXException {
     AttributesImpl res = new AttributesImpl(atts);
-    res.addAttribute(NULL_NS_URI, ATTRIBUTE_NAME_CLASS, ATTRIBUTE_NAME_CLASS, "CDATA", cls.toString());
-    final int i = res.getIndex(NULL_NS_URI, ATTRIBUTE_NAME_OUTPUTCLASS);
-    if (i != -1) {
-      res.removeAttribute(i);
+    final int classIndex = res.getIndex(ATTRIBUTE_NAME_CLASS);
+    if (classIndex != -1) {
+      res.setValue(classIndex, cls.toString());
+    } else {
+      res.addAttribute(NULL_NS_URI, ATTRIBUTE_NAME_CLASS, ATTRIBUTE_NAME_CLASS, "CDATA", cls.toString());
+    }
+    final int outputClassIndex = res.getIndex(NULL_NS_URI, ATTRIBUTE_NAME_OUTPUTCLASS);
+    if (outputClassIndex != -1) {
+      final String outputClassValue = res.getValue(outputClassIndex).trim();
+      if (outputClassValue.isEmpty()) {
+        res.removeAttribute(outputClassIndex);
+      } else {
+        final List<String> outputClass = Stream
+          .of(outputClassValue.split("\\s+"))
+          .filter(token -> !token.equals(cls.localName))
+          .collect(Collectors.toList());
+        if (outputClass.isEmpty()) {
+          res.removeAttribute(outputClassIndex);
+        } else {
+          res.setValue(outputClassIndex, String.join(" ", outputClass));
+        }
+      }
     }
     doStartElement(NULL_NS_URI, cls.localName, cls.localName, res);
   }
