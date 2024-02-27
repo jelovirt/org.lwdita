@@ -3,8 +3,7 @@
  */
 package com.elovirta.dita.markdown.renderer;
 
-import static com.elovirta.dita.markdown.MarkdownReader.FORMATS;
-import static com.elovirta.dita.markdown.MetadataSerializerImpl.buildAtts;
+import static com.elovirta.dita.markdown.renderer.Utils.buildAtts;
 import static org.dita.dost.util.Constants.*;
 import static org.dita.dost.util.XMLUtils.AttributesBuilder;
 

@@ -1,5 +1,6 @@
 package com.elovirta.dita.markdown;
 
+import static com.elovirta.dita.markdown.renderer.Utils.buildAtts;
 import static org.dita.dost.util.Constants.*;
 
 import com.elovirta.dita.markdown.renderer.NodeRendererContext;
@@ -36,10 +37,6 @@ public class MetadataSerializerImpl {
       keys.add(ATTRIBUTE_NAME_ID);
     }
     knownKeys = keys.build();
-  }
-
-  public static Attributes buildAtts(final DitaClass cls) {
-    return new XMLUtils.AttributesBuilder().add(ATTRIBUTE_NAME_CLASS, cls.toString()).build();
   }
 
   public void render(final YamlFrontMatterBlock node, final NodeRendererContext context, final SaxWriter html) {

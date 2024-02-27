@@ -3,7 +3,7 @@
  */
 package com.elovirta.dita.markdown.renderer;
 
-import static com.elovirta.dita.markdown.MetadataSerializerImpl.buildAtts;
+import static com.elovirta.dita.markdown.renderer.Utils.buildAtts;
 import static javax.xml.XMLConstants.XML_NS_URI;
 import static org.dita.dost.util.Constants.*;
 import static org.dita.dost.util.XMLUtils.AttributesBuilder;

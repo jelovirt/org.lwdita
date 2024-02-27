@@ -4,7 +4,7 @@
 package com.elovirta.dita.markdown.renderer;
 
 import static com.elovirta.dita.markdown.MarkdownReader.FORMATS;
-import static com.elovirta.dita.markdown.MetadataSerializerImpl.buildAtts;
+import static com.elovirta.dita.markdown.renderer.Utils.buildAtts;
 import static org.dita.dost.util.Constants.*;
 import static org.dita.dost.util.URLUtils.toURI;
 import static org.dita.dost.util.XMLUtils.AttributesBuilder;
@@ -40,6 +40,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.sax.SAXTransformerFactory;
 import javax.xml.transform.stream.StreamSource;
 import org.dita.dost.util.DitaClass;
+import org.dita.dost.util.XMLUtils;
 import org.xml.sax.Attributes;
 
 /**
