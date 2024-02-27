@@ -8,10 +8,7 @@ import static javax.xml.XMLConstants.XML_NS_URI;
 import static org.dita.dost.util.Constants.*;
 import static org.dita.dost.util.XMLUtils.AttributesBuilder;
 
-import com.elovirta.dita.markdown.DitaRenderer;
-import com.elovirta.dita.markdown.MetadataSerializerImpl;
-import com.elovirta.dita.markdown.ParseException;
-import com.elovirta.dita.markdown.SaxWriter;
+import com.elovirta.dita.markdown.*;
 import com.elovirta.dita.utils.FragmentContentHandler;
 import com.vladsch.flexmark.ast.*;
 import com.vladsch.flexmark.ext.abbreviation.Abbreviation;
@@ -118,7 +115,7 @@ public class TopicRenderer extends AbstractRenderer {
   }
 
   private final Map<String, String> abbreviations = new HashMap<>();
-  private final MetadataSerializerImpl metadataSerializer;
+  private final MetadataSerializer metadataSerializer;
 
   private final boolean shortdescParagraph;
   private final boolean idFromYaml;

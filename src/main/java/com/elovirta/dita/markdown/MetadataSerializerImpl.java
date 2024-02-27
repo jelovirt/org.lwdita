@@ -14,9 +14,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import org.dita.dost.util.DitaClass;
 import org.dita.dost.util.XMLUtils;
-import org.xml.sax.Attributes;
 
-public class MetadataSerializerImpl {
+public class MetadataSerializerImpl implements MetadataSerializer {
 
   private final Set<String> knownKeys;
 
@@ -39,6 +38,7 @@ public class MetadataSerializerImpl {
     knownKeys = keys.build();
   }
 
+  @Override
   public void render(final YamlFrontMatterBlock node, final NodeRendererContext context, final SaxWriter html) {
     final AbstractYamlFrontMatterVisitor v = new AbstractYamlFrontMatterVisitor();
     v.visit(node);

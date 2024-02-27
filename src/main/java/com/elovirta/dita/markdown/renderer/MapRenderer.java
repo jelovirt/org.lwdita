@@ -7,10 +7,7 @@ import static com.elovirta.dita.markdown.renderer.Utils.buildAtts;
 import static org.dita.dost.util.Constants.*;
 import static org.dita.dost.util.XMLUtils.AttributesBuilder;
 
-import com.elovirta.dita.markdown.DitaRenderer;
-import com.elovirta.dita.markdown.MetadataSerializerImpl;
-import com.elovirta.dita.markdown.ParseException;
-import com.elovirta.dita.markdown.SaxWriter;
+import com.elovirta.dita.markdown.*;
 import com.elovirta.dita.utils.FragmentContentHandler;
 import com.vladsch.flexmark.ast.*;
 import com.vladsch.flexmark.ext.anchorlink.AnchorLink;
@@ -78,7 +75,7 @@ public class MapRenderer extends AbstractRenderer {
   private static final Attributes RELCELL_ATTS = buildAtts(MAP_RELCELL);
   private static final Attributes KEYDEF_ATTS = buildAtts(MAPGROUP_D_KEYDEF);
 
-  private final MetadataSerializerImpl metadataSerializer;
+  private final MetadataSerializer metadataSerializer;
 
   private final boolean idFromYaml;
 
