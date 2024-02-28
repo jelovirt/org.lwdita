@@ -79,7 +79,7 @@ public class MapRenderer extends AbstractRenderer {
 
   public MapRenderer(DataHolder options) {
     super(options);
-    idFromYaml = DitaRenderer.ID_FROM_YAML.getFrom(options);
+    idFromYaml = DitaRenderer.ID_FROM_YAML.get(options);
   }
 
   @Override

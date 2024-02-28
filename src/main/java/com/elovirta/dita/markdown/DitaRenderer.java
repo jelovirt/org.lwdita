@@ -188,7 +188,7 @@ public class DitaRenderer {
       this.options = new ScopedDataSet(options, document);
       this.document = document;
       this.renderers =
-        DitaRenderer.MAP.getFrom(options)
+        DitaRenderer.MAP.get(options)
           ? new MapRenderer(this.getOptions()).getNodeRenderingHandlers()
           : new TopicRenderer(this.getOptions()).getNodeRenderingHandlers();
       this.doNotRenderLinksNesting = ditaOptions.doNotRenderLinksInDocument ? 0 : 1;

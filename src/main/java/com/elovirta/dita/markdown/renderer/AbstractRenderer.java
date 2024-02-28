@@ -73,8 +73,8 @@ public abstract class AbstractRenderer {
     final boolean idFromYaml = DitaRenderer.ID_FROM_YAML.get(options);
     metadataSerializer = new MetadataSerializerImpl(idFromYaml);
 
-    mditaExtendedProfile = DitaRenderer.MDITA_EXTENDED_PROFILE.getFrom(options);
-    mditaCoreProfile = DitaRenderer.MDITA_CORE_PROFILE.getFrom(options);
+    mditaExtendedProfile = DitaRenderer.MDITA_EXTENDED_PROFILE.get(options);
+    mditaCoreProfile = DitaRenderer.MDITA_CORE_PROFILE.get(options);
     transformerFactorySupplier =
       Suppliers.memoize(() -> {
         final SAXTransformerFactory tf = (SAXTransformerFactory) TransformerFactory.newInstance();
