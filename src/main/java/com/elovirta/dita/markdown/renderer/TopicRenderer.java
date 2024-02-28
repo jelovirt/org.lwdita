@@ -33,12 +33,14 @@ import com.vladsch.flexmark.util.ast.Node;
 import com.vladsch.flexmark.util.ast.ReferenceNode;
 import com.vladsch.flexmark.util.data.DataHolder;
 import com.vladsch.flexmark.util.sequence.BasedSequence;
+import com.vladsch.flexmark.util.visitor.AstHandler;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.*;
 import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.xml.transform.TransformerConfigurationException;
@@ -142,7 +144,7 @@ public class TopicRenderer extends AbstractRenderer {
 
   @Override
   public Map<Class<? extends Node>, NodeRenderingHandler<? extends Node>> getNodeRenderingHandlers() {
-    final List<NodeRenderingHandler> res = new ArrayList<>(super.getNodeRenderingHandlers().values());
+    final List<NodeRenderingHandler<? extends Node>> res = new ArrayList<>(super.getNodeRenderingHandlers().values());
     if (mditaCoreProfile || mditaExtendedProfile) {
       res.add(
         new NodeRenderingHandler<>(
@@ -240,8 +242,19 @@ public class TopicRenderer extends AbstractRenderer {
     res.add(new NodeRenderingHandler<>(JekyllTagBlock.class, (node, context, html) -> render(node, context, html)));
     res.add(new NodeRenderingHandler<>(JekyllTag.class, (node, context, html) -> render(node, context, html)));
 
-    final HashMap map = new HashMap(super.getNodeRenderingHandlers());
-    map.putAll(res.stream().collect(Collectors.toMap(handler -> handler.getNodeType(), handler -> handler)));
+    final Map<Class<? extends Node>, NodeRenderingHandler<? extends Node>> map = new HashMap<>(
+      super.getNodeRenderingHandlers()
+    );
+    map.putAll(
+      res
+        .stream()
+        .collect(
+          Collectors.<NodeRenderingHandler<? extends Node>, Class<? extends Node>, NodeRenderingHandler<? extends Node>>toMap(
+            AstHandler::getNodeType,
+            Function.identity()
+          )
+        )
+    );
     return map;
   }
 

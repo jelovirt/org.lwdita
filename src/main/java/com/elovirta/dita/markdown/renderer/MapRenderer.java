@@ -22,6 +22,7 @@ import com.vladsch.flexmark.util.ast.ContentNode;
 import com.vladsch.flexmark.util.ast.Document;
 import com.vladsch.flexmark.util.ast.Node;
 import com.vladsch.flexmark.util.data.DataHolder;
+import com.vladsch.flexmark.util.visitor.AstHandler;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.AbstractMap.SimpleImmutableEntry;
@@ -30,6 +31,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.xml.transform.TransformerConfigurationException;
@@ -84,7 +86,7 @@ public class MapRenderer extends AbstractRenderer {
 
   @Override
   public Map<Class<? extends Node>, NodeRenderingHandler<? extends Node>> getNodeRenderingHandlers() {
-    final List<NodeRenderingHandler> res = new ArrayList<>();
+    final List<NodeRenderingHandler<? extends Node>> res = new ArrayList<>();
     res.add(
       new NodeRenderingHandler<>(TableBlock.class, (node, context, html) -> renderSimpleTableBlock(node, context, html))
     );
@@ -126,8 +128,19 @@ public class MapRenderer extends AbstractRenderer {
     res.add(new NodeRenderingHandler<>(SoftLineBreak.class, (node, context, html) -> render(node, context, html)));
     res.add(new NodeRenderingHandler<>(Text.class, (node, context, html) -> render(node, context, html)));
 
-    final HashMap map = new HashMap(super.getNodeRenderingHandlers());
-    map.putAll(res.stream().collect(Collectors.toMap(handler -> handler.getNodeType(), handler -> handler)));
+    final Map<Class<? extends Node>, NodeRenderingHandler<? extends Node>> map = new HashMap<>(
+      super.getNodeRenderingHandlers()
+    );
+    map.putAll(
+      res
+        .stream()
+        .collect(
+          Collectors.<NodeRenderingHandler<? extends Node>, Class<? extends Node>, NodeRenderingHandler<? extends Node>>toMap(
+            AstHandler::getNodeType,
+            Function.identity()
+          )
+        )
+    );
     return map;
   }
 

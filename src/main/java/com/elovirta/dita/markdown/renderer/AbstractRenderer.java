@@ -26,6 +26,7 @@ import com.vladsch.flexmark.util.ast.Document;
 import com.vladsch.flexmark.util.ast.Node;
 import com.vladsch.flexmark.util.data.DataHolder;
 import com.vladsch.flexmark.util.sequence.BasedSequence;
+import com.vladsch.flexmark.util.visitor.AstHandler;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
@@ -33,6 +34,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -100,7 +102,7 @@ public abstract class AbstractRenderer {
    * @return the mapping of nodes this renderer handles to rendering function
    */
   protected Map<Class<? extends Node>, NodeRenderingHandler<? extends Node>> getNodeRenderingHandlers() {
-    final List<NodeRenderingHandler> res = new ArrayList<>();
+    final List<NodeRenderingHandler<? extends Node>> res = new ArrayList<>();
     res.add(new NodeRenderingHandler<>(AnchorLink.class, (node, context, html) -> render(node, context, html)));
     res.add(new NodeRenderingHandler<>(Code.class, (node, context, html) -> render(node, context, html)));
     res.add(new NodeRenderingHandler<>(TextBase.class, (node, context, html) -> render(node, context, html)));
@@ -116,7 +118,7 @@ public abstract class AbstractRenderer {
       res.add(new NodeRenderingHandler<>(Strikethrough.class, (node, context, html) -> render(node, context, html)));
     }
 
-    return res.stream().collect(Collectors.toMap(handler -> handler.getNodeType(), handler -> handler));
+    return res.stream().collect(Collectors.toMap(AstHandler::getNodeType, Function.identity()));
   }
 
   protected void render(AnchorLink node, final NodeRendererContext context, final SaxWriter html) {
