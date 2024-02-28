@@ -10,6 +10,8 @@ import static org.dita.dost.util.URLUtils.toURI;
 import static org.dita.dost.util.XMLUtils.AttributesBuilder;
 
 import com.elovirta.dita.markdown.DitaRenderer;
+import com.elovirta.dita.markdown.MetadataSerializer;
+import com.elovirta.dita.markdown.MetadataSerializerImpl;
 import com.elovirta.dita.markdown.SaxWriter;
 import com.elovirta.dita.utils.ClasspathURIResolver;
 import com.google.common.base.Suppliers;
@@ -65,8 +67,12 @@ public abstract class AbstractRenderer {
   protected final Supplier<SAXTransformerFactory> transformerFactorySupplier;
   protected final Supplier<Templates> templatesSupplier;
   protected final Collection<String> formats;
+  protected final MetadataSerializer metadataSerializer;
 
   public AbstractRenderer(DataHolder options) {
+    final boolean idFromYaml = DitaRenderer.ID_FROM_YAML.get(options);
+    metadataSerializer = new MetadataSerializerImpl(idFromYaml);
+
     mditaExtendedProfile = DitaRenderer.MDITA_EXTENDED_PROFILE.getFrom(options);
     mditaCoreProfile = DitaRenderer.MDITA_CORE_PROFILE.getFrom(options);
     transformerFactorySupplier =

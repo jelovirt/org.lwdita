@@ -115,7 +115,6 @@ public class TopicRenderer extends AbstractRenderer {
   }
 
   private final Map<String, String> abbreviations = new HashMap<>();
-  private final MetadataSerializer metadataSerializer;
 
   private final boolean shortdescParagraph;
   private final boolean idFromYaml;
@@ -139,7 +138,6 @@ public class TopicRenderer extends AbstractRenderer {
     shortdescParagraph = DitaRenderer.SHORTDESC_PARAGRAPH.get(options);
     idFromYaml = DitaRenderer.ID_FROM_YAML.get(options);
     tightList = DitaRenderer.TIGHT_LIST.get(options);
-    metadataSerializer = new MetadataSerializerImpl(idFromYaml);
   }
 
   @Override

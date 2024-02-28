@@ -75,14 +75,11 @@ public class MapRenderer extends AbstractRenderer {
   private static final Attributes RELCELL_ATTS = buildAtts(MAP_RELCELL);
   private static final Attributes KEYDEF_ATTS = buildAtts(MAPGROUP_D_KEYDEF);
 
-  private final MetadataSerializer metadataSerializer;
-
   private final boolean idFromYaml;
 
   public MapRenderer(DataHolder options) {
     super(options);
     idFromYaml = DitaRenderer.ID_FROM_YAML.getFrom(options);
-    metadataSerializer = new MetadataSerializerImpl(idFromYaml);
   }
 
   @Override
