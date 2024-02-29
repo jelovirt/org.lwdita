@@ -178,7 +178,7 @@ public class DitaRenderer {
     private final DitaIdGenerator ditaIdGenerator;
     private final SaxWriter saxWriter;
     private Node renderingNode;
-    private NodeRenderingHandler renderingHandler;
+    private NodeRenderingHandler<? extends Node> renderingHandler;
     private int doNotRenderLinksNesting;
 
     MainNodeRenderer(DataHolder options, SaxWriter saxWriter, Document document) {
@@ -235,7 +235,7 @@ public class DitaRenderer {
         NodeRenderingHandler<? extends Node> nodeRenderer = renderers.get(node.getClass());
         if (nodeRenderer != null) {
           subContext.doNotRenderLinksNesting = documentDoNotRenderLinksNesting;
-          NodeRenderingHandler prevWrapper = subContext.renderingHandler;
+          NodeRenderingHandler<? extends Node> prevWrapper = subContext.renderingHandler;
           try {
             subContext.renderingNode = node;
             subContext.renderingHandler = nodeRenderer;
@@ -251,7 +251,7 @@ public class DitaRenderer {
         if (nodeRenderer != null) {
           Node oldNode = this.renderingNode;
           int oldDoNotRenderLinksNesting = subContext.doNotRenderLinksNesting;
-          NodeRenderingHandler prevWrapper = subContext.renderingHandler;
+          NodeRenderingHandler<? extends Node> prevWrapper = subContext.renderingHandler;
           try {
             subContext.renderingNode = node;
             subContext.renderingHandler = nodeRenderer;
