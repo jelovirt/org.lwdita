@@ -407,7 +407,7 @@ public class MapRenderer extends AbstractRenderer {
     html.setDocumentLocator();
   }
 
-  private static Class<? extends Node>[] INLINE = List
+  private static final Class<? extends Node>[] INLINE = List
     .of(
       Text.class,
       TextBase.class,
@@ -526,7 +526,7 @@ public class MapRenderer extends AbstractRenderer {
     context.renderChildren(node);
   }
 
-  private boolean onlyImageChild = false;
+  private final boolean onlyImageChild = false;
 
   private boolean isAttributesParagraph(final Node node) {
     if (node == null) {

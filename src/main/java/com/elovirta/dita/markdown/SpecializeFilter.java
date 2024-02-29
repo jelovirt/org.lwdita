@@ -16,7 +16,7 @@ import org.xml.sax.helpers.XMLFilterImpl;
 
 public class SpecializeFilter extends XMLFilterImpl {
 
-  private static int DEPTH_IN_BODY = 3;
+  private static final int DEPTH_IN_BODY = 3;
 
   public enum Type {
     TOPIC,
@@ -44,13 +44,13 @@ public class SpecializeFilter extends XMLFilterImpl {
   /**
    * Topic type stack. Default to topic in case of compound type
    */
-  private Deque<Type> typeStack = new ArrayDeque<>(List.of(Type.TOPIC));
+  private final Deque<Type> typeStack = new ArrayDeque<>(List.of(Type.TOPIC));
   private int paragraphCountInStep = 0;
   private int depth = 0;
   private TaskState taskState = null;
   private ReferenceState referenceState = null;
 
-  private Deque<String> elementStack = new ArrayDeque<>();
+  private final Deque<String> elementStack = new ArrayDeque<>();
 
   public SpecializeFilter() {
     this(null);
