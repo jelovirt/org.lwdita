@@ -4,12 +4,14 @@
 package com.elovirta.dita.markdown.renderer;
 
 import static com.elovirta.dita.markdown.MarkdownReader.FORMATS;
-import static com.elovirta.dita.markdown.MetadataSerializerImpl.buildAtts;
+import static com.elovirta.dita.markdown.renderer.Utils.buildAtts;
 import static org.dita.dost.util.Constants.*;
 import static org.dita.dost.util.URLUtils.toURI;
 import static org.dita.dost.util.XMLUtils.AttributesBuilder;
 
 import com.elovirta.dita.markdown.DitaRenderer;
+import com.elovirta.dita.markdown.MetadataSerializer;
+import com.elovirta.dita.markdown.MetadataSerializerImpl;
 import com.elovirta.dita.markdown.SaxWriter;
 import com.elovirta.dita.utils.ClasspathURIResolver;
 import com.google.common.base.Suppliers;
@@ -24,6 +26,7 @@ import com.vladsch.flexmark.util.ast.Document;
 import com.vladsch.flexmark.util.ast.Node;
 import com.vladsch.flexmark.util.data.DataHolder;
 import com.vladsch.flexmark.util.sequence.BasedSequence;
+import com.vladsch.flexmark.util.visitor.AstHandler;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
@@ -31,6 +34,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -64,10 +68,14 @@ public abstract class AbstractRenderer {
   protected final Supplier<SAXTransformerFactory> transformerFactorySupplier;
   protected final Supplier<Templates> templatesSupplier;
   protected final Collection<String> formats;
+  protected final MetadataSerializer metadataSerializer;
 
   public AbstractRenderer(DataHolder options) {
-    mditaExtendedProfile = DitaRenderer.MDITA_EXTENDED_PROFILE.getFrom(options);
-    mditaCoreProfile = DitaRenderer.MDITA_CORE_PROFILE.getFrom(options);
+    final boolean idFromYaml = DitaRenderer.ID_FROM_YAML.get(options);
+    metadataSerializer = new MetadataSerializerImpl(idFromYaml);
+
+    mditaExtendedProfile = DitaRenderer.MDITA_EXTENDED_PROFILE.get(options);
+    mditaCoreProfile = DitaRenderer.MDITA_CORE_PROFILE.get(options);
     transformerFactorySupplier =
       Suppliers.memoize(() -> {
         final SAXTransformerFactory tf = (SAXTransformerFactory) TransformerFactory.newInstance();
@@ -93,23 +101,23 @@ public abstract class AbstractRenderer {
    * @return the mapping of nodes this renderer handles to rendering function
    */
   protected Map<Class<? extends Node>, NodeRenderingHandler<? extends Node>> getNodeRenderingHandlers() {
-    final List<NodeRenderingHandler> res = new ArrayList<>();
-    res.add(new NodeRenderingHandler<>(AnchorLink.class, (node, context, html) -> render(node, context, html)));
-    res.add(new NodeRenderingHandler<>(Code.class, (node, context, html) -> render(node, context, html)));
-    res.add(new NodeRenderingHandler<>(TextBase.class, (node, context, html) -> render(node, context, html)));
-    res.add(new NodeRenderingHandler<>(Emphasis.class, (node, context, html) -> render(node, context, html)));
-    res.add(new NodeRenderingHandler<>(StrongEmphasis.class, (node, context, html) -> render(node, context, html)));
-    res.add(new NodeRenderingHandler<>(HtmlEntity.class, (node, context, html) -> render(node, context, html)));
-    res.add(new NodeRenderingHandler<>(HtmlInlineComment.class, (node, context, html) -> render(node, context, html)));
+    final List<NodeRenderingHandler<? extends Node>> res = new ArrayList<>();
+    res.add(new NodeRenderingHandler<>(AnchorLink.class, this::render));
+    res.add(new NodeRenderingHandler<>(Code.class, this::render));
+    res.add(new NodeRenderingHandler<>(TextBase.class, this::render));
+    res.add(new NodeRenderingHandler<>(Emphasis.class, this::render));
+    res.add(new NodeRenderingHandler<>(StrongEmphasis.class, this::render));
+    res.add(new NodeRenderingHandler<>(HtmlEntity.class, this::render));
+    res.add(new NodeRenderingHandler<>(HtmlInlineComment.class, this::render));
     if (!mditaCoreProfile) {
-      res.add(new NodeRenderingHandler<>(Superscript.class, (node, context, html) -> render(node, context, html)));
-      res.add(new NodeRenderingHandler<>(Subscript.class, (node, context, html) -> render(node, context, html)));
+      res.add(new NodeRenderingHandler<>(Superscript.class, this::render));
+      res.add(new NodeRenderingHandler<>(Subscript.class, this::render));
     }
     if (!mditaCoreProfile && !mditaExtendedProfile) {
-      res.add(new NodeRenderingHandler<>(Strikethrough.class, (node, context, html) -> render(node, context, html)));
+      res.add(new NodeRenderingHandler<>(Strikethrough.class, this::render));
     }
 
-    return res.stream().collect(Collectors.toMap(handler -> handler.getNodeType(), handler -> handler));
+    return res.stream().collect(Collectors.toMap(AstHandler::getNodeType, Function.identity()));
   }
 
   protected void render(AnchorLink node, final NodeRendererContext context, final SaxWriter html) {

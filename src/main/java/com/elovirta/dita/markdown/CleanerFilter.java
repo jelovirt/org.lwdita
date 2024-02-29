@@ -10,7 +10,7 @@ import org.xml.sax.helpers.XMLFilterImpl;
 
 public class CleanerFilter extends XMLFilterImpl {
 
-  private Deque<Boolean> retainElementStack = new ArrayDeque<>();
+  private final Deque<Boolean> retainElementStack = new ArrayDeque<>();
 
   @Override
   public void startElement(String uri, String localName, String qName, Attributes atts) throws SAXException {

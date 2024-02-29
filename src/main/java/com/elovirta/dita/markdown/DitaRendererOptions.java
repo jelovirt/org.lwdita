@@ -8,7 +8,7 @@ public class DitaRendererOptions {
   public final String noLanguageClass;
 
   public DitaRendererOptions(DataHolder options) {
-    doNotRenderLinksInDocument = DitaRenderer.DO_NOT_RENDER_LINKS.getFrom(options);
-    noLanguageClass = DitaRenderer.FENCED_CODE_NO_LANGUAGE_CLASS.getFrom(options);
+    doNotRenderLinksInDocument = DitaRenderer.DO_NOT_RENDER_LINKS.get(options);
+    noLanguageClass = DitaRenderer.FENCED_CODE_NO_LANGUAGE_CLASS.get(options);
   }
 }

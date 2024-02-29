@@ -10,7 +10,6 @@ import com.vladsch.flexmark.util.ast.Document;
 import com.vladsch.flexmark.util.ast.Node;
 import com.vladsch.flexmark.util.data.DataSet;
 import com.vladsch.flexmark.util.sequence.BasedSequence;
-import java.io.IOException;
 import java.net.URI;
 import java.util.List;
 import java.util.Map;
@@ -99,9 +98,9 @@ public class MarkdownParserImpl implements MarkdownParser {
    * @throws ParseException if document is not valid
    */
   protected void validate(Document root) {
-    final boolean mditaCoreProfile = DitaRenderer.MDITA_CORE_PROFILE.getFrom(options);
+    final boolean mditaCoreProfile = DitaRenderer.MDITA_CORE_PROFILE.get(options);
     final boolean mditaExtendedProfile =
-      DitaRenderer.MDITA_EXTENDED_PROFILE.getFrom(options) || DitaRenderer.LW_DITA.getFrom(options);
+      DitaRenderer.MDITA_EXTENDED_PROFILE.get(options) || DitaRenderer.LW_DITA.get(options);
 
     int level = 0;
     Node node = root.getFirstChild();

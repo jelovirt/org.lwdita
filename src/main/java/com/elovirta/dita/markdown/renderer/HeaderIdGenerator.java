@@ -12,9 +12,9 @@ public class HeaderIdGenerator implements DitaIdGenerator {
   @Override
   public void generateIds(Document document) {
     final HashMap<String, Integer> headerBaseIds = new HashMap<>();
-    final boolean resolveDupes = DitaRenderer.HEADER_ID_GENERATOR_RESOLVE_DUPES.getFrom(document);
-    final String toDashChars = DitaRenderer.HEADER_ID_GENERATOR_TO_DASH_CHARS.getFrom(document);
-    final boolean noDupedDashes = DitaRenderer.HEADER_ID_GENERATOR_NO_DUPED_DASHES.getFrom(document);
+    final boolean resolveDupes = DitaRenderer.HEADER_ID_GENERATOR_RESOLVE_DUPES.get(document);
+    final String toDashChars = DitaRenderer.HEADER_ID_GENERATOR_TO_DASH_CHARS.get(document);
+    final boolean noDupedDashes = DitaRenderer.HEADER_ID_GENERATOR_NO_DUPED_DASHES.get(document);
 
     new AnchorRefTargetBlockVisitor() {
       @Override

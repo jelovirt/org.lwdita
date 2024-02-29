@@ -1,5 +1,6 @@
 package com.elovirta.dita.markdown;
 
+import static com.elovirta.dita.markdown.renderer.Utils.buildAtts;
 import static org.dita.dost.util.Constants.*;
 
 import com.elovirta.dita.markdown.renderer.NodeRendererContext;
@@ -13,9 +14,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import org.dita.dost.util.DitaClass;
 import org.dita.dost.util.XMLUtils;
-import org.xml.sax.Attributes;
 
-public class MetadataSerializerImpl {
+public class MetadataSerializerImpl implements MetadataSerializer {
 
   private final Set<String> knownKeys;
 
@@ -38,10 +38,7 @@ public class MetadataSerializerImpl {
     knownKeys = keys.build();
   }
 
-  public static Attributes buildAtts(final DitaClass cls) {
-    return new XMLUtils.AttributesBuilder().add(ATTRIBUTE_NAME_CLASS, cls.toString()).build();
-  }
-
+  @Override
   public void render(final YamlFrontMatterBlock node, final NodeRendererContext context, final SaxWriter html) {
     final AbstractYamlFrontMatterVisitor v = new AbstractYamlFrontMatterVisitor();
     v.visit(node);
