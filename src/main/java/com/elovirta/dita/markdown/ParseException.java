@@ -1,7 +1,6 @@
 package com.elovirta.dita.markdown;
 
 import org.xml.sax.SAXException;
-import org.xml.sax.SAXParseException;
 
 /**
  * Markdown parsing exception. Extends RuntimeException because underlying

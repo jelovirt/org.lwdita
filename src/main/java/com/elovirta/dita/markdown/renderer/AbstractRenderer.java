@@ -44,7 +44,6 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.sax.SAXTransformerFactory;
 import javax.xml.transform.stream.StreamSource;
 import org.dita.dost.util.DitaClass;
-import org.dita.dost.util.XMLUtils;
 import org.xml.sax.Attributes;
 
 /**

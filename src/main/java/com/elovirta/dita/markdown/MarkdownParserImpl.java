@@ -10,7 +10,6 @@ import com.vladsch.flexmark.util.ast.Document;
 import com.vladsch.flexmark.util.ast.Node;
 import com.vladsch.flexmark.util.data.DataSet;
 import com.vladsch.flexmark.util.sequence.BasedSequence;
-import java.io.IOException;
 import java.net.URI;
 import java.util.List;
 import java.util.Map;
