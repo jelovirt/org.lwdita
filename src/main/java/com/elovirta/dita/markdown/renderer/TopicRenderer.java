@@ -146,44 +146,21 @@ public class TopicRenderer extends AbstractRenderer {
   public Map<Class<? extends Node>, NodeRenderingHandler<? extends Node>> getNodeRenderingHandlers() {
     final List<NodeRenderingHandler<? extends Node>> res = new ArrayList<>(super.getNodeRenderingHandlers().values());
     if (mditaCoreProfile || mditaExtendedProfile) {
-      res.add(
-        new NodeRenderingHandler<>(
-          TableBlock.class,
-          (node, context, html) -> renderSimpleTableBlock(node, context, html)
-        )
-      );
-      res.add(
-        new NodeRenderingHandler<>(
-          TableCaption.class,
-          (node, context, html) -> renderSimpleTableCaption(node, context, html)
-        )
-      );
-      res.add(
-        new NodeRenderingHandler<>(TableBody.class, (node, context, html) -> renderSimpleTableBody(node, context, html))
-      );
-      res.add(
-        new NodeRenderingHandler<>(TableHead.class, (node, context, html) -> renderSimpleTableHead(node, context, html))
-      );
-      res.add(
-        new NodeRenderingHandler<>(TableRow.class, (node, context, html) -> renderSimpleTableRow(node, context, html))
-      );
-      res.add(
-        new NodeRenderingHandler<>(TableCell.class, (node, context, html) -> renderSimpleTableCell(node, context, html))
-      );
-      res.add(
-        new NodeRenderingHandler<>(
-          TableSeparator.class,
-          (node, context, html) -> renderSimpleTableSeparator(node, context, html)
-        )
-      );
+      res.add(new NodeRenderingHandler<>(TableBlock.class, this::renderSimpleTableBlock));
+      res.add(new NodeRenderingHandler<>(TableCaption.class, this::renderSimpleTableCaption));
+      res.add(new NodeRenderingHandler<>(TableBody.class, this::renderSimpleTableBody));
+      res.add(new NodeRenderingHandler<>(TableHead.class, this::renderSimpleTableHead));
+      res.add(new NodeRenderingHandler<>(TableRow.class, this::renderSimpleTableRow));
+      res.add(new NodeRenderingHandler<>(TableCell.class, this::renderSimpleTableCell));
+      res.add(new NodeRenderingHandler<>(TableSeparator.class, this::renderSimpleTableSeparator));
     } else {
-      res.add(new NodeRenderingHandler<>(TableBlock.class, (node, context, html) -> render(node, context, html)));
-      res.add(new NodeRenderingHandler<>(TableCaption.class, (node, context, html) -> render(node, context, html)));
-      res.add(new NodeRenderingHandler<>(TableBody.class, (node, context, html) -> render(node, context, html)));
-      res.add(new NodeRenderingHandler<>(TableHead.class, (node, context, html) -> render(node, context, html)));
-      res.add(new NodeRenderingHandler<>(TableRow.class, (node, context, html) -> render(node, context, html)));
-      res.add(new NodeRenderingHandler<>(TableCell.class, (node, context, html) -> render(node, context, html)));
-      res.add(new NodeRenderingHandler<>(TableSeparator.class, (node, context, html) -> render(node, context, html)));
+      res.add(new NodeRenderingHandler<>(TableBlock.class, this::render));
+      res.add(new NodeRenderingHandler<>(TableCaption.class, this::render));
+      res.add(new NodeRenderingHandler<>(TableBody.class, this::render));
+      res.add(new NodeRenderingHandler<>(TableHead.class, this::render));
+      res.add(new NodeRenderingHandler<>(TableRow.class, this::render));
+      res.add(new NodeRenderingHandler<>(TableCell.class, this::render));
+      res.add(new NodeRenderingHandler<>(TableSeparator.class, this::render));
     }
     if (!mditaCoreProfile) {
       res.add(
@@ -194,53 +171,47 @@ public class TopicRenderer extends AbstractRenderer {
           }
         )
       );
-      res.add(new NodeRenderingHandler<>(DefinitionList.class, (node, context, html) -> render(node, context, html)));
-      res.add(new NodeRenderingHandler<>(DefinitionTerm.class, (node, context, html) -> render(node, context, html)));
-      res.add(new NodeRenderingHandler<>(DefinitionItem.class, (node, context, html) -> render(node, context, html)));
-      res.add(new NodeRenderingHandler<>(Footnote.class, (node, context, html) -> render(node, context, html)));
-      res.add(new NodeRenderingHandler<>(FootnoteBlock.class, (node, context, html) -> render(node, context, html)));
+      res.add(new NodeRenderingHandler<>(DefinitionList.class, this::render));
+      res.add(new NodeRenderingHandler<>(DefinitionTerm.class, this::render));
+      res.add(new NodeRenderingHandler<>(DefinitionItem.class, this::render));
+      res.add(new NodeRenderingHandler<>(Footnote.class, this::render));
+      res.add(new NodeRenderingHandler<>(FootnoteBlock.class, this::render));
     }
     if (!mditaCoreProfile && !mditaExtendedProfile) {
-      res.add(new NodeRenderingHandler<>(Abbreviation.class, (node, context, html) -> render(node, context, html)));
-      res.add(
-        new NodeRenderingHandler<>(AbbreviationBlock.class, (node, context, html) -> render(node, context, html))
-      );
-      res.add(new NodeRenderingHandler<>(AdmonitionBlock.class, (node, context, html) -> render(node, context, html)));
+      res.add(new NodeRenderingHandler<>(Abbreviation.class, this::render));
+      res.add(new NodeRenderingHandler<>(AbbreviationBlock.class, this::render));
+      res.add(new NodeRenderingHandler<>(AdmonitionBlock.class, this::render));
     }
-    res.add(new NodeRenderingHandler<>(AutoLink.class, (node, context, html) -> render(node, context, html)));
-    res.add(
-      new NodeRenderingHandler<>(YamlFrontMatterBlock.class, (node, context, html) -> render(node, context, html))
-    );
-    res.add(new NodeRenderingHandler<>(BlockQuote.class, (node, context, html) -> render(node, context, html)));
-    res.add(new NodeRenderingHandler<>(BulletList.class, (node, context, html) -> render(node, context, html)));
-    res.add(new NodeRenderingHandler<>(CodeBlock.class, (node, context, html) -> render(node, context, html)));
-    res.add(new NodeRenderingHandler<>(Document.class, (node, context, html) -> render(node, context, html)));
-    res.add(new NodeRenderingHandler<>(FencedCodeBlock.class, (node, context, html) -> render(node, context, html)));
-    res.add(new NodeRenderingHandler<>(HardLineBreak.class, (node, context, html) -> render(node, context, html)));
-    res.add(new NodeRenderingHandler<>(Heading.class, (node, context, html) -> render(node, context, html)));
-    res.add(new NodeRenderingHandler<>(HtmlBlock.class, (node, context, html) -> render(node, context, html)));
-    res.add(new NodeRenderingHandler<>(HtmlCommentBlock.class, (node, context, html) -> render(node, context, html)));
-    res.add(new NodeRenderingHandler<>(HtmlInnerBlock.class, (node, context, html) -> render(node, context, html)));
-    res.add(
-      new NodeRenderingHandler<>(HtmlInnerBlockComment.class, (node, context, html) -> render(node, context, html))
-    );
-    res.add(new NodeRenderingHandler<>(HtmlInline.class, (node, context, html) -> render(node, context, html)));
-    res.add(new NodeRenderingHandler<>(Image.class, (node, context, html) -> render(node, context, html)));
-    res.add(new NodeRenderingHandler<>(ImageRef.class, (node, context, html) -> render(node, context, html)));
-    res.add(new NodeRenderingHandler<>(IndentedCodeBlock.class, (node, context, html) -> render(node, context, html)));
-    res.add(new NodeRenderingHandler<>(Link.class, (node, context, html) -> render(node, context, html)));
-    res.add(new NodeRenderingHandler<>(LinkRef.class, (node, context, html) -> render(node, context, html)));
-    res.add(new NodeRenderingHandler<>(BulletListItem.class, (node, context, html) -> render(node, context, html)));
-    res.add(new NodeRenderingHandler<>(OrderedListItem.class, (node, context, html) -> render(node, context, html)));
-    res.add(new NodeRenderingHandler<>(MailLink.class, (node, context, html) -> render(node, context, html)));
-    res.add(new NodeRenderingHandler<>(OrderedList.class, (node, context, html) -> render(node, context, html)));
-    res.add(new NodeRenderingHandler<>(Paragraph.class, (node, context, html) -> render(node, context, html)));
-    res.add(new NodeRenderingHandler<>(Reference.class, (node, context, html) -> render(node, context, html)));
-    res.add(new NodeRenderingHandler<>(SoftLineBreak.class, (node, context, html) -> render(node, context, html)));
-    res.add(new NodeRenderingHandler<>(Text.class, (node, context, html) -> render(node, context, html)));
-    res.add(new NodeRenderingHandler<>(ThematicBreak.class, (node, context, html) -> render(node, context, html)));
-    res.add(new NodeRenderingHandler<>(JekyllTagBlock.class, (node, context, html) -> render(node, context, html)));
-    res.add(new NodeRenderingHandler<>(JekyllTag.class, (node, context, html) -> render(node, context, html)));
+    res.add(new NodeRenderingHandler<>(AutoLink.class, this::render));
+    res.add(new NodeRenderingHandler<>(YamlFrontMatterBlock.class, this::render));
+    res.add(new NodeRenderingHandler<>(BlockQuote.class, this::render));
+    res.add(new NodeRenderingHandler<>(BulletList.class, this::render));
+    res.add(new NodeRenderingHandler<>(CodeBlock.class, this::render));
+    res.add(new NodeRenderingHandler<>(Document.class, this::render));
+    res.add(new NodeRenderingHandler<>(FencedCodeBlock.class, this::render));
+    res.add(new NodeRenderingHandler<>(HardLineBreak.class, this::render));
+    res.add(new NodeRenderingHandler<>(Heading.class, this::render));
+    res.add(new NodeRenderingHandler<>(HtmlBlock.class, this::render));
+    res.add(new NodeRenderingHandler<>(HtmlCommentBlock.class, this::render));
+    res.add(new NodeRenderingHandler<>(HtmlInnerBlock.class, this::render));
+    res.add(new NodeRenderingHandler<>(HtmlInnerBlockComment.class, this::render));
+    res.add(new NodeRenderingHandler<>(HtmlInline.class, this::render));
+    res.add(new NodeRenderingHandler<>(Image.class, this::render));
+    res.add(new NodeRenderingHandler<>(ImageRef.class, this::render));
+    res.add(new NodeRenderingHandler<>(IndentedCodeBlock.class, this::render));
+    res.add(new NodeRenderingHandler<>(Link.class, this::render));
+    res.add(new NodeRenderingHandler<>(LinkRef.class, this::render));
+    res.add(new NodeRenderingHandler<>(BulletListItem.class, this::render));
+    res.add(new NodeRenderingHandler<>(OrderedListItem.class, this::render));
+    res.add(new NodeRenderingHandler<>(MailLink.class, this::render));
+    res.add(new NodeRenderingHandler<>(OrderedList.class, this::render));
+    res.add(new NodeRenderingHandler<>(Paragraph.class, this::render));
+    res.add(new NodeRenderingHandler<>(Reference.class, this::render));
+    res.add(new NodeRenderingHandler<>(SoftLineBreak.class, this::render));
+    res.add(new NodeRenderingHandler<>(Text.class, this::render));
+    res.add(new NodeRenderingHandler<>(ThematicBreak.class, this::render));
+    res.add(new NodeRenderingHandler<>(JekyllTagBlock.class, this::render));
+    res.add(new NodeRenderingHandler<>(JekyllTag.class, this::render));
 
     final Map<Class<? extends Node>, NodeRenderingHandler<? extends Node>> map = new HashMap<>(
       super.getNodeRenderingHandlers()

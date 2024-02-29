@@ -87,46 +87,29 @@ public class MapRenderer extends AbstractRenderer {
   @Override
   public Map<Class<? extends Node>, NodeRenderingHandler<? extends Node>> getNodeRenderingHandlers() {
     final List<NodeRenderingHandler<? extends Node>> res = new ArrayList<>();
-    res.add(
-      new NodeRenderingHandler<>(TableBlock.class, (node, context, html) -> renderSimpleTableBlock(node, context, html))
-    );
-    res.add(
-      new NodeRenderingHandler<>(TableBody.class, (node, context, html) -> renderSimpleTableBody(node, context, html))
-    );
-    res.add(
-      new NodeRenderingHandler<>(TableHead.class, (node, context, html) -> renderSimpleTableHead(node, context, html))
-    );
-    res.add(
-      new NodeRenderingHandler<>(TableRow.class, (node, context, html) -> renderSimpleTableRow(node, context, html))
-    );
-    res.add(
-      new NodeRenderingHandler<>(TableCell.class, (node, context, html) -> renderSimpleTableCell(node, context, html))
-    );
-    res.add(
-      new NodeRenderingHandler<>(
-        TableSeparator.class,
-        (node, context, html) -> renderSimpleTableSeparator(node, context, html)
-      )
-    );
+    res.add(new NodeRenderingHandler<>(TableBlock.class, this::renderSimpleTableBlock));
+    res.add(new NodeRenderingHandler<>(TableBody.class, this::renderSimpleTableBody));
+    res.add(new NodeRenderingHandler<>(TableHead.class, this::renderSimpleTableHead));
+    res.add(new NodeRenderingHandler<>(TableRow.class, this::renderSimpleTableRow));
+    res.add(new NodeRenderingHandler<>(TableCell.class, this::renderSimpleTableCell));
+    res.add(new NodeRenderingHandler<>(TableSeparator.class, this::renderSimpleTableSeparator));
 
-    res.add(
-      new NodeRenderingHandler<>(YamlFrontMatterBlock.class, (node, context, html) -> render(node, context, html))
-    );
-    res.add(new NodeRenderingHandler<>(BulletList.class, (node, context, html) -> render(node, context, html)));
-    res.add(new NodeRenderingHandler<>(Document.class, (node, context, html) -> render(node, context, html)));
-    res.add(new NodeRenderingHandler<>(Heading.class, (node, context, html) -> render(node, context, html)));
-    res.add(new NodeRenderingHandler<>(Image.class, (node, context, html) -> render(node, context, html)));
-    res.add(new NodeRenderingHandler<>(ImageRef.class, (node, context, html) -> render(node, context, html)));
-    res.add(new NodeRenderingHandler<>(Link.class, (node, context, html) -> render(node, context, html)));
-    res.add(new NodeRenderingHandler<>(LinkRef.class, (node, context, html) -> render(node, context, html)));
-    res.add(new NodeRenderingHandler<>(BulletListItem.class, (node, context, html) -> render(node, context, html)));
-    res.add(new NodeRenderingHandler<>(OrderedListItem.class, (node, context, html) -> render(node, context, html)));
-    res.add(new NodeRenderingHandler<>(MailLink.class, (node, context, html) -> render(node, context, html)));
-    res.add(new NodeRenderingHandler<>(OrderedList.class, (node, context, html) -> render(node, context, html)));
-    res.add(new NodeRenderingHandler<>(Paragraph.class, (node, context, html) -> render(node, context, html)));
-    res.add(new NodeRenderingHandler<>(Reference.class, (node, context, html) -> render(node, context, html)));
-    res.add(new NodeRenderingHandler<>(SoftLineBreak.class, (node, context, html) -> render(node, context, html)));
-    res.add(new NodeRenderingHandler<>(Text.class, (node, context, html) -> render(node, context, html)));
+    res.add(new NodeRenderingHandler<>(YamlFrontMatterBlock.class, this::render));
+    res.add(new NodeRenderingHandler<>(BulletList.class, this::render));
+    res.add(new NodeRenderingHandler<>(Document.class, this::render));
+    res.add(new NodeRenderingHandler<>(Heading.class, this::render));
+    res.add(new NodeRenderingHandler<>(Image.class, this::render));
+    res.add(new NodeRenderingHandler<>(ImageRef.class, this::render));
+    res.add(new NodeRenderingHandler<>(Link.class, this::render));
+    res.add(new NodeRenderingHandler<>(LinkRef.class, this::render));
+    res.add(new NodeRenderingHandler<>(BulletListItem.class, this::render));
+    res.add(new NodeRenderingHandler<>(OrderedListItem.class, this::render));
+    res.add(new NodeRenderingHandler<>(MailLink.class, this::render));
+    res.add(new NodeRenderingHandler<>(OrderedList.class, this::render));
+    res.add(new NodeRenderingHandler<>(Paragraph.class, this::render));
+    res.add(new NodeRenderingHandler<>(Reference.class, this::render));
+    res.add(new NodeRenderingHandler<>(SoftLineBreak.class, this::render));
+    res.add(new NodeRenderingHandler<>(Text.class, this::render));
 
     final Map<Class<? extends Node>, NodeRenderingHandler<? extends Node>> map = new HashMap<>(
       super.getNodeRenderingHandlers()

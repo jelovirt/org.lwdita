@@ -103,19 +103,19 @@ public abstract class AbstractRenderer {
    */
   protected Map<Class<? extends Node>, NodeRenderingHandler<? extends Node>> getNodeRenderingHandlers() {
     final List<NodeRenderingHandler<? extends Node>> res = new ArrayList<>();
-    res.add(new NodeRenderingHandler<>(AnchorLink.class, (node, context, html) -> render(node, context, html)));
-    res.add(new NodeRenderingHandler<>(Code.class, (node, context, html) -> render(node, context, html)));
-    res.add(new NodeRenderingHandler<>(TextBase.class, (node, context, html) -> render(node, context, html)));
-    res.add(new NodeRenderingHandler<>(Emphasis.class, (node, context, html) -> render(node, context, html)));
-    res.add(new NodeRenderingHandler<>(StrongEmphasis.class, (node, context, html) -> render(node, context, html)));
-    res.add(new NodeRenderingHandler<>(HtmlEntity.class, (node, context, html) -> render(node, context, html)));
-    res.add(new NodeRenderingHandler<>(HtmlInlineComment.class, (node, context, html) -> render(node, context, html)));
+    res.add(new NodeRenderingHandler<>(AnchorLink.class, this::render));
+    res.add(new NodeRenderingHandler<>(Code.class, this::render));
+    res.add(new NodeRenderingHandler<>(TextBase.class, this::render));
+    res.add(new NodeRenderingHandler<>(Emphasis.class, this::render));
+    res.add(new NodeRenderingHandler<>(StrongEmphasis.class, this::render));
+    res.add(new NodeRenderingHandler<>(HtmlEntity.class, this::render));
+    res.add(new NodeRenderingHandler<>(HtmlInlineComment.class, this::render));
     if (!mditaCoreProfile) {
-      res.add(new NodeRenderingHandler<>(Superscript.class, (node, context, html) -> render(node, context, html)));
-      res.add(new NodeRenderingHandler<>(Subscript.class, (node, context, html) -> render(node, context, html)));
+      res.add(new NodeRenderingHandler<>(Superscript.class, this::render));
+      res.add(new NodeRenderingHandler<>(Subscript.class, this::render));
     }
     if (!mditaCoreProfile && !mditaExtendedProfile) {
-      res.add(new NodeRenderingHandler<>(Strikethrough.class, (node, context, html) -> render(node, context, html)));
+      res.add(new NodeRenderingHandler<>(Strikethrough.class, this::render));
     }
 
     return res.stream().collect(Collectors.toMap(AstHandler::getNodeType, Function.identity()));
