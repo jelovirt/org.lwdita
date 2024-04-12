@@ -730,6 +730,12 @@ public class TopicRenderer extends AbstractRenderer {
           super.startPrefixMapping("m", "http://www.w3.org/1998/Math/MathML");
         }
         super.startElement(uri, tag, qName, atts);
+      } else if (qName.startsWith("svg:")) {
+        final String tag = qName.substring(4);
+        if (qName.equals("svg:svg")) {
+          super.startPrefixMapping("svg", "http://www.w3.org/2000/svg");
+        }
+        super.startElement(uri, tag, qName, atts);
       } else {
         super.startElement(uri, localName, qName, atts);
       }
@@ -741,6 +747,12 @@ public class TopicRenderer extends AbstractRenderer {
         super.endElement(uri, tag, qName);
         if (qName.equals("m:math")) {
           super.endPrefixMapping("m");
+        }
+      } else if (qName.startsWith("svg:")) {
+        final String tag = qName.substring(2);
+        super.endElement(uri, tag, qName);
+        if (qName.equals("svg:svg")) {
+          super.endPrefixMapping("svg");
         }
       } else {
         super.endElement(uri, localName, qName);

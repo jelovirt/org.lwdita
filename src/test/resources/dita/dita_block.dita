@@ -24,5 +24,10 @@
         </m:math>
       </mathml>
     </equation-block>
+    <svg-container class="+ topic/foreign svg-d/svg-container ">
+      <svg:svg xmlns:svg="http://www.w3.org/2000/svg" viewbox="0 0 20 20">
+        <svg:circle cx="10" cy="10" fill="pink" r="10"/>
+      </svg:svg>
+    </svg-container>
   </body>
 </topic>

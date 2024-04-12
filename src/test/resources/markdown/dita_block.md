@@ -22,3 +22,9 @@
     </m:math>
   </mathml>
 </equation-block>
+
+<svg-container>
+  <svg:svg viewBox="0 0 20 20">
+    <svg:circle r="10" cx="10" cy="10" fill="pink"/>
+  </svg:svg>
+</svg-container>
