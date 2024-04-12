@@ -6,7 +6,7 @@
                 xmlns:x="https://github.com/jelovirt/dita-ot-markdown"
                 xmlns:m="http://www.w3.org/1998/Math/MathML"
                 xmlns:svg="http://www.w3.org/2000/svg"
-                exclude-result-prefixes="xs x map"
+                exclude-result-prefixes="xs x map m svg"
                 xpath-default-namespace="http://www.w3.org/1999/xhtml"
                 version="2.0">
 
