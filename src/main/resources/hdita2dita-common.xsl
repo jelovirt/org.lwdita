@@ -4,6 +4,7 @@
                 xmlns:map="http://www.w3.org/2005/xpath-functions/map"
                 xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/"
                 xmlns:x="https://github.com/jelovirt/dita-ot-markdown"
+                xmlns:m="http://www.w3.org/1998/Math/MathML"
                 exclude-result-prefixes="xs x map"
                 xpath-default-namespace="http://www.w3.org/1999/xhtml"
                 version="2.0">
@@ -1414,7 +1415,9 @@
     </xsl:if>
     -->
     <xsl:element name="{name()}">
-      <xsl:apply-templates select="." mode="class"/>
+      <xsl:if test="not($raw-dita and contains(name(), ':'))">
+        <xsl:apply-templates select="." mode="class"/>
+      </xsl:if>
       <xsl:apply-templates select="@* | node()"/>
     </xsl:element>
   </xsl:template>

@@ -53,6 +53,8 @@ import org.dita.dost.util.DitaClass;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
+import org.xml.sax.helpers.XMLFilterImpl;
 
 /**
  * A renderer for a set of node types.
@@ -703,14 +705,47 @@ public class TopicRenderer extends AbstractRenderer {
     transformer.setParameter("raw-dita", rawDita);
     h.setResult(new SAXResult(fragmentFilter));
     final HtmlParser parser = new HtmlParser();
-    parser.setContentHandler(h);
+    parser.setNamePolicy(XmlViolationPolicy.ALLOW);
+    final MathmlNamespaceFilter filter = new MathmlNamespaceFilter(parser);
+    filter.setContentHandler(h);
     try {
       html.setLocation(node);
-      parser.parse(new InputSource(new StringReader(text)));
+      filter.parse(new InputSource(new StringReader(text)));
     } catch (IOException | SAXException e) {
       throw new ParseException("Failed to parse HTML: " + e.getMessage(), e);
     }
     html.setDocumentLocator();
+  }
+
+  private static final class MathmlNamespaceFilter extends XMLFilterImpl {
+
+    public MathmlNamespaceFilter(XMLReader parent) {
+      super(parent);
+    }
+
+    public void startElement(String uri, String localName, String qName, Attributes atts) throws SAXException {
+      if (qName.startsWith("m:")) {
+        final String tag = qName.substring(2);
+        if (qName.equals("m:math")) {
+          super.startPrefixMapping("m", "http://www.w3.org/1998/Math/MathML");
+        }
+        super.startElement(uri, tag, qName, atts);
+      } else {
+        super.startElement(uri, localName, qName, atts);
+      }
+    }
+
+    public void endElement(String uri, String localName, String qName) throws SAXException {
+      if (qName.startsWith("m:")) {
+        final String tag = qName.substring(2);
+        super.endElement(uri, tag, qName);
+        if (qName.equals("m:math")) {
+          super.endPrefixMapping("m");
+        }
+      } else {
+        super.endElement(uri, localName, qName);
+      }
+    }
   }
 
   private static Stream<Entry<String, Entry<DitaClass, Attributes>>> createHtmlToDita(Entry<String, DitaClass> e) {

@@ -14,3 +14,11 @@
     <howtoavoid>howtoavoid</howtoavoid>
   </messagepanel>
 </hazardstatement>
+
+<equation-block>
+  <mathml>
+    <m:math>
+      <m:mi>x</m:mi>
+    </m:math>
+  </mathml>
+</equation-block>

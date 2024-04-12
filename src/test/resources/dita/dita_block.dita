@@ -17,5 +17,12 @@
         <howtoavoid class="+ topic/li hazard-d/howtoavoid ">howtoavoid</howtoavoid>
       </messagepanel>
     </hazardstatement>
+    <equation-block class="+ topic/div equation-d/equation-block ">
+      <mathml class="+ topic/foreign mathml-d/mathml ">
+        <m:math xmlns:m="http://www.w3.org/1998/Math/MathML">
+          <m:mi>x</m:mi>
+        </m:math>
+      </mathml>
+    </equation-block>
   </body>
 </topic>
