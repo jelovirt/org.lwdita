@@ -3,6 +3,7 @@
  */
 package com.elovirta.dita.markdown.renderer;
 
+import static com.elovirta.dita.markdown.DitaRenderer.RAW_DITA;
 import static com.elovirta.dita.markdown.renderer.Utils.buildAtts;
 import static javax.xml.XMLConstants.XML_NS_URI;
 import static org.dita.dost.util.Constants.*;
@@ -42,6 +43,7 @@ import java.util.Map.Entry;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.sax.SAXResult;
 import javax.xml.transform.sax.TransformerHandler;
@@ -119,7 +121,6 @@ public class TopicRenderer extends AbstractRenderer {
   private final boolean shortdescParagraph;
   private final boolean idFromYaml;
   private final boolean tightList;
-  private final boolean rawDita;
 
   //  private TableBlock currentTableNode;
   private int currentTableColumn;
@@ -139,7 +140,6 @@ public class TopicRenderer extends AbstractRenderer {
     shortdescParagraph = DitaRenderer.SHORTDESC_PARAGRAPH.get(options);
     idFromYaml = DitaRenderer.ID_FROM_YAML.get(options);
     tightList = DitaRenderer.TIGHT_LIST.get(options);
-    rawDita = DitaRenderer.RAW_DITA.get(options);
   }
 
   @Override
@@ -698,7 +698,9 @@ public class TopicRenderer extends AbstractRenderer {
     } catch (final TransformerConfigurationException e) {
       throw new RuntimeException(e);
     }
-    h.getTransformer().setParameter("formats", String.join(",", formats));
+    final Transformer transformer = h.getTransformer();
+    transformer.setParameter("formats", String.join(",", formats));
+    transformer.setParameter("raw-dita", rawDita);
     h.setResult(new SAXResult(fragmentFilter));
     final HtmlParser parser = new HtmlParser();
     parser.setContentHandler(h);
@@ -760,7 +762,7 @@ public class TopicRenderer extends AbstractRenderer {
         .collect(Collectors.toUnmodifiableMap(Entry::getKey, Entry::getValue));
     ditaToDita =
       Stream
-        .<DitaClass>of(
+        .of(
           DitaClass.getInstance("+ topic/keyword learningInteractionBase-d/keyword learning-d/lcAreaShape "),
           DitaClass.getInstance("+ topic/keyword learningInteractionBase2-d/keyword learning2-d/lcAreaShape2 "),
           DitaClass.getInstance("+ topic/keyword markup-d/markupname "),

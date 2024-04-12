@@ -101,7 +101,7 @@ public class MarkdownReaderTest extends AbstractReaderTest {
   }
 
   @ParameterizedTest
-  @ValueSource(strings = { "dita_inline.md" })
+  @ValueSource(strings = { "dita_block.md", "dita_inline.md" })
   public void test_rawDITA(String file) throws Exception {
     reader.setFeature("http://lwdita.org/sax/features/raw-dita", true);
 

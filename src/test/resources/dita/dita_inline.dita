@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <topic xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/" class="- topic/topic "
-       ditaarch:DITAArchVersion="2.0" id="raw-dita"
+       ditaarch:DITAArchVersion="2.0" id="raw-inline-dita"
        specializations="@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product">
-  <title class="- topic/title ">Raw DITA</title>
+  <title class="- topic/title ">Raw inline DITA</title>
   <body class="- topic/body ">
     <p class="- topic/p ">
       <mathmlref class="+ topic/xref mathml-d/mathmlref ">mathmlref</mathmlref>
@@ -43,7 +43,7 @@
     <p class="- topic/p ">
       <kwd class="+ topic/keyword pr-d/kwd ">kwd</kwd>
     </p>
-    <option class="- topic/option ">option</option>
+    <option class="+ topic/keyword pr-d/option ">option</option>
     <p class="- topic/p ">
       <parmname class="+ topic/keyword pr-d/parmname ">parmname</parmname>
     </p>
@@ -200,7 +200,7 @@
     <p class="- topic/p ">
       <started class="- topic/ph bookmap/started ">started</started>
     </p>
-    <summary class="- topic/summary ">summary</summary>
+    <summary class="- topic/ph bookmap/summary ">summary</summary>
     <p class="- topic/p ">
       <year class="- topic/ph bookmap/year ">year</year>
     </p>
@@ -226,7 +226,8 @@
       <xref class="- topic/xref ">xref</xref>
     </p>
     <p class="- topic/p ">
-      <glossAlternateFor class="- topic/xref concept/xref glossentry/glossAlternateFor ">glossAlternateFor</glossAlternateFor>
+      <glossAlternateFor class="- topic/xref concept/xref glossentry/glossAlternateFor ">glossAlternateFor
+      </glossAlternateFor>
     </p>
     <p class="- topic/p ">
       <boolean class="- topic/boolean ">boolean</boolean>

@@ -34,6 +34,7 @@ import java.util.Map.Entry;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.sax.SAXResult;
 import javax.xml.transform.sax.TransformerHandler;
@@ -300,7 +301,9 @@ public class MapRenderer extends AbstractRenderer {
     } catch (final TransformerConfigurationException e) {
       throw new RuntimeException(e);
     }
-    h.getTransformer().setParameter("formats", String.join(",", formats));
+    final Transformer transformer = h.getTransformer();
+    transformer.setParameter("formats", String.join(",", formats));
+    transformer.setParameter("raw-dita", rawDita);
     h.setResult(new SAXResult(fragmentFilter));
     final HtmlParser parser = new HtmlParser();
     parser.setContentHandler(h);

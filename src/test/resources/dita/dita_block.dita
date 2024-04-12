@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<topic xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/" class="- topic/topic "
+       ditaarch:DITAArchVersion="2.0" id="raw-block-dita"
+       specializations="@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product">
+  <title class="- topic/title ">Raw block DITA</title>
+  <body class="- topic/body ">
+    <parml class="+ topic/dl pr-d/parml ">
+      <plentry class="+ topic/dlentry pr-d/plentry ">
+        <pt class="+ topic/dt pr-d/pt ">pt</pt>
+        <pd class="+ topic/dd pr-d/pd ">pd</pd>
+      </plentry>
+    </parml>
+    <hazardstatement class="+ topic/note hazard-d/hazardstatement ">
+      <messagepanel class="+ topic/ul hazard-d/messagepanel ">
+        <typeofhazard class="+ topic/li hazard-d/typeofhazard ">typeofhazard</typeofhazard>
+        <consequence class="+ topic/li hazard-d/consequence ">consequence</consequence>
+        <howtoavoid class="+ topic/li hazard-d/howtoavoid ">howtoavoid</howtoavoid>
+      </messagepanel>
+    </hazardstatement>
+  </body>
+</topic>

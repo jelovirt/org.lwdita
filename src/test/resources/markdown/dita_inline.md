@@ -1,4 +1,4 @@
-# Raw DITA
+# Raw inline DITA
 
 <mathmlref>mathmlref</mathmlref>
 
