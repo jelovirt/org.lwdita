@@ -23,7 +23,7 @@ public class DitaRenderer {
   public static final DataKey<Boolean> SHORTDESC_PARAGRAPH = new DataKey<>("SHORTDESC_PARAGRAPH", false);
   public static final DataKey<Boolean> TIGHT_LIST = new DataKey<>("TIGHT_LIST", true);
   public static final DataKey<Boolean> ID_FROM_YAML = new DataKey<>("ID_FROM_YAML", false);
-  public static final DataKey<Boolean> RAW_DITA = new DataKey<>("RAW_DITA", false);
+  public static final DataKey<Boolean> RAW_DITA = new DataKey<>("RAW_DITA", true);
 
   /**
    * @deprecated use {@link #MDITA_EXTENDED_PROFILE} instead.

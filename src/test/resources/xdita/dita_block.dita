@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<topic xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/" class="- topic/topic "
+       ditaarch:DITAArchVersion="2.0" id="raw-block-dita" specializations="(topic hi-d)(topic em-d)">
+  <title class="- topic/title ">Raw block DITA</title>
+  <body class="- topic/body ">
+    <parml class="- topic/parml ">
+      <plentry class="- topic/plentry ">
+        <pt class="- topic/pt ">pt</pt>
+        <pd class="- topic/pd ">pd</pd>
+      </plentry>
+    </parml>
+    <hazardstatement class="- topic/hazardstatement ">
+      <messagepanel class="- topic/messagepanel ">
+        <typeofhazard class="- topic/typeofhazard ">typeofhazard</typeofhazard>
+        <consequence class="- topic/consequence ">consequence</consequence>
+        <howtoavoid class="- topic/howtoavoid ">howtoavoid</howtoavoid>
+      </messagepanel>
+    </hazardstatement>
+    <equation-block class="- topic/equation-block ">
+      <mathml class="- topic/mathml ">
+        <m:math xmlns:m="http://www.w3.org/1998/Math/MathML" class="- topic/math ">
+          <m:mi class="- topic/mi ">x</m:mi>
+        </m:math>
+      </mathml>
+    </equation-block>
+    <svg-container class="- topic/svg-container ">
+      <svg:svg xmlns:svg="http://www.w3.org/2000/svg" class="- topic/svg " viewbox="0 0 20 20">
+        <svg:circle class="- topic/circle " cx="10" cy="10" fill="pink" r="10">
+        </svg:circle>
+      </svg:svg>
+    </svg-container>
+  </body>
+</topic>

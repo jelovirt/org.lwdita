@@ -833,7 +833,7 @@
       <xsl:map-entry key="'fragref'" select="'+ topic/xref pr-d/fragref '"/>
       <xsl:map-entry key="'synnoteref'" select="'+ topic/xref pr-d/synnoteref '"/>
       <xsl:map-entry key="'keytext'" select="'- map/keytext '"/>
-      <xsl:map-entry key="'map'" select="'- map/map '"/>
+      <!--xsl:map-entry key="'map'" select="'- map/map '"/-->
       <xsl:map-entry key="'bookmap'" select="'- map/map bookmap/bookmap '"/>
       <xsl:map-entry key="'subjectScheme'" select="'- map/map subjectScheme/subjectScheme '"/>
       <xsl:map-entry key="'navref'" select="'- map/navref '"/>
@@ -1066,7 +1066,7 @@
       <xsl:map-entry key="'glossterm'" select="'- topic/title concept/title glossentry/glossterm '"/>
       <xsl:map-entry key="'titlealt'" select="'- topic/titlealt '"/>
       <xsl:map-entry key="'tm'" select="'- topic/tm '"/>
-      <xsl:map-entry key="'topic'" select="'- topic/topic '"/>
+      <!--xsl:map-entry key="'topic'" select="'- topic/topic '"/-->
       <xsl:map-entry key="'concept'" select="'- topic/topic concept/concept '"/>
       <xsl:map-entry key="'glossentry'" select="'- topic/topic concept/concept glossentry/glossentry '"/>
       <xsl:map-entry key="'glossgroup'" select="'- topic/topic concept/concept glossgroup/glossgroup '"/>

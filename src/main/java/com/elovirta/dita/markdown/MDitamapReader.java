@@ -18,6 +18,7 @@ public class MDitamapReader extends MarkdownReader {
     .set(DitaRenderer.MAP, true)
     .set(DitaRenderer.ID_FROM_YAML, true)
     .set(DitaRenderer.MDITA_CORE_PROFILE, true)
+    .set(DitaRenderer.RAW_DITA, false)
     .toImmutable();
 
   public static final DataSet EXTENDED_PROFILE = new MutableDataSet()
@@ -26,6 +27,7 @@ public class MDitamapReader extends MarkdownReader {
     .set(DitaRenderer.ID_FROM_YAML, true)
     .set(DitaRenderer.LW_DITA, true)
     .set(DitaRenderer.MDITA_EXTENDED_PROFILE, true)
+    .set(DitaRenderer.RAW_DITA, false)
     .toImmutable();
 
   public MDitamapReader() {

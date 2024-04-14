@@ -44,6 +44,7 @@ public class MDitaReader extends MarkdownReader {
     .set(DitaRenderer.TIGHT_LIST, false)
     .set(DitaRenderer.ID_FROM_YAML, true)
     .set(DitaRenderer.MDITA_CORE_PROFILE, true)
+    .set(DitaRenderer.RAW_DITA, false)
     //            .set(DitaRenderer.SPECIALIZATION, false)
     .toImmutable();
 
@@ -74,6 +75,7 @@ public class MDitaReader extends MarkdownReader {
     .set(DitaRenderer.ID_FROM_YAML, true)
     .set(DitaRenderer.LW_DITA, true)
     .set(DitaRenderer.MDITA_EXTENDED_PROFILE, true)
+    .set(DitaRenderer.RAW_DITA, false)
     //            .set(DitaRenderer.SPECIALIZATION, false)
     .toImmutable();
 
