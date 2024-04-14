@@ -1370,7 +1370,10 @@
   <xsl:template match="@* | node()" mode="class" priority="-15"/>
 
   <xsl:template match="*" priority="-10">
-    <xsl:if test="not(map:contains($classes, local-name()))">
+    <xsl:if test="not($raw-dita and
+                        (map:contains($classes, local-name()) or
+                          starts-with(name(), 'm:') or
+                          starts-with(name(), 'svg:')))">
       <xsl:message>WARN: Unsupported HTML5 element '<xsl:value-of select="name()"/>'</xsl:message>
     </xsl:if>
     <!--
