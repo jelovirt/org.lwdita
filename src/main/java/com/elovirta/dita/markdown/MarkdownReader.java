@@ -78,6 +78,7 @@ public class MarkdownReader implements XMLReader {
     final Map<String, DataKey<Boolean>> features = new HashMap<>();
     features.put("http://lwdita.org/sax/features/shortdesc-paragraph", DitaRenderer.SHORTDESC_PARAGRAPH);
     features.put("http://lwdita.org/sax/features/tight-list", DitaRenderer.TIGHT_LIST);
+    features.put("http://lwdita.org/sax/features/raw-dita", DitaRenderer.RAW_DITA);
     features.put("http://lwdita.org/sax/features/id-from-yaml", DitaRenderer.ID_FROM_YAML);
     features.put("http://lwdita.org/sax/features/mdita", DitaRenderer.MDITA_EXTENDED_PROFILE);
     features.put("http://lwdita.org/sax/features/mdita-extended-profile", DitaRenderer.MDITA_EXTENDED_PROFILE);

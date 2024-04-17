@@ -100,7 +100,7 @@ content
 
 ![]()
 
-\[/topic/topic/body/map \{"- topic/map "\}\) \[/topic/topic/body/map/area \{"- topic/area "\}\)\(area\]content \(map\] \[/topic/topic/body/track \{"- topic/track "\}\)\(track\]
+\[/topic/topic/body/map \{"- topic/map "\}\) content \(map\] \[/topic/topic/body/track \{"- topic/track "\}\)\(track\]
 
 \[/topic/topic/body/p/video \{"- topic/video "\}\)content\(video\]
 
@@ -144,7 +144,7 @@ content
 
 \[/topic/topic/body/p/button \{"- topic/button "\}\)content\(button\]
 
-\[/topic/topic/body/datalist \{"- topic/datalist "\}\) \[/topic/topic/body/datalist/option \{"- topic/option "\}\) \(option\] \(datalist\] \[/topic/topic/body/fieldset \{"- topic/fieldset "\}\)content\(fieldset\] \[/topic/topic/body/form \{"- topic/form "\}\)content\(form\] \[/topic/topic/body/input \{"- topic/input "\}\)\(input\]
+\[/topic/topic/body/datalist \{"- topic/datalist "\}\)  \(datalist\] \[/topic/topic/body/fieldset \{"- topic/fieldset "\}\)content\(fieldset\] \[/topic/topic/body/form \{"- topic/form "\}\)content\(form\] \[/topic/topic/body/input \{"- topic/input "\}\)\(input\]
 
 \[/topic/topic/body/p/label \{"- topic/label "\}\)content\(label\]
 
@@ -156,13 +156,13 @@ content
 
 \[/topic/topic/body/p/progress \{"- topic/progress "\}\)content\(progress\]
 
-\[/topic/topic/body/p/select \{"- topic/select "\}\) \[/topic/topic/body/p/select/optgroup \{"- topic/optgroup "\}\) \[/topic/topic/body/p/select/optgroup/option \{"- topic/option "\}\)content\(option\] \(optgroup\] \(select\]
+\[/topic/topic/body/p/select \{"- topic/select "\}\) \[/topic/topic/body/p/select/optgroup \{"- topic/optgroup "\}\) content \(optgroup\] \(select\]
 
 \[/topic/topic/body/p/textarea \{"- topic/textarea "\}\)content\(textarea\]
 
 ## Interactive elements {#interactive-elements}
 
-\[/topic/topic/body/details \{"- topic/details "\}\)content\(details\] \[/topic/topic/body/dialog \{"- topic/dialog "\}\)content\(dialog\] \[/topic/topic/body/summary \{"- topic/summary "\}\)content\(summary\]
+\[/topic/topic/body/details \{"- topic/details "\}\)content\(details\] \[/topic/topic/body/dialog \{"- topic/dialog "\}\)content\(dialog\] content
 
 ## Web Components {#web-components}
 

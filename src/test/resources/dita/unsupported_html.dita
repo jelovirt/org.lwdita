@@ -163,7 +163,7 @@
         <image class="- topic/image ">content</image>
       </p>
       <map class="- topic/map ">
-        <area class="- topic/area "/>content
+        <area class="+ topic/figgroup ut-d/area "/>content
       </map>
       <track class="- topic/track " name="track"/>
       <p class="- topic/p ">
@@ -252,7 +252,7 @@
         <button class="- topic/button ">content</button>
       </p>
       <datalist class="- topic/datalist ">
-        <option class="- topic/option ">
+        <option class="+ topic/keyword pr-d/option ">
         </option>
       </datalist>
       <fieldset class="- topic/fieldset ">content</fieldset>
@@ -274,7 +274,7 @@
       <p class="- topic/p ">
         <select class="- topic/select ">
           <optgroup class="- topic/optgroup ">
-            <option class="- topic/option ">content</option>
+            <option class="+ topic/keyword pr-d/option ">content</option>
           </optgroup>
         </select>
       </p>
@@ -289,7 +289,7 @@
     <body class="- topic/body ">
       <details class="- topic/details ">content</details>
       <dialog class="- topic/dialog ">content</dialog>
-      <summary class="- topic/summary ">content</summary>
+      <summary class="- topic/ph bookmap/summary ">content</summary>
     </body>
   </topic>
   <topic class="- topic/topic " ditaarch:DITAArchVersion="2.0"

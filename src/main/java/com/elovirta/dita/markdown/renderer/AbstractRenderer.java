@@ -3,6 +3,7 @@
  */
 package com.elovirta.dita.markdown.renderer;
 
+import static com.elovirta.dita.markdown.DitaRenderer.RAW_DITA;
 import static com.elovirta.dita.markdown.MarkdownReader.FORMATS;
 import static com.elovirta.dita.markdown.renderer.Utils.buildAtts;
 import static org.dita.dost.util.Constants.*;
@@ -65,6 +66,7 @@ public abstract class AbstractRenderer {
 
   protected final boolean mditaExtendedProfile;
   protected final boolean mditaCoreProfile;
+  protected final boolean rawDita;
   protected final Supplier<SAXTransformerFactory> transformerFactorySupplier;
   protected final Supplier<Templates> templatesSupplier;
   protected final Collection<String> formats;
@@ -76,6 +78,7 @@ public abstract class AbstractRenderer {
 
     mditaExtendedProfile = DitaRenderer.MDITA_EXTENDED_PROFILE.get(options);
     mditaCoreProfile = DitaRenderer.MDITA_CORE_PROFILE.get(options);
+    rawDita = RAW_DITA.get(options);
     transformerFactorySupplier =
       Suppliers.memoize(() -> {
         final SAXTransformerFactory tf = (SAXTransformerFactory) TransformerFactory.newInstance();

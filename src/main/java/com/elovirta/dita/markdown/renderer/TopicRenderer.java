@@ -42,6 +42,7 @@ import java.util.Map.Entry;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.sax.SAXResult;
 import javax.xml.transform.sax.TransformerHandler;
@@ -696,13 +697,17 @@ public class TopicRenderer extends AbstractRenderer {
     } catch (final TransformerConfigurationException e) {
       throw new RuntimeException(e);
     }
-    h.getTransformer().setParameter("formats", String.join(",", formats));
+    final Transformer transformer = h.getTransformer();
+    transformer.setParameter("formats", String.join(",", formats));
+    transformer.setParameter("raw-dita", rawDita);
     h.setResult(new SAXResult(fragmentFilter));
     final HtmlParser parser = new HtmlParser();
-    parser.setContentHandler(h);
+    parser.setNamePolicy(XmlViolationPolicy.ALLOW);
+    final NamespaceFilter filter = new NamespaceFilter(parser);
+    filter.setContentHandler(h);
     try {
       html.setLocation(node);
-      parser.parse(new InputSource(new StringReader(text)));
+      filter.parse(new InputSource(new StringReader(text)));
     } catch (IOException | SAXException e) {
       throw new ParseException("Failed to parse HTML: " + e.getMessage(), e);
     }
@@ -719,6 +724,7 @@ public class TopicRenderer extends AbstractRenderer {
 
   private static final Map<String, Entry<DitaClass, Attributes>> htmlToDita;
   private static final Map<String, Entry<DitaClass, Attributes>> hditaToXdita;
+  private static final Map<String, Entry<DitaClass, Attributes>> ditaToDita;
 
   static {
     htmlToDita =
@@ -755,6 +761,98 @@ public class TopicRenderer extends AbstractRenderer {
         )
         .flatMap(TopicRenderer::createHtmlToDita)
         .collect(Collectors.toUnmodifiableMap(Entry::getKey, Entry::getValue));
+    ditaToDita =
+      Stream
+        .of(
+          DitaClass.getInstance("+ topic/keyword learningInteractionBase-d/keyword learning-d/lcAreaShape "),
+          DitaClass.getInstance("+ topic/keyword learningInteractionBase2-d/keyword learning2-d/lcAreaShape2 "),
+          DitaClass.getInstance("+ topic/keyword markup-d/markupname "),
+          DitaClass.getInstance("+ topic/keyword markup-d/markupname xml-d/numcharref "),
+          DitaClass.getInstance("+ topic/keyword markup-d/markupname xml-d/parameterentity "),
+          DitaClass.getInstance("+ topic/keyword markup-d/markupname xml-d/textentity "),
+          DitaClass.getInstance("+ topic/keyword markup-d/markupname xml-d/xmlatt "),
+          DitaClass.getInstance("+ topic/keyword markup-d/markupname xml-d/xmlelement "),
+          DitaClass.getInstance("+ topic/keyword markup-d/markupname xml-d/xmlnsname "),
+          DitaClass.getInstance("+ topic/keyword markup-d/markupname xml-d/xmlpi "),
+          DitaClass.getInstance("+ topic/keyword pr-d/apiname "),
+          DitaClass.getInstance("+ topic/keyword pr-d/kwd "),
+          DitaClass.getInstance("+ topic/keyword pr-d/option "),
+          DitaClass.getInstance("+ topic/keyword pr-d/parmname "),
+          DitaClass.getInstance("+ topic/keyword sw-d/cmdname "),
+          DitaClass.getInstance("+ topic/keyword sw-d/msgnum "),
+          DitaClass.getInstance("+ topic/keyword sw-d/varname "),
+          DitaClass.getInstance("+ topic/keyword ui-d/shortcut "),
+          DitaClass.getInstance("+ topic/keyword ui-d/wintitle "),
+          DitaClass.getInstance("+ topic/keyword ut-d/shape "),
+          DitaClass.getInstance("+ topic/ph emphasis-d/em "),
+          DitaClass.getInstance("+ topic/ph emphasis-d/strong "),
+          DitaClass.getInstance("+ topic/ph equation-d/equation-inline "),
+          DitaClass.getInstance("+ topic/ph equation-d/equation-number "),
+          DitaClass.getInstance("+ topic/ph hi-d/b "),
+          DitaClass.getInstance("+ topic/ph hi-d/i "),
+          DitaClass.getInstance("+ topic/ph hi-d/line-through "),
+          DitaClass.getInstance("+ topic/ph hi-d/overline "),
+          DitaClass.getInstance("+ topic/ph hi-d/sub "),
+          DitaClass.getInstance("+ topic/ph hi-d/sup "),
+          DitaClass.getInstance("+ topic/ph hi-d/tt "),
+          DitaClass.getInstance("+ topic/ph hi-d/u "),
+          DitaClass.getInstance("+ topic/ph learningInteractionBase-d/ph learning-d/lcAreaCoords "),
+          DitaClass.getInstance("+ topic/ph learningInteractionBase2-d/ph learning2-d/lcAreaCoords2 "),
+          DitaClass.getInstance("+ topic/ph pr-d/codeph "),
+          DitaClass.getInstance("+ topic/ph pr-d/delim "),
+          DitaClass.getInstance("+ topic/ph pr-d/oper "),
+          DitaClass.getInstance("+ topic/ph pr-d/repsep "),
+          DitaClass.getInstance("+ topic/ph pr-d/sep "),
+          DitaClass.getInstance("+ topic/ph pr-d/synph "),
+          DitaClass.getInstance("+ topic/ph pr-d/var "),
+          DitaClass.getInstance("+ topic/ph sw-d/filepath "),
+          DitaClass.getInstance("+ topic/ph sw-d/msgph "),
+          DitaClass.getInstance("+ topic/ph sw-d/systemoutput "),
+          DitaClass.getInstance("+ topic/ph sw-d/userinput "),
+          DitaClass.getInstance("+ topic/ph ui-d/menucascade "),
+          DitaClass.getInstance("+ topic/ph ui-d/uicontrol "),
+          DitaClass.getInstance("+ topic/ph ut-d/coords "),
+          DitaClass.getInstance("+ topic/term abbrev-d/abbreviated-form "),
+          DitaClass.getInstance("+ topic/xref mathml-d/mathmlref "),
+          DitaClass.getInstance("+ topic/xref pr-d/coderef "),
+          DitaClass.getInstance("+ topic/xref pr-d/fragref "),
+          DitaClass.getInstance("+ topic/xref pr-d/synnoteref "),
+          DitaClass.getInstance("+ topic/xref svg-d/svgref "),
+          DitaClass.getInstance("- topic/boolean "),
+          DitaClass.getInstance("- topic/cite "),
+          DitaClass.getInstance("- topic/data learningBase/lcTime "),
+          DitaClass.getInstance("- topic/include "),
+          DitaClass.getInstance("- topic/indextermref "),
+          DitaClass.getInstance("- topic/itemgroup "),
+          DitaClass.getInstance("- topic/itemgroup task/info "),
+          DitaClass.getInstance("- topic/itemgroup task/stepresult "),
+          DitaClass.getInstance("- topic/itemgroup task/stepxmp "),
+          DitaClass.getInstance("- topic/itemgroup task/tutorialinfo "),
+          DitaClass.getInstance("- topic/keyword "),
+          DitaClass.getInstance("- topic/ph "),
+          DitaClass.getInstance("- topic/ph bookmap/booklibrary "),
+          DitaClass.getInstance("- topic/ph bookmap/booktitlealt "),
+          DitaClass.getInstance("- topic/ph bookmap/completed "),
+          DitaClass.getInstance("- topic/ph bookmap/day "),
+          DitaClass.getInstance("- topic/ph bookmap/mainbooktitle "),
+          DitaClass.getInstance("- topic/ph bookmap/month "),
+          DitaClass.getInstance("- topic/ph bookmap/revisionid "),
+          DitaClass.getInstance("- topic/ph bookmap/started "),
+          DitaClass.getInstance("- topic/ph bookmap/summary "),
+          DitaClass.getInstance("- topic/ph bookmap/year "),
+          DitaClass.getInstance("- topic/ph learningBase/lcObjectivesStem "),
+          DitaClass.getInstance("- topic/ph task/cmd "),
+          DitaClass.getInstance("- topic/q "),
+          DitaClass.getInstance("- topic/state "),
+          DitaClass.getInstance("- topic/term "),
+          DitaClass.getInstance("- topic/text "),
+          DitaClass.getInstance("- topic/tm "),
+          DitaClass.getInstance("- topic/xref "),
+          DitaClass.getInstance("- topic/xref concept/xref glossentry/glossAlternateFor ")
+        )
+        .map(cls -> Map.entry(cls.localName, cls))
+        .flatMap(TopicRenderer::createHtmlToDita)
+        .collect(Collectors.toUnmodifiableMap(Entry::getKey, Entry::getValue));
   }
 
   /**
@@ -762,7 +860,10 @@ public class TopicRenderer extends AbstractRenderer {
    */
   private void render(final HtmlInline node, final NodeRendererContext context, final SaxWriter html) {
     final String text = node.getChars().toString();
-    final Entry<DitaClass, Attributes> entry = (mditaExtendedProfile ? hditaToXdita : htmlToDita).get(text);
+    Entry<DitaClass, Attributes> entry = (mditaExtendedProfile ? hditaToXdita : htmlToDita).get(text);
+    if (rawDita && entry == null) {
+      entry = ditaToDita.get(text);
+    }
     if (entry != null) {
       final DitaClass cls = entry.getKey();
       html.setLocation(node);
