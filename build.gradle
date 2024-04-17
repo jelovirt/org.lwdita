@@ -5,7 +5,7 @@ sourceCompatibility = 11
 targetCompatibility = 11
 
 group = 'com.elovirta.dita'
-version = "5.7.0"
+version = "5.8.0"
 
 repositories {
     mavenCentral()
@@ -75,7 +75,7 @@ dependencies {
     testImplementation group: 'org.xmlunit', name: 'xmlunit-core', version: '2.9.1'
 }
 
-task dist(type: Zip) {
+tasks.register('dist', Zip) {
     from(jar) {
         into "lib"
     }
