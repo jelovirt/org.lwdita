@@ -36,6 +36,7 @@ public class AstToMarkdownTest {
       "header",
       "header_attributes",
       "html",
+      "html_unsupported",
       "image-size",
       "image",
       "inline",
@@ -66,7 +67,6 @@ public class AstToMarkdownTest {
       "testNoBOM",
       "topic",
       "ul",
-      "unsupported_html",
       "yaml",
     }
   )

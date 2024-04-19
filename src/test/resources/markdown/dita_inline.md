@@ -1,171 +1,173 @@
 # Raw inline DITA
 
-<mathmlref>mathmlref</mathmlref>
+abbreviated-form <abbreviated-form>abbreviated-form</abbreviated-form>.
 
-<coderef>coderef</coderef>
+apiname <apiname>apiname</apiname>.
 
-<svgref>svgref</svgref>
+b <b>b</b>.
 
-<markupname>markupname</markupname>
+booklibrary <booklibrary>booklibrary</booklibrary>.
 
-<numcharref>numcharref</numcharref>
+booktitlealt <booktitlealt>booktitlealt</booktitlealt>.
 
-<parameterentity>parameterentity</parameterentity>
+boolean <boolean>boolean</boolean>.
 
-<textentity>textentity</textentity>
+cite <cite>cite</cite>.
 
-<xmlatt>xmlatt</xmlatt>
+cmd <cmd>cmd</cmd>.
 
-<xmlelement>xmlelement</xmlelement>
+cmdname <cmdname>cmdname</cmdname>.
 
-<xmlnsname>xmlnsname</xmlnsname>
+codeph <codeph>codeph</codeph>.
 
-<xmlpi>xmlpi</xmlpi>
+coderef <coderef>coderef</coderef>.
 
-<apiname>apiname</apiname>
+completed <completed>completed</completed>.
 
-<kwd>kwd</kwd>
+coords <coords>coords</coords>.
 
-<option>option</option>
+day <day>day</day>.
 
-<parmname>parmname</parmname>
+delim <delim>delim</delim>.
 
-<cmdname>cmdname</cmdname>
+em <em>em</em>.
 
-<msgnum>msgnum</msgnum>
+equation-inline <equation-inline>equation-inline</equation-inline>.
 
-<varname>varname</varname>
+equation-number <equation-number>equation-number</equation-number>.
 
-<shortcut>shortcut</shortcut>
+filepath <filepath>filepath</filepath>.
 
-<wintitle>wintitle</wintitle>
+fragref <fragref>fragref</fragref>.
 
-<shape>shape</shape>
+glossAlternateFor <glossAlternateFor>glossAlternateFor</glossAlternateFor>.
 
-<em>em</em>
+i <i>i</i>.
 
-<strong>strong</strong>
+image <image src="image.png"/>.
 
-<equation-inline>equation-inline</equation-inline>
+include <include>include</include>.
 
-<equation-number>equation-number</equation-number>
+indextermref <indextermref>indextermref</indextermref>.
 
-<b>b</b>
+info <info>info</info>.
 
-<i>i</i>
+itemgroup <itemgroup>itemgroup</itemgroup>.
 
-<line-through>line-through</line-through>
+keyword <keyword>keyword</keyword>.
 
-<overline>overline</overline>
+kwd <kwd>kwd</kwd>.
 
-<sub>sub</sub>
+lcAreaCoords <lcAreaCoords>lcAreaCoords</lcAreaCoords>.
 
-<sup>sup</sup>
+lcAreaCoords2 <lcAreaCoords2>lcAreaCoords2</lcAreaCoords2>.
 
-<tt>tt</tt>
+lcAreaShape <lcAreaShape>lcAreaShape</lcAreaShape>.
 
-<u>u</u>
+lcAreaShape2 <lcAreaShape2>lcAreaShape2</lcAreaShape2>.
 
-<codeph>codeph</codeph>
+lcObjectivesStem <lcObjectivesStem>lcObjectivesStem</lcObjectivesStem>.
 
-<delim>delim</delim>
+lcTime <lcTime>lcTime</lcTime>.
 
-<oper>oper</oper>
+line-through <line-through>line-through</line-through>.
 
-<repsep>repsep</repsep>
+mainbooktitle <mainbooktitle>mainbooktitle</mainbooktitle>.
 
-<sep>sep</sep>
+markupname <markupname>markupname</markupname>.
 
-<synph>synph</synph>
+mathmlref <mathmlref>mathmlref</mathmlref>.
 
-<var>var</var>
+menucascade <menucascade>menucascade</menucascade>.
 
-<filepath>filepath</filepath>
+month <month>month</month>.
 
-<msgph>msgph</msgph>
+msgnum <msgnum>msgnum</msgnum>.
 
-<systemoutput>systemoutput</systemoutput>
+msgph <msgph>msgph</msgph>.
 
-<userinput>userinput</userinput>
+numcharref <numcharref>numcharref</numcharref>.
 
-<menucascade>menucascade</menucascade>
+oper <oper>oper</oper>.
 
-<uicontrol>uicontrol</uicontrol>
+option <option>option</option>.
 
-<coords>coords</coords>
+overline <overline>overline</overline>.
 
-<abbreviated-form>abbreviated-form</abbreviated-form>
+parameterentity <parameterentity>parameterentity</parameterentity>.
 
-<fragref>fragref</fragref>
+parmname <parmname>parmname</parmname>.
 
-<synnoteref>synnoteref</synnoteref>
+ph <ph>ph</ph>.
 
-<cite>cite</cite>
+q <q>q</q>.
 
-<info>info</info>
+repsep <repsep>repsep</repsep>.
 
-<stepresult>stepresult</stepresult>
+revisionid <revisionid>revisionid</revisionid>.
 
-<stepxmp>stepxmp</stepxmp>
+sep <sep>sep</sep>.
 
-<tutorialinfo>tutorialinfo</tutorialinfo>
+shape <shape>shape</shape>.
 
-<include>include</include>
+shortcut <shortcut>shortcut</shortcut>.
 
-<keyword>keyword</keyword>
+started <started>started</started>.
 
-<ph>ph</ph>
+state <state>state</state>.
 
-<booklibrary>booklibrary</booklibrary>
+stepresult <stepresult>stepresult</stepresult>.
 
-<booktitlealt>booktitlealt</booktitlealt>
+stepxmp <stepxmp>stepxmp</stepxmp>.
 
-<completed>completed</completed>
+strong <strong>strong</strong>.
 
-<day>day</day>
+sub <sub>sub</sub>.
 
-<mainbooktitle>mainbooktitle</mainbooktitle>
+summary <summary>summary</summary>.
 
-<month>month</month>
+sup <sup>sup</sup>.
 
-<revisionid>revisionid</revisionid>
+svgref <svgref>svgref</svgref>.
 
-<started>started</started>
+synnoteref <synnoteref>synnoteref</synnoteref>.
 
-<summary>summary</summary>
+synph <synph>synph</synph>.
 
-<year>year</year>
+systemoutput <systemoutput>systemoutput</systemoutput>.
 
-<cmd>cmd</cmd>
+term <term>term</term>.
 
-<q>q</q>
+text <text>text</text>.
 
-<state>state</state>
+textentity <textentity>textentity</textentity>.
 
-<term>term</term>
+tm <tm>tm</tm>.
 
-<text>text</text>
+tt <tt>tt</tt>.
 
-<tm>tm</tm>
+tutorialinfo <tutorialinfo>tutorialinfo</tutorialinfo>.
 
-<xref>xref</xref>
+u <u>u</u>.
 
-<glossAlternateFor>glossAlternateFor</glossAlternateFor>
+uicontrol <uicontrol>uicontrol</uicontrol>.
 
-<boolean>boolean</boolean>
+userinput <userinput>userinput</userinput>.
 
-<indextermref>indextermref</indextermref>
+var <var>var</var>.
 
-<itemgroup>itemgroup</itemgroup>
+varname <varname>varname</varname>.
 
-<lcAreaCoords>lcAreaCoords</lcAreaCoords>
+wintitle <wintitle>wintitle</wintitle>.
 
-<lcAreaCoords2>lcAreaCoords2</lcAreaCoords2>
+xmlatt <xmlatt>xmlatt</xmlatt>.
 
-<lcAreaShape>lcAreaShape</lcAreaShape>
+xmlelement <xmlelement>xmlelement</xmlelement>.
 
-<lcAreaShape2>lcAreaShape2</lcAreaShape2>
+xmlnsname <xmlnsname>xmlnsname</xmlnsname>.
 
-<lcObjectivesStem>lcObjectivesStem</lcObjectivesStem>
+xmlpi <xmlpi>xmlpi</xmlpi>.
 
-<lcTime>lcTime</lcTime>
+xref <xref>xref</xref>.
+
+year <year>year</year>.

@@ -57,6 +57,7 @@ public class MarkdownReaderTest extends AbstractReaderTest {
       "header.md",
       "header_attributes.md",
       "html.md",
+      "html_unsupported.md",
       "image-size.md",
       "image.md",
       "inline.md",
@@ -84,7 +85,6 @@ public class MarkdownReaderTest extends AbstractReaderTest {
       "testBOM.md",
       "testNoBOM.md",
       "ul.md",
-      "unsupported_html.md",
       "yaml.md",
       //            "pandoc_header.md",
       "schema/concept.md",
@@ -101,7 +101,7 @@ public class MarkdownReaderTest extends AbstractReaderTest {
   }
 
   @ParameterizedTest
-  @ValueSource(strings = { "dita_block.md", "dita_inline.md" })
+  @ValueSource(strings = { "dita_block.md", "dita_block_unsupported.md", "dita_inline.md" })
   public void test_rawDITA(String file) throws Exception {
     reader.setFeature("http://lwdita.org/sax/features/raw-dita", true);
 

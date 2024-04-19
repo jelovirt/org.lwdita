@@ -4,257 +4,195 @@
        specializations="@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product">
   <title class="- topic/title ">Raw inline DITA</title>
   <body class="- topic/body ">
-    <p class="- topic/p ">
-      <mathmlref class="+ topic/xref mathml-d/mathmlref ">mathmlref</mathmlref>
+    <p class="- topic/p ">abbreviated-form <abbreviated-form class="+ topic/term abbrev-d/abbreviated-form ">
+      abbreviated-form</abbreviated-form>.
     </p>
-    <p class="- topic/p ">
-      <coderef class="+ topic/xref pr-d/coderef ">coderef</coderef>
+    <p class="- topic/p ">apiname <apiname class="+ topic/keyword pr-d/apiname ">apiname</apiname>.
     </p>
-    <p class="- topic/p ">
-      <svgref class="+ topic/xref svg-d/svgref ">svgref</svgref>
+    <p class="- topic/p ">b <b class="+ topic/ph hi-d/b ">b</b>.
     </p>
-    <p class="- topic/p ">
-      <markupname class="+ topic/keyword markup-d/markupname ">markupname</markupname>
+    <p class="- topic/p ">booklibrary <booklibrary class="- topic/ph bookmap/booklibrary ">booklibrary</booklibrary>.
     </p>
-    <p class="- topic/p ">
-      <numcharref class="+ topic/keyword markup-d/markupname xml-d/numcharref ">numcharref</numcharref>
+    <p class="- topic/p ">booktitlealt <booktitlealt class="- topic/ph bookmap/booktitlealt ">
+      booktitlealt</booktitlealt>.
     </p>
-    <p class="- topic/p ">
-      <parameterentity class="+ topic/keyword markup-d/markupname xml-d/parameterentity ">parameterentity</parameterentity>
+    <p class="- topic/p ">boolean <boolean class="- topic/boolean ">boolean</boolean>.
     </p>
-    <p class="- topic/p ">
-      <textentity class="+ topic/keyword markup-d/markupname xml-d/textentity ">textentity</textentity>
+    <p class="- topic/p ">cite <cite class="- topic/cite ">cite</cite>.
     </p>
-    <p class="- topic/p ">
-      <xmlatt class="+ topic/keyword markup-d/markupname xml-d/xmlatt ">xmlatt</xmlatt>
+    <p class="- topic/p ">cmd <cmd class="- topic/ph task/cmd ">cmd</cmd>.
     </p>
-    <p class="- topic/p ">
-      <xmlelement class="+ topic/keyword markup-d/markupname xml-d/xmlelement ">xmlelement</xmlelement>
+    <p class="- topic/p ">cmdname <cmdname class="+ topic/keyword sw-d/cmdname ">cmdname</cmdname>.
     </p>
-    <p class="- topic/p ">
-      <xmlnsname class="+ topic/keyword markup-d/markupname xml-d/xmlnsname ">xmlnsname</xmlnsname>
+    <p class="- topic/p ">codeph <codeph class="+ topic/ph pr-d/codeph ">codeph</codeph>.
     </p>
-    <p class="- topic/p ">
-      <xmlpi class="+ topic/keyword markup-d/markupname xml-d/xmlpi ">xmlpi</xmlpi>
+    <p class="- topic/p ">coderef <coderef class="+ topic/xref pr-d/coderef ">coderef</coderef>.
     </p>
-    <p class="- topic/p ">
-      <apiname class="+ topic/keyword pr-d/apiname ">apiname</apiname>
+    <p class="- topic/p ">completed <completed class="- topic/ph bookmap/completed ">completed</completed>.
     </p>
-    <p class="- topic/p ">
-      <kwd class="+ topic/keyword pr-d/kwd ">kwd</kwd>
+    <p class="- topic/p ">coords <coords class="+ topic/ph ut-d/coords ">coords</coords>.
     </p>
-    <option class="+ topic/keyword pr-d/option ">option</option>
-    <p class="- topic/p ">
-      <parmname class="+ topic/keyword pr-d/parmname ">parmname</parmname>
+    <p class="- topic/p ">day <day class="- topic/ph bookmap/day ">day</day>.
     </p>
-    <p class="- topic/p ">
-      <cmdname class="+ topic/keyword sw-d/cmdname ">cmdname</cmdname>
+    <p class="- topic/p ">delim <delim class="+ topic/ph pr-d/delim ">delim</delim>.
     </p>
-    <p class="- topic/p ">
-      <msgnum class="+ topic/keyword sw-d/msgnum ">msgnum</msgnum>
+    <p class="- topic/p ">em <i class="+ topic/ph hi-d/i ">em</i>.
     </p>
-    <p class="- topic/p ">
-      <varname class="+ topic/keyword sw-d/varname ">varname</varname>
+    <p class="- topic/p ">equation-inline <equation-inline class="+ topic/ph equation-d/equation-inline ">
+      equation-inline</equation-inline>.
     </p>
-    <p class="- topic/p ">
-      <shortcut class="+ topic/keyword ui-d/shortcut ">shortcut</shortcut>
+    <p class="- topic/p ">equation-number <equation-number class="+ topic/ph equation-d/equation-number ">
+      equation-number</equation-number>.
     </p>
-    <p class="- topic/p ">
-      <wintitle class="+ topic/keyword ui-d/wintitle ">wintitle</wintitle>
+    <p class="- topic/p ">filepath <filepath class="+ topic/ph sw-d/filepath ">filepath</filepath>.
     </p>
-    <p class="- topic/p ">
-      <shape class="+ topic/keyword ut-d/shape ">shape</shape>
+    <p class="- topic/p ">fragref <fragref class="+ topic/xref pr-d/fragref ">fragref</fragref>.
     </p>
-    <p class="- topic/p ">
-      <i class="+ topic/ph hi-d/i ">em</i>
+    <p class="- topic/p ">glossAlternateFor <glossAlternateFor
+        class="- topic/xref concept/xref glossentry/glossAlternateFor ">glossAlternateFor</glossAlternateFor>.
     </p>
-    <p class="- topic/p ">
-      <b class="+ topic/ph hi-d/b ">strong</b>
+    <p class="- topic/p ">i <i class="+ topic/ph hi-d/i ">i</i>.
     </p>
-    <p class="- topic/p ">
-      <equation-inline class="+ topic/ph equation-d/equation-inline ">equation-inline</equation-inline>
+    <p class="- topic/p ">image<image class="- topic/image " href="image.png"/>.
     </p>
-    <p class="- topic/p ">
-      <equation-number class="+ topic/ph equation-d/equation-number ">equation-number</equation-number>
+    <p class="- topic/p ">include <include class="- topic/include ">include</include>.
     </p>
-    <p class="- topic/p ">
-      <b class="+ topic/ph hi-d/b ">b</b>
+    <p class="- topic/p ">indextermref <indextermref class="- topic/indextermref ">indextermref</indextermref>.
     </p>
-    <p class="- topic/p ">
-      <i class="+ topic/ph hi-d/i ">i</i>
+    <p class="- topic/p ">info <info class="- topic/itemgroup task/info ">info</info>.
     </p>
-    <p class="- topic/p ">
-      <line-through class="+ topic/ph hi-d/line-through ">line-through</line-through>
+    <p class="- topic/p ">itemgroup <itemgroup class="- topic/itemgroup ">itemgroup</itemgroup>.
     </p>
-    <p class="- topic/p ">
-      <overline class="+ topic/ph hi-d/overline ">overline</overline>
+    <p class="- topic/p ">keyword <keyword class="- topic/keyword ">keyword</keyword>.
     </p>
-    <p class="- topic/p ">
-      <sub class="+ topic/ph hi-d/sub ">sub</sub>
+    <p class="- topic/p ">kwd <kwd class="+ topic/keyword pr-d/kwd ">kwd</kwd>.
     </p>
-    <p class="- topic/p ">
-      <sup class="+ topic/ph hi-d/sup ">sup</sup>
+    <p class="- topic/p ">lcAreaCoords <lcAreaCoords
+        class="+ topic/ph learningInteractionBase-d/ph learning-d/lcAreaCoords ">lcAreaCoords</lcAreaCoords>.
     </p>
-    <p class="- topic/p ">
-      <tt class="+ topic/ph hi-d/tt ">tt</tt>
+    <p class="- topic/p ">lcAreaCoords2 <lcAreaCoords2
+        class="+ topic/ph learningInteractionBase2-d/ph learning2-d/lcAreaCoords2 ">lcAreaCoords2</lcAreaCoords2>.
     </p>
-    <p class="- topic/p ">
-      <u class="+ topic/ph hi-d/u ">u</u>
+    <p class="- topic/p ">lcAreaShape <lcAreaShape
+        class="+ topic/keyword learningInteractionBase-d/keyword learning-d/lcAreaShape ">lcAreaShape</lcAreaShape>.
     </p>
-    <p class="- topic/p ">
-      <codeph class="+ topic/ph pr-d/codeph ">codeph</codeph>
+    <p class="- topic/p ">lcAreaShape2 <lcAreaShape2
+        class="+ topic/keyword learningInteractionBase2-d/keyword learning2-d/lcAreaShape2 ">
+      lcAreaShape2</lcAreaShape2>.
     </p>
-    <p class="- topic/p ">
-      <delim class="+ topic/ph pr-d/delim ">delim</delim>
+    <p class="- topic/p ">lcObjectivesStem <lcObjectivesStem class="- topic/ph learningBase/lcObjectivesStem ">
+      lcObjectivesStem</lcObjectivesStem>.
     </p>
-    <p class="- topic/p ">
-      <oper class="+ topic/ph pr-d/oper ">oper</oper>
+    <p class="- topic/p ">lcTime <lcTime class="- topic/data learningBase/lcTime ">lcTime</lcTime>.
     </p>
-    <p class="- topic/p ">
-      <repsep class="+ topic/ph pr-d/repsep ">repsep</repsep>
+    <p class="- topic/p ">line-through <line-through class="+ topic/ph hi-d/line-through ">line-through</line-through>.
     </p>
-    <p class="- topic/p ">
-      <sep class="+ topic/ph pr-d/sep ">sep</sep>
+    <p class="- topic/p ">mainbooktitle <mainbooktitle class="- topic/ph bookmap/mainbooktitle ">
+      mainbooktitle</mainbooktitle>.
     </p>
-    <p class="- topic/p ">
-      <synph class="+ topic/ph pr-d/synph ">synph</synph>
+    <p class="- topic/p ">markupname <markupname class="+ topic/keyword markup-d/markupname ">markupname</markupname>.
     </p>
-    <p class="- topic/p ">
-      <var class="+ topic/ph pr-d/var ">var</var>
+    <p class="- topic/p ">mathmlref <mathmlref class="+ topic/xref mathml-d/mathmlref ">mathmlref</mathmlref>.
     </p>
-    <p class="- topic/p ">
-      <filepath class="+ topic/ph sw-d/filepath ">filepath</filepath>
+    <p class="- topic/p ">menucascade <menucascade class="+ topic/ph ui-d/menucascade ">menucascade</menucascade>.
     </p>
-    <p class="- topic/p ">
-      <msgph class="+ topic/ph sw-d/msgph ">msgph</msgph>
+    <p class="- topic/p ">month <month class="- topic/ph bookmap/month ">month</month>.
     </p>
-    <p class="- topic/p ">
-      <systemoutput class="+ topic/ph sw-d/systemoutput ">systemoutput</systemoutput>
+    <p class="- topic/p ">msgnum <msgnum class="+ topic/keyword sw-d/msgnum ">msgnum</msgnum>.
     </p>
-    <p class="- topic/p ">
-      <userinput class="+ topic/ph sw-d/userinput ">userinput</userinput>
+    <p class="- topic/p ">msgph <msgph class="+ topic/ph sw-d/msgph ">msgph</msgph>.
     </p>
-    <p class="- topic/p ">
-      <menucascade class="+ topic/ph ui-d/menucascade ">menucascade</menucascade>
+    <p class="- topic/p ">numcharref <numcharref class="+ topic/keyword markup-d/markupname xml-d/numcharref ">
+      numcharref</numcharref>.
     </p>
-    <p class="- topic/p ">
-      <uicontrol class="+ topic/ph ui-d/uicontrol ">uicontrol</uicontrol>
+    <p class="- topic/p ">oper <oper class="+ topic/ph pr-d/oper ">oper</oper>.
     </p>
-    <p class="- topic/p ">
-      <coords class="+ topic/ph ut-d/coords ">coords</coords>
+    <p class="- topic/p ">option <option class="+ topic/keyword pr-d/option ">option</option>.
     </p>
-    <p class="- topic/p ">
-      <abbreviated-form class="+ topic/term abbrev-d/abbreviated-form ">abbreviated-form</abbreviated-form>
+    <p class="- topic/p ">overline <overline class="+ topic/ph hi-d/overline ">overline</overline>.
     </p>
-    <p class="- topic/p ">
-      <fragref class="+ topic/xref pr-d/fragref ">fragref</fragref>
+    <p class="- topic/p ">parameterentity <parameterentity
+        class="+ topic/keyword markup-d/markupname xml-d/parameterentity ">parameterentity</parameterentity>.
     </p>
-    <p class="- topic/p ">
-      <synnoteref class="+ topic/xref pr-d/synnoteref ">synnoteref</synnoteref>
+    <p class="- topic/p ">parmname <parmname class="+ topic/keyword pr-d/parmname ">parmname</parmname>.
     </p>
-    <p class="- topic/p ">
-      <cite class="- topic/cite ">cite</cite>
+    <p class="- topic/p ">ph <ph class="- topic/ph ">ph</ph>.
     </p>
-    <p class="- topic/p ">
-      <info class="- topic/itemgroup task/info ">info</info>
+    <p class="- topic/p ">q <q class="- topic/q ">q</q>.
     </p>
-    <p class="- topic/p ">
-      <stepresult class="- topic/itemgroup task/stepresult ">stepresult</stepresult>
+    <p class="- topic/p ">repsep <repsep class="+ topic/ph pr-d/repsep ">repsep</repsep>.
     </p>
-    <p class="- topic/p ">
-      <stepxmp class="- topic/itemgroup task/stepxmp ">stepxmp</stepxmp>
+    <p class="- topic/p ">revisionid <revisionid class="- topic/ph bookmap/revisionid ">revisionid</revisionid>.
     </p>
-    <p class="- topic/p ">
-      <tutorialinfo class="- topic/itemgroup task/tutorialinfo ">tutorialinfo</tutorialinfo>
+    <p class="- topic/p ">sep <sep class="+ topic/ph pr-d/sep ">sep</sep>.
     </p>
-    <p class="- topic/p ">
-      <include class="- topic/include ">include</include>
+    <p class="- topic/p ">shape <shape class="+ topic/keyword ut-d/shape ">shape</shape>.
     </p>
-    <p class="- topic/p ">
-      <keyword class="- topic/keyword ">keyword</keyword>
+    <p class="- topic/p ">shortcut <shortcut class="+ topic/keyword ui-d/shortcut ">shortcut</shortcut>.
     </p>
-    <p class="- topic/p ">
-      <ph class="- topic/ph ">ph</ph>
+    <p class="- topic/p ">started <started class="- topic/ph bookmap/started ">started</started>.
     </p>
-    <p class="- topic/p ">
-      <booklibrary class="- topic/ph bookmap/booklibrary ">booklibrary</booklibrary>
+    <p class="- topic/p ">state <state class="- topic/state ">state</state>.
     </p>
-    <p class="- topic/p ">
-      <booktitlealt class="- topic/ph bookmap/booktitlealt ">booktitlealt</booktitlealt>
+    <p class="- topic/p ">stepresult <stepresult class="- topic/itemgroup task/stepresult ">stepresult</stepresult>.
     </p>
-    <p class="- topic/p ">
-      <completed class="- topic/ph bookmap/completed ">completed</completed>
+    <p class="- topic/p ">stepxmp <stepxmp class="- topic/itemgroup task/stepxmp ">stepxmp</stepxmp>.
     </p>
-    <p class="- topic/p ">
-      <day class="- topic/ph bookmap/day ">day</day>
+    <p class="- topic/p ">strong <b class="+ topic/ph hi-d/b ">strong</b>.
     </p>
-    <p class="- topic/p ">
-      <mainbooktitle class="- topic/ph bookmap/mainbooktitle ">mainbooktitle</mainbooktitle>
+    <p class="- topic/p ">sub <sub class="+ topic/ph hi-d/sub ">sub</sub>.
     </p>
-    <p class="- topic/p ">
-      <month class="- topic/ph bookmap/month ">month</month>
+    <p class="- topic/p ">summary <summary class="- topic/ph bookmap/summary ">summary</summary>.
     </p>
-    <p class="- topic/p ">
-      <revisionid class="- topic/ph bookmap/revisionid ">revisionid</revisionid>
+    <p class="- topic/p ">sup <sup class="+ topic/ph hi-d/sup ">sup</sup>.
     </p>
-    <p class="- topic/p ">
-      <started class="- topic/ph bookmap/started ">started</started>
+    <p class="- topic/p ">svgref <svgref class="+ topic/xref svg-d/svgref ">svgref</svgref>.
     </p>
-    <summary class="- topic/ph bookmap/summary ">summary</summary>
-    <p class="- topic/p ">
-      <year class="- topic/ph bookmap/year ">year</year>
+    <p class="- topic/p ">synnoteref <synnoteref class="+ topic/xref pr-d/synnoteref ">synnoteref</synnoteref>.
     </p>
-    <p class="- topic/p ">
-      <cmd class="- topic/ph task/cmd ">cmd</cmd>
+    <p class="- topic/p ">synph <synph class="+ topic/ph pr-d/synph ">synph</synph>.
     </p>
-    <p class="- topic/p ">
-      <q class="- topic/q ">q</q>
+    <p class="- topic/p ">systemoutput <systemoutput class="+ topic/ph sw-d/systemoutput ">systemoutput</systemoutput>.
     </p>
-    <p class="- topic/p ">
-      <state class="- topic/state ">state</state>
+    <p class="- topic/p ">term <term class="- topic/term ">term</term>.
     </p>
-    <p class="- topic/p ">
-      <term class="- topic/term ">term</term>
+    <p class="- topic/p ">text <text class="- topic/text ">text</text>.
     </p>
-    <p class="- topic/p ">
-      <text class="- topic/text ">text</text>
+    <p class="- topic/p ">textentity <textentity class="+ topic/keyword markup-d/markupname xml-d/textentity ">
+      textentity</textentity>.
     </p>
-    <p class="- topic/p ">
-      <tm class="- topic/tm ">tm</tm>
+    <p class="- topic/p ">tm <tm class="- topic/tm ">tm</tm>.
     </p>
-    <p class="- topic/p ">
-      <xref class="- topic/xref ">xref</xref>
+    <p class="- topic/p ">tt <tt class="+ topic/ph hi-d/tt ">tt</tt>.
     </p>
-    <p class="- topic/p ">
-      <glossAlternateFor class="- topic/xref concept/xref glossentry/glossAlternateFor ">glossAlternateFor
-      </glossAlternateFor>
+    <p class="- topic/p ">tutorialinfo <tutorialinfo class="- topic/itemgroup task/tutorialinfo ">
+      tutorialinfo</tutorialinfo>.
     </p>
-    <p class="- topic/p ">
-      <boolean class="- topic/boolean ">boolean</boolean>
+    <p class="- topic/p ">u <u class="+ topic/ph hi-d/u ">u</u>.
     </p>
-    <p class="- topic/p ">
-      <indextermref class="- topic/indextermref ">indextermref</indextermref>
+    <p class="- topic/p ">uicontrol <uicontrol class="+ topic/ph ui-d/uicontrol ">uicontrol</uicontrol>.
     </p>
-    <p class="- topic/p ">
-      <itemgroup class="- topic/itemgroup ">itemgroup</itemgroup>
+    <p class="- topic/p ">userinput <userinput class="+ topic/ph sw-d/userinput ">userinput</userinput>.
     </p>
-    <p class="- topic/p ">
-      <lcAreaCoords class="+ topic/ph learningInteractionBase-d/ph learning-d/lcAreaCoords ">lcAreaCoords</lcAreaCoords>
+    <p class="- topic/p ">var <var class="+ topic/ph pr-d/var ">var</var>.
     </p>
-    <p class="- topic/p ">
-      <lcAreaCoords2 class="+ topic/ph learningInteractionBase2-d/ph learning2-d/lcAreaCoords2 ">lcAreaCoords2</lcAreaCoords2>
+    <p class="- topic/p ">varname <varname class="+ topic/keyword sw-d/varname ">varname</varname>.
     </p>
-    <p class="- topic/p ">
-      <lcAreaShape class="+ topic/keyword learningInteractionBase-d/keyword learning-d/lcAreaShape ">lcAreaShape</lcAreaShape>
+    <p class="- topic/p ">wintitle <wintitle class="+ topic/keyword ui-d/wintitle ">wintitle</wintitle>.
     </p>
-    <p class="- topic/p ">
-      <lcAreaShape2 class="+ topic/keyword learningInteractionBase2-d/keyword learning2-d/lcAreaShape2 ">lcAreaShape2</lcAreaShape2>
+    <p class="- topic/p ">xmlatt <xmlatt class="+ topic/keyword markup-d/markupname xml-d/xmlatt ">xmlatt</xmlatt>.
     </p>
-    <p class="- topic/p ">
-      <lcObjectivesStem class="- topic/ph learningBase/lcObjectivesStem ">lcObjectivesStem</lcObjectivesStem>
+    <p class="- topic/p ">xmlelement <xmlelement class="+ topic/keyword markup-d/markupname xml-d/xmlelement ">
+      xmlelement</xmlelement>.
     </p>
-    <p class="- topic/p ">
-      <lcTime class="- topic/data learningBase/lcTime ">lcTime</lcTime>
+    <p class="- topic/p ">xmlnsname <xmlnsname class="+ topic/keyword markup-d/markupname xml-d/xmlnsname ">
+      xmlnsname</xmlnsname>.
+    </p>
+    <p class="- topic/p ">xmlpi <xmlpi class="+ topic/keyword markup-d/markupname xml-d/xmlpi ">xmlpi</xmlpi>.
+    </p>
+    <p class="- topic/p ">xref <xref class="- topic/xref ">xref</xref>.
+    </p>
+    <p class="- topic/p ">year <year class="- topic/ph bookmap/year ">year</year>.
     </p>
   </body>
 </topic>

@@ -900,6 +900,9 @@ public class TopicRenderer extends AbstractRenderer {
       } catch (IOException | SAXException e) {
         throw new ParseException("Failed to parse HTML: " + e.getMessage(), e);
       }
+      if (text.endsWith("/>")) {
+        html.endElement();
+      }
     }
     html.setDocumentLocator();
   }
