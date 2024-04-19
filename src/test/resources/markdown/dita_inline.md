@@ -44,6 +44,8 @@ glossAlternateFor <glossAlternateFor>glossAlternateFor</glossAlternateFor>.
 
 i <i>i</i>.
 
+image <image src="image.png"/>.
+
 include <include>include</include>.
 
 indextermref <indextermref>indextermref</indextermref>.

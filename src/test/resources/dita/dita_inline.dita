@@ -53,6 +53,8 @@
     </p>
     <p class="- topic/p ">i <i class="+ topic/ph hi-d/i ">i</i>.
     </p>
+    <p class="- topic/p ">image<image class="- topic/image " href="image.png"/>.
+    </p>
     <p class="- topic/p ">include <include class="- topic/include ">include</include>.
     </p>
     <p class="- topic/p ">indextermref <indextermref class="- topic/indextermref ">indextermref</indextermref>.
