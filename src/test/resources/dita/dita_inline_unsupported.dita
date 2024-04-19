@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<topic xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/" class="- topic/topic "
+       ditaarch:DITAArchVersion="2.0" id="raw-inline-dita"
+       specializations="@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product">
+  <title class="- topic/title ">Raw inline DITA</title>
+  <body class="- topic/body ">
+    <p class="- topic/p ">Image
+      <image class="- topic/image " href="image.png">.</image>
+      <p class="- topic/p ">Paragraph.</p>
+    </p>
+  </body>
+</topic>
