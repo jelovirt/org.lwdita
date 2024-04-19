@@ -9,5 +9,17 @@
     </fig>
     <p class="- topic/p ">Interlaced Markdown.</p>
     <image class="- topic/image " href="image2.png"/>
+    <tgroup class="- topic/tgroup " cols="1">
+    </tgroup>
+    <row class="- topic/row ">
+      <entry class="- topic/entry ">Entry</entry>
+    </row>
+    <table class="- topic/table ">
+      <tgroup class="- topic/tgroup " cols="0">
+        <tbody class="- topic/tbody ">
+
+        </tbody>
+      </tgroup>
+    </table>
   </body>
 </topic>

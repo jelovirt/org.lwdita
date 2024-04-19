@@ -7,3 +7,13 @@ Interlaced Markdown.
 
   <img src="image2.png">
 </figure>
+
+<table>
+  <tgroup cols="1">
+    <tbody>
+      <row>
+        <entry>Entry</entry>
+      </row>
+    </tbody>
+  </tgroup>
+</table>
