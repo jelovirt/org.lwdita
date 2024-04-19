@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<topic xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/" class="- topic/topic "
+       ditaarch:DITAArchVersion="2.0" id="unsupported-dita-block"
+       specializations="@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product">
+  <title class="- topic/title ">Unsupported DITA block</title>
+  <body class="- topic/body ">
+    <fig class="- topic/fig ">
+      <image class="- topic/image " href="image1.png"/>
+    </fig>
+    <p class="- topic/p ">Interlaced Markdown.</p>
+    <image class="- topic/image " href="image2.png"/>
+  </body>
+</topic>
