@@ -46,6 +46,7 @@ public class MDitaReaderExtendedTest extends AbstractReaderTest {
       "invalid_section_header.md",
       "dita_block.md",
       "html.md",
+      "html_unsupported.md",
       "image.md",
       "inline.md",
       "jekyll.md",
@@ -69,7 +70,6 @@ public class MDitaReaderExtendedTest extends AbstractReaderTest {
       "testBOM.md",
       "testNoBOM.md",
       "ul.md",
-      "unsupported_html.md",
       "yaml.md",
     }
   )
