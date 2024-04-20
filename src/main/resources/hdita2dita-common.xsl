@@ -41,8 +41,7 @@
   </xsl:template>
 
   <xsl:template match="article">
-    <xsl:variable name="name" select="(:if (@data-hd-class) then @data-hd-class else :)'topic'"/>
-    <xsl:element name="{$name}">
+    <topic>
       <xsl:apply-templates select="." mode="class"/>
       <xsl:apply-templates select="." mode="topic"/>
       <xsl:apply-templates select="ancestor::*/@xml:lang"/>
@@ -70,9 +69,12 @@
         </body>
       <!--/xsl:if-->
       <xsl:apply-templates select="article"/>
-    </xsl:element>
+    </topic>
   </xsl:template>
-  
+  <xsl:template match="article" mode="class">
+    <xsl:attribute name="class">- topic/topic </xsl:attribute>
+  </xsl:template>
+
   <xsl:function name="x:get-id" as="attribute()?">
     <xsl:param name="topic" as="element()"/>
     <xsl:variable name="title" select="($topic/h1 | $topic/h2 | $topic/h3 | $topic/h4 | $topic/h5 | $topic/h6)[1]" as="element()?"/>
@@ -81,75 +83,23 @@
     </xsl:if>
   </xsl:function>
 
-  <xsl:template match="article" mode="class">
-    <xsl:attribute name="class">
-      <xsl:text>- topic/topic </xsl:text>
-      <!--
-      <xsl:if test="@data-hd-class">
-        <xsl:value-of select="concat(@data-hd-class, '/', @data-hd-class, ' ')"/>
-      </xsl:if>
-      -->
-    </xsl:attribute>
-  </xsl:template>
-  <!--
-  <xsl:template match="article[@data-hd-class = 'concept']" mode="class">
-    <xsl:attribute name="class">- topic/topic concept/concept </xsl:attribute>
-  </xsl:template>
-  <xsl:template match="article[@data-hd-class = 'task']" mode="class">
-    <xsl:attribute name="class">- topic/topic task/task </xsl:attribute>
-  </xsl:template>
-  <xsl:template match="article[@data-hd-class = 'reference']" mode="class">
-    <xsl:attribute name="class">- topic/topic reference/reference </xsl:attribute>
-  </xsl:template>
-  -->
-
   <xsl:template match="*" mode="topic">
     <xsl:attribute name="ditaarch:DITAArchVersion">2.0</xsl:attribute>
     <xsl:attribute name="specializations">@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product</xsl:attribute>
   </xsl:template>
-  <!--
-  <xsl:template match="article[@data-hd-class = 'concept']" mode="topic">
-    <xsl:attribute name="domains">(topic abbrev-d) a(props deliveryTarget) (topic equation-d) (topic hazard-d) (topic hi-d) (topic indexing-d) (topic markup-d) (topic mathml-d) (topic pr-d) (topic relmgmt-d) (topic sw-d) (topic svg-d) (topic ui-d) (topic ut-d) (topic markup-d xml-d)</xsl:attribute>
-  </xsl:template>
-  <xsl:template match="article[@data-hd-class = 'task']" mode="topic">
-    <xsl:attribute name="domains">(topic concept) (topic abbrev-d) a(props deliveryTarget) (topic equation-d) (topic hazard-d) (topic hi-d) (topic indexing-d) (topic markup-d) (topic mathml-d) (topic pr-d) (topic relmgmt-d) (topic sw-d) (topic svg-d) (topic ui-d) (topic ut-d) (topic markup-d xml-d)</xsl:attribute>
-  </xsl:template>
-  <xsl:template match="article[@data-hd-class = 'reference']" mode="topic">
-    <xsl:attribute name="domains">(topic reference) (topic abbrev-d) a(props deliveryTarget) (topic equation-d) (topic hazard-d) (topic hi-d) (topic indexing-d) (topic markup-d) (topic mathml-d) (topic pr-d) (topic relmgmt-d) (topic sw-d) (topic svg-d) (topic ui-d) (topic ut-d) (topic markup-d xml-d)</xsl:attribute>
-  </xsl:template>
-  -->
   
   <xsl:template match="section">
-    <xsl:variable name="name" select="(:if (@data-hd-class = 'topic/example') then 'example' else :)'section'"/>
-    <xsl:element name="{$name}">
+    <section>
       <xsl:apply-templates select="." mode="class"/>
       <xsl:apply-templates select="@*"/>
       <xsl:if test="empty(@id)">
         <xsl:sequence select="x:get-id(.)"/>
       </xsl:if>
       <xsl:apply-templates select="*"/>
-    </xsl:element>
+    </section>
   </xsl:template>
   <xsl:template match="section" mode="class">
-    <xsl:attribute name="class">
-      <!--
-      <xsl:choose>
-        <xsl:when test="@data-hd-class = 'topic/example'">
-          <xsl:text>- topic/example </xsl:text>
-        </xsl:when>
-        <xsl:when test="contains(@data-hd-class, '/')">
-          <xsl:text>- topic/section </xsl:text>
-          <xsl:value-of select="concat(@data-hd-class, '/', @data-hd-class)"/>
-          <xsl:text> </xsl:text>
-        </xsl:when>
-        <xsl:otherwise>
-        -->
-          <xsl:text>- topic/section </xsl:text>
-      <!--
-        </xsl:otherwise>
-      </xsl:choose>
-      -->
-    </xsl:attribute>
+    <xsl:attribute name="class">- topic/section </xsl:attribute>
   </xsl:template>
 
   <xsl:template match="h1 | h2">
@@ -446,12 +396,6 @@
     <!-- Ignore this attribute -->
   </xsl:template>
 
-  <!--
-  <xsl:template match="*[@data-hd-class = 'topic/example']" mode="class">
-    <xsl:attribute name="class">- topic/example </xsl:attribute>
-  </xsl:template>
-  -->
-
   <xsl:template match="br">
     <xsl:processing-instruction name="linebreak"/>
   </xsl:template>
@@ -714,16 +658,6 @@
   <xsl:template match="@data-props">
     <xsl:attribute name="props" select="."/>
   </xsl:template>
-
-  <!--
-  <xsl:template match="*[@data-hd-class]" mode="class" priority="-5">
-    <xsl:attribute name="class">
-      <xsl:text>- </xsl:text>
-      <xsl:value-of select="@data-hd-class"/>
-      <xsl:text> </xsl:text>
-    </xsl:attribute>
-  </xsl:template>
-  -->
 
   <xsl:variable name="classes" as="map(*)">
     <xsl:map>
@@ -1433,8 +1367,6 @@
       <xsl:apply-templates select="@* | node()"/>
     </xsl:copy>
   </xsl:template>
-
-  <xsl:template match="@data-hd-class" priority="10"/>
 
   <xsl:template match="@data-keyref">
     <xsl:attribute name="keyref" select="."/>

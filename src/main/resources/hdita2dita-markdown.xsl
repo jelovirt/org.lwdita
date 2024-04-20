@@ -99,6 +99,4 @@
     <xsl:attribute name="{substring-after(name(), '-')}" select="."/>
   </xsl:template>
 
-  <xsl:template match="@data-hd-class" priority="10"/>
-
 </xsl:stylesheet>
