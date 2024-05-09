@@ -187,12 +187,16 @@ public class MarkdownReaderTest extends AbstractReaderTest {
   @ParameterizedTest
   @ValueSource(strings = { "invalid_header.md" })
   public void test_fail(String file) {
-    try {
-      run(file);
-      fail();
-    } catch (Exception e) {
-      assertEquals(SAXException.class, e.getCause().getClass());
-    }
+    assertThrows(
+      SAXException.class,
+      () -> {
+        final String input = "/" + getSrc() + file;
+        try (final InputStream in = getClass().getResourceAsStream(input)) {
+          final InputSource i = new InputSource(in);
+          reader.parse(i);
+        }
+      }
+    );
   }
 
   @ParameterizedTest

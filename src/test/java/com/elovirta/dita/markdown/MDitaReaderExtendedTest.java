@@ -4,10 +4,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import com.elovirta.dita.utils.AbstractReaderTest;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Arrays;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 public class MDitaReaderExtendedTest extends AbstractReaderTest {
@@ -80,12 +82,16 @@ public class MDitaReaderExtendedTest extends AbstractReaderTest {
   @ParameterizedTest
   @ValueSource(strings = { "header.md", "invalid_header.md", "invalid_header_third.md" })
   public void test_fail(String file) {
-    try {
-      run(file);
-      fail();
-    } catch (Exception e) {
-      assertEquals(SAXException.class, e.getCause().getClass());
-    }
+    assertThrows(
+      SAXException.class,
+      () -> {
+        final String input = "/" + getSrc() + file;
+        try (final InputStream in = getClass().getResourceAsStream(input)) {
+          final InputSource i = new InputSource(in);
+          reader.parse(i);
+        }
+      }
+    );
   }
 
   @Test
