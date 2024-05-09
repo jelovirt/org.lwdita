@@ -27,6 +27,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.CharBuffer;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -351,10 +352,11 @@ public class MarkdownReader implements XMLReader {
   @VisibleForTesting
   char[] getMarkdownContent(final InputSource input) throws IOException {
     final CharArrayWriter out = new CharArrayWriter();
+    final String encoding = input.getEncoding() != null ? input.getEncoding() : StandardCharsets.UTF_8.name();
+    final boolean isUtf8 = "UTF-8".equalsIgnoreCase(encoding);
     if (input.getByteStream() != null) {
-      final String encoding = input.getEncoding() != null ? input.getEncoding() : "UTF-8";
       try (
-        BufferedInputStream is = "UTF-8".equalsIgnoreCase(encoding)
+        BufferedInputStream is = isUtf8
           ? consumeBOM(input.getByteStream())
           : new BufferedInputStream(input.getByteStream());
         Reader in = new InputStreamReader(is, encoding)
@@ -362,7 +364,7 @@ public class MarkdownReader implements XMLReader {
         copy(in, out);
       }
     } else if (input.getCharacterStream() != null) {
-      try (Reader in = input.getCharacterStream()) {
+      try (Reader in = isUtf8 ? consumeBOM(input.getCharacterStream()) : input.getCharacterStream()) {
         copy(in, out);
       }
     } else if (input.getSystemId() != null) {
@@ -372,11 +374,8 @@ public class MarkdownReader implements XMLReader {
       } catch (final URISyntaxException e) {
         throw new IllegalArgumentException(e);
       }
-      final String encoding = input.getEncoding() != null ? input.getEncoding() : "UTF-8";
       try (
-        BufferedInputStream is = "UTF-8".equalsIgnoreCase(encoding)
-          ? consumeBOM(inUrl.openStream())
-          : new BufferedInputStream(inUrl.openStream());
+        BufferedInputStream is = isUtf8 ? consumeBOM(inUrl.openStream()) : new BufferedInputStream(inUrl.openStream());
         Reader in = new InputStreamReader(is, encoding)
       ) {
         copy(in, out);
@@ -396,6 +395,25 @@ public class MarkdownReader implements XMLReader {
     bin.mark(3);
     try {
       if (bin.read() != 0xEF || bin.read() != 0xBB || bin.read() != 0xBF) {
+        bin.reset();
+      }
+    } catch (final IOException e) {
+      bin.reset();
+    }
+    return bin;
+  }
+
+  /**
+   * Returns a reader that skips the BOM if present.
+   *
+   * @param in the original reader
+   * @return a reader without a possible BOM
+   */
+  private BufferedReader consumeBOM(final Reader in) throws IOException {
+    final BufferedReader bin = new BufferedReader(in);
+    bin.mark(1);
+    try {
+      if (bin.read() != '\uFEFF') {
         bin.reset();
       }
     } catch (final IOException e) {
