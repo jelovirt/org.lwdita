@@ -10,12 +10,16 @@ import com.vladsch.flexmark.parser.Parser;
 import com.vladsch.flexmark.util.data.MutableDataSet;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.net.URI;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Map;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.xml.sax.*;
 import org.xml.sax.helpers.XMLFilterImpl;
@@ -191,13 +195,39 @@ public class MarkdownReaderTest extends AbstractReaderTest {
     }
   }
 
-  @Test
-  public void getMarkdownContent_url() throws Exception {
-    final String input = getSrc() + "testBOM.md";
+  @ParameterizedTest
+  @CsvSource({ "markdown/testBOM.md, UTF-8", "markdown/testNoBOM.md, UTF-8", "markdown/testNoBOM.md, ISO-8859-1" })
+  public void getMarkdownContent_url(String input, String encoding) throws Exception {
     final URL in = getClass().getResource("/" + input);
     final InputSource i = new InputSource(in.toString());
-    final char[] content = new MarkdownReader().getMarkdownContent(i);
-    assertEquals('W', content[0]);
+    i.setEncoding(encoding);
+    final char[] act = new MarkdownReader().getMarkdownContent(i);
+    assertEquals('W', act[0]);
+  }
+
+  @ParameterizedTest
+  @CsvSource({ "/markdown/testBOM.md, UTF-8", "/markdown/testNoBOM.md, UTF-8", "/markdown/testNoBOM.md, ISO-8859-1" })
+  public void getMarkdownContent_byteStream(String input, String encoding) throws Exception {
+    try (InputStream in = getClass().getResourceAsStream(input)) {
+      final InputSource i = new InputSource(in);
+      i.setEncoding(encoding);
+      final char[] act = new MarkdownReader().getMarkdownContent(i);
+      assertEquals('W', act[0]);
+    }
+  }
+
+  @ParameterizedTest
+  @CsvSource({ "/markdown/testBOM.md, UTF-8", "/markdown/testNoBOM.md, UTF-8", "/markdown/testNoBOM.md, ISO-8859-1" })
+  public void getMarkdownContent_characterStream(String input, String encoding) throws Exception {
+    try (
+      InputStream in = getClass().getResourceAsStream(input);
+      Reader r = new InputStreamReader(in, StandardCharsets.UTF_8)
+    ) {
+      final InputSource i = new InputSource(r);
+      i.setEncoding(encoding);
+      final char[] act = new MarkdownReader().getMarkdownContent(i);
+      assertEquals('W', act[0]);
+    }
   }
 
   @Test
