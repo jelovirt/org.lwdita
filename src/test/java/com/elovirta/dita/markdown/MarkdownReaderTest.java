@@ -17,20 +17,12 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Map;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.dom.DOMResult;
-import javax.xml.transform.sax.SAXSource;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
-import org.opentest4j.AssertionFailedError;
-import org.w3c.dom.Document;
 import org.xml.sax.*;
 import org.xml.sax.helpers.XMLFilterImpl;
-import org.xmlunit.builder.DiffBuilder;
-import org.xmlunit.diff.DefaultComparisonFormatter;
-import org.xmlunit.diff.Diff;
 
 public class MarkdownReaderTest extends AbstractReaderTest {
 
