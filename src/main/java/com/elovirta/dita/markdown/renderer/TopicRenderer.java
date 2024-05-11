@@ -58,6 +58,8 @@ import org.xml.sax.SAXException;
  */
 public class TopicRenderer extends AbstractRenderer {
 
+  private static final ResourceBundle MESSAGES = ResourceBundle.getBundle("com.elovirta.dita.messages");
+
   private static final String COLUMN_NAME_COL = "col";
   private static final String ATTRIBUTE_NAME_COLSPAN = "colspan";
   private static final Attributes TOPIC_ATTS = new AttributesBuilder()
@@ -709,7 +711,7 @@ public class TopicRenderer extends AbstractRenderer {
       html.setLocation(node);
       filter.parse(new InputSource(new StringReader(text)));
     } catch (IOException | SAXException e) {
-      throw new ParseException("Failed to parse HTML: " + e.getMessage(), e);
+      throw new ParseException(String.format(MESSAGES.getString("error.html_parse_fail"), e.getMessage()), e);
     }
     html.setDocumentLocator();
   }
@@ -891,14 +893,14 @@ public class TopicRenderer extends AbstractRenderer {
       try (final StringReader in = new StringReader(data)) {
         parser.parse(new InputSource(in));
       } catch (IOException | SAXException e) {
-        throw new ParseException("Failed to parse HTML: " + e.getMessage(), e);
+        throw new ParseException(String.format(MESSAGES.getString("error.html_parse_fail"), e.getMessage()), e);
       }
     } else {
       h.setResult(new SAXResult(new StartElementHandler(html)));
       try (final StringReader in = new StringReader(text)) {
         parser.parse(new InputSource(in));
       } catch (IOException | SAXException e) {
-        throw new ParseException("Failed to parse HTML: " + e.getMessage(), e);
+        throw new ParseException(String.format(MESSAGES.getString("error.html_parse_fail"), e.getMessage()), e);
       }
       if (text.endsWith("/>")) {
         html.endElement();

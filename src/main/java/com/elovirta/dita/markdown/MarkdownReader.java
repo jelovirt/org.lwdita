@@ -39,6 +39,8 @@ import org.xml.sax.helpers.LocatorImpl;
  */
 public class MarkdownReader implements XMLReader {
 
+  private static final ResourceBundle MESSAGES = ResourceBundle.getBundle("com.elovirta.dita.messages");
+
   private static final Pattern schemaPattern = Pattern.compile("^---[\r\n]+\\$schema: +(.+?)[\r\n]");
   private static final ServiceLoader<SchemaProvider> schemaLoader = ServiceLoader.load(SchemaProvider.class);
 
@@ -149,7 +151,7 @@ public class MarkdownReader implements XMLReader {
         if (option != null) {
           return option.get(options);
         } else {
-          throw new SAXNotRecognizedException("Unrecognized feature " + name);
+          throw new SAXNotRecognizedException(String.format("Unrecognized feature %s", name));
         }
     }
   }
@@ -164,12 +166,16 @@ public class MarkdownReader implements XMLReader {
     switch (name) {
       case "http://xml.org/sax/features/namespaces":
         if (!value) {
-          throw new SAXNotSupportedException("Unsupported value " + value + " for " + name);
+          throw new SAXNotSupportedException(
+            String.format(MESSAGES.getString("error.unsupported_feature_value"), value, name)
+          );
         }
         break;
       case "http://xml.org/sax/features/namespace-prefixes":
         if (value) {
-          throw new SAXNotSupportedException("Unsupported value " + value + " for " + name);
+          throw new SAXNotSupportedException(
+            String.format(MESSAGES.getString("error.unsupported_feature_value"), value, name)
+          );
         }
         break;
       case "http://lwdita.org/sax/features/mdita-extended-profile":
@@ -198,7 +204,7 @@ public class MarkdownReader implements XMLReader {
         if (option != null) {
           options.set(option, value);
         } else {
-          throw new SAXNotRecognizedException("Unrecognized feature " + name);
+          throw new SAXNotRecognizedException(String.format(MESSAGES.getString("error.unsupported_feature"), name));
         }
     }
   }
@@ -225,7 +231,7 @@ public class MarkdownReader implements XMLReader {
         // Ignore. Should throw SAXNotSupportedException but Saxon doesn't catch the exception
         break;
       default:
-        throw new SAXNotRecognizedException(String.format("Property %s not supported", name));
+        throw new SAXNotRecognizedException(String.format(MESSAGES.getString("error.unsupported_property"), name));
     }
   }
 
@@ -281,7 +287,7 @@ public class MarkdownReader implements XMLReader {
     try {
       markdownParser.convert(sequence, Optional.ofNullable(input.getSystemId()).map(URI::create).orElse(null));
     } catch (ParseException e) {
-      throw new SAXException("Failed to parse: " + e.getMessage(), e);
+      throw new SAXException(String.format(MESSAGES.getString("error.parse_fail"), e.getMessage()), e);
     }
   }
 
@@ -302,7 +308,7 @@ public class MarkdownReader implements XMLReader {
         if (errorHandler != null) {
           errorHandler.error(
             new SAXParseException(
-              String.format("Markdown schema %s not recognized, using default Markdown parser", value),
+              String.format(MESSAGES.getString("error.unsupported_schema"), value),
               schema.getValue()
             )
           );
@@ -343,7 +349,7 @@ public class MarkdownReader implements XMLReader {
         final URI schema = new URI(value);
         return Map.entry(schema, locator);
       } catch (URISyntaxException e) {
-        throw new SAXParseException(String.format("Failed to parse schema URI %s ", value), locator, e);
+        throw new SAXParseException(String.format(MESSAGES.getString("error.invalid_schema_uri"), value), locator, e);
       }
     }
     return null;

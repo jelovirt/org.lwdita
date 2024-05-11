@@ -25,11 +25,8 @@ import com.vladsch.flexmark.util.data.DataHolder;
 import com.vladsch.flexmark.util.visitor.AstHandler;
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.*;
 import java.util.AbstractMap.SimpleImmutableEntry;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -49,6 +46,8 @@ import org.xml.sax.SAXException;
  * A renderer for a set of node types.
  */
 public class MapRenderer extends AbstractRenderer {
+
+  private static final ResourceBundle MESSAGES = ResourceBundle.getBundle("com.elovirta.dita.messages");
 
   private static final Attributes MAP_ATTS = new AttributesBuilder()
     .add(ATTRIBUTE_NAME_CLASS, MAP_MAP.toString())
@@ -311,7 +310,7 @@ public class MapRenderer extends AbstractRenderer {
       html.setLocation(node);
       parser.parse(new InputSource(new StringReader(text)));
     } catch (IOException | SAXException e) {
-      throw new ParseException("Failed to parse HTML: " + e.getMessage(), e);
+      throw new ParseException(String.format(MESSAGES.getString("error.html_parse_fail"), e.getMessage()), e);
     }
     html.setDocumentLocator();
   }
@@ -397,14 +396,14 @@ public class MapRenderer extends AbstractRenderer {
       try (final StringReader in = new StringReader(data)) {
         parser.parse(new InputSource(in));
       } catch (IOException | SAXException e) {
-        throw new ParseException("Failed to parse HTML: " + e.getMessage(), e);
+        throw new ParseException(String.format(MESSAGES.getString("error.html_parse_fail"), e.getMessage()), e);
       }
     } else {
       h.setResult(new SAXResult(new StartElementHandler(html)));
       try (final StringReader in = new StringReader(text)) {
         parser.parse(new InputSource(in));
       } catch (IOException | SAXException e) {
-        throw new ParseException("Failed to parse HTML: " + e.getMessage(), e);
+        throw new ParseException(String.format(MESSAGES.getString("error.html_parse_fail"), e.getMessage()), e);
       }
     }
     html.setDocumentLocator();

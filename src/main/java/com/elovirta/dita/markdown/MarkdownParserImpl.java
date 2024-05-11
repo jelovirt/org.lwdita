@@ -13,6 +13,7 @@ import com.vladsch.flexmark.util.sequence.BasedSequence;
 import java.net.URI;
 import java.util.List;
 import java.util.Map;
+import java.util.ResourceBundle;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
@@ -23,6 +24,8 @@ import org.xml.sax.helpers.XMLFilterImpl;
  * Base class for parsing Markdown to DITA.
  */
 public class MarkdownParserImpl implements MarkdownParser {
+
+  private static final ResourceBundle MESSAGES = ResourceBundle.getBundle("com.elovirta.dita.messages");
 
   private final DataSet options;
   private ContentHandler contentHandler;
@@ -109,17 +112,11 @@ public class MarkdownParserImpl implements MarkdownParser {
         Heading heading = (Heading) node;
         if ((mditaCoreProfile || mditaExtendedProfile) && heading.getLevel() > 2) {
           throw new ParseException(
-            String.format("LwDITA does not support level %d heading: %s", heading.getLevel(), heading.getText())
+            String.format(MESSAGES.getString("error.lwdita_invalid_level"), heading.getLevel(), heading.getText())
           );
         }
         if (heading.getLevel() > level + 1) {
-          throw new ParseException(
-            String.format(
-              "Heading level raised from %d to %d without intermediate heading level",
-              level,
-              heading.getLevel()
-            )
-          );
+          throw new ParseException(String.format(MESSAGES.getString("error.heading_skip"), level, heading.getLevel()));
         }
         level = heading.getLevel();
       }
@@ -139,7 +136,7 @@ public class MarkdownParserImpl implements MarkdownParser {
     if (DitaRenderer.FIX_ROOT_HEADING.get(options) && isWiki(root)) {
       if (errorHandler != null) {
         errorHandler.warning(
-          new SAXParseException("Document content doesn't start with heading", null, input.toString(), 1, 1)
+          new SAXParseException(MESSAGES.getString("error.missing_title"), null, input.toString(), 1, 1)
         );
       }
       generateRootHeading(root, input);
