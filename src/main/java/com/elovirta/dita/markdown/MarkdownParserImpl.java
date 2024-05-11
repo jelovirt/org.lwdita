@@ -152,7 +152,7 @@ public class MarkdownParserImpl implements MarkdownParser {
             new SAXParseException(MESSAGES.getString("error.missing_title"), null, input.toString(), 1, 1)
           );
         }
-        generateRootHeading(root, null);
+        generateRootHeading(root, getTextFromFile(input).toLowerCase().trim().replaceAll("[\\s_]+", "-"), null);
       }
     }
     return root;
@@ -166,15 +166,15 @@ public class MarkdownParserImpl implements MarkdownParser {
     final YamlFrontMatterBlock yaml = root.getFirstChild() instanceof YamlFrontMatterBlock
       ? (YamlFrontMatterBlock) root.getFirstChild()
       : null;
-    String title = input != null ? getTextFromFile(input) : null;
-    final Heading heading = new Heading();
+    String title = getTextFromFile(input);
+    String id = null;
     if (yaml != null) {
       final AbstractYamlFrontMatterVisitor v = new AbstractYamlFrontMatterVisitor();
       v.visit(root);
       final Map<String, List<String>> metadata = v.getData();
       final List<String> ids = metadata.get("id");
       if (ids != null && !ids.isEmpty()) {
-        heading.setAnchorRefId(ids.get(0));
+        id = ids.get(0);
       }
       final List<String> titles = metadata.get("title");
       if (titles != null && !titles.isEmpty()) {
@@ -186,6 +186,15 @@ public class MarkdownParserImpl implements MarkdownParser {
           title = title.substring(1, title.length() - 1);
         }
       }
+    }
+
+    generateRootHeading(root, id, title);
+  }
+
+  private void generateRootHeading(Document root, String id, String title) {
+    final Heading heading = new Heading();
+    if (id != null) {
+      heading.setAnchorRefId(id);
     }
     heading.setLevel(1);
     if (title != null) {
