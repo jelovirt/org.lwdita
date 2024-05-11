@@ -45,6 +45,7 @@ public class MarkdownReader implements XMLReader {
   private static final ServiceLoader<SchemaProvider> schemaLoader = ServiceLoader.load(SchemaProvider.class);
 
   public static final DataKey<Collection<String>> FORMATS = new DataKey<>("FORMATS", List.of("markdown", "md"));
+  /** Strict processing mode. */
   public static final DataKey<Boolean> PROCESSING_MODE = new DataKey<>("PROCESSING_MODE", false);
 
   /**

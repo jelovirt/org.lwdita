@@ -1,7 +1,7 @@
 <topic xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/" class="- topic/topic "
   specializations="@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product"
-  id="" ditaarch:DITAArchVersion="2.0">
-  <title class="- topic/title "></title>
+  id="missing-root-header" ditaarch:DITAArchVersion="2.0">
+  <title class="- topic/title ">missing root header</title>
   <body class="- topic/body ">
     <p class="- topic/p ">Root topic content.</p>
   </body>
