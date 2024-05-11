@@ -17,12 +17,20 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Map;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.dom.DOMResult;
+import javax.xml.transform.sax.SAXSource;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.opentest4j.AssertionFailedError;
+import org.w3c.dom.Document;
 import org.xml.sax.*;
 import org.xml.sax.helpers.XMLFilterImpl;
+import org.xmlunit.builder.DiffBuilder;
+import org.xmlunit.diff.DefaultComparisonFormatter;
+import org.xmlunit.diff.Diff;
 
 public class MarkdownReaderTest extends AbstractReaderTest {
 
@@ -137,6 +145,25 @@ public class MarkdownReaderTest extends AbstractReaderTest {
           .set(Parser.EXTENSIONS, singletonList(YamlFrontMatterExtension.create()))
           .set(DitaRenderer.FIX_ROOT_HEADING, true)
       );
+    final TestErrorHandler errorHandler = new TestErrorHandler();
+    reader.setErrorHandler(errorHandler);
+
+    run(getSrc() + file, getExp() + "wiki/" + file.replaceAll("\\.md$", ".dita"));
+
+    assertEquals(1, errorHandler.warnings.size());
+    final SAXParseException e = errorHandler.warnings.get(0);
+    assertEquals("Document content doesn't start with heading", e.getMessage());
+    assertEquals("classpath:/markdown/" + file, e.getSystemId());
+    assertNull(e.getPublicId());
+    assertEquals(1, e.getLineNumber());
+    assertEquals(1, e.getColumnNumber());
+  }
+
+  @ParameterizedTest
+  @ValueSource(strings = { "missing_root_header.md", "missing_root_header_with_yaml.md" })
+  public void test_emptyHeader(String file) throws Exception {
+    reader =
+      new MarkdownReader(new MutableDataSet().set(Parser.EXTENSIONS, singletonList(YamlFrontMatterExtension.create())));
     final TestErrorHandler errorHandler = new TestErrorHandler();
     reader.setErrorHandler(errorHandler);
 

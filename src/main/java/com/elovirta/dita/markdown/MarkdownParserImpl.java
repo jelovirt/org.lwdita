@@ -130,25 +130,43 @@ public class MarkdownParserImpl implements MarkdownParser {
    * If document doesn't start with H1, generate H1 from YAML metadata or file name.
    */
   protected Document preprocess(Document root, URI input) throws SAXException {
-    if (DitaRenderer.WIKI.get(options) && isWiki(root)) {
-      generateRootHeading(root, input);
-    }
-    if (DitaRenderer.FIX_ROOT_HEADING.get(options) && isWiki(root)) {
-      if (errorHandler != null) {
-        errorHandler.warning(
-          new SAXParseException(MESSAGES.getString("error.missing_title"), null, input.toString(), 1, 1)
-        );
+    if (isWiki(root)) {
+      if (DitaRenderer.WIKI.get(options)) {
+        generateRootHeading(root, input);
+      } else if (DitaRenderer.FIX_ROOT_HEADING.get(options)) {
+        if (errorHandler != null) {
+          errorHandler.warning(
+            new SAXParseException(MESSAGES.getString("error.missing_title"), null, input.toString(), 1, 1)
+          );
+        }
+        generateRootHeading(root, input);
+      } else if (MarkdownReader.PROCESSING_MODE.get(options)) {
+        if (errorHandler != null) {
+          errorHandler.error(
+            new SAXParseException(MESSAGES.getString("error.missing_title"), null, input.toString(), 1, 1)
+          );
+        }
+      } else {
+        if (errorHandler != null) {
+          errorHandler.warning(
+            new SAXParseException(MESSAGES.getString("error.missing_title"), null, input.toString(), 1, 1)
+          );
+        }
+        generateRootHeading(root, null);
       }
-      generateRootHeading(root, input);
     }
     return root;
   }
 
+  /**
+   * Generate root heading using YAML header or input file name. If neither YAML or file name is not available, create empty heading.
+   *
+   */
   private void generateRootHeading(Document root, URI input) {
     final YamlFrontMatterBlock yaml = root.getFirstChild() instanceof YamlFrontMatterBlock
       ? (YamlFrontMatterBlock) root.getFirstChild()
       : null;
-    String title = getTextFromFile(input);
+    String title = input != null ? getTextFromFile(input) : null;
     final Heading heading = new Heading();
     if (yaml != null) {
       final AbstractYamlFrontMatterVisitor v = new AbstractYamlFrontMatterVisitor();
@@ -170,9 +188,11 @@ public class MarkdownParserImpl implements MarkdownParser {
       }
     }
     heading.setLevel(1);
-    final AnchorLink anchorLink = new AnchorLink();
-    anchorLink.appendChild(new Text(title));
-    heading.appendChild(anchorLink);
+    if (title != null) {
+      final AnchorLink anchorLink = new AnchorLink();
+      anchorLink.appendChild(new Text(title));
+      heading.appendChild(anchorLink);
+    }
     root.prependChild(heading);
   }
 
