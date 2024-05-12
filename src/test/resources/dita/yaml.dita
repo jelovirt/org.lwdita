@@ -1,6 +1,6 @@
 <topic xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/" class="- topic/topic "
   specializations="@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product"
-  id="yaml-header" ditaarch:DITAArchVersion="2.0">
+  id="extended-profile" ditaarch:DITAArchVersion="2.0">
   <title class="- topic/title ">YAML Header</title>
   <prolog class="- topic/prolog ">
     <author class="- topic/author ">Author One</author>
@@ -22,7 +22,6 @@
     <data class="- topic/data " name="bar" value="bar"/>
     <data class="- topic/data " name="bar" value="baz"/>
     <data class="- topic/data " name="foo" value="foo"/>
-    <data class="- topic/data " name="id" value="extended-profile"/>
     <data class="- topic/data " name="tags" value="nothing"/>
     <data class="- topic/data " name="tags" value="nothingness"/>
     <data class="- topic/data " name="title" value="'This is the title: it contains a colon'"/>
