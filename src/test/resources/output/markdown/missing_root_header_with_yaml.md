@@ -1,4 +1,4 @@
-# YAML Title {#yaml-title}
+# YAML Title {#yaml-id}
 
 Root topic content.
 

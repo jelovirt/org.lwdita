@@ -1,6 +1,6 @@
 <topic xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/" class="- topic/topic "
   specializations="@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product"
-  id="yaml-title" ditaarch:DITAArchVersion="2.0">
+  id="yaml-id" ditaarch:DITAArchVersion="2.0">
   <title class="- topic/title ">YAML Title</title>
   <body class="- topic/body ">
     <p class="- topic/p ">Root topic content.</p>

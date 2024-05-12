@@ -1,2 +1,2 @@
-# YAML Header {#yaml-header}
+# YAML Header {#extended-profile}
 

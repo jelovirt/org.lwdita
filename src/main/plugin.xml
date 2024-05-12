@@ -48,6 +48,7 @@
     <parser format="mditamap" class="com.elovirta.dita.markdown.MDitamapReader"/>
     <parser format="wikidocs" class="com.elovirta.dita.markdown.MarkdownReader">
       <feature name="http://lwdita.org/sax/features/shortdesc-paragraph" value="true"/>
+      <feature name="http://lwdita.org/sax/features/wiki" value="true"/>
     </parser>
   </feature>
   <extension-point id="dita.xsl.markdown" name="Markdown overrides XSLT import"/>

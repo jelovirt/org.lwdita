@@ -1,5 +1,6 @@
 package com.elovirta.dita.markdown;
 
+import com.elovirta.dita.markdown.renderer.HeaderIdGenerator;
 import com.vladsch.flexmark.ast.Heading;
 import com.vladsch.flexmark.ast.Text;
 import com.vladsch.flexmark.ext.anchorlink.AnchorLink;
@@ -11,6 +12,7 @@ import com.vladsch.flexmark.util.ast.Node;
 import com.vladsch.flexmark.util.data.DataSet;
 import com.vladsch.flexmark.util.sequence.BasedSequence;
 import java.net.URI;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -130,16 +132,17 @@ public class MarkdownParserImpl implements MarkdownParser {
    * If document doesn't start with H1, generate H1 from YAML metadata or file name.
    */
   protected Document preprocess(Document root, URI input) throws SAXException {
-    if (isWiki(root)) {
+    if (isWiki(root) && !DitaRenderer.MAP.get(options)) {
+      final Map<String, String> header = parseYamlHeader(root);
       if (DitaRenderer.WIKI.get(options)) {
-        generateRootHeading(root, input);
+        generateRootHeading(root, header.get("id"), header.getOrDefault("title", getTextFromFile(input)));
       } else if (DitaRenderer.FIX_ROOT_HEADING.get(options)) {
         if (errorHandler != null) {
           errorHandler.warning(
             new SAXParseException(MESSAGES.getString("error.missing_title"), null, input.toString(), 1, 1)
           );
         }
-        generateRootHeading(root, input);
+        generateRootHeading(root, header.get("id"), header.getOrDefault("title", getTextFromFile(input)));
       } else if (MarkdownReader.PROCESSING_MODE.get(options)) {
         if (errorHandler != null) {
           errorHandler.error(
@@ -152,43 +155,51 @@ public class MarkdownParserImpl implements MarkdownParser {
             new SAXParseException(MESSAGES.getString("error.missing_title"), null, input.toString(), 1, 1)
           );
         }
-        generateRootHeading(root, getTextFromFile(input).toLowerCase().trim().replaceAll("[\\s_]+", "-"), null);
+        String id = header.get("id");
+        if (id == null) {
+          id =
+            HeaderIdGenerator.generateId(
+              getTextFromFile(input),
+              DitaRenderer.HEADER_ID_GENERATOR_TO_DASH_CHARS.get(root),
+              DitaRenderer.HEADER_ID_GENERATOR_NO_DUPED_DASHES.get(root)
+            );
+        }
+        generateRootHeading(root, id, header.get("title"));
       }
     }
     return root;
   }
 
-  /**
-   * Generate root heading using YAML header or input file name. If neither YAML or file name is not available, create empty heading.
-   *
-   */
-  private void generateRootHeading(Document root, URI input) {
+  private static String getId(final String contents) {
+    return contents.toLowerCase().replaceAll("[^\\w\\s]", "").trim().replaceAll("\\s+", "-");
+  }
+
+  private Map<String, String> parseYamlHeader(Document root) {
+    Map<String, String> res = new HashMap<>();
     final YamlFrontMatterBlock yaml = root.getFirstChild() instanceof YamlFrontMatterBlock
       ? (YamlFrontMatterBlock) root.getFirstChild()
       : null;
-    String title = getTextFromFile(input);
-    String id = null;
     if (yaml != null) {
       final AbstractYamlFrontMatterVisitor v = new AbstractYamlFrontMatterVisitor();
       v.visit(root);
       final Map<String, List<String>> metadata = v.getData();
       final List<String> ids = metadata.get("id");
       if (ids != null && !ids.isEmpty()) {
-        id = ids.get(0);
+        res.put("id", ids.get(0));
       }
       final List<String> titles = metadata.get("title");
       if (titles != null && !titles.isEmpty()) {
-        title = titles.get(0);
+        String title = titles.get(0);
         if (
           (title.charAt(0) == '\'' && title.charAt(title.length() - 1) == '\'') ||
           (title.charAt(0) == '"' && title.charAt(title.length() - 1) == '"')
         ) {
           title = title.substring(1, title.length() - 1);
         }
+        res.put("title", title);
       }
     }
-
-    generateRootHeading(root, id, title);
+    return res;
   }
 
   private void generateRootHeading(Document root, String id, String title) {
@@ -197,10 +208,12 @@ public class MarkdownParserImpl implements MarkdownParser {
       heading.setAnchorRefId(id);
     }
     heading.setLevel(1);
-    if (title != null) {
+    if (id == null) {
       final AnchorLink anchorLink = new AnchorLink();
-      anchorLink.appendChild(new Text(title));
+      anchorLink.appendChild(new Text(title != null ? title : ""));
       heading.appendChild(anchorLink);
+    } else {
+      heading.appendChild(new Text(title != null ? title : ""));
     }
     root.prependChild(heading);
   }

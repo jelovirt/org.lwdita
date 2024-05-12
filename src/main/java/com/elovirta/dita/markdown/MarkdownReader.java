@@ -91,6 +91,7 @@ public class MarkdownReader implements XMLReader {
     features.put("http://lwdita.org/sax/features/specialization-concept", DitaRenderer.SPECIALIZATION_CONCEPT);
     features.put("http://lwdita.org/sax/features/specialization-task", DitaRenderer.SPECIALIZATION_TASK);
     features.put("http://lwdita.org/sax/features/specialization-reference", DitaRenderer.SPECIALIZATION_REFERENCE);
+    features.put("http://lwdita.org/sax/features/wiki", DitaRenderer.WIKI);
     features.put("http://lwdita.org/sax/features/fix-root-heading", DitaRenderer.FIX_ROOT_HEADING);
     features.put("http://lwdita.org/sax/features/map", DitaRenderer.MAP);
     FEATURES = Collections.unmodifiableMap(features);
@@ -132,7 +133,7 @@ public class MarkdownReader implements XMLReader {
         .set(TablesExtension.DISCARD_EXTRA_COLUMNS, true)
         .set(TablesExtension.HEADER_SEPARATOR_COLUMN_MATCH, true)
         .set(DitaRenderer.SPECIALIZATION, true)
-        .set(DitaRenderer.WIKI, true)
+        .set(DitaRenderer.ID_FROM_YAML, true)
     );
   }
 
