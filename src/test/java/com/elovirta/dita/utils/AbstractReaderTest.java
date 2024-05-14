@@ -65,7 +65,7 @@ public abstract class AbstractReaderTest {
     run(getSrc() + input, getExp() + input.replaceAll("\\.(md|html)$", ".dita"));
   }
 
-  void run(final String input, final String expFile) throws Exception {
+  protected void run(final String input, final String expFile) throws Exception {
     final Document act;
     try (final InputStream in = getClass().getResourceAsStream("/" + input)) {
       act = db.newDocument();
