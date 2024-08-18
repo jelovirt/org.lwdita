@@ -11,5 +11,9 @@
     <p class="- topic/p ">Fenced block:</p>
     <codeblock class="+ topic/pre pr-d/codeblock " id="foreach-example" outputclass="scala" xml:space="preserve">items.foreach(println)
 </codeblock>
+    <p class="- topic/p ">Syntax highlighting:</p>
+    <codeblock class="+ topic/pre pr-d/codeblock " outputclass="language-js" xml:space="preserve">function add(a, b) {
+  return a + b;
+}</codeblock>
   </body>
 </topic>

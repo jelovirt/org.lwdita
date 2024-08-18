@@ -10,5 +10,9 @@
     println(i)</tt></pre>
     <p class="- topic/p ">Fenced block:</p>
     <pre class="- topic/pre " id="foreach-example" outputclass="scala" xml:space="preserve"><tt class="+ topic/ph hi-d/tt ">items.foreach(println)</tt></pre>
+    <p class="- topic/p ">Syntax highlighting:</p>
+    <pre class="- topic/pre " outputclass="language-js" xml:space="preserve"><tt class="+ topic/ph hi-d/tt ">function add(a, b) {
+  return a + b;
+}</tt></pre>
   </body>
 </topic>
