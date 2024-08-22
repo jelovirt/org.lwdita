@@ -64,6 +64,9 @@
     <note class="- topic/note " type="trouble">
       <p class="- topic/p ">block content</p>
     </note>
+    <note class="- topic/note " type="caution">
+      <p class="- topic/p ">Uppercase type</p>
+    </note>
     <ol class="- topic/ol ">
       <li class="- topic/li ">
         List item

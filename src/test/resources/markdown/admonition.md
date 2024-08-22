@@ -64,6 +64,9 @@ Open by default
 !!! trouble ""
     block content
 
+!!! CAUTION
+    Uppercase type
+
 1. List item
    !!! note
    block content

@@ -66,7 +66,7 @@ block content
 
 block content
 
-Caution:
+**Caution:**
 
 block content
 
@@ -74,7 +74,7 @@ block content
 
 block content
 
-Danger
+**Danger**
 
 block content
 
@@ -85,6 +85,10 @@ block content
 **Trouble:**
 
 block content
+
+**Caution:**
+
+Uppercase type
 
 1.  List item
 

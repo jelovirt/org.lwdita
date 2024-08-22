@@ -489,12 +489,14 @@
       <xsl:call-template name="setidaname"/>
       <!-- Normal flags go before the generated title; revision flags only go on the content. -->
       <xsl:apply-templates select="*[contains(@class, ' ditaot-d/ditaval-startprop ')]/prop" mode="ditaval-outputflag"/>
-      <xsl:call-template name="getVariable">
-        <xsl:with-param name="id" select="'Caution'"/>
-      </xsl:call-template>
-      <xsl:call-template name="getVariable">
-        <xsl:with-param name="id" select="'ColonSymbol'"/>
-      </xsl:call-template>
+      <strong>
+        <xsl:call-template name="getVariable">
+          <xsl:with-param name="id" select="'Caution'"/>
+        </xsl:call-template>
+        <xsl:call-template name="getVariable">
+          <xsl:with-param name="id" select="'ColonSymbol'"/>
+        </xsl:call-template>
+      </strong>
     </div>
     <div>
       <xsl:call-template name="commonattributes">
@@ -514,9 +516,11 @@
      <xsl:call-template name="setidaname"/>
      <!-- Normal flags go before the generated title; revision flags only go on the content. -->
      <xsl:apply-templates select="*[contains(@class, ' ditaot-d/ditaval-startprop ')]/prop" mode="ditaval-outputflag"/>
-     <xsl:call-template name="getVariable">
-       <xsl:with-param name="id" select="'Danger'"/>
-     </xsl:call-template>
+     <strong>
+       <xsl:call-template name="getVariable">
+         <xsl:with-param name="id" select="'Danger'"/>
+       </xsl:call-template>
+     </strong>
    </div>
    <div>
      <xsl:call-template name="commonattributes">

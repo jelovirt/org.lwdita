@@ -285,7 +285,7 @@ public class TopicRenderer extends AbstractRenderer {
   private void render(final AdmonitionBlock node, final NodeRendererContext context, final SaxWriter html) {
     final String type = node.getInfo().toString();
     final AttributesBuilder atts = new AttributesBuilder(NOTE_ATTS);
-    switch (type) {
+    switch (type.toLowerCase()) {
       case "note":
       case "tip":
       case "fastpath":
@@ -298,7 +298,7 @@ public class TopicRenderer extends AbstractRenderer {
       case "danger":
       case "warning":
       case "trouble":
-        atts.add("type", type);
+        atts.add("type", type.toLowerCase());
         break;
       default:
         atts.add("type", "other").add("othertype", type);
