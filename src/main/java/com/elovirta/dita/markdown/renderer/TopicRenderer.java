@@ -1293,7 +1293,7 @@ public class TopicRenderer extends AbstractRenderer {
       } else {
         language = info.subSequence(0, space);
       }
-      atts.add("outputclass", /*context.getDitaOptions().languageClassPrefix +*/language.unescape());
+      atts.add("outputclass", context.getDitaOptions().languageClassPrefix + language.unescape());
     } else {
       String noLanguageClass = context.getDitaOptions().noLanguageClass.trim();
       if (!noLanguageClass.isEmpty()) {

@@ -5,6 +5,8 @@
                 exclude-result-prefixes="xs ast"
                 version="2.0">
 
+  <xsl:param name="codeblock-languge-prefix" as="xs:string?" select="'language-'"/>
+
   <xsl:variable name="linefeed" as="xs:string" select="'&#xA;'"/>
 
   <!-- Block -->
@@ -123,11 +125,18 @@
 
   <xsl:template match="codeblock" mode="ast">
     <xsl:param name="indent" tunnel="yes" as="xs:string" select="''"/>
+
+    <xsl:variable name="classes" select="tokenize(normalize-space(@class), '\s+')" as="xs:string*"/>
+
     <xsl:value-of select="$indent"/>
     <xsl:text>```</xsl:text>
     <xsl:choose>
-      <xsl:when test="empty(@id) and @class and not(contains(@class, ' '))">
-        <xsl:value-of select="@class"/>
+      <xsl:when test="exists($codeblock-languge-prefix) and string-length($codeblock-languge-prefix) ne 0 and
+                      count($classes) eq 1 and starts-with($classes, $codeblock-languge-prefix)">
+        <xsl:value-of select="substring-after($classes, $codeblock-languge-prefix)"/>
+      </xsl:when>
+      <xsl:when test="empty(@id) and count($classes) eq 1">
+        <xsl:value-of select="$classes"/>
       </xsl:when>
       <xsl:otherwise>
         <xsl:call-template name="ast-attibutes"/>

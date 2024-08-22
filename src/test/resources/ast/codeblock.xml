@@ -11,6 +11,10 @@
       <para>Fenced block:</para>
       <codeblock xml:space="preserve" class="scala" id="codeblock__foreach-example">items.foreach(println)
 </codeblock>
+      <para>Syntax highlighting:</para>
+      <codeblock xml:space="preserve" class="language-js">function add(a, b) {
+  return a + b;
+}</codeblock>
     </div>
   </div>
 </pandoc>
