@@ -2,11 +2,11 @@
 
 **Note:** Note
 
-Caution:
+**Caution:**
 
 Caution
 
-Danger
+**Danger**
 
 Danger
 
