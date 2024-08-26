@@ -1,4 +1,4 @@
-# missing root header {#missing-root-header}
+#  {#missing-root-header}
 
 Root topic content.
 
