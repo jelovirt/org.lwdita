@@ -77,7 +77,7 @@ jobs:
         uses: peter-evans/create-pull-request@v5
         with:
           path: registry
-          token: ${{ secrets.TOKEN }}
+          token: ${{ secrets.LWDITA_REGISTRY_PR }}
           push-to-fork: jelovirt/registry
           branch-suffix: timestamp
           commit-message: Add ${{ env.PLUGIN_NAME }} ${{ env.VERSION }}
