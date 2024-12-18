@@ -10,34 +10,46 @@ newer.
 
 It contains:
 
-- a custom parser for Markdown and HTML to allow using MDITA and HDITA
-  as a source document format,
+- a custom parser for Markdown and HTML to allow using Markdown and HDITA
+  as source document formats,
 - and a transtype to generate Markdown from DITA source.
 
-The Markdown DITA files need to use a subset of Markdown constructs for
+## Markdown source document formats
+
+Markdown-based source files must use a subset of Markdown constructs for
 compatibility with DITA content models.
+
+Two different Markdown source formats are supported:
+
+- [Markdown DITA](https://github.com/jelovirt/org.lwdita/wiki/Markdown-DITA-syntax)
+- [MDITA (LwDITA)](https://github.com/jelovirt/org.lwdita/wiki/MDITA-syntax)
+
+For a comparison of these two formats, see [Format comparison](https://github.com/jelovirt/org.lwdita/wiki/Format-comparison) in the LwDITA Wiki.
 
 ## Usage
 
-### Using LwDITA files as input
+### Using Markdown-based and HDITA files as input
 
-Markdown DITA or HTML DITA topics can only be used by linking to them in
+Markdown-based or HTML DITA topics can only be used by linking to them in
 map files.
 
 ```xml
 <map>
-  <topicref href="test.md" format="mdita"/>
-  <topicref href="test.html" format="hdita"/>
+  <!-- Markdown DITA -->
+  <topicref href="test1.md" format="md"/>
+  <topicref href="test1.md" format="markdown"/>
+
+  <!-- MDITA -->
+  <topicref href="test2.md" format="mdita"/>
+
+  <!-- HDITA -->
+  <topicref href="test3.html" format="hdita"/>
 </map>
 ```
 
-The `format` attribute value must be set to `mdita` or `hdita` in order
-to recognize files as Markdown DITA or HTML DITA, respectively; the file
+The `format` attribute value must be set to the values shown above in order
+to recognize files as Markdown DITA, MDITA, or HDITA, respectively; the file
 extension is not used to recognize format.
-
-See the [syntax
-reference](https://github.com/jelovirt/org.lwdita/wiki/Markdown-Syntax-reference)
-for XML and Markdown DITA correspondence.
 
 ### Generating Markdown output
 
