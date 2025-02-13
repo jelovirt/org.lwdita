@@ -7,6 +7,10 @@ on:
     tags:
       - '*'
 
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   dist:
     if: github.repository == 'jelovirt/org.lwdita'
@@ -74,7 +78,7 @@ jobs:
           mv concat.json ${{ env.PLUGIN_NAME }}.json
           rm buf.json
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v5
+        uses: peter-evans/create-pull-request@v7
         with:
           path: registry
           token: ${{ secrets.LWDITA_REGISTRY_PR }}
