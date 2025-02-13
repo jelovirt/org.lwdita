@@ -62,6 +62,8 @@ public class MarkdownReader implements XMLReader {
    *     <dd>Parse as MDITA extended profile.</dd>
    *     <dt><code>http://lwdita.org/sax/features/mdita-core-profile</code></dt>
    *     <dd>Parse as MDITA core profile.</dd>
+   *     <dt><code>http://lwdita.org/sax/features/raw-dita</code></dt>
+   *     <dd>Allow XML DITA in Markdown.</dd>
    *     <dt><code>http://lwdita.org/sax/features/specialization</code></dt>
    *     <dd>Support concept, task, and reference specialization from heading class.</dd>
    *     <dt><code>http://lwdita.org/sax/features/specialization-concept</code></dt>
@@ -71,9 +73,10 @@ public class MarkdownReader implements XMLReader {
    *     <dt><code>http://lwdita.org/sax/features/specialization-reference</code></dt>
    *     <dd>Generate DITA reference output.</dd>
    *     <dt><code>http://lwdita.org/sax/features/fix-root-heading</code></dt>
-   *     <dd>Fix missing root heading by reading title from either YAML heading or filename.</dd>
+   *     <dd>Fix missing root heading by reading title from either YAML heading or filename. Throws a SAX warning about the missing header.</dd>
    *     <dt><code>http://lwdita.org/sax/features/map</code></dt>
    *     <dd>Generate DITA map output.</dd>
+   *     <dd>Fix missing root heading by reading title from either YAML heading or filename. Does not throw a warning about the missing header.</dd>
    * </dl>
    */
   private static final Map<String, DataKey<Boolean>> FEATURES;
