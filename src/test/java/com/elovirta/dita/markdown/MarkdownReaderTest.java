@@ -137,6 +137,28 @@ public class MarkdownReaderTest extends AbstractReaderTest {
           .set(Parser.EXTENSIONS, singletonList(YamlFrontMatterExtension.create()))
           .set(DitaRenderer.FIX_ROOT_HEADING, true)
           .set(DitaRenderer.ID_FROM_YAML, true)
+      );
+    final TestErrorHandler errorHandler = new TestErrorHandler();
+    reader.setErrorHandler(errorHandler);
+
+    run(getSrc() + file, getExp() + "wiki/" + file.replaceAll("\\.md$", ".dita"));
+
+    assertEquals(1, errorHandler.warnings.size());
+    var act = errorHandler.warnings.get(0);
+    assertEquals(1, act.getLineNumber());
+    assertEquals(1, act.getColumnNumber());
+    assertEquals("classpath:/markdown/" + file, act.getSystemId());
+    assertEquals("Document content doesn't start with heading", act.getMessage());
+  }
+
+  @ParameterizedTest
+  @ValueSource(strings = { "missing_root_header.md", "missing_root_header_with_yaml.md" })
+  public void test_missingHeader_wiki(String file) throws Exception {
+    reader =
+      new MarkdownReader(
+        new MutableDataSet()
+          .set(Parser.EXTENSIONS, singletonList(YamlFrontMatterExtension.create()))
+          .set(DitaRenderer.ID_FROM_YAML, true)
           .set(DitaRenderer.WIKI, true)
       );
     final TestErrorHandler errorHandler = new TestErrorHandler();

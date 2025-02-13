@@ -10,7 +10,7 @@ newer.
 
 It contains:
 
-- a custom parser for Markdown and HTML to allow using Markdown and HDITA
+- a custom SAX parser for Markdown and HTML to allow using Markdown and HDITA
   as source document formats,
 - and a transtype to generate Markdown from DITA source.
 
