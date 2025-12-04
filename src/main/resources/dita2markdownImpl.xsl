@@ -1111,7 +1111,12 @@
         
         <xsl:variable name="entry-file-contents" as="document-node()?">
           <xsl:if test="empty(@scope) or @scope = 'local'">
-            <xsl:variable name="entry-file-uri" select="concat($WORKDIR, $PATH2PROJ, @href)"/>        
+            <xsl:variable name="href" select="lower-case(if (contains(@href, '#')) then substring-before(@href, '#') else @href)"/>        
+            <xsl:variable name="entry-file-uri" select="
+              if (doc-available(concat($WORKDIR, $PATH2PROJ, $href))) then
+                concat($WORKDIR, $PATH2PROJ, $href)
+              else
+                concat($WORKDIR, $href)"/>
             <xsl:sequence select="document($entry-file-uri, /)"/>    
           </xsl:if>
         </xsl:variable>
