@@ -4,6 +4,6 @@
     "check-fmt": "prettier --check '**/*.java'"
   },
   "devDependencies": {
-    "prettier-plugin-java": "^2.1.0"
+    "prettier-plugin-java": "^2.7.0"
   }
 }
