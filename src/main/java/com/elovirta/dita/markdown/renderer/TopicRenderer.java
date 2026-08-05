@@ -134,6 +134,8 @@ public class TopicRenderer extends AbstractRenderer {
   private final boolean shortdescParagraph;
   private final boolean idFromYaml;
   private final boolean tightList;
+  private final boolean implicitTaskSections;
+  private final Map<String, String> taskSectionTitles;
 
   //  private TableBlock currentTableNode;
   private int currentTableColumn;
@@ -153,6 +155,13 @@ public class TopicRenderer extends AbstractRenderer {
     shortdescParagraph = DitaRenderer.SHORTDESC_PARAGRAPH.get(options);
     idFromYaml = DitaRenderer.ID_FROM_YAML.get(options);
     tightList = DitaRenderer.TIGHT_LIST.get(options);
+    implicitTaskSections = DitaRenderer.IMPLICIT_TASK_SECTIONS.get(options);
+    final Map<String, List<String>> configured = DitaRenderer.IMPLICIT_TASK_SECTION_TITLES.get(options);
+    final Map<String, String> titleMap = new HashMap<>();
+    configured.forEach((sectionName, titles) ->
+      titles.forEach(title -> titleMap.put(title.toLowerCase(), sectionName))
+    );
+    taskSectionTitles = Collections.unmodifiableMap(titleMap);
   }
 
   @Override
@@ -574,6 +583,9 @@ public class TopicRenderer extends AbstractRenderer {
       if (sectionClassName != null) {
         isSection = true;
         cls = sections.get(sectionClassName);
+      } else if (implicitTaskSections && taskSectionTitles.containsKey(node.getText().toString().trim().toLowerCase())) {
+        isSection = true;
+        cls = TOPIC_SECTION;
       } else {
         isSection = false;
         cls = null;
@@ -600,6 +612,12 @@ public class TopicRenderer extends AbstractRenderer {
       if (!mditaCoreProfile) {
         final Collection<String> classes = new ArrayList<>(header.classes);
         classes.removeAll(SECTION_CLASSES_TO_STRIP);
+        if (implicitTaskSections && Collections.disjoint(classes, taskSectionTitles.values())) {
+          final String defaultClass = taskSectionTitles.get(node.getText().toString().trim().toLowerCase());
+          if (defaultClass != null) {
+            classes.add(defaultClass);
+          }
+        }
         if (!classes.isEmpty()) {
           atts.add("outputclass", String.join(" ", classes));
         }

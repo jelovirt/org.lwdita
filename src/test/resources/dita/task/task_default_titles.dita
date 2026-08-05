@@ -1,0 +1,24 @@
+<task xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/"
+      ditaarch:DITAArchVersion="2.0"
+      specializations="@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product"
+  class="- topic/topic task/task " id="task">
+  <title class="- topic/title ">Task</title>
+  <taskbody class="- topic/body task/taskbody ">
+    <context class="- topic/section task/context ">
+      <p class="- topic/p ">Context</p>
+    </context>
+    <steps class="- topic/ol task/steps ">
+      <step class="- topic/li task/step ">
+        <cmd class="- topic/ph task/cmd ">Run the installer.</cmd>
+      </step>
+    </steps>
+    <result class="- topic/section task/result " id="verification">
+      <title class="- topic/title ">Verification</title>
+      <p class="- topic/p ">The software is installed.</p>
+    </result>
+    <postreq class="- topic/section task/postreq " id="next-steps">
+      <title class="- topic/title ">Next steps</title>
+      <p class="- topic/p ">Configure the license.</p>
+    </postreq>
+  </taskbody>
+</task>

@@ -77,6 +77,7 @@ public class SpecializeFilterTest {
       "task_result",
       "task_substeps",
       "task_choicetable",
+      "task_default_titles",
     }
   )
   public void test(String name) throws Exception {

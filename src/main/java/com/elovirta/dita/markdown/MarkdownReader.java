@@ -81,6 +81,10 @@ public class MarkdownReader implements XMLReader {
    *     <dd>Treat unordered list inside step as choices</dd>
    *     <dt><code>http://lwdita.org/sax/features/implicit-substeps</code></dt>
    *     <dd>Treat ordered list inside step as substeps</dd>
+   *     <dt><code>http://lwdita.org/sax/features/implicit-task-sections</code></dt>
+   *     <dd>Map well-known heading titles to task section elements. Configure title
+   *     alternatives per section via properties, e.g.
+   *     {@code setProperty("http://lwdita.org/sax/properties/implicit-task-sections/context", List.of("about this task"))}.</dd>
    * </dl>
    */
   static final Map<String, DataKey<Boolean>> FEATURES;
@@ -104,6 +108,7 @@ public class MarkdownReader implements XMLReader {
     features.put("http://lwdita.org/sax/features/implicit-choices", DitaRenderer.IMPLICIT_CHOICES);
     features.put("http://lwdita.org/sax/features/implicit-choicetable", DitaRenderer.IMPLICIT_CHOICETABLE);
     features.put("http://lwdita.org/sax/features/implicit-substeps", DitaRenderer.IMPLICIT_SUBSTEPS);
+    features.put("http://lwdita.org/sax/features/implicit-task-sections", DitaRenderer.IMPLICIT_TASK_SECTIONS);
     FEATURES = Collections.unmodifiableMap(features);
   }
 
@@ -221,13 +226,28 @@ public class MarkdownReader implements XMLReader {
     }
   }
 
+  private static final String IMPLICIT_TASK_SECTIONS_PROPERTY_PREFIX =
+    "http://lwdita.org/sax/properties/implicit-task-sections/";
+
   @Override
   public Object getProperty(String name) throws SAXNotRecognizedException, SAXNotSupportedException {
+    if (name.startsWith(IMPLICIT_TASK_SECTIONS_PROPERTY_PREFIX)) {
+      final String sectionName = name.substring(IMPLICIT_TASK_SECTIONS_PROPERTY_PREFIX.length());
+      return DitaRenderer.IMPLICIT_TASK_SECTION_TITLES.get(options).get(sectionName);
+    }
     return null;
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   public void setProperty(String name, Object value) throws SAXNotRecognizedException {
+    if (name.startsWith(IMPLICIT_TASK_SECTIONS_PROPERTY_PREFIX)) {
+      final String sectionName = name.substring(IMPLICIT_TASK_SECTIONS_PROPERTY_PREFIX.length());
+      final Map<String, List<String>> current = new HashMap<>(DitaRenderer.IMPLICIT_TASK_SECTION_TITLES.get(options));
+      current.put(sectionName, (List<String>) value);
+      options.set(DitaRenderer.IMPLICIT_TASK_SECTION_TITLES, Collections.unmodifiableMap(current));
+      return;
+    }
     switch (name) {
       case "https://dita-ot.org/property/formats":
         options.set(FORMATS, (Collection<String>) value);

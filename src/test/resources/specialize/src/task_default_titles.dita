@@ -1,0 +1,29 @@
+<topic xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/"
+      ditaarch:DITAArchVersion="2.0"
+      specializations="@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product"
+      class="- topic/topic " id="task" outputclass="task">
+  <title class="- topic/title ">Task</title>
+  <body class="- topic/body ">
+    <section class="- topic/section " outputclass="prereq">
+      <title class="- topic/title ">Prerequisites</title>
+      <p class="- topic/p ">You need admin access.</p>
+    </section>
+    <section class="- topic/section " outputclass="context">
+      <title class="- topic/title ">About this task</title>
+      <p class="- topic/p ">This installs the software.</p>
+    </section>
+    <ol class="- topic/ol ">
+      <li class="- topic/li ">
+        <p class="- topic/p ">Run the installer.</p>
+      </li>
+    </ol>
+    <section class="- topic/section " outputclass="result">
+      <title class="- topic/title ">Verification</title>
+      <p class="- topic/p ">The software is installed.</p>
+    </section>
+    <section class="- topic/section " outputclass="postreq">
+      <title class="- topic/title ">Next steps</title>
+      <p class="- topic/p ">Configure the license.</p>
+    </section>
+  </body>
+</topic>

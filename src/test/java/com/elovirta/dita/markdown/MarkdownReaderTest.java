@@ -16,6 +16,7 @@ import java.net.URI;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -120,6 +121,22 @@ public class MarkdownReaderTest extends AbstractReaderTest {
     reader.setFeature("http://lwdita.org/sax/features/implicit-substeps", true);
 
     run(getSrc() + src, getExp() + exp);
+  }
+
+  @Test
+  public void testImplicitTaskSections() throws Exception {
+    reader.setFeature("http://lwdita.org/sax/features/implicit-task-sections", true);
+
+    run(getSrc() + "task/task_default_titles.md", getExp() + "task/task_default_titles.dita");
+  }
+
+  @Test
+  public void testImplicitTaskSectionsCustomTitles() throws Exception {
+    reader.setFeature("http://lwdita.org/sax/features/implicit-task-sections", true);
+    reader.setProperty("http://lwdita.org/sax/properties/implicit-task-sections/prereq", List.of("voraussetzungen"));
+    reader.setProperty("http://lwdita.org/sax/properties/implicit-task-sections/result", List.of("ergebnis"));
+
+    run(getSrc() + "task/task_custom_titles.md", getExp() + "task/task_custom_titles.dita");
   }
 
   @ParameterizedTest
