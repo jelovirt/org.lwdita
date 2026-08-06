@@ -587,6 +587,56 @@
     <xsl:attribute name="class">- topic/fallback </xsl:attribute>
   </xsl:template>
 
+  <!-- Footnote -->
+  <!--ex. <div data-class="fn" id="id">...</div>-->
+  <xsl:template match="div[@data-class = 'fn'][exists(@id)][1]" priority="3">
+    <xsl:variable name="siblings" as="element()*"
+      select="self::div[@data-class = 'fn'][exists(@id)] | following-sibling::div[@data-class = 'fn'][exists(@id)]"/>
+    <!--if parent is not div, wrap fn with div-->
+    <xsl:variable name="has-parent-div" as="xs:boolean" select="exists(parent::div)"/>
+    <xsl:variable name="fns" as="element()+" >
+    <xsl:for-each select="$siblings">
+        <fn xmlns="">
+          <xsl:apply-templates select=". except text()" mode="class"/>
+          <xsl:apply-templates select="(@* except @data-class) | node()"/>
+        </fn>
+      </xsl:for-each>
+    </xsl:variable>
+    <!-- sanitize fn position -->
+    <xsl:choose>
+      <xsl:when test="$has-parent-div">
+        <xsl:copy-of select="$fns"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <div class="- topic/div " xmlns="">
+          <xsl:copy-of select="$fns"/>
+        </div>  
+      </xsl:otherwise> 
+    </xsl:choose>
+  </xsl:template>
+
+  <!-- They are applied by div[@data-class = 'fn'][exists(@id)][1]'s 
+      xsl:for-each. So we don't need to do nothing their own templates.
+  -->
+  <xsl:template match="div[@data-class = 'fn'][exists(@id)][position() gt 1]"
+    priority="3"/>
+  <!-- <div data-class="fn"> has to be called by cross-ref.
+        If it has no id, then we ignore it.-->
+  <xsl:template match="div[@data-class = 'fn'][empty(@id)]"
+    priority="1"/>
+  
+  <!-- <span data-class="fn">...</span> -->
+  <xsl:template match="span[@data-class = 'fn']" priority="3">
+    <fn>
+      <xsl:apply-templates select=". except text()" mode="class"/>
+      <xsl:apply-templates select="(@* except @data-class) | node()"/>
+    </fn>
+  </xsl:template>
+ 
+  <xsl:template match="*[@data-class = 'fn']" mode="class">
+    <xsl:attribute name="class">- topic/fn </xsl:attribute> 
+  </xsl:template>
+
 <!--  <xsl:template match="controls" mode="class">-->
 <!--    <xsl:attribute name="class">- topic/controls </xsl:attribute>-->
 <!--    <xsl:attribute name="name" select="local-name()"/>-->
