@@ -138,6 +138,7 @@ public class TopicRenderer extends AbstractRenderer {
   //  private TableBlock currentTableNode;
   private int currentTableColumn;
   private boolean inSection = false;
+  private boolean inTask = false;
 
   private final Set<String> footnotes = new HashSet<>();
   private Map<String, Integer> footnoteCount;
@@ -401,7 +402,11 @@ public class TopicRenderer extends AbstractRenderer {
   }
 
   private void render(final BulletList node, final NodeRendererContext context, final SaxWriter html) {
-    printTag(node, context, html, TOPIC_UL, getAttributesFromAttributesNode(node, UL_ATTS));
+    Attributes atts = getAttributesFromAttributesNode(node, UL_ATTS);
+    if (!mditaCoreProfile && inTask && !inSection && hasSubsequentListSibling(node)) {
+      atts = new AttributesBuilder(atts).add(ATTRIBUTE_NAME_OUTPUTCLASS, "body-ul").build();
+    }
+    printTag(node, context, html, TOPIC_UL, atts);
   }
 
   private void render(final DefinitionList node, final NodeRendererContext context, final SaxWriter html) {
@@ -638,6 +643,9 @@ public class TopicRenderer extends AbstractRenderer {
         for (Entry<String, String> attr : header.attributes.entrySet()) {
           atts.add(attr.getKey(), attr.getValue());
         }
+      }
+      if (!mditaCoreProfile && header != null) {
+        inTask = header.classes.contains("task");
       }
       html.startElement(node, TOPIC_TOPIC, atts.build());
       html.startElement(node, TOPIC_TITLE, TITLE_ATTS);
@@ -935,7 +943,61 @@ public class TopicRenderer extends AbstractRenderer {
   }
 
   private void render(final OrderedList node, final NodeRendererContext context, final SaxWriter html) {
+    if (!mditaCoreProfile && inTask && !inSection) {
+      final int splitIndex = findNumberingReset(node);
+      if (splitIndex > 0) {
+        renderSplitOrderedList(node, context, html, splitIndex);
+        return;
+      }
+      if (hasSubsequentListSibling(node)) {
+        final Attributes atts = new AttributesBuilder(getAttributesFromAttributesNode(node, OL_ATTS))
+          .add(ATTRIBUTE_NAME_OUTPUTCLASS, "body-ol").build();
+        printTag(node, context, html, TOPIC_OL, atts);
+        return;
+      }
+    }
     printTag(node, context, html, TOPIC_OL, getAttributesFromAttributesNode(node, OL_ATTS));
+  }
+
+  private int findNumberingReset(OrderedList node) {
+    int prevNumber = -1;
+    int index = 0;
+    for (Node child = node.getFirstChild(); child != null; child = child.getNext()) {
+      if (child instanceof OrderedListItem) {
+        final String marker = ((OrderedListItem) child).getOpeningMarker().toString();
+        final int number = Integer.parseInt(marker.replaceAll("\\D", ""));
+        if (prevNumber > 1 && number == 1) {
+          return index;
+        }
+        prevNumber = number;
+      }
+      index++;
+    }
+    return -1;
+  }
+
+  private void renderSplitOrderedList(OrderedList node, NodeRendererContext context, SaxWriter html, int splitIndex) {
+    final Attributes contextAtts = new AttributesBuilder(getAttributesFromAttributesNode(node, OL_ATTS))
+      .add(ATTRIBUTE_NAME_OUTPUTCLASS, "body-ol").build();
+    html.startElement(node, TOPIC_OL, contextAtts);
+    int index = 0;
+    for (Node child = node.getFirstChild(); child != null; child = child.getNext()) {
+      if (index >= splitIndex) break;
+      context.renderChild(child);
+      index++;
+    }
+    html.endElement();
+
+    final Attributes stepsAtts = getAttributesFromAttributesNode(node, OL_ATTS);
+    html.startElement(node, TOPIC_OL, stepsAtts);
+    index = 0;
+    for (Node child = node.getFirstChild(); child != null; child = child.getNext()) {
+      if (index >= splitIndex) {
+        context.renderChild(child);
+      }
+      index++;
+    }
+    html.endElement();
   }
 
   private boolean onlyImageChild = false;
@@ -947,6 +1009,25 @@ public class TopicRenderer extends AbstractRenderer {
     }
     final Node firstChild = node.getFirstChild();
     return firstChild instanceof AttributesNode && firstChild.getNext() == null;
+  }
+
+  /**
+   * Check whether a list node has a subsequent OrderedList or BulletList
+   * sibling at the same level in the AST, skipping attribute paragraphs.
+   */
+  private boolean hasSubsequentListSibling(Node node) {
+    Node sibling = node.getNext();
+    while (sibling != null) {
+      if (sibling instanceof OrderedList || sibling instanceof BulletList) {
+        return true;
+      }
+      if (sibling instanceof Paragraph && isAttributesParagraph(sibling)) {
+        sibling = sibling.getNext();
+        continue;
+      }
+      sibling = sibling.getNext();
+    }
+    return false;
   }
 
   private void render(final Paragraph node, final NodeRendererContext context, final SaxWriter html) {

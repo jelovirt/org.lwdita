@@ -1,0 +1,26 @@
+<topic xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/"
+       ditaarch:DITAArchVersion="2.0"
+       specializations="@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product"
+       class="- topic/topic " id="task"
+       outputclass="task">
+  <title class="- topic/title ">Task</title>
+  <body class="- topic/body ">
+    <p class="- topic/p ">Gather these items:</p>
+    <ul class="- topic/ul " outputclass="body-ul">
+      <li class="- topic/li ">
+        <p class="- topic/p ">SSH key</p>
+      </li>
+      <li class="- topic/li ">
+        <p class="- topic/p ">Config file</p>
+      </li>
+    </ul>
+    <ol class="- topic/ol ">
+      <li class="- topic/li ">
+        <p class="- topic/p ">Connect to the server.</p>
+      </li>
+      <li class="- topic/li ">
+        <p class="- topic/p ">Run the deploy script.</p>
+      </li>
+    </ol>
+  </body>
+</topic>
