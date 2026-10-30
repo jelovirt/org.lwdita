@@ -122,6 +122,16 @@ public class MarkdownReaderTest extends AbstractReaderTest {
     run(getSrc() + src, getExp() + exp);
   }
 
+  @Test
+  public void testTaskContextWithOl() throws Exception {
+    run(getSrc() + "task/task_context_with_ol.md", getExp() + "task/task_context_with_ol.dita");
+  }
+
+  @Test
+  public void testTaskContextWithUl() throws Exception {
+    run(getSrc() + "task/task_context_with_ul.md", getExp() + "task/task_context_with_ul.dita");
+  }
+
   @ParameterizedTest
   @ValueSource(strings = { "dita_block.md", "dita_block_unsupported.md", "dita_inline.md" })
   public void test_rawDITA(String file) throws Exception {

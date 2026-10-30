@@ -202,9 +202,14 @@ public class SpecializeFilter extends XMLFilterImpl {
         break;
       case "ol":
         if (depth == DEPTH_IN_BODY) {
-          closeImplicitSection();
-          taskState = TaskState.STEPS;
-          renameStartElement(Constants.TASK_STEPS, atts);
+          if (getOutputclass(atts).contains("body-ol")) {
+            openImplicitSection();
+            doStartElement(uri, localName, qName, stripOutputclass(atts, "body-ol"));
+          } else {
+            closeImplicitSection();
+            taskState = TaskState.STEPS;
+            renameStartElement(Constants.TASK_STEPS, atts);
+          }
         } else if (
           depth == 5 &&
           (taskState == TaskState.STEP || taskState == TaskState.INFO) &&
@@ -221,9 +226,14 @@ public class SpecializeFilter extends XMLFilterImpl {
         break;
       case "ul":
         if (depth == DEPTH_IN_BODY) {
-          closeImplicitSection();
-          taskState = TaskState.STEPS;
-          renameStartElement(TASK_STEPS_UNORDERED, atts);
+          if (getOutputclass(atts).contains("body-ul")) {
+            openImplicitSection();
+            doStartElement(uri, localName, qName, stripOutputclass(atts, "body-ul"));
+          } else {
+            closeImplicitSection();
+            taskState = TaskState.STEPS;
+            renameStartElement(TASK_STEPS_UNORDERED, atts);
+          }
         } else if (
           depth == 5 &&
           (taskState == TaskState.STEP || taskState == TaskState.INFO) &&
@@ -434,7 +444,7 @@ public class SpecializeFilter extends XMLFilterImpl {
         doEndElement(uri, localName, qName);
         break;
       case "ol":
-        if (depth == DEPTH_IN_BODY) {
+        if (depth == DEPTH_IN_BODY && taskState == TaskState.STEPS) {
           stepsCompleted = true;
           taskState = TaskState.POST_STEPS;
         } else if (depth == 5 && taskState == TaskState.SUBSTEPS) {
@@ -443,7 +453,7 @@ public class SpecializeFilter extends XMLFilterImpl {
         doEndElement(uri, localName, qName);
         break;
       case "ul":
-        if (depth == DEPTH_IN_BODY) {
+        if (depth == DEPTH_IN_BODY && taskState == TaskState.STEPS) {
           stepsCompleted = true;
           taskState = TaskState.POST_STEPS;
         } else if (depth == 5 && taskState == TaskState.CHOICES) {
@@ -613,6 +623,21 @@ public class SpecializeFilter extends XMLFilterImpl {
       return Collections.emptyList();
     }
     return Arrays.asList(outputclass.trim().split("\\s+"));
+  }
+
+  private Attributes stripOutputclass(Attributes atts, String valueToRemove) {
+    final int idx = atts.getIndex(ATTRIBUTE_NAME_OUTPUTCLASS);
+    if (idx == -1) return atts;
+    final String updated = Stream.of(atts.getValue(idx).trim().split("\\s+"))
+      .filter(token -> !token.equals(valueToRemove))
+      .collect(Collectors.joining(" "));
+    final AttributesImpl result = new AttributesImpl(atts);
+    if (updated.isEmpty()) {
+      result.removeAttribute(idx);
+    } else {
+      result.setValue(idx, updated);
+    }
+    return result;
   }
 
   private AttributesImpl createAttributes(DitaClass cls) {

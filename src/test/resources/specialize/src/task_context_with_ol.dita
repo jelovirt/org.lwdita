@@ -1,0 +1,34 @@
+<topic xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/"
+       ditaarch:DITAArchVersion="2.0"
+       specializations="@props/audience @props/deliveryTarget @props/otherprops @props/platform @props/product"
+       class="- topic/topic " id="task"
+       outputclass="task">
+  <title class="- topic/title ">Task</title>
+  <body class="- topic/body ">
+    <p class="- topic/p ">Prerequisites:</p>
+    <ol class="- topic/ol " outputclass="body-ol">
+      <li class="- topic/li ">
+        <p class="- topic/p ">Get admin access</p>
+      </li>
+      <li class="- topic/li ">
+        <p class="- topic/p ">Back up your data</p>
+        <ol class="- topic/ol ">
+          <li class="- topic/li ">
+            <p class="- topic/p ">a nested list</p>
+          </li>
+          <li class="- topic/li ">
+            <p class="- topic/p ">Very tricky!</p>
+          </li>
+        </ol>
+      </li>
+    </ol>
+    <ol class="- topic/ol ">
+      <li class="- topic/li ">
+        <p class="- topic/p ">Run the installer.</p>
+      </li>
+      <li class="- topic/li ">
+        <p class="- topic/p ">Follow the prompts.</p>
+      </li>
+    </ol>
+  </body>
+</topic>
